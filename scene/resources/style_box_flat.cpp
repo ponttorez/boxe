@@ -456,6 +456,54 @@ Rect2 StyleBoxFlat::get_draw_rect(const Rect2 &p_rect) const {
 	return draw_rect;
 }
 
+bool StyleBoxFlat::interpolate(const Ref<StyleBox> &p_from, const Ref<StyleBox> &p_to, real_t p_weight) {
+	const Ref<StyleBoxFlat> from = p_from;
+	const Ref<StyleBoxFlat> to = p_to;
+	if (from.is_null() || to.is_null()) {
+		return false;
+	}
+
+	_interpolate_content_margins(p_from, p_to, p_weight);
+
+	// Curves like Elastic and Back overshoot the target. Shapes may go past it, but colors would leave their range and change hue.
+	const real_t color_weight = CLAMP(p_weight, 0, 1);
+	bg_color = from->bg_color.lerp(to->bg_color, color_weight);
+	border_color = from->border_color.lerp(to->border_color, color_weight);
+	shadow_color = from->shadow_color.lerp(to->shadow_color, color_weight);
+	for (int i = 0; i < 4; i++) {
+		border_width[i] = MAX(0, Math::lerp(from->border_width[i], to->border_width[i], p_weight));
+		expand_margin[i] = Math::lerp(from->expand_margin[i], to->expand_margin[i], p_weight);
+		corner_radius[i] = MAX(0, Math::lerp(from->corner_radius[i], to->corner_radius[i], p_weight));
+	}
+	skew = from->skew.lerp(to->skew, p_weight);
+	shadow_size = MAX(0, Math::round(Math::lerp((real_t)from->shadow_size, (real_t)to->shadow_size, p_weight)));
+	shadow_offset = from->shadow_offset.lerp(to->shadow_offset, p_weight);
+	aa_size = MAX(0, Math::lerp(from->aa_size, to->aa_size, p_weight));
+
+	// Hidden parts fade out instead of disappearing at once.
+	if (from->draw_center != to->draw_center) {
+		draw_center = true;
+		const Color hidden_bg = (from->draw_center ? from->bg_color : to->bg_color) * Color(1, 1, 1, 0);
+		bg_color = (from->draw_center ? from->bg_color : hidden_bg).lerp(to->draw_center ? to->bg_color : hidden_bg, color_weight);
+	} else {
+		draw_center = to->draw_center;
+	}
+
+	blend_border = to->blend_border;
+	anti_aliased = to->anti_aliased;
+	corner_detail = MAX(from->corner_detail, to->corner_detail);
+	emit_changed();
+	return true;
+}
+
+bool StyleBoxFlat::make_transparent() {
+	bg_color.a = 0;
+	border_color.a = 0;
+	shadow_color.a = 0;
+	emit_changed();
+	return true;
+}
+
 void StyleBoxFlat::draw(RID p_canvas_item, const Rect2 &p_rect) const {
 	bool draw_border = (border_width[0] > 0) || (border_width[1] > 0) || (border_width[2] > 0) || (border_width[3] > 0);
 	bool draw_shadow = (shadow_size > 0);

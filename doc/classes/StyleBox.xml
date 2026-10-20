@@ -121,5 +121,16 @@
 			The top margin for the contents of this style box. Increasing this value reduces the space available to the contents from the top.
 			Refer to [member content_margin_bottom] for extra considerations.
 		</member>
+		<member name="transition_duration" type="float" setter="set_transition_duration" getter="get_transition_duration" default="0.0">
+			Duration of the transition into this style box, in seconds, when a control switches to it, for example when a [Button] becomes hovered. The style box is interpolated from the one the control was drawn with, together with the font and icon colors of the new state. If [code]0[/code], the control switches at once.
+			Going back to the previous style box before the transition ends takes only the part of [member transition_duration] of that style box that was already travelled.
+			Only style boxes of the same class are interpolated, see [StyleBoxFlat] and [StyleBoxLayered]. Other changes happen at once. Transitions aren't played in the editor.
+		</member>
+		<member name="transition_ease" type="int" setter="set_transition_ease" getter="get_transition_ease" enum="Tween.EaseType" default="2">
+			The easing of the transition into this style box. See [member transition_duration].
+		</member>
+		<member name="transition_type" type="int" setter="set_transition_type" getter="get_transition_type" enum="Tween.TransitionType" default="0">
+			The transition curve of the transition into this style box. See [member transition_duration].
+		</member>
 	</members>
 </class>
