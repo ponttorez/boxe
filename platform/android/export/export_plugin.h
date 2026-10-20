@@ -181,6 +181,8 @@ class EditorExportPlatformAndroid : public EditorExportPlatform {
 
 	static String _get_keystore_path(const Ref<EditorExportPreset> &p_preset, bool p_debug);
 
+	int _get_version_code(const Ref<EditorExportPreset> &p_preset) const;
+
 	static String _parse_string(const uint8_t *p_bytes, bool p_utf8);
 
 	void _fix_resources(const Ref<EditorExportPreset> &p_preset, Vector<uint8_t> &r_manifest);
@@ -214,6 +216,8 @@ public:
 	virtual void get_preset_features(const Ref<EditorExportPreset> &p_preset, List<String> *r_features) const override;
 
 	virtual void get_export_options(List<ExportOption> *r_options) const override;
+
+	virtual HashMap<String, Variant> get_custom_project_settings(const Ref<EditorExportPreset> &p_preset) const override;
 
 	virtual bool get_export_option_visibility(const EditorExportPreset *p_preset, const String &p_option) const override;
 

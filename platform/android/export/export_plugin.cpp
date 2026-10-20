@@ -1244,7 +1244,7 @@ void EditorExportPlatformAndroid::_fix_manifest(const Ref<EditorExportPreset> &p
 	Vector<uint8_t> stable_extra;
 
 	String version_name = p_preset->get_version("version/name");
-	int version_code = p_preset->get("version/code");
+	int version_code = _get_version_code(p_preset);
 	String package_name = p_preset->get("package/unique_name");
 
 	const int screen_orientation =
@@ -1766,6 +1766,14 @@ String EditorExportPlatformAndroid::_get_keystore_path(const Ref<EditorExportPre
 	return ProjectSettings::get_singleton()->globalize_path(keystore_path).simplify_path();
 }
 
+int EditorExportPlatformAndroid::_get_version_code(const Ref<EditorExportPreset> &p_preset) const {
+	int version_code = p_preset->get("version/code");
+	if (version_code <= 0) {
+		version_code = get_project_setting(p_preset, "application/config/version_code");
+	}
+	return version_code;
+}
+
 String EditorExportPlatformAndroid::_parse_string(const uint8_t *p_bytes, bool p_utf8) {
 	uint32_t offset = 0;
 	uint32_t len = 0;
@@ -2231,7 +2239,7 @@ void EditorExportPlatformAndroid::get_export_options(List<ExportOption> *r_optio
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "keystore/release_user", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SECRET), ""));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "keystore/release_password", PROPERTY_HINT_PASSWORD, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SECRET), ""));
 
-	r_options->push_back(ExportOption(PropertyInfo(Variant::INT, "version/code", PROPERTY_HINT_RANGE, "1,4096,1,or_greater"), 1));
+	r_options->push_back(ExportOption(PropertyInfo(Variant::INT, "version/code", PROPERTY_HINT_RANGE, "0,4096,1,or_greater"), 0));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "version/name", PROPERTY_HINT_PLACEHOLDER_TEXT, "Leave empty to use project version"), ""));
 
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "package/unique_name", PROPERTY_HINT_PLACEHOLDER_TEXT, "ext.domain.name"), "com.example.$genname", false, true));
@@ -2283,6 +2291,14 @@ void EditorExportPlatformAndroid::get_export_options(List<ExportOption> *r_optio
 		r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, vformat("%s/%s", PNAME("permissions"), String(*perms).to_lower())), false));
 		perms++;
 	}
+}
+
+HashMap<String, Variant> EditorExportPlatformAndroid::get_custom_project_settings(const Ref<EditorExportPreset> &p_preset) const {
+	// Expose the values written to the manifest, so the exported project can read them at runtime.
+	HashMap<String, Variant> settings;
+	settings["application/config/version"] = p_preset->get_version("version/name");
+	settings["application/config/version_code"] = _get_version_code(p_preset);
+	return settings;
 }
 
 bool EditorExportPlatformAndroid::get_export_option_visibility(const EditorExportPreset *p_preset, const String &p_option) const {
@@ -3873,7 +3889,7 @@ Error EditorExportPlatformAndroid::export_project_helper(const Ref<EditorExportP
 		build_command = build_path.path_join(build_command);
 
 		String package_name = get_package_name(p_preset, p_preset->get("package/unique_name"));
-		String version_code = itos(p_preset->get("version/code"));
+		String version_code = itos(_get_version_code(p_preset));
 		String version_name = p_preset->get_version("version/name");
 		String min_sdk_version = p_preset->get("gradle_build/min_sdk");
 		if (!min_sdk_version.is_valid_int()) {
