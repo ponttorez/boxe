@@ -34,6 +34,7 @@
 
 class StyleBoxFlat : public StyleBox {
 	GDCLASS(StyleBoxFlat, StyleBox);
+	friend class StyleBoxLayered;
 
 	Color bg_color = Color(0.6, 0.6, 0.6);
 	Color shadow_color = Color(0, 0, 0, 0.6);

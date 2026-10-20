@@ -50,6 +50,8 @@ class StyleBox : public Resource {
 protected:
 	static void _bind_methods();
 	virtual float get_style_margin(Side p_side) const { return 0; }
+	// Moves the content without changing the total margin, e.g. to shift text on a pressed style.
+	virtual Vector2 get_style_content_offset() const { return Vector2(); }
 
 	void _interpolate_content_margins(const Ref<StyleBox> &p_from, const Ref<StyleBox> &p_to, real_t p_weight);
 

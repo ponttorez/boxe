@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="StyleBoxLayer" inherits="Resource" api_type="core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+		A shape drawn by a [StyleBoxLayered].
+	</brief_description>
+	<description>
+		A filled or outlined rectangle drawn as one layer of a [StyleBoxLayered]. The rectangle is the style box's rectangle moved by [member offset] and shrunk by the margins, and uses the corners of the style box.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_margin" qualifiers="const">
+			<return type="float" />
+			<param index="0" name="side" type="int" enum="Side" />
+			<description>
+				Returns the margin for the given [enum Side]. See [member margin_left].
+			</description>
+		</method>
+		<method name="set_margin">
+			<return type="void" />
+			<param index="0" name="side" type="int" enum="Side" />
+			<param index="1" name="margin" type="float" />
+			<description>
+				Sets the margin for the given [enum Side]. See [member margin_left].
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="blend" type="bool" setter="set_blend" getter="get_blend" default="false">
+			If [code]true[/code], the outline fades from [member color] on its outer edge to transparent on its inner edge, like [member StyleBoxFlat.border_blend]. With [constant StyleBoxLayered.CORNER_STYLE_PIXEL], it fades in steps of [member StyleBoxLayered.pixel_size]. Only used with [constant MODE_OUTLINE].
+		</member>
+		<member name="blur" type="float" setter="set_blur" getter="get_blur" default="8.0">
+			Size of the soft edge around the shadow, in pixels, like [member StyleBoxFlat.shadow_size]. With [constant StyleBoxLayered.CORNER_STYLE_PIXEL], the edge is made of rings of [member StyleBoxLayered.pixel_size] that fade out. Only used with [constant MODE_SHADOW].
+		</member>
+		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color(1, 1, 1, 1)">
+			The color of the layer. Layers with a transparent color aren't drawn.
+		</member>
+		<member name="corner_radius_adjust" type="float" setter="set_corner_radius_adjust" getter="get_corner_radius_adjust" default="0.0">
+			Added to the corner radius of the [StyleBoxLayered] for this layer, for example to round an inner layer less than the outer ones.
+		</member>
+		<member name="margin_bottom" type="float" setter="set_margin" getter="get_margin" default="0.0">
+			Distance from the bottom edge of the style box to the bottom edge of the layer. See [member margin_left].
+		</member>
+		<member name="margin_left" type="float" setter="set_margin" getter="get_margin" default="0.0">
+			Distance from the left edge of the style box to the left edge of the layer. Positive values move the edge inwards, negative values outwards.
+		</member>
+		<member name="margin_right" type="float" setter="set_margin" getter="get_margin" default="0.0">
+			Distance from the right edge of the style box to the right edge of the layer. See [member margin_left].
+		</member>
+		<member name="margin_top" type="float" setter="set_margin" getter="get_margin" default="0.0">
+			Distance from the top edge of the style box to the top edge of the layer. See [member margin_left].
+		</member>
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="StyleBoxLayer.Mode" default="0">
+			Whether the layer is filled or only outlined.
+		</member>
+		<member name="offset" type="Vector2" setter="set_offset" getter="get_offset" default="Vector2(0, 0)">
+			Moves the layer, for example to draw a shadow or the side of a raised button.
+		</member>
+		<member name="width" type="float" setter="set_width" getter="get_width" default="1.0">
+			Width of the outline when [member mode] is [constant MODE_OUTLINE].
+		</member>
+	</members>
+	<constants>
+		<constant name="MODE_FILL" value="0" enum="Mode">
+			The layer is filled with [member color].
+		</constant>
+		<constant name="MODE_OUTLINE" value="1" enum="Mode">
+			Only the edges of the layer are drawn, with [member width].
+		</constant>
+		<constant name="MODE_SHADOW" value="2" enum="Mode">
+			The layer is filled with [member color] and fades out around its shape over [member blur] pixels. Use [member offset] to move the shadow and the margins to change its size.
+		</constant>
+	</constants>
+</class>

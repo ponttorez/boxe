@@ -79,11 +79,19 @@ float StyleBox::get_content_margin(Side p_side) const {
 float StyleBox::get_margin(Side p_side) const {
 	ERR_FAIL_INDEX_V((int)p_side, 4, 0.0);
 
-	if (content_margin[p_side] < 0) {
-		return get_style_margin(p_side);
-	} else {
-		return content_margin[p_side];
+	const float margin = content_margin[p_side] < 0 ? get_style_margin(p_side) : content_margin[p_side];
+	const Vector2 offset = get_style_content_offset();
+	switch (p_side) {
+		case SIDE_LEFT:
+			return margin + offset.x;
+		case SIDE_TOP:
+			return margin + offset.y;
+		case SIDE_RIGHT:
+			return margin - offset.x;
+		case SIDE_BOTTOM:
+			return margin - offset.y;
 	}
+	return margin;
 }
 
 Point2 StyleBox::get_offset() const {
