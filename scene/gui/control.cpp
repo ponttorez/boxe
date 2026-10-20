@@ -41,6 +41,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "core/object/class_db.h"
 #include "core/os/os.h"
 #include "core/string/string_builder.h"
+#include "scene/2d/canvas_group.h"
 #include "scene/gui/container.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/main/canvas_layer.h"
@@ -258,6 +259,16 @@ PackedStringArray Control::get_configuration_warnings() const {
 
 	if (data.mouse_filter == MOUSE_FILTER_IGNORE && !data.tooltip.is_empty()) {
 		warnings.push_back(RTR("The Hint Tooltip won't be displayed as the control's Mouse Filter is set to \"Ignore\". To solve this, set the Mouse Filter to \"Stop\" or \"Pass\"."));
+	}
+
+	if (data.composite_enabled && is_inside_tree()) {
+		for (Node *n = get_parent(); n; n = n->get_parent()) {
+			const Control *as_control = Object::cast_to<Control>(n);
+			if ((as_control && as_control->data.composite_enabled) || Object::cast_to<CanvasGroup>(n)) {
+				warnings.push_back(vformat(RTR("Ancestor \"%s\" is also drawn as a composite, so this composite will not function properly."), n->get_name()));
+				break;
+			}
+		}
 	}
 
 	return warnings;
@@ -3572,6 +3583,43 @@ bool Control::is_clipping_contents() {
 	return data.clip_contents;
 }
 
+void Control::set_composite_enabled(bool p_enabled) {
+	ERR_MAIN_THREAD_GUARD;
+	if (data.composite_enabled == p_enabled) {
+		return;
+	}
+	data.composite_enabled = p_enabled;
+	_update_composite();
+	update_configuration_warnings();
+}
+
+bool Control::is_composite_enabled() const {
+	ERR_READ_THREAD_GUARD_V(false);
+	return data.composite_enabled;
+}
+
+void Control::set_composite_margin(real_t p_margin) {
+	ERR_MAIN_THREAD_GUARD;
+	ERR_FAIL_COND(p_margin < 0.0);
+	if (data.composite_margin == p_margin) {
+		return;
+	}
+	data.composite_margin = p_margin;
+	_update_composite();
+}
+
+real_t Control::get_composite_margin() const {
+	ERR_READ_THREAD_GUARD_V(0.0);
+	return data.composite_margin;
+}
+
+void Control::_update_composite() {
+	// Draws this control and its children as a single image, like CanvasGroup.
+	const RSE::CanvasGroupMode mode = data.composite_enabled ? RSE::CANVAS_GROUP_MODE_TRANSPARENT : RSE::CANVAS_GROUP_MODE_DISABLED;
+	RS::get_singleton()->canvas_item_set_canvas_group_mode(get_canvas_item(), mode, data.composite_margin, true, data.composite_margin, false);
+	queue_redraw();
+}
+
 // Theming.
 
 void Control::_theme_changed() {
@@ -4877,6 +4925,12 @@ void Control::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_clip_contents", "enable"), &Control::set_clip_contents);
 	ClassDB::bind_method(D_METHOD("is_clipping_contents"), &Control::is_clipping_contents);
 
+	ClassDB::bind_method(D_METHOD("set_composite_enabled", "enabled"), &Control::set_composite_enabled);
+	ClassDB::bind_method(D_METHOD("is_composite_enabled"), &Control::is_composite_enabled);
+
+	ClassDB::bind_method(D_METHOD("set_composite_margin", "margin"), &Control::set_composite_margin);
+	ClassDB::bind_method(D_METHOD("get_composite_margin"), &Control::get_composite_margin);
+
 	ClassDB::bind_method(D_METHOD("grab_click_focus"), &Control::grab_click_focus);
 
 	ClassDB::bind_method(D_METHOD("set_drag_forwarding", "drag_func", "can_drop_func", "drop_func"), &Control::set_drag_forwarding);
@@ -4986,6 +5040,10 @@ void Control::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "offset_transform_pivot", PROPERTY_HINT_NONE, "suffix:px"), "set_offset_transform_pivot", "get_offset_transform_pivot");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "offset_transform_pivot_ratio", PROPERTY_HINT_NONE), "set_offset_transform_pivot_ratio", "get_offset_transform_pivot_ratio");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "offset_transform_visual_only", PROPERTY_HINT_NONE), "set_offset_transform_visual_only", "is_offset_transform_visual_only");
+
+	ADD_GROUP("Composite", "composite_");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "composite_enabled"), "set_composite_enabled", "is_composite_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "composite_margin", PROPERTY_HINT_RANGE, "0,1024,1,or_greater,suffix:px"), "set_composite_margin", "get_composite_margin");
 
 	ADD_GROUP("Localization", "");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "localize_numeral_system"), "set_localize_numeral_system", "is_localizing_numeral_system");

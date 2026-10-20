@@ -288,6 +288,9 @@ private:
 		bool clip_contents = false;
 		bool disable_visibility_clip = false;
 
+		bool composite_enabled = false;
+		real_t composite_margin = 0.0;
+
 		CursorShape default_cursor = CURSOR_ARROW;
 
 		// Focus.
@@ -414,6 +417,8 @@ private:
 	void _invalidate_theme_cache();
 
 	void _ensure_allocated_offset_transform();
+
+	void _update_composite();
 
 	// Extra properties.
 
@@ -778,6 +783,12 @@ public:
 
 	void set_disable_visibility_clip(bool p_ignore);
 	bool is_visibility_clip_disabled() const;
+
+	void set_composite_enabled(bool p_enabled);
+	bool is_composite_enabled() const;
+
+	void set_composite_margin(real_t p_margin);
+	real_t get_composite_margin() const;
 
 	// Theming.
 
