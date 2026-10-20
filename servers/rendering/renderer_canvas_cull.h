@@ -195,6 +195,10 @@ public:
 	bool disable_scale;
 	bool sdf_used = false;
 	bool snapping_2d_transforms_to_pixel = false;
+	// How many canvas groups the item being culled is in. The renderer only draws the outermost one as a group.
+	int canvas_group_depth = 0;
+	static Color _get_group_children_modulate(const Item *p_canvas_item);
+	bool _uses_canvas_group(Item *p_canvas_item);
 
 	bool debug_redraw = false;
 	double debug_redraw_time = 0;

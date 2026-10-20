@@ -1074,6 +1074,15 @@
 		<member name="clip_contents" type="bool" setter="set_clip_contents" getter="is_clipping_contents" default="false">
 			Enables whether rendering of [CanvasItem] based children should be clipped to this control's rectangle. If [code]true[/code], parts of a child which would be visibly outside of this control's rectangle will not be rendered and won't receive input.
 		</member>
+		<member name="composite_enabled" type="bool" setter="set_composite_enabled" getter="is_composite_enabled" default="false">
+			If [code]true[/code], this control and its children are drawn as a single image, like a [CanvasGroup]. Overlapping children don't show through each other when the control is translucent, and the [member CanvasItem.material] of this control applies to the whole image.
+			[member CanvasItem.modulate] and [member CanvasItem.self_modulate] change the color and opacity of the whole image, as do the modulations of the parents.
+			[b]Note:[/b] Composites can't be nested: a composite inside another composite or a [CanvasGroup] is drawn like a regular control, so its children are drawn one by one and its [member CanvasItem.material] isn't applied.
+			[b]Note:[/b] Only the children are drawn into the image. If this control draws something itself, like the background and text of a [Button], that drawing is used as a mask for the children's image instead, so a control without children disappears. To draw such a control as a composite, enable this property on a parent [Control] that doesn't draw anything itself.
+		</member>
+		<member name="composite_margin" type="float" setter="set_composite_margin" getter="get_composite_margin" default="0.0">
+			Extra space around the children when [member composite_enabled] is [code]true[/code], so effects of the [member CanvasItem.material] such as outlines and shadows can draw outside of the children.
+		</member>
 		<member name="custom_maximum_size" type="Vector2" setter="set_custom_maximum_size" getter="get_custom_maximum_size" default="Vector2(-1, -1)">
 			The maximum size of this Control's bounding rectangle. If set to a value greater than or equal to [code](0, 0)[/code], the node's bounding rectangle will never exceed this size. A value below [code](0, 0)[/code] means there is no maximum size.
 			[b]Note:[/b] The final effective maximum size may be subject to parent Container sizing and propagated maximum sizes. See also: [method get_combined_maximum_size].

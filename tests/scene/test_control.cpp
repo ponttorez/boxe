@@ -33,6 +33,7 @@
 TEST_FORCE_LINK(test_control)
 
 #include "core/input/input_map.h" // IWYU pragma: keep // Used by `SEND_GUI_ACTION` macro.
+#include "scene/2d/canvas_group.h"
 #include "scene/2d/node_2d.h"
 #include "scene/gui/control.h"
 #include "scene/main/scene_tree.h"
@@ -1280,6 +1281,54 @@ TEST_CASE("[SceneTree][Control] Grow direction") {
 				test_control->get_rect().is_equal_approx(
 						Rect2(Vector2(0, -1), Size2(6, 3))),
 				"Expand equally upwards and downwards.");
+	}
+
+	memdelete(test_control);
+}
+
+TEST_CASE("[SceneTree][Control] Composite") {
+	Control *test_control = memnew(Control);
+	SceneTree::get_singleton()->get_root()->add_child(test_control);
+
+	SUBCASE("[Control] The composite is disabled by default") {
+		CHECK_FALSE(test_control->is_composite_enabled());
+		CHECK(test_control->get_composite_margin() == 0.0);
+	}
+
+	SUBCASE("[Control] The composite properties can be set") {
+		test_control->set_composite_enabled(true);
+		test_control->set_composite_margin(8.0);
+		CHECK(test_control->is_composite_enabled());
+		CHECK(test_control->get_composite_margin() == 8.0);
+	}
+
+	SUBCASE("[Control] The composite margin can't be negative") {
+		test_control->set_composite_margin(8.0);
+		ERR_PRINT_OFF;
+		test_control->set_composite_margin(-1.0);
+		ERR_PRINT_ON;
+		CHECK(test_control->get_composite_margin() == 8.0);
+	}
+
+	SUBCASE("[Control] A composite inside another composite warns about it") {
+		Control *nested_control = memnew(Control);
+		test_control->add_child(nested_control);
+		nested_control->set_composite_enabled(true);
+		CHECK(nested_control->get_configuration_warnings().is_empty());
+
+		test_control->set_composite_enabled(true);
+		CHECK(nested_control->get_configuration_warnings().size() == 1);
+		CHECK(test_control->get_configuration_warnings().is_empty());
+	}
+
+	SUBCASE("[Control] A composite inside a CanvasGroup warns about it") {
+		CanvasGroup *canvas_group = memnew(CanvasGroup);
+		SceneTree::get_singleton()->get_root()->add_child(canvas_group);
+		Control *nested_control = memnew(Control);
+		canvas_group->add_child(nested_control);
+		nested_control->set_composite_enabled(true);
+		CHECK(nested_control->get_configuration_warnings().size() == 1);
+		memdelete(canvas_group);
 	}
 
 	memdelete(test_control);
