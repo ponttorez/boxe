@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="StyleBoxLayered" inherits="StyleBox" api_type="core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+		A style box made of layers.
+	</brief_description>
+	<description>
+		A [StyleBox] that draws a list of [StyleBoxLayer]s in order, so complex looks such as raised buttons with a depth, a rim, a highlight and a border can be built without code.
+		The corners can be smooth, or stepped like pixel art. Content margins that aren't set place the content inside the [constant StyleBoxLayer.MODE_OUTLINE] layers, like inside the border of a [StyleBoxFlat].
+		Two layered style boxes are interpolated layer by layer, see [member StyleBox.transition_duration]. The layers at the same index must have the same mode, and layers that only one of the style boxes has fade in or out.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_corner_radius" qualifiers="const">
+			<return type="float" />
+			<param index="0" name="corner" type="int" enum="Corner" />
+			<description>
+				Returns the corner radius of the given [enum Corner].
+			</description>
+		</method>
+		<method name="set_corner_radius">
+			<return type="void" />
+			<param index="0" name="corner" type="int" enum="Corner" />
+			<param index="1" name="radius" type="float" />
+			<description>
+				Sets the corner radius of the given [enum Corner].
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="anti_aliasing" type="bool" setter="set_anti_aliased" getter="is_anti_aliased" default="true">
+			If [code]true[/code], smooth corners and skewed edges are antialiased. Only used with [constant STYLE_SMOOTH].
+		</member>
+		<member name="anti_aliasing_size" type="float" setter="set_anti_aliasing_size" getter="get_anti_aliasing_size" default="1.0">
+			The size of the antialiased edges, like [member StyleBoxFlat.anti_aliasing_size]. Only used with [constant STYLE_SMOOTH] when [member anti_aliasing] is [code]true[/code].
+		</member>
+		<member name="content_offset" type="Vector2" setter="set_content_offset" getter="get_content_offset" default="Vector2(0, 0)">
+			Moves the content of the control without changing its size, for example to move the text of a pressed button down.
+		</member>
+		<member name="corner_detail" type="int" setter="set_corner_detail" getter="get_corner_detail" default="8">
+			Number of segments of each smooth corner. Only used with [constant STYLE_SMOOTH].
+		</member>
+		<member name="corner_radius_bottom_left" type="float" setter="set_corner_radius" getter="get_corner_radius" default="0.0">
+			The radius of the bottom-left corner.
+		</member>
+		<member name="corner_radius_bottom_right" type="float" setter="set_corner_radius" getter="get_corner_radius" default="0.0">
+			The radius of the bottom-right corner.
+		</member>
+		<member name="corner_radius_top_left" type="float" setter="set_corner_radius" getter="get_corner_radius" default="0.0">
+			The radius of the top-left corner.
+		</member>
+		<member name="corner_radius_top_right" type="float" setter="set_corner_radius" getter="get_corner_radius" default="0.0">
+			The radius of the top-right corner.
+		</member>
+		<member name="layers" type="StyleBoxLayer[]" setter="set_layers" getter="get_layers" default="[]">
+			The layers to draw, from the bottom to the top.
+		</member>
+		<member name="pixel_size" type="float" setter="set_pixel_size" getter="get_pixel_size" default="1.0">
+			Size of the steps of pixel corners, skewed edges and soft edges. A corner radius equal to it cuts a single pixel. With [member snap], also the grid sizes are snapped to.
+		</member>
+		<member name="skew" type="Vector2" setter="set_skew" getter="get_skew" default="Vector2(0, 0)">
+			Skews all layers around the center of the style box, like [member StyleBoxFlat.skew]: the horizontal part moves the rows sideways, the vertical part moves the columns up and down.
+			With [constant STYLE_PIXEL], the shape is drawn on a grid of [member pixel_size], so the skewed edges make stairs.
+			[b]Note:[/b] With [constant STYLE_PIXEL] and a skew on both axes, every cell of the area is checked to find the shape, which is slow for large style boxes with a small [member pixel_size]. The shapes of the last few sizes are reused while the style doesn't change, also at other positions, but changing the size or the style every frame, e.g. in a transition, costs that each time. A skew on one axis only is fast.
+		</member>
+		<member name="snap" type="bool" setter="set_snap" getter="is_snap_enabled" default="false">
+			If [code]true[/code], the rectangle is rounded to whole pixels, and the margins, offsets, widths and corner radii of the layers to multiples of [member pixel_size].
+		</member>
+		<member name="style" type="int" setter="set_style" getter="get_style" enum="StyleBoxLayered.Style" default="0">
+			How the layers are drawn: with smooth corners and edges, or on a grid of [member pixel_size] for a pixel art look.
+		</member>
+	</members>
+	<constants>
+		<constant name="STYLE_SMOOTH" value="0" enum="Style">
+			Rounded, antialiased corners, like [StyleBoxFlat].
+		</constant>
+		<constant name="STYLE_PIXEL" value="1" enum="Style">
+			Stepped corners, like pixel art. Each step is [member pixel_size] large.
+		</constant>
+	</constants>
+</class>

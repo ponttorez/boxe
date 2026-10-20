@@ -89,6 +89,7 @@ private:
 	mutable SelfList<Node> xform_change;
 
 	RID canvas_item;
+	RID overlay_canvas_item; // Drawn over the children, created when used.
 	StringName canvas_group;
 
 	CanvasLayer *canvas_layer = nullptr;
@@ -369,6 +370,9 @@ public:
 	void draw_end_animation();
 
 	static CanvasItem *get_current_item_drawn();
+	// A canvas item drawn over this one and its children, e.g. for the layers of a StyleBoxLayered drawn on top.
+	// Its commands are cleared with the commands of this canvas item, so it's drawn into while this one is drawn.
+	RID get_overlay_canvas_item();
 
 	/* RECT / TRANSFORM */
 

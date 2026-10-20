@@ -140,6 +140,20 @@ CanvasItem *CanvasItem::get_current_item_drawn() {
 	return current_item_drawn;
 }
 
+RID CanvasItem::get_overlay_canvas_item() {
+	if (overlay_canvas_item.is_null()) {
+		RenderingServer *rs = RenderingServer::get_singleton();
+		overlay_canvas_item = rs->canvas_item_create();
+		rs->canvas_item_set_parent(overlay_canvas_item, canvas_item);
+		// After the children, which are sorted by their index.
+		rs->canvas_item_set_draw_index(overlay_canvas_item, INT32_MAX);
+		rs->canvas_item_set_use_parent_material(overlay_canvas_item, true);
+		// The self modulation of this canvas item doesn't apply to its children.
+		rs->canvas_item_set_modulate(overlay_canvas_item, self_modulate);
+	}
+	return overlay_canvas_item;
+}
+
 void CanvasItem::_redraw_callback() {
 	if (!is_inside_tree()) {
 		pending_update = false;
@@ -148,6 +162,9 @@ void CanvasItem::_redraw_callback() {
 
 	if (draw_commands_dirty) {
 		RenderingServer::get_singleton()->canvas_item_clear(get_canvas_item());
+		if (overlay_canvas_item.is_valid()) {
+			RenderingServer::get_singleton()->canvas_item_clear(overlay_canvas_item);
+		}
 		draw_commands_dirty = false;
 	}
 
@@ -660,6 +677,9 @@ void CanvasItem::set_self_modulate(const Color &p_self_modulate) {
 
 	self_modulate = p_self_modulate;
 	RenderingServer::get_singleton()->canvas_item_set_self_modulate(canvas_item, self_modulate);
+	if (overlay_canvas_item.is_valid()) {
+		RenderingServer::get_singleton()->canvas_item_set_modulate(overlay_canvas_item, self_modulate);
+	}
 }
 
 Color CanvasItem::get_self_modulate() const {
@@ -1907,6 +1927,9 @@ CanvasItem::CanvasItem() :
 
 CanvasItem::~CanvasItem() {
 	ERR_FAIL_NULL(RenderingServer::get_singleton());
+	if (overlay_canvas_item.is_valid()) {
+		RenderingServer::get_singleton()->free_rid(overlay_canvas_item);
+	}
 	RenderingServer::get_singleton()->free_rid(canvas_item);
 }
 

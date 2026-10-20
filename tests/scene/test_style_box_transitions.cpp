@@ -32,8 +32,10 @@
 
 TEST_FORCE_LINK(test_style_box_transitions)
 
+#include "core/templates/hash_map.h"
 #include "scene/resources/image_texture.h"
 #include "scene/resources/style_box_flat.h"
+#include "scene/resources/style_box_layered.h"
 #include "scene/resources/style_box_line.h"
 #include "scene/resources/style_box_texture.h"
 
@@ -220,6 +222,216 @@ TEST_CASE("[StyleBox] Transition properties") {
 	style->set_transition_ease(Tween::EASE_IN);
 	CHECK(style->ease_transition(0.25) == doctest::Approx(0.25));
 	CHECK_MESSAGE(style->ease_transition(2) == doctest::Approx(1), "The progress is clamped.");
+}
+
+TEST_CASE("[StyleBoxLayered] Interpolation past the target") {
+	Ref<StyleBoxLayer> from_layer;
+	from_layer.instantiate();
+	from_layer->set_color(Color(0.2, 0.4, 0.6));
+	from_layer->set_margin(SIDE_LEFT, 2);
+	Ref<StyleBoxLayer> to_layer;
+	to_layer.instantiate();
+	to_layer->set_color(Color(0.3, 0.5, 0.9));
+	to_layer->set_margin(SIDE_LEFT, 6);
+
+	Ref<StyleBoxLayered> from;
+	from.instantiate();
+	from->set_layers({ from_layer });
+	Ref<StyleBoxLayered> to;
+	to.instantiate();
+	to->set_layers({ to_layer });
+
+	Ref<StyleBoxLayered> live = to->duplicate();
+	REQUIRE(live->interpolate(from, to, 1.5));
+	const Ref<StyleBoxLayer> layer = live->get_layers()[0];
+	CHECK_MESSAGE(layer->get_color().is_equal_approx(to_layer->get_color()), "Colors don't go past the target, so their hue doesn't change.");
+	CHECK_MESSAGE(layer->get_margin(SIDE_LEFT) == doctest::Approx(8), "Shapes go past the target.");
+}
+
+static Ref<StyleBoxLayer> make_layer(StyleBoxLayer::Mode p_mode, const Color &p_color) {
+	Ref<StyleBoxLayer> layer;
+	layer.instantiate();
+	layer->set_mode(p_mode);
+	layer->set_color(p_color);
+	return layer;
+}
+
+static Ref<StyleBoxLayered> make_layered(const TypedArray<StyleBoxLayer> &p_layers) {
+	Ref<StyleBoxLayered> style;
+	style.instantiate();
+	style->set_layers(p_layers);
+	return style;
+}
+
+TEST_CASE("[StyleBoxLayered] Copies for transitions have their own layers") {
+	Ref<StyleBoxLayer> layer = make_layer(StyleBoxLayer::MODE_FILL, Color(1, 0, 0));
+	Ref<StyleBoxLayered> style = make_layered({ layer });
+	const Ref<StyleBoxLayered> copy = style->duplicate_for_transition();
+	REQUIRE(copy->get_layers().size() == 1);
+	CHECK(copy->get_layers()[0] != Variant(layer));
+	REQUIRE(copy->make_transparent());
+	CHECK_MESSAGE(layer->get_color() == Color(1, 0, 0), "The layers of the style box aren't changed.");
+}
+
+TEST_CASE("[StyleBoxLayered] Layers of different modes aren't interpolated") {
+	Ref<StyleBoxLayered> from = make_layered({ make_layer(StyleBoxLayer::MODE_FILL, Color(1, 1, 1)) });
+	Ref<StyleBoxLayered> to = make_layered({ make_layer(StyleBoxLayer::MODE_OUTLINE, Color(1, 1, 1)) });
+	Ref<StyleBoxLayered> live = to->duplicate(true);
+	CHECK_FALSE(live->interpolate(from, to, 0.5));
+
+	// Nor layers drawn on top on one side only.
+	Ref<StyleBoxLayer> on_top = make_layer(StyleBoxLayer::MODE_FILL, Color(1, 1, 1));
+	on_top->set_draw_on_top(true);
+	to = make_layered({ on_top });
+	live = to->duplicate(true);
+	CHECK_FALSE(live->interpolate(from, to, 0.5));
+	to = make_layered({ on_top->duplicate() });
+	live = to->duplicate(true);
+	CHECK(live->interpolate(make_layered({ on_top }), to, 0.5));
+	CHECK(Ref<StyleBoxLayer>(live->get_layers()[0])->is_draw_on_top_enabled());
+}
+
+TEST_CASE("[StyleBoxLayered] Layers on one side fade") {
+	Ref<StyleBoxLayer> fill = make_layer(StyleBoxLayer::MODE_FILL, Color(1, 0, 0));
+	Ref<StyleBoxLayer> outline = make_layer(StyleBoxLayer::MODE_OUTLINE, Color(0, 1, 0));
+	outline->set_width(4);
+	Ref<StyleBoxLayered> from = make_layered({ fill });
+	Ref<StyleBoxLayered> to = make_layered({ fill, outline });
+
+	Ref<StyleBoxLayered> live = to->duplicate(true);
+	REQUIRE(live->interpolate(from, to, 0.5));
+	REQUIRE(live->get_layers().size() == 2);
+	const Ref<StyleBoxLayer> faded = live->get_layers()[1];
+	CHECK_MESSAGE(faded->get_color().is_equal_approx(Color(0, 1, 0, 0.5)), "A layer only in the target fades in with its own color.");
+	CHECK(faded->get_width() == doctest::Approx(4));
+	CHECK_MESSAGE(outline->get_color().is_equal_approx(Color(0, 1, 0)), "The source layers aren't modified.");
+
+	REQUIRE(live->interpolate(from, to, 0.75));
+	CHECK_MESSAGE(live->get_layers()[1] == Variant(faded), "The layers are kept between frames.");
+
+	REQUIRE(live->interpolate(to, from, 0.75));
+	const Ref<StyleBoxLayer> fading = live->get_layers()[1];
+	CHECK_MESSAGE(fading->get_color().is_equal_approx(Color(0, 1, 0, 0.25)), "A layer missing in the target fades out with its own color.");
+}
+
+TEST_CASE("[StyleBoxLayered] Transparent copies") {
+	Ref<StyleBoxLayered> style = make_layered({ make_layer(StyleBoxLayer::MODE_FILL, Color(1, 0, 0)), make_layer(StyleBoxLayer::MODE_OUTLINE, Color(0, 1, 0)) });
+	REQUIRE(style->make_transparent());
+	for (const Variant &v : style->get_layers()) {
+		const Ref<StyleBoxLayer> layer = v;
+		CHECK(layer->get_color().a == 0);
+	}
+}
+
+TEST_CASE("[StyleBoxLayered] Content margins") {
+	Ref<StyleBoxLayer> outline = make_layer(StyleBoxLayer::MODE_OUTLINE, Color(1, 1, 1));
+	outline->set_margin(SIDE_LEFT, 2);
+	outline->set_width(3);
+	Ref<StyleBoxLayered> style = make_layered({ make_layer(StyleBoxLayer::MODE_FILL, Color(1, 1, 1)), outline });
+	CHECK_MESSAGE(style->get_margin(SIDE_LEFT) == doctest::Approx(5), "The content is placed inside the outlines.");
+	CHECK(style->get_margin(SIDE_TOP) == doctest::Approx(3));
+
+	style->set_content_offset(Vector2(1, 2));
+	CHECK_MESSAGE(style->get_margin(SIDE_LEFT) == doctest::Approx(6), "The content offset moves the content.");
+	CHECK(style->get_margin(SIDE_RIGHT) == doctest::Approx(2));
+	CHECK(style->get_margin(SIDE_TOP) == doctest::Approx(5));
+	CHECK(style->get_margin(SIDE_BOTTOM) == doctest::Approx(1));
+
+	Ref<StyleBoxFlat> flat;
+	flat.instantiate();
+	flat->set_content_margin_all(10);
+	style->set_content_margins_from(flat);
+	CHECK_MESSAGE(style->get_margin(SIDE_LEFT) == doctest::Approx(10), "Copied margins place the content like in the other style box.");
+	CHECK(style->get_margin(SIDE_BOTTOM) == doctest::Approx(10));
+}
+
+TEST_CASE("[StyleBoxLayered] Draw rect") {
+	Ref<StyleBoxLayer> shadow = make_layer(StyleBoxLayer::MODE_SHADOW, Color(0, 0, 0));
+	shadow->set_blur(4);
+	Ref<StyleBoxLayered> style = make_layered({ shadow });
+	CHECK_MESSAGE(style->get_draw_rect(Rect2(0, 0, 10, 10)).is_equal_approx(Rect2(-6, -6, 22, 22)), "Shadows grow by their blur, a pixel and the antialiasing.");
+
+	style->set_layers({ make_layer(StyleBoxLayer::MODE_FILL, Color(1, 1, 1)) });
+	style->set_skew(Vector2(0.5, 0));
+	CHECK_MESSAGE(style->get_draw_rect(Rect2(0, 0, 10, 10)).is_equal_approx(Rect2(-3.5, -1, 17, 12)), "Skewed layers grow by their skewed corners.");
+}
+
+// The cells covered by the rectangles of a pixel layer, row by row.
+static HashMap<int, Vector2i> get_pixel_rows(const Ref<StyleBoxLayered> &p_style, const Ref<StyleBoxLayer> &p_layer, const Rect2 &p_rect) {
+	LocalVector<StyleBoxLayered::PixelRect> rects;
+	p_style->get_pixel_rects(p_layer, p_rect, rects);
+	HashMap<int, Vector2i> rows;
+	for (const StyleBoxLayered::PixelRect &rect : rects) {
+		for (int y = rect.rect.position.y; y < rect.rect.get_end().y; y++) {
+			Vector2i *row = rows.getptr(y);
+			const Vector2i span = Vector2i(rect.rect.position.x, rect.rect.get_end().x);
+			if (row) {
+				*row = Vector2i(MIN(row->x, span.x), MAX(row->y, span.y));
+			} else {
+				rows.insert(y, span);
+			}
+		}
+	}
+	return rows;
+}
+
+TEST_CASE("[StyleBoxLayered] Pixel corners") {
+	Ref<StyleBoxLayer> fill = make_layer(StyleBoxLayer::MODE_FILL, Color(1, 1, 1));
+	Ref<StyleBoxLayered> style = make_layered({ fill });
+	style->set_style(StyleBoxLayered::STYLE_PIXEL);
+	style->set_corner_radius(CORNER_TOP_LEFT, 2);
+	style->set_corner_radius(CORNER_TOP_RIGHT, 2);
+	style->set_corner_radius(CORNER_BOTTOM_RIGHT, 2);
+	style->set_corner_radius(CORNER_BOTTOM_LEFT, 2);
+
+	HashMap<int, Vector2i> rows = get_pixel_rows(style, fill, Rect2(0, 0, 8, 8));
+	REQUIRE(rows.size() == 8);
+	CHECK_MESSAGE(rows[0] == Vector2i(2, 6), "The corners are cut in steps of a pixel.");
+	CHECK(rows[1] == Vector2i(1, 7));
+	CHECK(rows[3] == Vector2i(0, 8));
+	CHECK(rows[6] == Vector2i(1, 7));
+	CHECK(rows[7] == Vector2i(2, 6));
+
+	style->set_corner_radius(CORNER_TOP_LEFT, 0);
+	style->set_corner_radius(CORNER_TOP_RIGHT, 0);
+	style->set_corner_radius(CORNER_BOTTOM_RIGHT, 0);
+	style->set_corner_radius(CORNER_BOTTOM_LEFT, 0);
+	style->set_skew(Vector2(1, 0));
+	rows = get_pixel_rows(style, fill, Rect2(0, 0, 4, 2));
+	REQUIRE(rows.size() == 2);
+	CHECK_MESSAGE(rows[0] == Vector2i(0, 5), "Skewed rows move sideways in whole pixels.");
+	CHECK(rows[1] == Vector2i(-1, 4));
+}
+
+// Drawing reuses the rectangles of a size at other positions with the same fraction of their position.
+TEST_CASE("[StyleBoxLayered] Pixel rectangles move with the position") {
+	Ref<StyleBoxLayer> fill = make_layer(StyleBoxLayer::MODE_FILL, Color(1, 1, 1));
+	fill->set_blend(true);
+	Ref<StyleBoxLayered> style = make_layered({ fill });
+	style->set_style(StyleBoxLayered::STYLE_PIXEL);
+	style->set_pixel_size(2);
+	style->set_skew(Vector2(0.3, 0.2));
+	for (int i = 0; i < 4; i++) {
+		style->set_corner_radius(Corner(i), 5);
+	}
+
+	for (const bool snap : { false, true }) {
+		style->set_snap(snap);
+		for (const Rect2 &rect : { Rect2(10.25, 3.4, 37, 21), Rect2(10.5, 3.5, 37.3, 21.6) }) {
+			for (const Vector2 &offset : { Vector2(1, 0), Vector2(-40, 17), Vector2(300, -250) }) {
+				LocalVector<StyleBoxLayered::PixelRect> at_rect;
+				style->get_pixel_rects(fill, rect, at_rect);
+				LocalVector<StyleBoxLayered::PixelRect> moved;
+				style->get_pixel_rects(fill, Rect2(rect.position + offset, rect.size), moved);
+				REQUIRE(at_rect.size() == moved.size());
+				bool same = true;
+				for (uint32_t i = 0; i < moved.size(); i++) {
+					same = same && moved[i].rect.position.is_equal_approx(at_rect[i].rect.position + offset) && moved[i].rect.size.is_equal_approx(at_rect[i].rect.size) && Math::is_equal_approx(moved[i].alpha, at_rect[i].alpha);
+				}
+				CHECK_MESSAGE(same, vformat("%s moved by %s, with snap %s.", rect, offset, snap));
+			}
+		}
+	}
 }
 
 } // namespace TestStyleBoxTransitions
