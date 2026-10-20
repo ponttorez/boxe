@@ -1873,6 +1873,9 @@ Error RenderingDeviceDriverVulkan::initialize(uint32_t p_device_index, uint32_t 
 #if defined(SWAPPY_FRAME_PACING_ENABLED)
 	swappy_frame_pacer_enable = GLOBAL_GET("display/window/frame_pacing/android/enable_frame_pacing");
 	swappy_mode = GLOBAL_GET("display/window/frame_pacing/android/swappy_mode");
+	// The Maximum option of display/window/android/refresh_rate.
+	constexpr int REFRESH_RATE_MAXIMUM = 1;
+	swappy_max_refresh_rate = int(GLOBAL_GET("display/window/android/refresh_rate")) == REFRESH_RATE_MAXIMUM;
 
 	if (VulkanHooks::get_singleton() != nullptr) {
 		// Hooks control device creation & possibly presentation
@@ -3849,6 +3852,20 @@ Error RenderingDeviceDriverVulkan::swap_chain_resize(CommandQueueID p_cmd_queue,
 	if (swappy_frame_pacer_enable) {
 		SwappyVk_initAndGetRefreshCycleDuration(get_jni_env(), static_cast<OS_Android *>(OS::get_singleton())->get_godot_java()->get_activity(), physical_device,
 				vk_device, swap_chain->vk_swapchain, &swap_chain->refresh_duration);
+		const float preferred_refresh_rate = swappy_max_refresh_rate ? static_cast<OS_Android *>(OS::get_singleton())->get_godot_java()->get_preferred_refresh_rate() : 0.0f;
+		if (preferred_refresh_rate > 0.0f) {
+			// Pace frames at the refresh rate that the app requests, which Android may switch to after the swap chain is created.
+			// Swappy also lists the refresh periods of other resolutions, so use the one closest to the requested refresh rate.
+			const uint64_t preferred_period = uint64_t(1'000'000'000.0 / preferred_refresh_rate);
+			LocalVector<uint64_t> refresh_periods;
+			refresh_periods.resize(SwappyVk_getSupportedRefreshPeriodsNS(nullptr, 0, swap_chain->vk_swapchain));
+			SwappyVk_getSupportedRefreshPeriodsNS(refresh_periods.ptr(), refresh_periods.size(), swap_chain->vk_swapchain);
+			for (uint64_t refresh_period : refresh_periods) {
+				if (refresh_period > 0 && Math::abs(int64_t(refresh_period) - int64_t(preferred_period)) < Math::abs(int64_t(swap_chain->refresh_duration) - int64_t(preferred_period))) {
+					swap_chain->refresh_duration = refresh_period;
+				}
+			}
+		}
 		SwappyVk_setWindow(vk_device, swap_chain->vk_swapchain, static_cast<OS_Android *>(OS::get_singleton())->get_native_window());
 		SwappyVk_setSwapIntervalNS(vk_device, swap_chain->vk_swapchain, swap_chain->refresh_duration);
 

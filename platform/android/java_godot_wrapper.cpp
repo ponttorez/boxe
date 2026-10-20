@@ -87,6 +87,7 @@ GodotJavaWrapper::GodotJavaWrapper(JNIEnv *p_env, jobject p_godot_native_bridge)
 	_verify_apk = p_env->GetMethodID(godot_native_bridge_class, "nativeVerifyApk", "(Ljava/lang/String;)I");
 	_enable_immersive_mode = p_env->GetMethodID(godot_native_bridge_class, "nativeEnableImmersiveMode", "(Z)V");
 	_is_in_immersive_mode = p_env->GetMethodID(godot_native_bridge_class, "isInImmersiveMode", "()Z");
+	_get_preferred_refresh_rate = p_env->GetMethodID(godot_native_bridge_class, "getPreferredRefreshRate", "()F");
 	_set_window_color = p_env->GetMethodID(godot_native_bridge_class, "setWindowColor", "(Ljava/lang/String;)V");
 	_on_editor_workspace_selected = p_env->GetMethodID(godot_native_bridge_class, "nativeOnEditorWorkspaceSelected", "(Ljava/lang/String;)V");
 	_on_distraction_free_mode_changed = p_env->GetMethodID(godot_native_bridge_class, "nativeOnDistractionFreeModeChanged", "(Z)V");
@@ -600,6 +601,16 @@ bool GodotJavaWrapper::is_in_immersive_mode() {
 		return env->CallBooleanMethod(godot_native_bridge, _is_in_immersive_mode);
 	} else {
 		return false;
+	}
+}
+
+float GodotJavaWrapper::get_preferred_refresh_rate() {
+	if (_get_preferred_refresh_rate) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_NULL_V(env, 0.0f);
+		return env->CallFloatMethod(godot_native_bridge, _get_preferred_refresh_rate);
+	} else {
+		return 0.0f;
 	}
 }
 

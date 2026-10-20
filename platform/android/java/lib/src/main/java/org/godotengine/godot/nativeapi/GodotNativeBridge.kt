@@ -103,6 +103,8 @@ internal class GodotNativeBridge(private val godot: Godot) {
 
 	private fun isInImmersiveMode() = godot.isInImmersiveMode()
 
+	private fun getPreferredRefreshRate() = godot.getPreferredRefreshRate()
+
 	private fun isInEdgeToEdgeMode() = godot.isInEdgeToEdgeMode()
 
 	private fun setKeepScreenOn(enabled: Boolean) = godot.setKeepScreenOn(enabled)

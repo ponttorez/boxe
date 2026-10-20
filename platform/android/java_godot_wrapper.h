@@ -82,6 +82,7 @@ private:
 	jmethodID _verify_apk = nullptr;
 	jmethodID _enable_immersive_mode = nullptr;
 	jmethodID _is_in_immersive_mode = nullptr;
+	jmethodID _get_preferred_refresh_rate = nullptr;
 	jmethodID _set_window_color = nullptr;
 	jmethodID _on_editor_workspace_selected = nullptr;
 	jmethodID _on_distraction_free_mode_changed = nullptr;
@@ -149,6 +150,7 @@ public:
 
 	void enable_immersive_mode(bool p_enabled);
 	bool is_in_immersive_mode();
+	float get_preferred_refresh_rate();
 
 	void set_window_color(const Color &p_color);
 

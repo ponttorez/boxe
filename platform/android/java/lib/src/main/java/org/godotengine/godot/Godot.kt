@@ -100,6 +100,7 @@ class Godot private constructor(val context: Context) {
 		}
 
 		private const val EXIT_RENDERER_TIMEOUT_IN_MS = 1500L
+		private const val REFRESH_RATE_MAXIMUM = 1 // See display/window/android/refresh_rate.
 
 		// Supported build flavors
 		private const val EDITOR_FLAVOR = "editor"
@@ -205,6 +206,7 @@ class Godot private constructor(val context: Context) {
 	internal var darkMode = false
 	private var backgroundColor: Int = Color.BLACK
 	private var orientation = Configuration.ORIENTATION_UNDEFINED
+	@Volatile private var useMaximumRefreshRate = false
 	var disableGodotSplash = false
 		private set
 
@@ -624,6 +626,8 @@ class Godot private constructor(val context: Context) {
 					plugin.onRegisterPluginWithGodotNative()
 				}
 				setKeepScreenOn(java.lang.Boolean.parseBoolean(GodotLib.getGlobal("display/window/energy_saving/keep_screen_on")))
+				useMaximumRefreshRate = GodotLib.getGlobal("display/window/android/refresh_rate").toIntOrNull() == REFRESH_RATE_MAXIMUM
+				runOnHostThread { requestPreferredDisplayMode() }
 			}
 
 			// Include the returned non-null views in the Godot view hierarchy.
@@ -670,6 +674,7 @@ class Godot private constructor(val context: Context) {
 
 		renderView?.onActivityResumed()
 		registerSensorsIfNeeded()
+		requestPreferredDisplayMode()
 		for (plugin in pluginRegistry.allPlugins) {
 			plugin.onMainResume()
 		}
@@ -746,6 +751,52 @@ class Godot private constructor(val context: Context) {
 		this.primaryHost = null
 	}
 
+	private fun getCurrentDisplay(): Display? {
+		val activity = getActivity() ?: return null
+		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			activity.display
+		} else {
+			@Suppress("DEPRECATION")
+			activity.windowManager.defaultDisplay
+		}
+	}
+
+	/**
+	 * Returns the display mode with the highest refresh rate at the current resolution, or null if the project keeps
+	 * the refresh rate chosen by the system.
+	 */
+	private fun getPreferredDisplayMode(): Display.Mode? {
+		if (!useMaximumRefreshRate) {
+			return null
+		}
+
+		val display = getCurrentDisplay() ?: return null
+		val currentMode = display.mode
+		return display.supportedModes
+			.filter { it.physicalWidth == currentMode.physicalWidth && it.physicalHeight == currentMode.physicalHeight }
+			.maxByOrNull { it.refreshRate }
+	}
+
+	/**
+	 * Returns the refresh rate requested with [requestPreferredDisplayMode], or 0 if the project keeps the refresh rate
+	 * chosen by the system.
+	 */
+	internal fun getPreferredRefreshRate() = getPreferredDisplayMode()?.refreshRate ?: 0f
+
+	/**
+	 * Requests the highest refresh rate at the current resolution, since Android may keep apps at a lower one by default.
+	 */
+	private fun requestPreferredDisplayMode() {
+		val window = getActivity()?.window ?: return
+		val preferredMode = getPreferredDisplayMode() ?: return
+
+		val attributes = window.attributes
+		if (attributes.preferredDisplayModeId != preferredMode.modeId) {
+			attributes.preferredDisplayModeId = preferredMode.modeId
+			window.attributes = attributes
+		}
+	}
+
 	/**
 	 * Configuration change callback
 	*/
@@ -766,6 +817,9 @@ class Godot private constructor(val context: Context) {
 				GodotLib.onOrientationChange(orientation)
 			}
 		}
+
+		// The display or its resolution may have changed, like when a foldable device is unfolded.
+		requestPreferredDisplayMode()
 	}
 
 	/**
