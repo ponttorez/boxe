@@ -2690,6 +2690,12 @@
 				[b]Note:[/b] This method is implemented on Android and iOS.
 			</description>
 		</signal>
+		<signal name="safe_area_changed">
+			<description>
+				Emitted when the area returned by [method get_display_safe_area] changes, for example when the device is rotated and the display cutout moves to another side.
+				[b]Note:[/b] This signal is implemented on Android and iOS.
+			</description>
+		</signal>
 	</signals>
 	<constants>
 		<constant name="FEATURE_GLOBAL_MENU" value="0" enum="Feature" deprecated="Use [NativeMenu] or [PopupMenu] instead.">

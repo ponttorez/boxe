@@ -716,6 +716,17 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_onOrientationChange(J
 	}
 }
 
+JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_onSafeAreaChanged(JNIEnv *env, jclass clazz) {
+	if (step.get() <= STEP_SETUP) {
+		return;
+	}
+
+	DisplayServer *display_server = DisplayServer::get_singleton();
+	if (display_server) {
+		display_server->emit_signal("safe_area_changed");
+	}
+}
+
 JNIEXPORT jboolean JNICALL Java_org_godotengine_godot_GodotLib_shouldDispatchInputToRenderThread(JNIEnv *env, jclass clazz) {
 	Input *input = Input::get_singleton();
 	if (input) {

@@ -306,6 +306,11 @@ public class GodotLib {
 	static native void onOrientationChange(int orientation);
 
 	/**
+	 * Invoked when the display safe area changes.
+	 */
+	static native void onSafeAreaChanged();
+
+	/**
 	 * @return true if input must be dispatched from the render thread. If false, input is
 	 * dispatched from the UI thread.
 	 */

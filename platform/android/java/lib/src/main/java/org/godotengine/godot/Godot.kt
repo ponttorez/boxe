@@ -40,6 +40,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import android.hardware.display.DisplayManager
 import android.os.*
 import android.util.Log
 import android.util.TypedValue
@@ -207,6 +208,21 @@ class Godot private constructor(val context: Context) {
 	private var backgroundColor: Int = Color.BLACK
 	private var orientation = Configuration.ORIENTATION_UNDEFINED
 	@Volatile private var useMaximumRefreshRate = false
+	private var safeArea: IntArray? = null
+	private val safeAreaLayoutListener = ViewTreeObserver.OnGlobalLayoutListener { updateSafeArea() }
+	private val displayListener = object : DisplayManager.DisplayListener {
+		override fun onDisplayAdded(displayId: Int) {}
+
+		override fun onDisplayRemoved(displayId: Int) {}
+
+		override fun onDisplayChanged(displayId: Int) {
+			if (displayId == getCurrentDisplay()?.displayId) {
+				// A 180° rotation keeps the size of the window, so the layout listener may not see the cutout move.
+				// The insets are updated after the rotation, so check the safe area once the new layout is applied.
+				getActivity()?.window?.decorView?.post { updateSafeArea() }
+			}
+		}
+	}
 	var disableGodotSplash = false
 		private set
 
@@ -641,6 +657,7 @@ class Godot private constructor(val context: Context) {
 					}
 				}
 			}
+			getActivity()?.window?.decorView?.viewTreeObserver?.addOnGlobalLayoutListener(safeAreaLayoutListener)
 			renderViewInitialized = true
 		} finally {
 			if (!renderViewInitialized) {
@@ -675,6 +692,9 @@ class Godot private constructor(val context: Context) {
 		renderView?.onActivityResumed()
 		registerSensorsIfNeeded()
 		requestPreferredDisplayMode()
+		getDisplayManager()?.registerDisplayListener(displayListener, null)
+		// The display may have rotated while paused.
+		getActivity()?.window?.decorView?.post { updateSafeArea() }
 		for (plugin in pluginRegistry.allPlugins) {
 			plugin.onMainResume()
 		}
@@ -718,6 +738,7 @@ class Godot private constructor(val context: Context) {
 		}
 		renderView?.onActivityPaused()
 		mSensorManager?.unregisterListener(godotInputHandler)
+		getDisplayManager()?.unregisterDisplayListener(displayListener)
 	}
 
 	fun onStop(host: GodotHost) {
@@ -741,6 +762,7 @@ class Godot private constructor(val context: Context) {
 		for (plugin in pluginRegistry.allPlugins) {
 			plugin.onMainDestroy()
 		}
+		getActivity()?.window?.decorView?.viewTreeObserver?.removeOnGlobalLayoutListener(safeAreaLayoutListener)
 
 		if (renderView?.blockingExitRenderer(EXIT_RENDERER_TIMEOUT_IN_MS) != true) {
 			Log.w(TAG, "Unable to exit the renderer within $EXIT_RENDERER_TIMEOUT_IN_MS ms... Force quitting the process.")
@@ -751,6 +773,8 @@ class Godot private constructor(val context: Context) {
 		this.primaryHost = null
 	}
 
+	private fun getDisplayManager() = context.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+
 	private fun getCurrentDisplay(): Display? {
 		val activity = getActivity() ?: return null
 		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -758,6 +782,21 @@ class Godot private constructor(val context: Context) {
 		} else {
 			@Suppress("DEPRECATION")
 			activity.windowManager.defaultDisplay
+		}
+	}
+
+	/**
+	 * Reports safe area changes, such as the display cutout moving to another side after a rotation.
+	 */
+	private fun updateSafeArea() {
+		val newSafeArea = io.getDisplaySafeArea()
+		if (newSafeArea.contentEquals(safeArea)) {
+			return
+		}
+
+		safeArea = newSafeArea
+		runOnRenderThread {
+			GodotLib.onSafeAreaChanged()
 		}
 	}
 

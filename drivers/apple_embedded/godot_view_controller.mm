@@ -182,6 +182,15 @@
 	[super viewDidDisappear:animated];
 }
 
+- (void)viewSafeAreaInsetsDidChange {
+	[super viewSafeAreaInsetsDidChange];
+
+	DisplayServer *display_server = DisplayServer::get_singleton();
+	if (display_server) {
+		display_server->emit_signal("safe_area_changed");
+	}
+}
+
 - (void)observeKeyboard {
 	print_verbose("Setting up keyboard input view.");
 	self.keyboardView = [GDTKeyboardInputView new];
