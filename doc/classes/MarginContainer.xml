@@ -28,6 +28,25 @@
 	<tutorials>
 		<link title="Using Containers">$DOCS_URL/tutorials/ui/gui_containers.html</link>
 	</tutorials>
+	<members>
+		<member name="safe_area" type="int" setter="set_safe_area" getter="get_safe_area" enum="MarginContainer.SafeArea" default="0">
+			How the margins take [method DisplayServer.get_display_safe_area] into account, so the content isn't covered by display cutouts or system bars, or extends under them. See [enum SafeArea].
+			The margins are updated when the container is resized or moved and when [signal DisplayServer.safe_area_changed] is emitted.
+			[b]Note:[/b] This is meant for containers that stay in place, like the root of a screen. In a container that moves, for example in a [ScrollContainer] or during an animation, the margins change as it enters or leaves the unsafe area, which moves its children.
+			[b]Note:[/b] The safe area is only taken into account on Android and iOS. In the editor and on other platforms, only the theme margins are used.
+		</member>
+	</members>
+	<constants>
+		<constant name="SAFE_AREA_NONE" value="0" enum="SafeArea">
+			Only the theme margins are used.
+		</constant>
+		<constant name="SAFE_AREA_INSIDE" value="1" enum="SafeArea">
+			Keeps the children inside the safe area. On each side, the margin is the larger of the theme margin and the part of the unsafe area that overlaps this container.
+		</constant>
+		<constant name="SAFE_AREA_OUTSIDE" value="2" enum="SafeArea">
+			Extends the children outside of this container up to the screen edge on each side where the container touches or crosses the safe area edge, for example to draw a background under the status bar. On other sides, only the theme margins are used.
+		</constant>
+	</constants>
 	<theme_items>
 		<theme_item name="margin_bottom" data_type="constant" type="int" default="0">
 			Offsets towards the inside direct children of the container by this amount of pixels from the bottom.

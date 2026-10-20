@@ -143,4 +143,62 @@ TEST_CASE("[SceneTree][MarginContainer] Multiple children use maximum minimum si
 	memdelete(margin_container);
 }
 
+TEST_CASE("[SceneTree][MarginContainer] Negative margins reduce the minimum size") {
+	MarginContainer *margin_container = memnew(MarginContainer);
+	SceneTree::get_singleton()->get_root()->add_child(margin_container);
+	Control *child_control = memnew(Control);
+	child_control->set_custom_minimum_size(Size2(100, 50));
+	margin_container->add_child(child_control);
+
+	margin_container->add_theme_constant_override("margin_left", -10);
+	margin_container->add_theme_constant_override("margin_right", -10);
+	CHECK(margin_container->get_combined_minimum_size() == Size2(80, 50));
+
+	memdelete(margin_container);
+}
+
+TEST_CASE("[SceneTree][MarginContainer] Children get whole sizes") {
+	MarginContainer *margin_container = memnew(MarginContainer);
+	SceneTree::get_singleton()->get_root()->add_child(margin_container);
+	Control *child_control = memnew(Control);
+	margin_container->add_child(child_control);
+
+	margin_container->set_size(Size2(100.5, 80.5));
+	SceneTree::get_singleton()->process(0);
+
+	CHECK(child_control->get_size().is_equal_approx(Size2(100, 80)));
+
+	memdelete(margin_container);
+}
+
+TEST_CASE("[SceneTree][MarginContainer] Safe area") {
+	MarginContainer *margin_container = memnew(MarginContainer);
+	SceneTree::get_singleton()->get_root()->add_child(margin_container);
+	Control *child_control = memnew(Control);
+	child_control->set_custom_minimum_size(Size2(20, 10));
+	margin_container->add_child(child_control);
+
+	margin_container->add_theme_constant_override("margin_left", 10);
+	margin_container->add_theme_constant_override("margin_top", 10);
+	margin_container->add_theme_constant_override("margin_right", 10);
+	margin_container->add_theme_constant_override("margin_bottom", 10);
+	margin_container->set_size(Size2(100, 80));
+
+	CHECK(margin_container->get_safe_area() == MarginContainer::SAFE_AREA_NONE);
+
+	// The safe area is only taken into account on mobile platforms, so only the theme margins are used here.
+	const MarginContainer::SafeArea modes[] = { MarginContainer::SAFE_AREA_NONE, MarginContainer::SAFE_AREA_INSIDE, MarginContainer::SAFE_AREA_OUTSIDE };
+	for (MarginContainer::SafeArea mode : modes) {
+		margin_container->set_safe_area(mode);
+		SceneTree::get_singleton()->process(0);
+
+		CHECK(margin_container->get_safe_area() == mode);
+		CHECK(child_control->get_position().is_equal_approx(Point2(10, 10)));
+		CHECK(child_control->get_size().is_equal_approx(Size2(80, 60)));
+		CHECK(margin_container->get_minimum_size().is_equal_approx(Size2(40, 30)));
+	}
+
+	memdelete(margin_container);
+}
+
 } // namespace TestMarginContainer
