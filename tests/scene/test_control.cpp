@@ -1334,4 +1334,62 @@ TEST_CASE("[SceneTree][Control] Composite") {
 	memdelete(test_control);
 }
 
+TEST_CASE("[SceneTree][Control] Raycast padding") {
+	Window *root = SceneTree::get_singleton()->get_root();
+	Control *test_control = memnew(Control);
+	root->add_child(test_control);
+	test_control->set_position(Point2(100, 100));
+	test_control->set_size(Size2(100, 100));
+
+	SUBCASE("[Control] The raycast padding is 0 by default") {
+		for (int side = 0; side < 4; side++) {
+			CHECK(test_control->get_raycast_padding(Side(side)) == 0.0);
+		}
+		CHECK(test_control->get_raycast_rect() == Rect2(0, 0, 100, 100));
+	}
+
+	SUBCASE("[Control] A positive padding shrinks the area that receives input") {
+		test_control->set_raycast_padding(SIDE_LEFT, 20);
+		CHECK(test_control->get_raycast_padding(SIDE_LEFT) == 20.0);
+		CHECK_FALSE(test_control->has_point(Point2(10, 50)));
+		CHECK(test_control->has_point(Point2(30, 50)));
+		CHECK(test_control->get_size() == Size2(100, 100));
+	}
+
+	SUBCASE("[Control] A negative padding expands the area that receives input") {
+		test_control->set_raycast_padding(SIDE_TOP, -20);
+		CHECK(test_control->has_point(Point2(50, -10)));
+		CHECK_FALSE(test_control->has_point(Point2(50, -30)));
+		CHECK(root->gui_find_control(Point2(150, 90)) == test_control);
+	}
+
+	SUBCASE("[Control] An invalid side is rejected") {
+		ERR_PRINT_OFF;
+		test_control->set_raycast_padding(Side(4), 10);
+		CHECK(test_control->get_raycast_padding(Side(4)) == 0.0);
+		ERR_PRINT_ON;
+	}
+
+	SUBCASE("[Control] The padding of a control that clips its contents doesn't clip its children") {
+		Control *child_control = memnew(Control);
+		test_control->add_child(child_control);
+		child_control->set_size(Size2(100, 100));
+		test_control->set_clip_contents(true);
+		test_control->set_raycast_padding(SIDE_LEFT, 20);
+		CHECK(root->gui_find_control(Point2(110, 150)) == child_control);
+	}
+
+	SUBCASE("[Control] A control that clips its contents clips the expanded area of its children") {
+		Control *child_control = memnew(Control);
+		test_control->add_child(child_control);
+		child_control->set_size(Size2(100, 100));
+		child_control->set_raycast_padding(SIDE_LEFT, -20);
+		CHECK(root->gui_find_control(Point2(90, 150)) == child_control);
+		test_control->set_clip_contents(true);
+		CHECK(root->gui_find_control(Point2(90, 150)) != child_control);
+	}
+
+	memdelete(test_control);
+}
+
 } // namespace TestControl

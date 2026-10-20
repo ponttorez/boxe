@@ -526,6 +526,13 @@
 				Returns the parent control node.
 			</description>
 		</method>
+		<method name="get_raycast_padding" qualifiers="const">
+			<return type="float" />
+			<param index="0" name="side" type="int" enum="Side" />
+			<description>
+				Returns the raycast padding for the given [enum Side]. See [member raycast_padding_left].
+			</description>
+		</method>
 		<method name="get_rect" qualifiers="const">
 			<return type="Rect2" />
 			<description>
@@ -1003,6 +1010,14 @@
 				If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 			</description>
 		</method>
+		<method name="set_raycast_padding">
+			<return type="void" />
+			<param index="0" name="side" type="int" enum="Side" />
+			<param index="1" name="padding" type="float" />
+			<description>
+				Sets the raycast padding for the given [enum Side]. See [member raycast_padding_left].
+			</description>
+		</method>
 		<method name="set_size">
 			<return type="void" />
 			<param index="0" name="size" type="Vector2" />
@@ -1216,6 +1231,20 @@
 		</member>
 		<member name="propagate_maximum_size" type="bool" setter="set_propagate_maximum_size" getter="is_propagating_maximum_size" default="false">
 			If [code]true[/code], this Control's children will use the value returned by [method get_combined_maximum_size] in their own size calculations.
+		</member>
+		<member name="raycast_padding_bottom" type="float" setter="set_raycast_padding" getter="get_raycast_padding" default="0.0">
+			Moves the bottom edge of the area that receives mouse and touch input. See [member raycast_padding_left].
+		</member>
+		<member name="raycast_padding_left" type="float" setter="set_raycast_padding" getter="get_raycast_padding" default="0.0">
+			Moves the left edge of the area that receives mouse and touch input. Positive values shrink the area inside the control, negative values expand it outside of the control. The control's size and drawing aren't affected.
+			The padding is used when [method _has_point] isn't overridden, and has no effect otherwise. The expanded area doesn't receive input outside of an ancestor that clips its contents.
+			In the editor, the area is shown with a yellow outline when the control is selected.
+		</member>
+		<member name="raycast_padding_right" type="float" setter="set_raycast_padding" getter="get_raycast_padding" default="0.0">
+			Moves the right edge of the area that receives mouse and touch input. See [member raycast_padding_left].
+		</member>
+		<member name="raycast_padding_top" type="float" setter="set_raycast_padding" getter="get_raycast_padding" default="0.0">
+			Moves the top edge of the area that receives mouse and touch input. See [member raycast_padding_left].
 		</member>
 		<member name="rotation" type="float" setter="set_rotation" getter="get_rotation" default="0.0">
 			The node's rotation around its pivot, in radians. See [member pivot_offset] to change the pivot's position.
