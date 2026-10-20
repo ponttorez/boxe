@@ -456,6 +456,56 @@ Rect2 StyleBoxFlat::get_draw_rect(const Rect2 &p_rect) const {
 	return draw_rect;
 }
 
+// A part hidden on one side fades from or to the color of the other side, instead of blending with a color that isn't seen.
+static Color _lerp_shown_color(const Color &p_from, bool p_from_shown, const Color &p_to, bool p_to_shown, real_t p_weight) {
+	const Color from = (p_from_shown || !p_to_shown) ? p_from : Color(p_to, 0);
+	const Color to = (p_to_shown || !p_from_shown) ? p_to : Color(p_from, 0);
+	return from.lerp(to, p_weight);
+}
+
+bool StyleBoxFlat::interpolate(const Ref<StyleBox> &p_from, const Ref<StyleBox> &p_to, real_t p_weight) {
+	const Ref<StyleBoxFlat> from = p_from;
+	const Ref<StyleBoxFlat> to = p_to;
+	if (from.is_null() || to.is_null()) {
+		return false;
+	}
+
+	_interpolate_content_margins(p_from, p_to, p_weight);
+
+	// Curves like Elastic and Back overshoot the target. Shapes may go past it, but colors would leave their range and change hue.
+	const real_t color_weight = CLAMP(p_weight, 0, 1);
+	const bool from_border = from->border_width[0] > 0 || from->border_width[1] > 0 || from->border_width[2] > 0 || from->border_width[3] > 0;
+	const bool to_border = to->border_width[0] > 0 || to->border_width[1] > 0 || to->border_width[2] > 0 || to->border_width[3] > 0;
+	bg_color = _lerp_shown_color(from->bg_color, from->draw_center, to->bg_color, to->draw_center, color_weight);
+	border_color = _lerp_shown_color(from->border_color, from_border, to->border_color, to_border, color_weight);
+	shadow_color = _lerp_shown_color(from->shadow_color, from->shadow_size > 0, to->shadow_color, to->shadow_size > 0, color_weight);
+	// The center is drawn while it fades in or out.
+	draw_center = from->draw_center || to->draw_center;
+	for (int i = 0; i < 4; i++) {
+		border_width[i] = MAX(0, Math::lerp(from->border_width[i], to->border_width[i], p_weight));
+		expand_margin[i] = Math::lerp(from->expand_margin[i], to->expand_margin[i], p_weight);
+		corner_radius[i] = MAX(0, Math::lerp(from->corner_radius[i], to->corner_radius[i], p_weight));
+	}
+	skew = from->skew.lerp(to->skew, p_weight);
+	shadow_size = MAX(0, Math::round(Math::lerp((real_t)from->shadow_size, (real_t)to->shadow_size, p_weight)));
+	shadow_offset = from->shadow_offset.lerp(to->shadow_offset, p_weight);
+	aa_size = MAX(0, Math::lerp(from->aa_size, to->aa_size, p_weight));
+
+	blend_border = to->blend_border;
+	anti_aliased = to->anti_aliased;
+	corner_detail = MAX(from->corner_detail, to->corner_detail);
+	emit_changed();
+	return true;
+}
+
+bool StyleBoxFlat::make_transparent() {
+	bg_color.a = 0;
+	border_color.a = 0;
+	shadow_color.a = 0;
+	emit_changed();
+	return true;
+}
+
 void StyleBoxFlat::draw(RID p_canvas_item, const Rect2 &p_rect) const {
 	bool draw_border = (border_width[0] > 0) || (border_width[1] > 0) || (border_width[2] > 0) || (border_width[3] > 0);
 	bool draw_shadow = (shadow_size > 0);

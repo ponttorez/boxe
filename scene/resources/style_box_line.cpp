@@ -92,6 +92,31 @@ float StyleBoxLine::get_grow_begin() const {
 	return grow_begin;
 }
 
+bool StyleBoxLine::interpolate(const Ref<StyleBox> &p_from, const Ref<StyleBox> &p_to, real_t p_weight) {
+	const Ref<StyleBoxLine> from = p_from;
+	const Ref<StyleBoxLine> to = p_to;
+	if (from.is_null() || to.is_null() || from->vertical != to->vertical) {
+		return false;
+	}
+
+	_interpolate_content_margins(p_from, p_to, p_weight);
+
+	// Curves like Elastic and Back overshoot the target. Shapes may go past it, but colors would leave their range and change hue.
+	color = from->color.lerp(to->color, CLAMP(p_weight, 0, 1));
+	thickness = MAX(0, Math::round(Math::lerp((real_t)from->thickness, (real_t)to->thickness, p_weight)));
+	grow_begin = Math::lerp(from->grow_begin, to->grow_begin, (float)p_weight);
+	grow_end = Math::lerp(from->grow_end, to->grow_end, (float)p_weight);
+	vertical = to->vertical;
+	emit_changed();
+	return true;
+}
+
+bool StyleBoxLine::make_transparent() {
+	color.a = 0;
+	emit_changed();
+	return true;
+}
+
 void StyleBoxLine::draw(RID p_canvas_item, const Rect2 &p_rect) const {
 	RenderingServer *vs = RenderingServer::get_singleton();
 	Rect2i r = p_rect;

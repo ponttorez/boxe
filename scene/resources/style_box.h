@@ -32,6 +32,7 @@
 
 #include "core/io/resource.h"
 #include "core/object/gdvirtual.gen.h"
+#include "scene/animation/tween.h"
 
 class CanvasItem;
 
@@ -42,9 +43,15 @@ class StyleBox : public Resource {
 
 	float content_margin[4];
 
+	float transition_duration = 0.0;
+	Tween::TransitionType transition_type = Tween::TRANS_LINEAR;
+	Tween::EaseType transition_ease = Tween::EASE_IN_OUT;
+
 protected:
 	static void _bind_methods();
 	virtual float get_style_margin(Side p_side) const { return 0; }
+
+	void _interpolate_content_margins(const Ref<StyleBox> &p_from, const Ref<StyleBox> &p_to, real_t p_weight);
 
 	GDVIRTUAL2C_REQUIRED(_draw, RID, Rect2)
 	GDVIRTUAL1RC(Rect2, _get_draw_rect, Rect2)
@@ -68,6 +75,29 @@ public:
 	CanvasItem *get_current_item_drawn() const;
 
 	virtual bool test_mask(const Point2 &p_point, const Rect2 &p_rect) const;
+
+	void set_transition_duration(float p_duration);
+	float get_transition_duration() const;
+
+	void set_transition_type(Tween::TransitionType p_type);
+	Tween::TransitionType get_transition_type() const;
+
+	void set_transition_ease(Tween::EaseType p_ease);
+	Tween::EaseType get_transition_ease() const;
+
+	// Applies the transition curve to a linear progress between 0 and 1.
+	real_t ease_transition(real_t p_progress) const;
+
+	// Sets this style box to the state between two style boxes of the same class.
+	// Returns false if the style boxes can't be interpolated.
+	virtual bool interpolate(const Ref<StyleBox> &p_from, const Ref<StyleBox> &p_to, real_t p_weight) { return false; }
+	// Makes all colors fully transparent, to fade the style box in or out. Returns false if not supported.
+	virtual bool make_transparent() { return false; }
+	// A copy for the transitions, which interpolate() and make_transparent() can change. It shares the resources
+	// they don't change, such as textures, so a texture made in memory stays the same one.
+	virtual Ref<StyleBox> duplicate_for_transition() const;
+	// Sets the content margins so that the content is placed like in the given style box, e.g. to fade into a StyleBoxEmpty.
+	void set_content_margins_from(const Ref<StyleBox> &p_style_box);
 
 	StyleBox();
 };

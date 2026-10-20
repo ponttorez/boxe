@@ -163,6 +163,37 @@ Rect2 StyleBoxTexture::get_draw_rect(const Rect2 &p_rect) const {
 	return p_rect.grow_individual(expand_margin[SIDE_LEFT], expand_margin[SIDE_TOP], expand_margin[SIDE_RIGHT], expand_margin[SIDE_BOTTOM]);
 }
 
+bool StyleBoxTexture::interpolate(const Ref<StyleBox> &p_from, const Ref<StyleBox> &p_to, real_t p_weight) {
+	const Ref<StyleBoxTexture> from = p_from;
+	const Ref<StyleBoxTexture> to = p_to;
+	// Different images can't be blended, so only the same part of the same texture is interpolated.
+	if (from.is_null() || to.is_null() || from->texture != to->texture || from->region_rect != to->region_rect) {
+		return false;
+	}
+
+	_interpolate_content_margins(p_from, p_to, p_weight);
+
+	// Curves like Elastic and Back overshoot the target. Shapes may go past it, but colors would leave their range and change hue.
+	modulate = from->modulate.lerp(to->modulate, CLAMP(p_weight, 0, 1));
+	for (int i = 0; i < 4; i++) {
+		texture_margin[i] = MAX(0, Math::lerp(from->texture_margin[i], to->texture_margin[i], (float)p_weight));
+		expand_margin[i] = Math::lerp(from->expand_margin[i], to->expand_margin[i], (float)p_weight);
+	}
+	texture = to->texture;
+	region_rect = to->region_rect;
+	draw_center = to->draw_center;
+	axis_h = to->axis_h;
+	axis_v = to->axis_v;
+	emit_changed();
+	return true;
+}
+
+bool StyleBoxTexture::make_transparent() {
+	modulate.a = 0;
+	emit_changed();
+	return true;
+}
+
 void StyleBoxTexture::draw(RID p_canvas_item, const Rect2 &p_rect) const {
 	if (texture.is_null()) {
 		return;
