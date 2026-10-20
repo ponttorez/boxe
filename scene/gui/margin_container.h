@@ -35,12 +35,30 @@
 class MarginContainer : public Container {
 	GDCLASS(MarginContainer, Container);
 
+public:
+	enum SafeArea {
+		SAFE_AREA_NONE,
+		SAFE_AREA_INSIDE,
+		SAFE_AREA_OUTSIDE,
+	};
+
+private:
+	SafeArea safe_area = SAFE_AREA_NONE;
+	// Added to the theme margins: positive inside the safe area, negative outside of it.
+	real_t safe_area_offsets[4] = {};
+
 	struct ThemeCache {
 		int margin_left = 0;
 		int margin_top = 0;
 		int margin_right = 0;
 		int margin_bottom = 0;
 	} theme_cache;
+
+	real_t _get_margin(Side p_side) const;
+	real_t _get_minimum_margin(Side p_side) const;
+	real_t _get_safe_area_offset(Side p_side) const;
+	void _update_safe_area_offsets();
+	void _update_safe_area_tracking();
 
 protected:
 	void _notification(int p_what);
@@ -56,5 +74,10 @@ public:
 
 	int get_margin_size(Side p_side) const;
 
+	void set_safe_area(SafeArea p_safe_area);
+	SafeArea get_safe_area() const;
+
 	MarginContainer();
 };
+
+VARIANT_ENUM_CAST(MarginContainer::SafeArea);

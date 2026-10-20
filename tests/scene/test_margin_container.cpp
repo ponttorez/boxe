@@ -143,4 +143,18 @@ TEST_CASE("[SceneTree][MarginContainer] Multiple children use maximum minimum si
 	memdelete(margin_container);
 }
 
+TEST_CASE("[SceneTree][MarginContainer] Negative margins reduce the minimum size") {
+	MarginContainer *margin_container = memnew(MarginContainer);
+	SceneTree::get_singleton()->get_root()->add_child(margin_container);
+	Control *child_control = memnew(Control);
+	child_control->set_custom_minimum_size(Size2(100, 50));
+	margin_container->add_child(child_control);
+
+	margin_container->add_theme_constant_override("margin_left", -10);
+	margin_container->add_theme_constant_override("margin_right", -10);
+	CHECK(margin_container->get_combined_minimum_size() == Size2(80, 50));
+
+	memdelete(margin_container);
+}
+
 } // namespace TestMarginContainer
