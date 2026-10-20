@@ -284,6 +284,9 @@ private:
 		MouseBehaviorRecursive mouse_behavior_recursive = MOUSE_BEHAVIOR_INHERITED;
 		bool parent_mouse_behavior_recursive_enabled = true;
 		bool force_pass_scroll_events = true;
+		bool interactable = true;
+		bool parent_interactable = true;
+		bool interactable_in_tree = true; // Last value of is_interactable_in_tree(), to notify changes.
 		real_t raycast_padding[4] = {};
 
 		bool clip_contents = false;
@@ -420,12 +423,20 @@ private:
 	void _ensure_allocated_offset_transform();
 
 	void _update_composite();
+	void _update_interactable();
+	bool _is_parent_interactable() const;
+	void _set_parent_interactable(bool p_parent_interactable);
+	void _propagate_interactable(bool p_parent_interactable);
+	static void _propagate_interactable_to_children(Node *p_node, bool p_interactable);
 
 	// Extra properties.
 
 	static int root_layout_direction;
 
 protected:
+	// Called when the control starts or stops receiving input, from its interactable property or a parent.
+	virtual void _interactable_changed() {}
+
 	// Dynamic properties.
 
 	bool _set(const StringName &p_name, const Variant &p_value);
@@ -784,6 +795,10 @@ public:
 
 	void set_disable_visibility_clip(bool p_ignore);
 	bool is_visibility_clip_disabled() const;
+
+	void set_interactable(bool p_interactable);
+	bool is_interactable() const;
+	bool is_interactable_in_tree() const;
 
 	void set_raycast_padding(Side p_side, real_t p_value);
 	real_t get_raycast_padding(Side p_side) const;

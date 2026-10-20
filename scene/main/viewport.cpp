@@ -1754,6 +1754,12 @@ void Viewport::_gui_call_input(Control *p_control, const Ref<InputEvent> &p_inpu
 	while (ci) {
 		Control *control = Object::cast_to<Control>(ci);
 		if (control) {
+			if (!control->is_interactable_in_tree()) {
+				// Non-interactable controls consume the input without reacting to it.
+				set_input_as_handled();
+				break;
+			}
+
 			if (control->get_mouse_filter_with_override() != Control::MOUSE_FILTER_IGNORE) {
 				control->_call_gui_input(ev);
 			}
@@ -1891,6 +1897,9 @@ bool Viewport::_gui_drop(Control *p_at_control, Point2 p_at_pos, bool p_just_che
 	Viewport *section_root = get_section_root_viewport();
 	while (ci) {
 		Control *control = Object::cast_to<Control>(ci);
+		if (control && !control->is_interactable_in_tree()) {
+			break;
+		}
 		if (control) {
 			if (control->can_drop_data(p_at_pos, section_root->gui.drag_data)) {
 				if (!p_just_check) {
@@ -2054,6 +2063,9 @@ void Viewport::_gui_input_event(Ref<InputEvent> p_event) {
 					CanvasItem *ci = gui.mouse_focus;
 					while (ci) {
 						Control *control = Object::cast_to<Control>(ci);
+						if (control && !control->is_interactable_in_tree()) {
+							break;
+						}
 						if (control) {
 							section_root->gui.global_dragging = true;
 							section_root->gui.drag_data = control->get_drag_data(control->get_global_transform_with_canvas().affine_inverse().xform(mpos - gui.drag_accum));
@@ -2155,6 +2167,10 @@ void Viewport::_gui_input_event(Ref<InputEvent> p_event) {
 				Control *c = over;
 				Vector2 cpos = pos;
 				while (c) {
+					if (!c->is_interactable_in_tree()) {
+						cursor_shape = Control::CURSOR_ARROW;
+						break;
+					}
 					if (!gui.mouse_focus_mask.is_empty() || c->has_point(cpos)) {
 						cursor_shape = c->get_cursor_shape(cpos);
 					} else {
@@ -3329,6 +3345,9 @@ void Viewport::_update_mouse_over(Vector2 p_pos) {
 
 	// Look for Controls at mouse position.
 	Control *over = gui_find_control(p_pos);
+	if (over && !over->is_interactable_in_tree()) {
+		over = nullptr;
+	}
 	ObjectID over_id = over ? over->get_instance_id() : ObjectID();
 	get_section_root_viewport()->gui.target_control = over;
 	bool notify_embedded_viewports = false;

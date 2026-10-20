@@ -804,6 +804,12 @@
 				Best used with [constant Node.NOTIFICATION_DRAG_END].
 			</description>
 		</method>
+		<method name="is_interactable_in_tree" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if this control and all its [Control] ancestors in the same viewport are [member interactable], including ancestors above other nodes such as [Node2D].
+			</description>
+		</method>
 		<method name="is_layout_rtl" qualifiers="const">
 			<return type="bool" />
 			<description>
@@ -1143,6 +1149,11 @@
 		</member>
 		<member name="grow_vertical" type="int" setter="set_v_grow_direction" getter="get_v_grow_direction" enum="Control.GrowDirection" default="1">
 			Controls the direction on the vertical axis in which the control should grow if its vertical minimum size is changed to be greater than its current size, as the control always has to be at least the minimum size.
+		</member>
+		<member name="interactable" type="bool" setter="set_interactable" getter="is_interactable" default="true">
+			If [code]false[/code], this control and its [Control] descendants in the same viewport don't react to input, but keep their current appearance, unlike [member BaseButton.disabled]. Descendants below other nodes, such as a [Button] in a [Node2D], are included.
+			Mouse and touch events that would reach them are consumed, so they don't pass through to the controls behind. They don't get the hover state, focus, drag and drop or [member BaseButton.shortcut] presses, and the mouse cursor uses the default shape over them. A control that has focus loses it when it stops being interactable. Their [member mouse_filter] and [member focus_mode] values aren't changed.
+			See also [method is_interactable_in_tree].
 		</member>
 		<member name="layout_direction" type="int" setter="set_layout_direction" getter="get_layout_direction" enum="Control.LayoutDirection" default="0">
 			Controls layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew). See also [method is_layout_rtl].

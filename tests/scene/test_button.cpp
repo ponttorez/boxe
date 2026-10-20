@@ -32,10 +32,12 @@
 
 TEST_FORCE_LINK(test_button)
 
+#include "scene/2d/node_2d.h"
 #include "scene/gui/button.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 #include "tests/display_server_mock.h"
+#include "tests/signal_watcher.h"
 
 namespace TestButton {
 
@@ -62,6 +64,72 @@ TEST_CASE("[SceneTree][Button] is_hovered()") {
 	CHECK(button->is_hovered() == false);
 
 	memdelete(button);
+}
+
+TEST_CASE("[SceneTree][Button] Press canceled by interactable") {
+	Button *button = memnew(Button);
+	button->set_focus_mode(Control::FOCUS_NONE);
+	SceneTree::get_singleton()->get_root()->add_child(button);
+	button->set_size(Size2i(50, 50));
+	button->set_position(Size2i(10, 10));
+
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2i(25, 25), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	CHECK(button->get_draw_mode() == BaseButton::DRAW_PRESSED);
+
+	// The press can't be released anymore, the button doesn't receive input.
+	button->set_interactable(false);
+	CHECK(button->get_draw_mode() == BaseButton::DRAW_NORMAL);
+	// Only hovered again, as the mouse is still over it.
+	button->set_interactable(true);
+	CHECK(button->get_draw_mode() == BaseButton::DRAW_HOVER);
+
+	memdelete(button);
+}
+
+TEST_CASE("[SceneTree][Button] Touch canceled by interactable") {
+	Button *button = memnew(Button);
+	button->set_focus_mode(Control::FOCUS_NONE);
+	SceneTree::get_singleton()->get_root()->add_child(button);
+	button->set_size(Size2i(50, 50));
+	button->set_position(Size2i(10, 10));
+	SIGNAL_WATCH(button, SNAME("pressed"));
+
+	SEND_GUI_TOUCH_EVENT(Point2i(25, 25), true, false);
+	button->set_interactable(false);
+	SEND_GUI_TOUCH_EVENT(Point2i(25, 25), false, false);
+	button->set_interactable(true);
+	SIGNAL_CHECK_FALSE(SNAME("pressed"));
+
+	// The touch that was canceled doesn't block the next one.
+	SEND_GUI_TOUCH_EVENT(Point2i(25, 25), true, false);
+	SEND_GUI_TOUCH_EVENT(Point2i(25, 25), false, false);
+	SIGNAL_CHECK(SNAME("pressed"), { {} });
+
+	SIGNAL_UNWATCH(button, SNAME("pressed"));
+	memdelete(button);
+}
+
+TEST_CASE("[SceneTree][Button] Interactable through other nodes") {
+	Control *parent = memnew(Control);
+	Node2D *node_2d = memnew(Node2D);
+	Button *button = memnew(Button);
+	parent->add_child(node_2d);
+	node_2d->add_child(button);
+	SceneTree::get_singleton()->get_root()->add_child(parent);
+
+	parent->set_interactable(false);
+	CHECK_FALSE(button->is_interactable_in_tree());
+
+	// Moving the node in between to an interactable control unlocks the button.
+	Control *other = memnew(Control);
+	SceneTree::get_singleton()->get_root()->add_child(other);
+	node_2d->reparent(other);
+	CHECK(button->is_interactable_in_tree());
+	other->set_interactable(false);
+	CHECK_FALSE(button->is_interactable_in_tree());
+
+	memdelete(parent);
+	memdelete(other);
 }
 
 } // namespace TestButton
