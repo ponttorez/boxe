@@ -32,6 +32,7 @@
 
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/scene_tree.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -786,11 +787,7 @@ void Label::_notification(int p_what) {
 			Vector<LabelSettings::StackedShadowData> stacked_shadow_datas = has_settings ? settings->get_stacked_shadow_data() : Vector<LabelSettings::StackedShadowData>();
 			bool rtl_layout = is_layout_rtl();
 
-			if (has_focus(true)) {
-				theme_cache.focus_style->draw(ci, Rect2(Point2(0, 0), get_size()));
-			} else {
-				theme_cache.normal_style->draw(ci, Rect2(Point2(0, 0), get_size()));
-			}
+			get_transition_style(StyleTransitions::make_key(0), has_focus(true) ? theme_cache.focus_style : theme_cache.normal_style)->draw(ci, Rect2(Point2(0, 0), get_size()));
 
 			bool trim_chars = (visible_chars >= 0) && (visible_chars_behavior == TextServer::VC_CHARS_AFTER_SHAPING);
 			bool trim_glyphs_ltr = (visible_chars >= 0) && ((visible_chars_behavior == TextServer::VC_GLYPHS_LTR) || ((visible_chars_behavior == TextServer::VC_GLYPHS_AUTO) && !rtl_layout));

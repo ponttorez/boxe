@@ -34,6 +34,7 @@
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "core/os/os.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 #include "servers/rendering/rendering_server.h"
@@ -1535,12 +1536,18 @@ void ItemList::_notification(int p_what) {
 					rcache.size.width = width - rcache.position.x;
 				}
 
-				bool should_draw_selected_bg = items[i].selected && hovered != i;
-				bool should_draw_hovered_selected_bg = items[i].selected && hovered == i;
-				bool should_draw_hovered_bg = hovered == i && !items[i].selected;
+				Ref<StyleBox> item_style;
+				if (items[i].selected && hovered == i) {
+					item_style = has_focus(true) ? theme_cache.hovered_selected_focus_style : theme_cache.hovered_selected_style;
+				} else if (items[i].selected) {
+					item_style = sbsel;
+				} else if (hovered == i) {
+					item_style = theme_cache.hovered_style;
+				}
+				const Ref<StyleBox> drawn_item_style = get_transition_style(StyleTransitions::make_key(0, i), item_style);
 				bool should_draw_custom_bg = items[i].custom_bg.a > 0.001;
 
-				if (should_draw_selected_bg || should_draw_hovered_selected_bg || should_draw_hovered_bg || should_draw_custom_bg) {
+				if (drawn_item_style.is_valid() || should_draw_custom_bg) {
 					Rect2 r = rcache;
 					r.position += base_ofs;
 
@@ -1548,18 +1555,8 @@ void ItemList::_notification(int p_what) {
 						r.position.x = size.width - r.position.x - r.size.x + theme_cache.panel_style->get_margin(SIDE_LEFT) - theme_cache.panel_style->get_margin(SIDE_RIGHT);
 					}
 
-					if (should_draw_selected_bg) {
-						draw_style_box(sbsel, r);
-					}
-					if (should_draw_hovered_selected_bg) {
-						if (has_focus(true)) {
-							draw_style_box(theme_cache.hovered_selected_focus_style, r);
-						} else {
-							draw_style_box(theme_cache.hovered_selected_style, r);
-						}
-					}
-					if (should_draw_hovered_bg) {
-						draw_style_box(theme_cache.hovered_style, r);
+					if (drawn_item_style.is_valid()) {
+						draw_style_box(drawn_item_style, r);
 					}
 					if (should_draw_custom_bg) {
 						draw_rect(r, items[i].custom_bg);
@@ -1650,6 +1647,7 @@ void ItemList::_notification(int p_what) {
 					} else {
 						txt_modulate = theme_cache.font_color;
 					}
+					txt_modulate = get_transition_color(StyleTransitions::make_key(1, i), txt_modulate, item_style.is_valid() ? item_style : theme_cache.hovered_style);
 
 					if (items[i].disabled) {
 						txt_modulate.a *= 0.5;
@@ -1729,14 +1727,16 @@ void ItemList::_notification(int p_what) {
 				}
 			}
 
-			if (cursor_rcache.size != Size2()) { // Draw cursor last, so border isn't cut off.
+			// The cursor fades in when it appears and between its focused and unfocused styles.
+			const Ref<StyleBox> cursor_style = get_transition_style(StyleTransitions::make_key(60), cursor_rcache.size != Size2() ? cursor : Ref<StyleBox>());
+			if (cursor_style.is_valid()) { // Draw cursor last, so border isn't cut off.
 				cursor_rcache.position += base_ofs;
 
 				if (rtl) {
 					cursor_rcache.position.x = size.width - cursor_rcache.position.x - cursor_rcache.size.x;
 				}
 
-				draw_style_box(cursor, cursor_rcache);
+				draw_style_box(cursor_style, cursor_rcache);
 			}
 
 			if (scroll_hint_mode != SCROLL_HINT_MODE_DISABLED) {
@@ -1754,10 +1754,11 @@ void ItemList::_notification(int p_what) {
 				}
 			}
 
-			if (has_focus(true)) {
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50), has_focus(true) ? theme_cache.focus_style : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
 				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(get_canvas_item(), true);
 				size.x -= (scroll_bar_h->get_max() - scroll_bar_h->get_page());
-				draw_style_box(theme_cache.focus_style, Rect2(Point2(), size));
+				draw_style_box(focus_style, Rect2(Point2(), size));
 				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(get_canvas_item(), false);
 			}
 		} break;

@@ -39,6 +39,7 @@ class Label;
 class Panel;
 class ThemeContext;
 class ThemeOwner;
+class StyleTransitions;
 class Viewport;
 struct Transform2D;
 
@@ -319,6 +320,7 @@ private:
 		// Theming.
 
 		ThemeOwner *theme_owner = nullptr;
+		StyleTransitions *style_transitions = nullptr;
 		Ref<Theme> theme;
 		StringName theme_type_variation;
 
@@ -795,6 +797,10 @@ public:
 
 	void set_disable_visibility_clip(bool p_ignore);
 	bool is_visibility_clip_disabled() const;
+
+	// Animated theme state changes, see StyleTransitions.
+	Ref<StyleBox> get_transition_style(uint64_t p_key, const Ref<StyleBox> &p_target);
+	Color get_transition_color(uint64_t p_key, const Color &p_target, const Ref<StyleBox> &p_timing);
 
 	void set_interactable(bool p_interactable);
 	bool is_interactable() const;

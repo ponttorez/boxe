@@ -46,6 +46,7 @@
 #include "scene/gui/panel_container.h"
 #include "scene/gui/scroll_bar.h"
 #include "scene/gui/spin_box.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/gui/view_panner.h"
 #include "scene/resources/material.h"
 #include "scene/resources/style_box_flat.h"
@@ -857,8 +858,9 @@ void GraphEdit::_notification(int p_what) {
 			// Draw background fill.
 			draw_style_box(theme_cache.panel, Rect2(Point2(), get_size()));
 
-			if (has_focus(true)) {
-				draw_style_box(theme_cache.panel_focus, Rect2(Point2(), get_size()));
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50), has_focus(true) ? theme_cache.panel_focus : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
+				draw_style_box(focus_style, Rect2(Point2(), get_size()));
 			}
 
 			// Draw background grid.

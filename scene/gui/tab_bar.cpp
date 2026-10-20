@@ -35,6 +35,7 @@
 #include "core/object/class_db.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"
@@ -668,17 +669,20 @@ void TabBar::_draw_tab_drop(RID p_canvas_item) {
 void TabBar::_draw_tab(Ref<StyleBox> &p_tab_style, const Color &p_font_color, const Color &p_icon_color, int p_index, float p_x, bool p_focus) {
 	RID ci = get_canvas_item();
 	bool rtl = is_layout_rtl();
+	const Ref<StyleBox> drawn_style = get_transition_style(StyleTransitions::make_key(0, p_index), p_tab_style);
+	const Color font_color = get_transition_color(StyleTransitions::make_key(1, p_index), p_font_color, p_tab_style);
+	const Color icon_color = get_transition_color(StyleTransitions::make_key(2, p_index), p_icon_color, p_tab_style);
 
 	Rect2 sb_rect = Rect2(p_x, 0, tabs[p_index].size_cache, get_size().height);
 	if (tab_style_v_flip) {
 		draw_set_transform(Point2(0.0, p_tab_style->get_draw_rect(sb_rect).size.y), 0.0, Size2(1.0, -1.0));
 	}
-	p_tab_style->draw(ci, sb_rect);
+	drawn_style->draw(ci, sb_rect);
 	if (tab_style_v_flip) {
 		draw_set_transform(Point2(), 0.0, Size2(1.0, 1.0));
 	}
-	if (p_focus) {
-		Ref<StyleBox> focus_style = theme_cache.tab_focus_style;
+	const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50, p_index), p_focus ? theme_cache.tab_focus_style : Ref<StyleBox>());
+	if (focus_style.is_valid()) {
 		focus_style->draw(ci, sb_rect);
 	}
 
@@ -691,7 +695,7 @@ void TabBar::_draw_tab(Ref<StyleBox> &p_tab_style, const Color &p_font_color, co
 	if (icon.is_valid()) {
 		const Size2 icon_size = _get_tab_icon_size(p_index);
 		const Point2 icon_pos = Point2i(rtl ? p_x - icon_size.width : p_x, p_tab_style->get_margin(SIDE_TOP) + ((sb_rect.size.y - sb_ms.y) - icon_size.height) / 2);
-		icon->draw_rect(ci, Rect2(icon_pos, icon_size), false, p_icon_color);
+		icon->draw_rect(ci, Rect2(icon_pos, icon_size), false, icon_color);
 
 		p_x = rtl ? p_x - icon_size.width - theme_cache.h_separation : p_x + icon_size.width + theme_cache.h_separation;
 	}
@@ -704,7 +708,7 @@ void TabBar::_draw_tab(Ref<StyleBox> &p_tab_style, const Color &p_font_color, co
 		if (theme_cache.outline_size > 0 && theme_cache.font_outline_color.a > 0) {
 			tabs[p_index].text_buf->draw_outline(ci, text_pos, theme_cache.outline_size, theme_cache.font_outline_color);
 		}
-		tabs[p_index].text_buf->draw(ci, text_pos, p_font_color);
+		tabs[p_index].text_buf->draw(ci, text_pos, font_color);
 
 		p_x = rtl ? p_x - tabs[p_index].size_text - theme_cache.h_separation : p_x + tabs[p_index].size_text + theme_cache.h_separation;
 	}

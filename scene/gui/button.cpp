@@ -33,6 +33,7 @@
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "scene/gui/dialogs.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
@@ -219,14 +220,16 @@ void Button::_notification(int p_what) {
 			const RID ci = get_canvas_item();
 			const Size2 size = get_size();
 
-			Ref<StyleBox> style = _get_current_stylebox();
+			const Ref<StyleBox> target_style = _get_current_stylebox();
+			const Ref<StyleBox> style = get_transition_style(StyleTransitions::make_key(0), target_style);
 			// Draws the stylebox in the current state.
 			if (!flat) {
 				style->draw(ci, Rect2(Point2(), size));
 			}
 
-			if (has_focus(true)) {
-				theme_cache.focus->draw(ci, Rect2(Point2(), size));
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50), has_focus(true) ? theme_cache.focus : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
+				focus_style->draw(ci, Rect2(Point2(), size));
 			}
 
 			Ref<Texture2D> _icon = icon;
@@ -336,6 +339,9 @@ void Button::_notification(int p_what) {
 
 				} break;
 			}
+
+			font_color = get_transition_color(StyleTransitions::make_key(1), font_color, target_style);
+			icon_modulate_color = get_transition_color(StyleTransitions::make_key(2), icon_modulate_color, target_style);
 
 			const bool is_clipped = clip_text || overrun_behavior != TextServer::OVERRUN_NO_TRIMMING || autowrap_mode != TextServer::AUTOWRAP_OFF;
 			const Size2 custom_element_size = drawable_size_remained;

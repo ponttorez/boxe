@@ -51,6 +51,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/atlas_texture.h"
@@ -2634,9 +2635,9 @@ void ColorPresetButton::_notification(int p_what) {
 				WARN_PRINT("Unsupported StyleBox used for ColorPresetButton. Use StyleBoxFlat or StyleBoxTexture instead.");
 			}
 
-			if (has_focus(true)) {
-				RID ci = get_canvas_item();
-				theme_cache.focus_style->draw(ci, Rect2(Point2(), get_size()));
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50), has_focus(true) ? theme_cache.focus_style : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
+				focus_style->draw(get_canvas_item(), Rect2(Point2(), get_size()));
 			}
 
 			if (is_color_overbright(preset_color)) {

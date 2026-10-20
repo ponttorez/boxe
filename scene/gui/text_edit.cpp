@@ -44,6 +44,7 @@
 #include "core/string/alt_codes.h"
 #include "core/string/string_builder.h"
 #include "scene/gui/label.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -928,7 +929,7 @@ void TextEdit::_notification(int p_what) {
 			Ref<StyleBox> style = _get_current_stylebox();
 
 			// Draw normal/read_only style.
-			style->draw(ci, Rect2(Point2(), get_size()));
+			get_transition_style(StyleTransitions::make_key(0), style)->draw(ci, Rect2(Point2(), get_size()));
 
 			/* Prevent the resource getting lost between the editor and game. */
 			if (Engine::get_singleton()->is_editor_hint()) {
@@ -961,8 +962,10 @@ void TextEdit::_notification(int p_what) {
 			if (!editable) {
 				draw_caret = is_drawing_caret_when_editable_disabled();
 			}
-			if (has_focus(Engine::get_singleton()->is_editor_hint() || GLOBAL_GET_CACHED(int, "gui/common/show_focus_state_on_pointer_event") != 1)) {
-				theme_cache.style_focus->draw(ci, Rect2(Point2(), size));
+			const bool draw_focus = has_focus(Engine::get_singleton()->is_editor_hint() || GLOBAL_GET_CACHED(int, "gui/common/show_focus_state_on_pointer_event") != 1);
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50), draw_focus ? theme_cache.style_focus : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
+				focus_style->draw(ci, Rect2(Point2(), size));
 			}
 
 			int visible_rows = get_visible_line_count() + 1;

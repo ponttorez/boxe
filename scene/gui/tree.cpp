@@ -43,6 +43,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"
 #include "scene/gui/slider.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/gui/text_edit.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/timer.h"
@@ -2436,33 +2437,27 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 				cell_rect.size.x += theme_cache.h_separation;
 			}
 
+			// Transitions are tracked per item, using its instance ID, and per column for cells.
+			const uint32_t item_key = (uint32_t)(uint64_t)p_item->get_instance_id();
+
 			if (should_draw_row_rect) {
-				if (p_item->cells[0].selected || is_row_hovered) {
+				Ref<StyleBox> row_style;
+				if (p_item->cells[0].selected) {
+					if (is_row_hovered) {
+						row_style = has_focus(true) ? theme_cache.hovered_selected_focus : theme_cache.hovered_selected;
+					} else {
+						row_style = has_focus(true) ? theme_cache.selected_focus : theme_cache.selected;
+					}
+				} else if (is_row_hovered && !drop_mode_flags) {
+					row_style = is_cell_button_hovered ? theme_cache.hovered_dimmed : theme_cache.hovered;
+				}
+
+				const Ref<StyleBox> drawn_row_style = get_transition_style(StyleTransitions::make_key(0, item_key), row_style);
+				if (drawn_row_style.is_valid()) {
 					const Rect2 content_rect = _get_content_rect();
 					Rect2i row_rect = Rect2i(Point2i(content_rect.position.x, item_rect.position.y), Size2i(content_rect.size.x, item_rect.size.y));
 					row_rect = convert_rtl_rect(row_rect);
-
-					if (p_item->cells[0].selected) {
-						if (is_row_hovered) {
-							if (has_focus(true)) {
-								theme_cache.hovered_selected_focus->draw(stylebox_ci, row_rect);
-							} else {
-								theme_cache.hovered_selected->draw(stylebox_ci, row_rect);
-							}
-						} else {
-							if (has_focus(true)) {
-								theme_cache.selected_focus->draw(stylebox_ci, row_rect);
-							} else {
-								theme_cache.selected->draw(stylebox_ci, row_rect);
-							}
-						}
-					} else if (!drop_mode_flags) {
-						if (is_cell_button_hovered) {
-							theme_cache.hovered_dimmed->draw(stylebox_ci, row_rect);
-						} else {
-							theme_cache.hovered->draw(stylebox_ci, row_rect);
-						}
-					}
+					drawn_row_style->draw(stylebox_ci, row_rect);
 				}
 				should_draw_row_rect = false;
 			}
@@ -2470,13 +2465,21 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 			if (select_mode != SELECT_ROW) {
 				Rect2i r = convert_rtl_rect(cell_rect);
 
-				// Cell hover.
-				if (is_cell_hovered && !p_item->cells[i].selected && !drop_mode_flags) {
-					if (is_cell_button_hovered) {
-						theme_cache.hovered_dimmed->draw(stylebox_ci, r);
+				// Cell hover and selection.
+				Ref<StyleBox> cell_style;
+				if (p_item->cells[i].selected) {
+					if (is_cell_hovered) {
+						cell_style = has_focus(true) ? theme_cache.hovered_selected_focus : theme_cache.hovered_selected;
 					} else {
-						theme_cache.hovered->draw(stylebox_ci, r);
+						cell_style = has_focus(true) ? theme_cache.selected_focus : theme_cache.selected;
 					}
+				} else if (is_cell_hovered && !drop_mode_flags) {
+					cell_style = is_cell_button_hovered ? theme_cache.hovered_dimmed : theme_cache.hovered;
+				}
+
+				const Ref<StyleBox> drawn_cell_style = get_transition_style(StyleTransitions::make_key(1 + i, item_key), cell_style);
+				if (drawn_cell_style.is_valid()) {
+					drawn_cell_style->draw(stylebox_ci, r);
 				}
 			}
 
@@ -2485,22 +2488,6 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 
 				if (select_mode != SELECT_ROW) {
 					p_item->focus_rect = Rect2(r.position, r.size);
-					r = convert_rtl_rect(r);
-					if (p_item->cells[i].selected) {
-						if (is_cell_hovered) {
-							if (has_focus(true)) {
-								theme_cache.hovered_selected_focus->draw(stylebox_ci, r);
-							} else {
-								theme_cache.hovered_selected->draw(stylebox_ci, r);
-							}
-						} else {
-							if (has_focus(true)) {
-								theme_cache.selected_focus->draw(stylebox_ci, r);
-							} else {
-								theme_cache.selected->draw(stylebox_ci, r);
-							}
-						}
-					}
 				} else {
 					p_item->cells.write[i].focus_rect = Rect2(r.position, r.size);
 				}
@@ -2695,16 +2682,17 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 					ir.size.width -= downarrow->get_width();
 
 					if (p_item->cells[i].custom_button) {
+						Ref<StyleBox> custom_button_style = theme_cache.custom_button;
 						if (cache.hover_item == p_item && cache.hover_column == i) {
 							if (Input::get_singleton()->is_mouse_button_pressed(MouseButton::LEFT)) {
-								theme_cache.custom_button_pressed->draw(ci, ir);
+								custom_button_style = theme_cache.custom_button_pressed;
 							} else {
-								theme_cache.custom_button_hover->draw(ci, ir);
+								custom_button_style = theme_cache.custom_button_hover;
 								cell_color = theme_cache.custom_button_font_highlight;
 							}
-						} else {
-							theme_cache.custom_button->draw(ci, ir);
 						}
+						get_transition_style(StyleTransitions::make_key(1000 + i, item_key), custom_button_style)->draw(ci, ir);
+						cell_color = get_transition_color(StyleTransitions::make_key(2000 + i, item_key), cell_color, custom_button_style);
 						ir.size -= theme_cache.custom_button->get_minimum_size();
 						ir.position += theme_cache.custom_button->get_offset();
 					}
@@ -2726,13 +2714,16 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 				bool should_draw_pressed = cache.click_type == Cache::CLICK_BUTTON && cache.click_item == p_item && cache.click_column == i && cache.click_index == j && !p_item->cells[i].buttons[j].disabled;
 				bool should_draw_hovered = !drop_mode_flags && cache.hover_item == p_item && cache.hover_column == i && cache.hover_button_index_in_column == j && !p_item->cells[i].buttons[j].disabled;
 
-				if (should_draw_pressed || should_draw_hovered) {
+				Ref<StyleBox> button_style;
+				if (should_draw_pressed && should_draw_hovered) {
+					button_style = theme_cache.button_pressed;
+				} else if (should_draw_pressed || should_draw_hovered) {
+					button_style = theme_cache.button_hover;
+				}
+				const Ref<StyleBox> drawn_button_style = get_transition_style(StyleTransitions::make_key(3000 + i * 64 + j, item_key), button_style);
+				if (drawn_button_style.is_valid()) {
 					Point2 od = convert_rtl_position(button_ofs, button_size.x);
-					if (should_draw_pressed && should_draw_hovered) {
-						theme_cache.button_pressed->draw(ci, Rect2(od.x, od.y, button_size.width, MAX(button_size.height, label_h)));
-					} else {
-						theme_cache.button_hover->draw(ci, Rect2(od.x, od.y, button_size.width, MAX(button_size.height, label_h)));
-					}
+					drawn_button_style->draw(ci, Rect2(od.x, od.y, button_size.width, MAX(button_size.height, label_h)));
 				}
 				if (selected_item == p_item && selected_col == i && selected_button == j) {
 					Point2 od = convert_rtl_position(button_ofs, button_size.x);
@@ -2753,13 +2744,14 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 				ofs += item_width + buttons_width;
 			}
 
+			Ref<StyleBox> cursor_style;
 			if (select_mode == SELECT_MULTI && selected_item == p_item && selected_col == i) {
+				cursor_style = has_focus(true) ? theme_cache.cursor : theme_cache.cursor_unfocus;
+			}
+			cursor_style = get_transition_style(StyleTransitions::make_key(4000 + i, item_key), cursor_style);
+			if (cursor_style.is_valid()) {
 				cell_rect = convert_rtl_rect(cell_rect);
-				if (has_focus(true)) {
-					theme_cache.cursor->draw(ci, cell_rect);
-				} else {
-					theme_cache.cursor_unfocus->draw(ci, cell_rect);
-				}
+				cursor_style->draw(ci, cell_rect);
 			}
 		}
 
@@ -5493,7 +5485,7 @@ void Tree::_notification(int p_what) {
 					if (cache.rtl) {
 						tbrect.position.x = get_size().width - tbrect.size.x - tbrect.position.x;
 					}
-					sb->draw(header_ci, tbrect);
+					get_transition_style(StyleTransitions::make_key(100000 + i), sb)->draw(header_ci, tbrect);
 					ofs2 += tbrect.size.width;
 					// Text.
 					int clip_w = tbrect.size.width - sb->get_minimum_size().width;
@@ -5542,9 +5534,10 @@ void Tree::_notification(int p_what) {
 
 			// Draw the focus outline last, so that it is drawn in front of the section headings.
 			// Otherwise, section heading backgrounds can appear to be in front of the focus outline when scrolling.
-			if (has_focus(true)) {
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(100050), has_focus(true) ? theme_cache.focus_style : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
 				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(ci, true);
-				theme_cache.focus_style->draw(ci, Rect2(Point2(), get_size()));
+				focus_style->draw(ci, Rect2(Point2(), get_size()));
 				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(ci, false);
 			}
 		} break;

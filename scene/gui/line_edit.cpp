@@ -42,6 +42,7 @@
 #include "core/os/os.h"
 #include "core/string/alt_codes.h"
 #include "scene/gui/label.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -1394,11 +1395,13 @@ void LineEdit::_notification(int p_what) {
 			Ref<Font> font = theme_cache.font;
 
 			if (!flat) {
-				style->draw(ci, Rect2(Point2(), size));
+				get_transition_style(StyleTransitions::make_key(0), style)->draw(ci, Rect2(Point2(), size));
 			}
 
-			if (has_focus(Engine::get_singleton()->is_editor_hint() || GLOBAL_GET_CACHED(int, "gui/common/show_focus_state_on_pointer_event") != 1)) {
-				theme_cache.focus->draw(ci, Rect2(Point2(), size));
+			const bool draw_focus = has_focus(Engine::get_singleton()->is_editor_hint() || GLOBAL_GET_CACHED(int, "gui/common/show_focus_state_on_pointer_event") != 1);
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50), draw_focus ? theme_cache.focus : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
+				focus_style->draw(ci, Rect2(Point2(), size));
 			}
 
 			int x_ofs = 0;

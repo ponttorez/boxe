@@ -35,6 +35,7 @@
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "core/string/translation_server.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
@@ -493,8 +494,8 @@ void SpinBox::_notification(int p_what) {
 			draw_style_box(theme_cache.field_and_buttons_separator, Rect2(sizing_cache.field_and_buttons_separator_left, 0, sizing_cache.field_and_buttons_separator_width, size.height));
 
 			// Draw buttons.
-			draw_style_box(up_stylebox, Rect2(sizing_cache.buttons_left, 0, sizing_cache.buttons_width, sizing_cache.button_up_height));
-			draw_style_box(down_stylebox, Rect2(sizing_cache.buttons_left, sizing_cache.second_button_top, sizing_cache.buttons_width, sizing_cache.button_down_height));
+			draw_style_box(get_transition_style(StyleTransitions::make_key(0), up_stylebox), Rect2(sizing_cache.buttons_left, 0, sizing_cache.buttons_width, sizing_cache.button_up_height));
+			draw_style_box(get_transition_style(StyleTransitions::make_key(1), down_stylebox), Rect2(sizing_cache.buttons_left, sizing_cache.second_button_top, sizing_cache.buttons_width, sizing_cache.button_down_height));
 
 #ifndef DISABLE_DEPRECATED
 			if (theme_cache.is_updown_assigned) {
@@ -506,8 +507,8 @@ void SpinBox::_notification(int p_what) {
 			}
 #endif
 			// Draw arrows.
-			draw_texture(up_icon, Point2i(up_icon_left, up_icon_top), up_icon_modulate);
-			draw_texture(down_icon, Point2i(down_icon_left, down_icon_top), down_icon_modulate);
+			draw_texture(up_icon, Point2i(up_icon_left, up_icon_top), get_transition_color(StyleTransitions::make_key(2), up_icon_modulate, up_stylebox));
+			draw_texture(down_icon, Point2i(down_icon_left, down_icon_top), get_transition_color(StyleTransitions::make_key(3), down_icon_modulate, down_stylebox));
 
 		} break;
 
