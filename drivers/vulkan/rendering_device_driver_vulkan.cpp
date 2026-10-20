@@ -1873,6 +1873,7 @@ Error RenderingDeviceDriverVulkan::initialize(uint32_t p_device_index, uint32_t 
 #if defined(SWAPPY_FRAME_PACING_ENABLED)
 	swappy_frame_pacer_enable = GLOBAL_GET("display/window/frame_pacing/android/enable_frame_pacing");
 	swappy_mode = GLOBAL_GET("display/window/frame_pacing/android/swappy_mode");
+	swappy_max_refresh_rate = int(GLOBAL_GET("display/window/android/refresh_rate")) == 1;
 
 	if (VulkanHooks::get_singleton() != nullptr) {
 		// Hooks control device creation & possibly presentation
@@ -3849,6 +3850,17 @@ Error RenderingDeviceDriverVulkan::swap_chain_resize(CommandQueueID p_cmd_queue,
 	if (swappy_frame_pacer_enable) {
 		SwappyVk_initAndGetRefreshCycleDuration(get_jni_env(), static_cast<OS_Android *>(OS::get_singleton())->get_godot_java()->get_activity(), physical_device,
 				vk_device, swap_chain->vk_swapchain, &swap_chain->refresh_duration);
+		if (swappy_max_refresh_rate) {
+			// Pace frames at the shortest refresh period, so Swappy doesn't stay at the refresh rate the app started with.
+			LocalVector<uint64_t> refresh_periods;
+			refresh_periods.resize(SwappyVk_getSupportedRefreshPeriodsNS(nullptr, 0, swap_chain->vk_swapchain));
+			SwappyVk_getSupportedRefreshPeriodsNS(refresh_periods.ptr(), refresh_periods.size(), swap_chain->vk_swapchain);
+			for (uint64_t refresh_period : refresh_periods) {
+				if (refresh_period > 0) {
+					swap_chain->refresh_duration = MIN(swap_chain->refresh_duration, refresh_period);
+				}
+			}
+		}
 		SwappyVk_setWindow(vk_device, swap_chain->vk_swapchain, static_cast<OS_Android *>(OS::get_singleton())->get_native_window());
 		SwappyVk_setSwapIntervalNS(vk_device, swap_chain->vk_swapchain, swap_chain->refresh_duration);
 

@@ -102,6 +102,7 @@ class Godot private constructor(val context: Context) {
 
 		private const val EXIT_RENDERER_TIMEOUT_IN_MS = 1500L
 		private const val UNDEFINED_DISPLAY_ROTATION = -1
+		private const val REFRESH_RATE_MAXIMUM = "1" // See display/window/android/refresh_rate.
 
 		// Supported build flavors
 		private const val EDITOR_FLAVOR = "editor"
@@ -208,6 +209,7 @@ class Godot private constructor(val context: Context) {
 	private var backgroundColor: Int = Color.BLACK
 	private var orientation = Configuration.ORIENTATION_UNDEFINED
 	private var displayRotation = UNDEFINED_DISPLAY_ROTATION
+	@Volatile private var useMaximumRefreshRate = false
 	private val displayListener = object : DisplayManager.DisplayListener {
 		override fun onDisplayAdded(displayId: Int) {}
 
@@ -638,6 +640,8 @@ class Godot private constructor(val context: Context) {
 					plugin.onRegisterPluginWithGodotNative()
 				}
 				setKeepScreenOn(java.lang.Boolean.parseBoolean(GodotLib.getGlobal("display/window/energy_saving/keep_screen_on")))
+				useMaximumRefreshRate = GodotLib.getGlobal("display/window/android/refresh_rate") == REFRESH_RATE_MAXIMUM
+				runOnHostThread { requestPreferredDisplayMode() }
 			}
 
 			// Include the returned non-null views in the Godot view hierarchy.
@@ -686,6 +690,7 @@ class Godot private constructor(val context: Context) {
 		registerSensorsIfNeeded()
 		getDisplayManager()?.registerDisplayListener(displayListener, Handler(Looper.getMainLooper()))
 		updateDisplayRotation()
+		requestPreferredDisplayMode()
 		for (plugin in pluginRegistry.allPlugins) {
 			plugin.onMainResume()
 		}
@@ -772,6 +777,28 @@ class Godot private constructor(val context: Context) {
 		} else {
 			@Suppress("DEPRECATION")
 			activity.windowManager.defaultDisplay
+		}
+	}
+
+	/**
+	 * Requests the highest refresh rate at the current resolution, since Android may keep apps at a lower one by default.
+	 */
+	private fun requestPreferredDisplayMode() {
+		if (!useMaximumRefreshRate) {
+			return
+		}
+
+		val window = getActivity()?.window ?: return
+		val display = getCurrentDisplay() ?: return
+		val currentMode = display.mode
+		val preferredMode = display.supportedModes
+			.filter { it.physicalWidth == currentMode.physicalWidth && it.physicalHeight == currentMode.physicalHeight }
+			.maxByOrNull { it.refreshRate } ?: return
+
+		val attributes = window.attributes
+		if (attributes.preferredDisplayModeId != preferredMode.modeId) {
+			attributes.preferredDisplayModeId = preferredMode.modeId
+			window.attributes = attributes
 		}
 	}
 

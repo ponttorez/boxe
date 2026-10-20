@@ -175,6 +175,7 @@ class RenderingDeviceDriverVulkan : public RenderingDeviceDriver {
 	// Swappy frame pacer for Android.
 	bool swappy_frame_pacer_enable = false;
 	uint8_t swappy_mode = 2; // See default value for display/window/frame_pacing/android/swappy_mode.
+	bool swappy_max_refresh_rate = false; // See display/window/android/refresh_rate.
 #endif
 	DeviceFunctions device_functions;
 

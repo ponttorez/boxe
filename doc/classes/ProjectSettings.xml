@@ -965,6 +965,11 @@
 		<member name="display/mouse_cursor/tooltip_position_offset" type="Vector2" setter="" getter="" default="Vector2(10, 10)">
 			Position offset for tooltips, relative to the mouse cursor's hotspot.
 		</member>
+		<member name="display/window/android/refresh_rate" type="int" setter="" getter="" default="0" keywords="hz, fps">
+			Display refresh rate to request on Android. The options are:
+			- [code]System[/code]: Use the refresh rate chosen by the system. Many devices keep apps at 60 Hz even if the display supports higher refresh rates.
+			- [code]Maximum[/code]: Request the highest refresh rate supported at the current resolution, when the app starts and when it's resumed. [member Engine.max_fps] and [member display/window/frame_pacing/android/swappy_mode] still limit the actual frame rate.
+		</member>
 		<member name="display/window/dpi/allow_hidpi" type="bool" setter="" getter="" default="true">
 			If [code]true[/code], allows HiDPI display on Windows, macOS, Android, iOS and Web. If [code]false[/code], the platform's low-DPI fallback will be used on HiDPI displays, which causes the window to be displayed in a blurry or pixelated manner (and can cause various window management bugs). Therefore, it is recommended to make your project scale to [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] instead of disabling this setting.
 			[b]Note:[/b] This setting has no effect on Linux as DPI-awareness fallbacks are not supported there.
