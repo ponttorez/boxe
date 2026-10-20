@@ -210,6 +210,8 @@ class Godot private constructor(val context: Context) {
 	private var orientation = Configuration.ORIENTATION_UNDEFINED
 	private var displayRotation = UNDEFINED_DISPLAY_ROTATION
 	@Volatile private var useMaximumRefreshRate = false
+	private var safeArea: IntArray? = null
+	private val safeAreaLayoutListener = ViewTreeObserver.OnGlobalLayoutListener { updateSafeArea() }
 	private val displayListener = object : DisplayManager.DisplayListener {
 		override fun onDisplayAdded(displayId: Int) {}
 
@@ -655,6 +657,7 @@ class Godot private constructor(val context: Context) {
 					}
 				}
 			}
+			getActivity()?.window?.decorView?.viewTreeObserver?.addOnGlobalLayoutListener(safeAreaLayoutListener)
 			renderViewInitialized = true
 		} finally {
 			if (!renderViewInitialized) {
@@ -758,6 +761,7 @@ class Godot private constructor(val context: Context) {
 		for (plugin in pluginRegistry.allPlugins) {
 			plugin.onMainDestroy()
 		}
+		getActivity()?.window?.decorView?.viewTreeObserver?.removeOnGlobalLayoutListener(safeAreaLayoutListener)
 
 		if (renderView?.blockingExitRenderer(EXIT_RENDERER_TIMEOUT_IN_MS) != true) {
 			Log.w(TAG, "Unable to exit the renderer within $EXIT_RENDERER_TIMEOUT_IN_MS ms... Force quitting the process.")
@@ -777,6 +781,21 @@ class Godot private constructor(val context: Context) {
 		} else {
 			@Suppress("DEPRECATION")
 			activity.windowManager.defaultDisplay
+		}
+	}
+
+	/**
+	 * Reports safe area changes, such as the display cutout moving to another side after a rotation.
+	 */
+	private fun updateSafeArea() {
+		val newSafeArea = io.getDisplaySafeArea()
+		if (newSafeArea.contentEquals(safeArea)) {
+			return
+		}
+
+		safeArea = newSafeArea
+		runOnRenderThread {
+			GodotLib.onSafeAreaChanged()
 		}
 	}
 
@@ -810,6 +829,10 @@ class Godot private constructor(val context: Context) {
 		val rotation = getCurrentDisplay()?.rotation ?: return
 		val previousRotation = displayRotation
 		displayRotation = rotation
+		if (previousRotation != rotation) {
+			// The insets are updated after the rotation, so check the safe area once the new layout is applied.
+			getActivity()?.window?.decorView?.post { updateSafeArea() }
+		}
 		if (previousRotation == UNDEFINED_DISPLAY_ROTATION || (rotation - previousRotation + 4) % 4 != 2) {
 			return
 		}
