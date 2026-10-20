@@ -660,6 +660,30 @@
 				[b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 			</description>
 		</method>
+		<method name="get_transition_color">
+			<return type="Color" />
+			<param index="0" name="key" type="int" />
+			<param index="1" name="target" type="Color" />
+			<param index="2" name="timing" type="StyleBox" />
+			<description>
+				Returns the color to use for [param target], animated like the state changes of the built-in controls. When [param target] changes, the returned color moves to it with the transition of [param timing], see [member StyleBox.transition_duration]. Pass the style box of the new state as [param timing], so the color changes together with it. Each animated color of the control needs its own [param key]. See also [method get_transition_style].
+			</description>
+		</method>
+		<method name="get_transition_style">
+			<return type="StyleBox" />
+			<param index="0" name="key" type="int" />
+			<param index="1" name="target" type="StyleBox" />
+			<description>
+				Returns the style box to draw for [param target], animated like the state changes of the built-in controls. When [param target] changes, for example when the control becomes hovered, the returned style box moves to it with the transition of [param target], see [member StyleBox.transition_duration]. [param target] can be [code]null[/code] when nothing is drawn in a state, then the previous style box fades out. Each animated part of the control needs its own [param key]. The control is redrawn while a transition plays.
+				[codeblock]
+				var hovered = false
+
+				func _draw():
+					var style = get_theme_stylebox("hover" if hovered else "normal", "Button")
+					draw_style_box(get_transition_style(0, style), Rect2(Vector2(), size))
+				[/codeblock]
+			</description>
+		</method>
 		<method name="grab_click_focus">
 			<return type="void" />
 			<description>

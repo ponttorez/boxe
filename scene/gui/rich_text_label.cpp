@@ -43,6 +43,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/rich_text_effect.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/timer.h"
 #include "scene/resources/atlas_texture.h"
@@ -2754,9 +2755,10 @@ void RichTextLabel::_notification(int p_what) {
 
 			draw_style_box(theme_cache.normal_style, Rect2(Point2(), size));
 
-			if (has_focus(true)) {
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_FOCUS), has_focus(true) ? theme_cache.focus_style : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
 				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(ci, true);
-				draw_style_box(theme_cache.focus_style, Rect2(Point2(), size));
+				draw_style_box(focus_style, Rect2(Point2(), size));
 				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(ci, false);
 			}
 

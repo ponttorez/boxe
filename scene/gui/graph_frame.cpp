@@ -34,6 +34,7 @@
 #include "core/object/class_db.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/resources/style_box_flat.h"
 #include "scene/resources/style_box_texture.h"
 #include "scene/theme/theme_db.h"
@@ -100,8 +101,8 @@ void GraphFrame::_notification(int p_what) {
 			Ref<StyleBox> sb_titlebar = theme_cache.titlebar;
 
 			// Used for drawing.
-			Ref<StyleBox> sb_to_draw_panel = selected ? theme_cache.panel_selected : sb_panel;
-			Ref<StyleBox> sb_to_draw_titlebar = selected ? theme_cache.titlebar_selected : sb_titlebar;
+			Ref<StyleBox> sb_to_draw_panel = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_BACKGROUND), selected ? theme_cache.panel_selected : sb_panel);
+			Ref<StyleBox> sb_to_draw_titlebar = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_TITLEBAR), selected ? theme_cache.titlebar_selected : sb_titlebar);
 			Ref<StyleBoxFlat> sb_panel_flat = sb_to_draw_panel;
 			Ref<StyleBoxTexture> sb_panel_texture = sb_to_draw_panel;
 

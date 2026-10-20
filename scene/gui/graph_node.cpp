@@ -35,6 +35,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/graph_edit.h"
 #include "scene/gui/label.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/scene_tree.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -644,8 +645,8 @@ void GraphNode::_notification(int p_what) {
 			Ref<StyleBox> sb_panel = theme_cache.panel;
 			Ref<StyleBox> sb_titlebar = theme_cache.titlebar;
 			// Used for drawing.
-			Ref<StyleBox> sb_to_draw_panel = selected ? theme_cache.panel_selected : theme_cache.panel;
-			Ref<StyleBox> sb_to_draw_titlebar = selected ? theme_cache.titlebar_selected : theme_cache.titlebar;
+			Ref<StyleBox> sb_to_draw_panel = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_BACKGROUND), selected ? theme_cache.panel_selected : theme_cache.panel);
+			Ref<StyleBox> sb_to_draw_titlebar = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_TITLEBAR), selected ? theme_cache.titlebar_selected : theme_cache.titlebar);
 
 			Ref<StyleBox> sb_slot = theme_cache.slot;
 			Ref<StyleBox> sb_slot_selected = theme_cache.slot_selected;

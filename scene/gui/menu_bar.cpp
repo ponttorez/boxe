@@ -32,6 +32,7 @@
 
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -453,18 +454,12 @@ void MenuBar::_draw_menu_item(int p_index) {
 		} else {
 			style = theme_cache.disabled;
 		}
-		if (!flat) {
-			style->draw(ci, item_rect);
-		}
 		color = theme_cache.font_disabled_color;
 	} else if (hovered && pressed && has_theme_stylebox("hover_pressed")) {
 		if (rtl && has_theme_stylebox(SNAME("hover_pressed_mirrored"))) {
 			style = theme_cache.hover_pressed_mirrored;
 		} else {
 			style = theme_cache.hover_pressed;
-		}
-		if (!flat) {
-			style->draw(ci, item_rect);
 		}
 		if (has_theme_color(SNAME("font_hover_pressed_color"))) {
 			color = theme_cache.font_hover_pressed_color;
@@ -474,9 +469,6 @@ void MenuBar::_draw_menu_item(int p_index) {
 			style = theme_cache.pressed_mirrored;
 		} else {
 			style = theme_cache.pressed;
-		}
-		if (!flat) {
-			style->draw(ci, item_rect);
 		}
 		if (has_theme_color(SNAME("font_pressed_color"))) {
 			color = theme_cache.font_pressed_color;
@@ -489,18 +481,12 @@ void MenuBar::_draw_menu_item(int p_index) {
 		} else {
 			style = theme_cache.hover;
 		}
-		if (!flat) {
-			style->draw(ci, item_rect);
-		}
 		color = theme_cache.font_hover_color;
 	} else {
 		if (rtl && has_theme_stylebox(SNAME("normal_mirrored"))) {
 			style = theme_cache.normal_mirrored;
 		} else {
 			style = theme_cache.normal;
-		}
-		if (!flat) {
-			style->draw(ci, item_rect);
 		}
 		// Focus colors only take precedence over normal state.
 		if (has_focus(true)) {
@@ -509,6 +495,11 @@ void MenuBar::_draw_menu_item(int p_index) {
 			color = theme_cache.font_color;
 		}
 	}
+
+	if (!flat) {
+		get_transition_style(StyleTransitions::Key(StyleTransitions::PART_ITEM, p_index), style)->draw(ci, item_rect);
+	}
+	color = get_transition_color(StyleTransitions::Key(StyleTransitions::PART_ITEM_FONT_COLOR, p_index), color, style);
 
 	Point2 text_ofs = item_rect.position + Point2(style->get_margin(SIDE_LEFT), style->get_margin(SIDE_TOP));
 

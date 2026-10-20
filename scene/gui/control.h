@@ -31,6 +31,7 @@
 #pragma once
 
 #include "core/object/gdvirtual.gen.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/canvas_item.h"
 #include "scene/resources/theme.h"
 #include "servers/display/accessibility_server_enums.h"
@@ -325,6 +326,7 @@ private:
 		// Theming.
 
 		ThemeOwner *theme_owner = nullptr;
+		StyleTransitions *style_transitions = nullptr;
 		Ref<Theme> theme;
 		StringName theme_type_variation;
 
@@ -431,6 +433,10 @@ private:
 	bool _has_point_for_clipping(const Point2 &p_point) const;
 
 	void _update_composite();
+
+	// Scripts tell their parts apart with an integer, separately from the parts animated by the control.
+	Ref<StyleBox> _get_transition_style_bind(int64_t p_key, const Ref<StyleBox> &p_target);
+	Color _get_transition_color_bind(int64_t p_key, const Color &p_target, const Ref<StyleBox> &p_timing);
 	static void _update_nested_composite_warnings(Node *p_node);
 	void _update_interactable();
 	bool _is_parent_interactable() const;
@@ -804,6 +810,10 @@ public:
 
 	void set_disable_visibility_clip(bool p_ignore);
 	bool is_visibility_clip_disabled() const;
+
+	// Animated theme state changes, see StyleTransitions.
+	Ref<StyleBox> get_transition_style(const StyleTransitions::Key &p_key, const Ref<StyleBox> &p_target);
+	Color get_transition_color(const StyleTransitions::Key &p_key, const Color &p_target, const Ref<StyleBox> &p_timing);
 
 	void set_interaction_behavior_recursive(InteractionBehaviorRecursive p_behavior);
 	InteractionBehaviorRecursive get_interaction_behavior_recursive() const;

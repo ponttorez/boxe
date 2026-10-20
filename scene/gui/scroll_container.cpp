@@ -33,7 +33,6 @@
 #include "core/config/project_settings.h"
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
-#include "scene/gui/panel_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
@@ -362,6 +361,13 @@ void ScrollContainer::_gui_focus_changed(Control *p_control) {
 	}
 }
 
+void ScrollContainer::_draw_focus_panel() {
+	const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_FOCUS), focus_border_is_drawn ? theme_cache.focus_style : Ref<StyleBox>());
+	if (focus_style.is_valid()) {
+		focus_panel->draw_style_box(focus_style, Rect2(Point2(), focus_panel->get_size()));
+	}
+}
+
 void ScrollContainer::ensure_control_visible(Control *p_control) {
 	ERR_FAIL_COND_MSG(!is_ancestor_of(p_control), "Must be an ancestor of the control.");
 
@@ -510,7 +516,6 @@ void ScrollContainer::_notification(int p_what) {
 			if (p_what == NOTIFICATION_THEME_CHANGED) {
 				scroll_border = get_theme_constant(SNAME("scroll_border"), SNAME("Tree"));
 				scroll_speed = get_theme_constant(SNAME("scroll_speed"), SNAME("Tree"));
-				focus_panel->add_theme_style_override("panel", theme_cache.focus_style);
 			}
 		} break;
 
@@ -528,7 +533,8 @@ void ScrollContainer::_notification(int p_what) {
 		case NOTIFICATION_DRAW: {
 			draw_style_box(theme_cache.panel_style, Rect2(Vector2(), get_size()));
 			focus_border_is_drawn = draw_focus_border && (has_focus(true) || child_has_focus());
-			focus_panel->set_visible(focus_border_is_drawn);
+			focus_panel->set_visible(draw_focus_border);
+			focus_panel->queue_redraw();
 		} break;
 
 		case NOTIFICATION_DRAG_BEGIN: {
@@ -1003,8 +1009,9 @@ ScrollContainer::ScrollContainer() {
 	// due to a clippling issues. The Control that is being scrolled will be over the focus border because both will be
 	// drawn on the same CanvasItem. If we decide to ignore clipping, the focus border will be drawn even over other
 	// CanvasItems.
-	focus_panel = memnew(PanelContainer);
+	focus_panel = memnew(Control);
 	focus_panel->set_name("_focus");
+	focus_panel->connect(SceneStringName(draw), callable_mp(this, &ScrollContainer::_draw_focus_panel));
 	focus_panel->set_mouse_filter(MOUSE_FILTER_IGNORE);
 	focus_panel->set_focus_mode(FOCUS_NONE);
 	focus_panel->set_visible(draw_focus_border);

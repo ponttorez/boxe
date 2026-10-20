@@ -33,7 +33,6 @@
 #include "scene/gui/container.h"
 #include "scene/gui/scroll_bar.h"
 
-class PanelContainer;
 class TextureRect;
 
 class ScrollContainer : public Container {
@@ -59,7 +58,8 @@ public:
 private:
 	HScrollBar *h_scroll = nullptr;
 	VScrollBar *v_scroll = nullptr;
-	PanelContainer *focus_panel = nullptr;
+	// Draws the focus border above the children.
+	Control *focus_panel = nullptr;
 
 	mutable Size2 largest_child_min_size; // The largest one among the min sizes of all available child controls.
 
@@ -125,6 +125,7 @@ protected:
 	Size2 get_inner_combined_maximum_size() const override;
 
 	void _gui_focus_changed(Control *p_control);
+	void _draw_focus_panel();
 	void _reposition_children();
 
 	void _notification(int p_what);

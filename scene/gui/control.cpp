@@ -43,6 +43,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "core/string/string_builder.h"
 #include "scene/gui/container.h"
 #include "scene/gui/scroll_container.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
@@ -2566,6 +2567,28 @@ bool Control::has_point(const Point2 &p_point) const {
 	return get_raycast_rect().has_point(p_point);
 }
 
+Ref<StyleBox> Control::get_transition_style(const StyleTransitions::Key &p_key, const Ref<StyleBox> &p_target) {
+	if (!data.style_transitions) {
+		data.style_transitions = memnew(StyleTransitions(this));
+	}
+	return data.style_transitions->get_style(p_key, p_target);
+}
+
+Color Control::get_transition_color(const StyleTransitions::Key &p_key, const Color &p_target, const Ref<StyleBox> &p_timing) {
+	if (!data.style_transitions) {
+		data.style_transitions = memnew(StyleTransitions(this));
+	}
+	return data.style_transitions->get_color(p_key, p_target, p_timing);
+}
+
+Ref<StyleBox> Control::_get_transition_style_bind(int64_t p_key, const Ref<StyleBox> &p_target) {
+	return get_transition_style(StyleTransitions::Key(StyleTransitions::PART_SCRIPT, p_key), p_target);
+}
+
+Color Control::_get_transition_color_bind(int64_t p_key, const Color &p_target, const Ref<StyleBox> &p_timing) {
+	return get_transition_color(StyleTransitions::Key(StyleTransitions::PART_SCRIPT, p_key), p_target, p_timing);
+}
+
 void Control::set_interaction_behavior_recursive(InteractionBehaviorRecursive p_behavior) {
 	ERR_MAIN_THREAD_GUARD;
 	ERR_FAIL_INDEX((int)p_behavior, 3);
@@ -4715,6 +4738,9 @@ void Control::_notification(int p_notification) {
 
 		case NOTIFICATION_EXIT_TREE: {
 			set_theme_context(nullptr, false);
+			if (data.style_transitions) {
+				data.style_transitions->clear();
+			}
 
 			release_focus();
 			get_viewport()->_gui_remove_control(this);
@@ -4830,6 +4856,9 @@ void Control::_notification(int p_notification) {
 
 		case NOTIFICATION_VISIBILITY_CHANGED: {
 			if (!is_visible_in_tree()) {
+				if (data.style_transitions) {
+					data.style_transitions->clear();
+				}
 				if (get_viewport() != nullptr) {
 					get_viewport()->_gui_hide_control(this);
 				}
@@ -5063,6 +5092,9 @@ void Control::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_clip_contents", "enable"), &Control::set_clip_contents);
 	ClassDB::bind_method(D_METHOD("is_clipping_contents"), &Control::is_clipping_contents);
+
+	ClassDB::bind_method(D_METHOD("get_transition_style", "key", "target"), &Control::_get_transition_style_bind);
+	ClassDB::bind_method(D_METHOD("get_transition_color", "key", "target", "timing"), &Control::_get_transition_color_bind);
 
 	ClassDB::bind_method(D_METHOD("set_interaction_behavior_recursive", "interaction_behavior_recursive"), &Control::set_interaction_behavior_recursive);
 	ClassDB::bind_method(D_METHOD("get_interaction_behavior_recursive"), &Control::get_interaction_behavior_recursive);
@@ -5387,6 +5419,9 @@ Control::Control() {
 
 Control::~Control() {
 	memdelete(data.theme_owner);
+	if (data.style_transitions) {
+		memdelete(data.style_transitions);
+	}
 
 	if (data.offset_transform != nullptr) {
 		memdelete(data.offset_transform);

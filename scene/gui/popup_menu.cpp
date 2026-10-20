@@ -43,6 +43,7 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/menu_bar.h"
 #include "scene/gui/panel_container.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/timer.h"
 #include "scene/resources/style_box_flat.h"
 #include "scene/theme/theme_db.h"
@@ -941,9 +942,12 @@ void PopupMenu::_draw_items() {
 		Point2 item_ofs = ofs;
 		Size2 icon_size = _get_item_icon_size(i);
 		float h = _get_item_height(i);
-		if ((active_submenu_index == -1 && i == mouse_over) || i == active_submenu_index) {
-			theme_cache.hover_style->draw(ci, Rect2(item_ofs + Point2(0, -theme_cache.v_separation / 2), Size2(display_width, h + theme_cache.v_separation)));
+		const bool item_hovered = (active_submenu_index == -1 && i == mouse_over) || i == active_submenu_index;
+		const Ref<StyleBox> item_style = control->get_transition_style(StyleTransitions::Key(StyleTransitions::PART_ITEM, i), item_hovered ? theme_cache.hover_style : Ref<StyleBox>());
+		if (item_style.is_valid()) {
+			item_style->draw(ci, Rect2(item_ofs + Point2(0, -theme_cache.v_separation / 2), Size2(display_width, h + theme_cache.v_separation)));
 		}
+		const Color item_font_color = items[i].disabled ? theme_cache.font_disabled_color : control->get_transition_color(StyleTransitions::Key(StyleTransitions::PART_ITEM_FONT_COLOR, i), item_hovered ? theme_cache.font_hover_color : theme_cache.font_color, theme_cache.hover_style);
 
 		String text = items[i].xl_text;
 
@@ -1057,13 +1061,13 @@ void PopupMenu::_draw_items() {
 				if (theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
 					items[i].text_buf->draw_outline(ci, text_pos, theme_cache.font_outline_size, theme_cache.font_outline_color);
 				}
-				items[i].text_buf->draw(ci, text_pos, items[i].disabled ? theme_cache.font_disabled_color : (((active_submenu_index == -1 && i == mouse_over) || i == active_submenu_index) ? theme_cache.font_hover_color : theme_cache.font_color));
+				items[i].text_buf->draw(ci, text_pos, item_font_color);
 			} else {
 				Vector2 text_pos = item_ofs + Point2(0, Math::floor((h - items[i].text_buf->get_size().y) / 2.0));
 				if (theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
 					items[i].text_buf->draw_outline(ci, text_pos, theme_cache.font_outline_size, theme_cache.font_outline_color);
 				}
-				items[i].text_buf->draw(ci, text_pos, items[i].disabled ? theme_cache.font_disabled_color : (((active_submenu_index == -1 && i == mouse_over) || i == active_submenu_index) ? theme_cache.font_hover_color : theme_cache.font_color));
+				items[i].text_buf->draw(ci, text_pos, item_font_color);
 			}
 		}
 

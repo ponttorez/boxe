@@ -32,6 +32,7 @@
 
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
@@ -136,6 +137,7 @@ void OptionButton::_notification(int p_what) {
 							clr = theme_cache.font_color;
 						}
 				}
+				clr = get_transition_color(StyleTransitions::Key(StyleTransitions::PART_ARROW_COLOR), clr, _get_current_stylebox());
 			}
 
 			Size2 size = get_size();

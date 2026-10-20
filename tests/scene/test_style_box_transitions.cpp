@@ -33,6 +33,10 @@
 TEST_FORCE_LINK(test_style_box_transitions)
 
 #include "core/templates/hash_map.h"
+#include "scene/gui/control.h"
+#include "scene/gui/style_transitions.h"
+#include "scene/main/scene_tree.h"
+#include "scene/main/window.h"
 #include "scene/resources/image_texture.h"
 #include "scene/resources/style_box_flat.h"
 #include "scene/resources/style_box_layered.h"
@@ -432,6 +436,153 @@ TEST_CASE("[StyleBoxLayered] Pixel rectangles move with the position") {
 			}
 		}
 	}
+}
+
+TEST_CASE("[SceneTree][StyleTransitions] A StyleBoxEmpty fades in and out") {
+	Control *owner = memnew(Control);
+	StyleTransitions transitions(owner);
+	Ref<StyleBoxFlat> flat;
+	flat.instantiate();
+	flat->set_bg_color(Color(1, 0, 0));
+	flat->set_content_margin_all(10);
+	flat->set_transition_duration(1);
+	Ref<StyleBoxEmpty> empty;
+	empty.instantiate();
+	empty->set_content_margin_all(2);
+
+	CHECK(transitions.get_style(StyleTransitions::Key(StyleTransitions::PART_BACKGROUND), empty) == empty);
+	const Ref<StyleBoxFlat> fading_in = transitions.get_style(StyleTransitions::Key(StyleTransitions::PART_BACKGROUND), flat);
+	REQUIRE(fading_in.is_valid());
+	CHECK_MESSAGE(fading_in->get_bg_color().a == doctest::Approx(0), "The style box fades in from transparent.");
+	CHECK_MESSAGE(fading_in->get_margin(SIDE_LEFT) == doctest::Approx(2), "The content starts where the empty style box places it.");
+
+	CHECK(transitions.get_style(StyleTransitions::Key(StyleTransitions::PART_FOCUS), flat) == flat);
+	const Ref<StyleBoxFlat> fading_out = transitions.get_style(StyleTransitions::Key(StyleTransitions::PART_FOCUS), empty);
+	REQUIRE_MESSAGE(fading_out.is_valid(), "Switching to an empty style box fades out with the transition of the previous one.");
+	CHECK(fading_out->get_bg_color().a == doctest::Approx(1));
+	CHECK(fading_out->get_margin(SIDE_LEFT) == doctest::Approx(10));
+
+	memdelete(owner);
+}
+
+static Ref<StyleBoxFlat> make_timed_style(const Color &p_color, double p_duration) {
+	Ref<StyleBoxFlat> style;
+	style.instantiate();
+	style->set_bg_color(p_color);
+	style->set_transition_duration(p_duration);
+	return style;
+}
+
+TEST_CASE("[SceneTree][StyleTransitions] Going back takes the part already travelled") {
+	Control *owner = memnew(Control);
+	StyleTransitions transitions(owner);
+	const StyleTransitions::Key key(StyleTransitions::PART_BACKGROUND);
+	Ref<StyleBoxFlat> normal = make_timed_style(Color(1, 0, 0), 1);
+	Ref<StyleBoxFlat> hover = make_timed_style(Color(0, 0, 1), 1);
+
+	CHECK(transitions.get_style(key, normal) == normal);
+	transitions.get_style(key, hover);
+	StyleTransitions::skip_time(0.25);
+	const Ref<StyleBoxFlat> live = transitions.get_style(key, hover);
+	REQUIRE(live.is_valid());
+	CHECK(live->get_bg_color().is_equal_approx(Color(0.75, 0, 0.25)));
+
+	transitions.get_style(key, normal);
+	StyleTransitions::skip_time(0.2);
+	CHECK_MESSAGE(transitions.get_style(key, normal) != normal, "Going back is still playing.");
+	StyleTransitions::skip_time(0.1);
+	CHECK_MESSAGE(transitions.get_style(key, normal) == normal, "Going back ends after the time already travelled.");
+
+	memdelete(owner);
+}
+
+TEST_CASE("[SceneTree][StyleTransitions] Changes without a duration happen at once") {
+	Control *owner = memnew(Control);
+	StyleTransitions transitions(owner);
+	const StyleTransitions::Key key(StyleTransitions::PART_BACKGROUND);
+	Ref<StyleBoxFlat> normal = make_timed_style(Color(1, 0, 0), 1);
+	Ref<StyleBoxFlat> pressed = make_timed_style(Color(0, 0, 1), 0);
+
+	transitions.get_style(key, normal);
+	CHECK(transitions.get_style(key, pressed) == pressed);
+	CHECK(transitions.get_color(key, Color(1, 0, 0), normal) == Color(1, 0, 0));
+	CHECK(transitions.get_color(key, Color(0, 0, 1), pressed) == Color(0, 0, 1));
+
+	memdelete(owner);
+}
+
+TEST_CASE("[SceneTree][StyleTransitions] Colors") {
+	Control *owner = memnew(Control);
+	StyleTransitions transitions(owner);
+	const StyleTransitions::Key key(StyleTransitions::PART_FONT_COLOR);
+	Ref<StyleBoxFlat> style = make_timed_style(Color(), 1);
+	style->set_transition_type(Tween::TRANS_BACK);
+	style->set_transition_ease(Tween::EASE_OUT);
+
+	CHECK(transitions.get_color(key, Color(1, 0, 0), style) == Color(1, 0, 0));
+	CHECK(transitions.get_color(key, Color(0, 0, 1), style) == Color(1, 0, 0));
+	StyleTransitions::skip_time(0.6);
+	REQUIRE(style->ease_transition(0.6) > 1);
+	CHECK_MESSAGE(transitions.get_color(key, Color(0, 0, 1), style).is_equal_approx(Color(0, 0, 1)), "Colors don't go past the target.");
+
+	Ref<StyleBoxEmpty> empty;
+	empty.instantiate();
+	const StyleTransitions::Key other_key(StyleTransitions::PART_ICON_COLOR);
+	CHECK(transitions.get_color(other_key, Color(1, 0, 0), style) == Color(1, 0, 0));
+	CHECK_MESSAGE(transitions.get_color(other_key, Color(0, 0, 1), empty) == Color(1, 0, 0), "A color going into a state without a style box is timed by the previous one, like its style box.");
+
+	memdelete(owner);
+}
+
+TEST_CASE("[SceneTree][StyleTransitions] Parts are animated separately") {
+	Control *owner = memnew(Control);
+	SceneTree::get_singleton()->get_root()->add_child(owner);
+	Ref<StyleBoxFlat> normal = make_timed_style(Color(1, 0, 0), 1);
+	Ref<StyleBoxFlat> hover = make_timed_style(Color(0, 0, 1), 1);
+	Ref<StyleBoxFlat> other = make_timed_style(Color(0, 1, 0), 1);
+
+	// Formerly, the buttons of the 17th column of a tree had the key of the cursor of its 1st column.
+	const StyleTransitions::Key button_key(StyleTransitions::PART_BUTTON, 1, (uint64_t)16 << 32);
+	const StyleTransitions::Key cursor_key(StyleTransitions::PART_CURSOR, 1, 0);
+	owner->get_transition_style(button_key, normal);
+	CHECK(owner->get_transition_style(button_key, hover) != hover);
+	CHECK(owner->get_transition_style(cursor_key, other) == other);
+
+	// Scripts have their own keys.
+	const StyleTransitions::Key background_key(StyleTransitions::PART_BACKGROUND);
+	owner->get_transition_style(background_key, normal);
+	CHECK(owner->get_transition_style(background_key, hover) != hover);
+	CHECK(Ref<StyleBox>(owner->call("get_transition_style", 0, other)) == other);
+
+	SUBCASE("Hidden controls forget their transitions") {
+		owner->hide();
+		owner->show();
+		CHECK(owner->get_transition_style(background_key, normal) == normal);
+	}
+
+	memdelete(owner);
+}
+
+TEST_CASE("[SceneTree][StyleTransitions] Finished transitions don't keep the style boxes") {
+	Control *owner = memnew(Control);
+	StyleTransitions transitions(owner);
+	const StyleTransitions::Key key(StyleTransitions::PART_BACKGROUND);
+	Ref<StyleBoxFlat> old_style = make_timed_style(Color(1, 0, 0), 0);
+	Ref<StyleBoxFlat> new_style = make_timed_style(Color(0, 0, 1), 0);
+	const int references = old_style->get_reference_count();
+
+	transitions.get_style(key, old_style);
+	CHECK(transitions.get_style(key, new_style) == new_style);
+	CHECK_MESSAGE(old_style->get_reference_count() == references, "The previous style box isn't kept without a transition.");
+
+	new_style->set_transition_duration(1);
+	Ref<StyleBoxFlat> next_style = make_timed_style(Color(0, 1, 0), 1);
+	transitions.get_style(key, next_style);
+	StyleTransitions::skip_time(2);
+	CHECK(transitions.get_style(key, next_style) == next_style);
+	CHECK_MESSAGE(new_style->get_reference_count() == references, "The previous style box isn't kept once the transition ends.");
+
+	memdelete(owner);
 }
 
 } // namespace TestStyleBoxTransitions

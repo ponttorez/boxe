@@ -33,6 +33,7 @@
 #include "core/config/engine.h"
 #include "core/input/input.h"
 #include "core/object/class_db.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
@@ -307,6 +308,7 @@ void Slider::_notification(int p_what) {
 			} else {
 				grabber_area = theme_cache.grabber_area_style;
 			}
+			grabber_area = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_GRABBER_AREA), grabber_area);
 
 			if (orientation == VERTICAL) {
 				int widget_width = style->get_minimum_size().width;

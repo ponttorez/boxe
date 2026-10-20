@@ -32,6 +32,7 @@
 
 #include "core/object/class_db.h"
 #include "core/os/os.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
@@ -289,9 +290,9 @@ void LinkButton::_notification(int p_what) {
 				} break;
 			}
 
-			if (has_focus(true)) {
-				Ref<StyleBox> style = theme_cache.focus;
-				style->draw(ci, Rect2(Point2(), size));
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_FOCUS), has_focus(true) ? theme_cache.focus : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
+				focus_style->draw(ci, Rect2(Point2(), size));
 			}
 
 			if (overrun_behavior != TextServer::OVERRUN_NO_TRIMMING) {

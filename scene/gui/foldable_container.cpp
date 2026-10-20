@@ -31,6 +31,7 @@
 #include "foldable_container.h"
 
 #include "core/object/class_db.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/resources/text_line.h"
 #include "scene/theme/theme_db.h"
 
@@ -309,7 +310,7 @@ void FoldableContainer::_notification(int p_what) {
 			}
 
 			const Rect2 title_rect = _get_title_rect();
-			_draw_flippable_stylebox(title_style, title_rect);
+			_draw_flippable_stylebox(get_transition_style(StyleTransitions::Key(StyleTransitions::PART_TITLEBAR), title_style), title_rect);
 
 			Size2 title_ms = title_style->get_minimum_size();
 			int title_text_width = size.width - title_ms.width;
@@ -335,6 +336,7 @@ void FoldableContainer::_notification(int p_what) {
 			if (is_hovering) {
 				font_color = theme_cache.title_hovered_font_color;
 			}
+			font_color = get_transition_color(StyleTransitions::Key(StyleTransitions::PART_FONT_COLOR), font_color, title_style);
 			text_buf->set_width(title_text_width);
 
 			if (title_text_width > 0) {
@@ -351,9 +353,10 @@ void FoldableContainer::_notification(int p_what) {
 				_draw_flippable_stylebox(theme_cache.panel_style, panel_rect);
 			}
 
-			if (has_focus(true)) {
+			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_FOCUS), has_focus(true) ? theme_cache.focus_style : Ref<StyleBox>());
+			if (focus_style.is_valid()) {
 				Rect2 focus_rect = folded ? title_rect : Rect2(Point2(), size);
-				_draw_flippable_stylebox(theme_cache.focus_style, focus_rect);
+				_draw_flippable_stylebox(focus_style, focus_rect);
 			}
 		} break;
 

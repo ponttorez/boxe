@@ -32,6 +32,7 @@
 
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -306,6 +307,7 @@ void ScrollBar::_notification(int p_what) {
 			} else {
 				grabber = theme_cache.grabber_style;
 			}
+			grabber = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_GRABBER), grabber);
 
 			Point2 ofs;
 
@@ -325,11 +327,8 @@ void ScrollBar::_notification(int p_what) {
 				area.height -= incr->get_height() + decr->get_height();
 			}
 
-			if (has_focus(true)) {
-				theme_cache.scroll_focus_style->draw(ci, Rect2(ofs, area));
-			} else {
-				theme_cache.scroll_style->draw(ci, Rect2(ofs, area));
-			}
+			const Ref<StyleBox> scroll_style = has_focus(true) ? theme_cache.scroll_focus_style : theme_cache.scroll_style;
+			get_transition_style(StyleTransitions::Key(StyleTransitions::PART_TRACK), scroll_style)->draw(ci, Rect2(ofs, area));
 
 			if (orientation == HORIZONTAL) {
 				ofs.width += area.width;
