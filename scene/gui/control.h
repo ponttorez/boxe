@@ -284,6 +284,7 @@ private:
 		MouseBehaviorRecursive mouse_behavior_recursive = MOUSE_BEHAVIOR_INHERITED;
 		bool parent_mouse_behavior_recursive_enabled = true;
 		bool force_pass_scroll_events = true;
+		real_t raycast_padding[4] = {};
 
 		bool clip_contents = false;
 		bool disable_visibility_clip = false;
@@ -783,6 +784,11 @@ public:
 
 	void set_disable_visibility_clip(bool p_ignore);
 	bool is_visibility_clip_disabled() const;
+
+	void set_raycast_padding(Side p_side, real_t p_value);
+	real_t get_raycast_padding(Side p_side) const;
+	Rect2 get_raycast_rect() const;
+	bool has_point_for_clipping(const Point2 &p_point) const;
 
 	void set_composite_enabled(bool p_enabled);
 	bool is_composite_enabled() const;

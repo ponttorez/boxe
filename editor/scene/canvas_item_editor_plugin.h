@@ -62,6 +62,7 @@ public:
 	Vector2 prev_pivot;
 	Vector2 prev_pivot_ratio;
 	real_t prev_anchors[4] = { (real_t)0.0 };
+	Rect2 prev_raycast_rect;
 
 	Transform2D pre_drag_xform;
 	Rect2 pre_drag_rect;
@@ -487,6 +488,7 @@ private:
 	void _draw_ruler_tool();
 	void _draw_control_anchors(Control *control);
 	void _draw_control_helpers(Control *control);
+	void _draw_control_raycast_padding(Control *p_control);
 	void _draw_selection();
 	void _draw_axis();
 	void _draw_invisible_nodes_positions(Node *p_node, const Transform2D &p_parent_xform = Transform2D(), const Transform2D &p_canvas_xform = Transform2D());

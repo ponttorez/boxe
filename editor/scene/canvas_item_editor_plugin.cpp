@@ -3598,6 +3598,24 @@ void CanvasItemEditor::_draw_control_anchors(Control *control) {
 	}
 }
 
+void CanvasItemEditor::_draw_control_raycast_padding(Control *p_control) {
+	const Rect2 control_rect = Rect2(Point2(), p_control->get_size());
+	const Rect2 raycast_rect = p_control->get_raycast_rect();
+	if (raycast_rect == control_rect) {
+		return;
+	}
+
+	const Transform2D xform = transform * p_control->get_screen_transform();
+	const Vector<Point2> points = {
+		xform.xform(raycast_rect.position),
+		xform.xform(raycast_rect.position + Vector2(raycast_rect.size.x, 0)),
+		xform.xform(raycast_rect.get_end()),
+		xform.xform(raycast_rect.position + Vector2(0, raycast_rect.size.y)),
+		xform.xform(raycast_rect.position),
+	};
+	viewport->draw_polyline(points, Color(1.0, 0.85, 0.25), Math::round(EDSCALE));
+}
+
 void CanvasItemEditor::_draw_control_helpers(Control *control) {
 	Transform2D xform = transform * control->get_screen_transform();
 	if (tool == TOOL_SELECT && show_helpers && !Object::cast_to<Container>(control->get_parent())) {
@@ -3864,6 +3882,9 @@ void CanvasItemEditor::_draw_selection() {
 			if (control && _is_node_movable(control)) {
 				_draw_control_anchors(control);
 				_draw_control_helpers(control);
+			}
+			if (control) {
+				_draw_control_raycast_padding(control);
 			}
 
 			// Draw the resize handles
@@ -4442,6 +4463,12 @@ void CanvasItemEditor::_notification(int p_what) {
 						se->prev_anchors[SIDE_RIGHT] = anchors[SIDE_RIGHT];
 						se->prev_anchors[SIDE_TOP] = anchors[SIDE_TOP];
 						se->prev_anchors[SIDE_BOTTOM] = anchors[SIDE_BOTTOM];
+						viewport->queue_redraw();
+					}
+
+					const Rect2 raycast_rect = control->get_raycast_rect();
+					if (raycast_rect != se->prev_raycast_rect) {
+						se->prev_raycast_rect = raycast_rect;
 						viewport->queue_redraw();
 					}
 				}
