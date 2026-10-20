@@ -2685,8 +2685,8 @@
 		<signal name="orientation_changed">
 			<param index="0" name="orientation" type="int" />
 			<description>
-				Emitted when the device orientation changes. [param orientation] is the new orientation.
-				Returns [code]1[/code] for portrait, [code]2[/code] for landscape, and [code]0[/code] if the orientation is undefined.
+				Emitted when the device orientation changes, including 180° rotations. [param orientation] is the new orientation.
+				Returns [code]1[/code] for portrait, [code]2[/code] for landscape, and [code]0[/code] if the orientation is undefined. A 180° rotation emits the same value as before.
 				[b]Note:[/b] This method is implemented on Android and iOS.
 			</description>
 		</signal>

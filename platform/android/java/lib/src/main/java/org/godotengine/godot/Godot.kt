@@ -39,6 +39,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.Sensor
+import android.hardware.display.DisplayManager
 import android.hardware.SensorManager
 import android.os.*
 import android.util.Log
@@ -100,6 +101,7 @@ class Godot private constructor(val context: Context) {
 		}
 
 		private const val EXIT_RENDERER_TIMEOUT_IN_MS = 1500L
+		private const val UNDEFINED_DISPLAY_ROTATION = -1
 
 		// Supported build flavors
 		private const val EDITOR_FLAVOR = "editor"
@@ -205,6 +207,18 @@ class Godot private constructor(val context: Context) {
 	internal var darkMode = false
 	private var backgroundColor: Int = Color.BLACK
 	private var orientation = Configuration.ORIENTATION_UNDEFINED
+	private var displayRotation = UNDEFINED_DISPLAY_ROTATION
+	private val displayListener = object : DisplayManager.DisplayListener {
+		override fun onDisplayAdded(displayId: Int) {}
+
+		override fun onDisplayRemoved(displayId: Int) {}
+
+		override fun onDisplayChanged(displayId: Int) {
+			if (displayId == getCurrentDisplay()?.displayId) {
+				updateDisplayRotation()
+			}
+		}
+	}
 	var disableGodotSplash = false
 		private set
 
@@ -670,6 +684,8 @@ class Godot private constructor(val context: Context) {
 
 		renderView?.onActivityResumed()
 		registerSensorsIfNeeded()
+		getDisplayManager()?.registerDisplayListener(displayListener, Handler(Looper.getMainLooper()))
+		updateDisplayRotation()
 		for (plugin in pluginRegistry.allPlugins) {
 			plugin.onMainResume()
 		}
@@ -713,6 +729,7 @@ class Godot private constructor(val context: Context) {
 		}
 		renderView?.onActivityPaused()
 		mSensorManager?.unregisterListener(godotInputHandler)
+		getDisplayManager()?.unregisterDisplayListener(displayListener)
 	}
 
 	fun onStop(host: GodotHost) {
@@ -744,6 +761,36 @@ class Godot private constructor(val context: Context) {
 		}
 
 		this.primaryHost = null
+	}
+
+	private fun getDisplayManager() = context.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+
+	private fun getCurrentDisplay(): Display? {
+		val activity = getActivity() ?: return null
+		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			activity.display
+		} else {
+			@Suppress("DEPRECATION")
+			activity.windowManager.defaultDisplay
+		}
+	}
+
+	/**
+	 * Reports 180° rotations, which keep the orientation and don't trigger a configuration change.
+	 * 90° rotations are reported from [onConfigurationChanged].
+	 */
+	private fun updateDisplayRotation() {
+		val rotation = getCurrentDisplay()?.rotation ?: return
+		val previousRotation = displayRotation
+		displayRotation = rotation
+		if (previousRotation == UNDEFINED_DISPLAY_ROTATION || (rotation - previousRotation + 4) % 4 != 2) {
+			return
+		}
+
+		val currentOrientation = orientation
+		runOnRenderThread {
+			GodotLib.onOrientationChange(currentOrientation)
+		}
 	}
 
 	/**
