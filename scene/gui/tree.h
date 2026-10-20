@@ -821,6 +821,7 @@ protected:
 	virtual void _update_theme_item_cache() override;
 
 	void _notification(int p_what);
+	virtual void _interactable_changed() override;
 	static void _bind_methods();
 
 	void _accessibility_action_scroll_down(const Variant &p_data);

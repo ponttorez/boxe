@@ -40,7 +40,7 @@
 void MenuButton::shortcut_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
-	if (disable_shortcuts) {
+	if (disable_shortcuts || !is_interactable_in_tree()) {
 		return;
 	}
 
@@ -138,6 +138,14 @@ void MenuButton::set_item_count(int p_count) {
 
 int MenuButton::get_item_count() const {
 	return popup->get_item_count();
+}
+
+// The popup can't be used once the button stops receiving input.
+void MenuButton::_interactable_changed() {
+	Button::_interactable_changed();
+	if (!is_interactable_in_tree()) {
+		popup->hide();
+	}
 }
 
 void MenuButton::_notification(int p_what) {

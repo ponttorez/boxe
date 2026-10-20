@@ -32,10 +32,15 @@
 
 TEST_FORCE_LINK(test_control)
 
+#include "core/input/input.h"
 #include "core/input/input_map.h" // IWYU pragma: keep // Used by `SEND_GUI_ACTION` macro.
 #include "scene/2d/canvas_group.h"
 #include "scene/2d/node_2d.h"
 #include "scene/gui/control.h"
+#include "scene/gui/menu_button.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/slider.h"
+#include "scene/gui/virtual_joystick.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 #include "tests/display_server_mock.h"
@@ -1390,6 +1395,145 @@ TEST_CASE("[SceneTree][Control] Raycast padding") {
 	}
 
 	memdelete(test_control);
+}
+
+// A control that starts dragging from anywhere.
+class DragSourceControl : public Control {
+public:
+	virtual Variant get_drag_data(const Point2 &p_point) override {
+		return 1;
+	}
+};
+
+TEST_CASE("[SceneTree][Control] Interactable") {
+	Window *root = SceneTree::get_singleton()->get_root();
+
+	SUBCASE("[Control] A control that isn't interactable loses the focus and can't grab it") {
+		Control *test_control = memnew(Control);
+		root->add_child(test_control);
+		test_control->set_focus_mode(Control::FOCUS_ALL);
+		test_control->grab_focus();
+		CHECK(test_control->has_focus());
+
+		test_control->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+		CHECK_FALSE(test_control->has_focus());
+		test_control->grab_focus();
+		CHECK_FALSE(test_control->has_focus());
+
+		memdelete(test_control);
+	}
+
+	SUBCASE("[Control] Input is consumed and doesn't reach the controls behind") {
+		Control *back_control = memnew(Control);
+		Control *front_control = memnew(Control);
+		root->add_child(back_control);
+		root->add_child(front_control);
+		back_control->set_size(Size2(100, 100));
+		front_control->set_size(Size2(100, 100));
+		front_control->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+		SIGNAL_WATCH(back_control, SNAME("gui_input"));
+		SIGNAL_WATCH(front_control, SNAME("gui_input"));
+
+		SEND_GUI_MOUSE_BUTTON_EVENT(Point2(50, 50), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+		SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(50, 50), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+		SIGNAL_CHECK_FALSE(SNAME("gui_input"));
+
+		SIGNAL_UNWATCH(back_control, SNAME("gui_input"));
+		SIGNAL_UNWATCH(front_control, SNAME("gui_input"));
+		memdelete(back_control);
+		memdelete(front_control);
+	}
+
+	SUBCASE("[Control] A control that isn't interactable doesn't start dragging") {
+		DragSourceControl *drag_control = memnew(DragSourceControl);
+		root->add_child(drag_control);
+		drag_control->set_size(Size2(100, 100));
+		drag_control->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+
+		SEND_GUI_MOUSE_BUTTON_EVENT(Point2(20, 20), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+		SEND_GUI_MOUSE_MOTION_EVENT(Point2(60, 60), MouseButtonMask::LEFT, Key::NONE);
+		CHECK_FALSE(root->gui_is_dragging());
+		SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(60, 60), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+
+		memdelete(drag_control);
+	}
+
+	SUBCASE("[Control] A slider stops being dragged when it stops being interactable") {
+		HSlider *slider = memnew(HSlider);
+		root->add_child(slider);
+		slider->set_size(Size2(200, 20));
+		slider->set_max(100);
+
+		SEND_GUI_MOUSE_BUTTON_EVENT(Point2(100, 10), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+		const double value = slider->get_value();
+		slider->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+		slider->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_INHERITED);
+		SEND_GUI_MOUSE_MOTION_EVENT(Point2(180, 10), MouseButtonMask::NONE, Key::NONE);
+		CHECK(slider->get_value() == value);
+
+		memdelete(slider);
+	}
+
+	SUBCASE("[Control] A virtual joystick releases its actions when it stops being interactable") {
+		VirtualJoystick *joystick = memnew(VirtualJoystick);
+		root->add_child(joystick);
+		joystick->set_position(Point2());
+		joystick->set_size(Size2(200, 200));
+		joystick->set_joystick_mode(VirtualJoystick::JOYSTICK_DYNAMIC);
+
+		Ref<InputEventScreenTouch> touch;
+		touch.instantiate();
+		touch->set_index(0);
+		touch->set_position(Point2(100, 100));
+		touch->set_pressed(true);
+		root->push_input(touch);
+		Ref<InputEventScreenDrag> drag;
+		drag.instantiate();
+		drag->set_index(0);
+		drag->set_position(Point2(190, 100));
+		root->push_input(drag);
+		REQUIRE(Input::get_singleton()->is_action_pressed("ui_right"));
+
+		joystick->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+		CHECK_FALSE(Input::get_singleton()->is_action_pressed("ui_right"));
+		touch->set_pressed(false);
+		root->push_input(touch);
+		joystick->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_INHERITED);
+		CHECK_FALSE(Input::get_singleton()->is_action_pressed("ui_right"));
+
+		memdelete(joystick);
+	}
+
+	SUBCASE("[Control] The shortcuts of a menu don't work when it isn't interactable") {
+		MenuButton *menu_button = memnew(MenuButton);
+		root->add_child(menu_button);
+		menu_button->get_popup()->add_item("Item", 1, KeyModifierMask::CTRL | Key::B);
+		SIGNAL_WATCH(menu_button->get_popup(), SNAME("id_pressed"));
+
+		menu_button->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+		SEND_GUI_KEY_EVENT(KeyModifierMask::CTRL | Key::B);
+		SIGNAL_CHECK_FALSE(SNAME("id_pressed"));
+
+		menu_button->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_INHERITED);
+		SEND_GUI_KEY_EVENT(KeyModifierMask::CTRL | Key::B);
+		SIGNAL_CHECK(SNAME("id_pressed"), { { 1 } });
+
+		SIGNAL_UNWATCH(menu_button->get_popup(), SNAME("id_pressed"));
+		memdelete(menu_button);
+	}
+
+	SUBCASE("[Control] The popup of a menu is closed when it stops being interactable") {
+		MenuButton *menu_button = memnew(MenuButton);
+		root->add_child(menu_button);
+		menu_button->get_popup()->add_item("Item");
+		menu_button->show_popup();
+		CHECK(menu_button->get_popup()->is_visible());
+
+		menu_button->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+		CHECK_FALSE(menu_button->get_popup()->is_visible());
+
+		memdelete(menu_button);
+	}
 }
 
 } // namespace TestControl

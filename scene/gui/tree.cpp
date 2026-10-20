@@ -5025,6 +5025,15 @@ void Tree::_accessibility_update_item(Point2 &r_ofs, TreeItem *p_item, int &r_ro
 	}
 }
 
+// A drag or edit can't end with input once the tree stops receiving it.
+void Tree::_interactable_changed() {
+	if (is_interactable_in_tree()) {
+		return;
+	}
+	drag_touching = false;
+	popup_editor->hide();
+}
+
 void Tree::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_EXIT_TREE:

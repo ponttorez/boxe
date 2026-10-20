@@ -161,7 +161,7 @@ void MenuBar::_open_popup(int p_index, bool p_focus_item) {
 void MenuBar::shortcut_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
-	if (disable_shortcuts) {
+	if (disable_shortcuts || !is_interactable_in_tree()) {
 		return;
 	}
 

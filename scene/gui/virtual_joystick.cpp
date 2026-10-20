@@ -73,6 +73,16 @@ void VirtualJoystick::gui_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
+// The touch can't end with input once the joystick stops receiving it, so it's released with its actions.
+void VirtualJoystick::_interactable_changed() {
+	if (is_interactable_in_tree() || touch_index == -1) {
+		return;
+	}
+	emit_signal(SNAME("released"), input_vector);
+	_reset();
+	queue_redraw();
+}
+
 void VirtualJoystick::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {

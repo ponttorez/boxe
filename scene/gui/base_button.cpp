@@ -115,6 +115,9 @@ void BaseButton::gui_input(const Ref<InputEvent> &p_event) {
 }
 
 void BaseButton::_accessibility_action_click(const Variant &p_data) {
+	if (!is_interactable_in_tree()) {
+		return;
+	}
 	if (toggle_mode) {
 		status.pressed = !status.pressed;
 
@@ -143,7 +146,8 @@ void BaseButton::_notification(int p_what) {
 			AccessibilityServer::get_singleton()->update_set_role(ae, AccessibilityServerEnums::AccessibilityRole::ROLE_BUTTON);
 
 			AccessibilityServer::get_singleton()->update_add_action(ae, AccessibilityServerEnums::AccessibilityAction::ACTION_CLICK, callable_mp(this, &BaseButton::_accessibility_action_click));
-			AccessibilityServer::get_singleton()->update_set_flag(ae, AccessibilityServerEnums::AccessibilityFlags::FLAG_DISABLED, status.disabled);
+			// Assistive technologies can't use a button that doesn't take input either.
+			AccessibilityServer::get_singleton()->update_set_flag(ae, AccessibilityServerEnums::AccessibilityFlags::FLAG_DISABLED, status.disabled || !is_interactable_in_tree());
 			if (toggle_mode) {
 				AccessibilityServer::get_singleton()->update_set_checked(ae, status.pressed);
 			}
@@ -313,6 +317,23 @@ void BaseButton::set_disabled(bool p_disabled) {
 	update_minimum_size();
 }
 
+// A press or hover can't end with input once the button stops receiving it.
+void BaseButton::_interactable_changed() {
+	if (is_interactable_in_tree()) {
+		return;
+	}
+	status.press_attempt = false;
+	status.pressing_inside = false;
+	status.hovering = false;
+	// The release of the touch won't come, so the next touch must start a press.
+	status.touch_index = -1;
+	if (status.pressed_down_with_focus) {
+		status.pressed_down_with_focus = false;
+		emit_signal(SNAME("button_up"));
+	}
+	queue_redraw();
+}
+
 bool BaseButton::is_disabled() const {
 	return status.disabled;
 }
@@ -471,7 +492,7 @@ void BaseButton::_shortcut_feedback_timeout() {
 void BaseButton::shortcut_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
-	if (!is_disabled() && p_event->is_pressed() && is_visible_in_tree() && !p_event->is_echo() && shortcut.is_valid() && shortcut->matches_event(p_event)) {
+	if (!is_disabled() && is_interactable_in_tree() && p_event->is_pressed() && is_visible_in_tree() && !p_event->is_echo() && shortcut.is_valid() && shortcut->matches_event(p_event)) {
 		if (toggle_mode) {
 			status.pressed = !status.pressed;
 

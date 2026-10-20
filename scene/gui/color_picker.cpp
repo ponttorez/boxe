@@ -2442,6 +2442,14 @@ void ColorPickerButton::gui_input(const Ref<InputEvent> &p_event) {
 	BaseButton::gui_input(p_event);
 }
 
+// The popup can't be used once the button stops receiving input.
+void ColorPickerButton::_interactable_changed() {
+	Button::_interactable_changed();
+	if (popup && !is_interactable_in_tree()) {
+		popup->hide();
+	}
+}
+
 void ColorPickerButton::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ACCESSIBILITY_UPDATE: {

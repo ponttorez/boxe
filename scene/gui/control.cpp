@@ -2566,6 +2566,88 @@ bool Control::has_point(const Point2 &p_point) const {
 	return get_raycast_rect().has_point(p_point);
 }
 
+void Control::set_interaction_behavior_recursive(InteractionBehaviorRecursive p_behavior) {
+	ERR_MAIN_THREAD_GUARD;
+	ERR_FAIL_INDEX((int)p_behavior, 3);
+	if (data.interaction_behavior_recursive == p_behavior) {
+		return;
+	}
+	data.interaction_behavior_recursive = p_behavior;
+	_update_interactable();
+}
+
+Control::InteractionBehaviorRecursive Control::get_interaction_behavior_recursive() const {
+	ERR_READ_THREAD_GUARD_V(INTERACTION_BEHAVIOR_INHERITED);
+	return data.interaction_behavior_recursive;
+}
+
+bool Control::is_interactable_in_tree() const {
+	ERR_READ_THREAD_GUARD_V(true);
+	switch (data.interaction_behavior_recursive) {
+		case INTERACTION_BEHAVIOR_DISABLED:
+			return false;
+		case INTERACTION_BEHAVIOR_ENABLED:
+			return true;
+		case INTERACTION_BEHAVIOR_INHERITED:
+		default:
+			return data.parent_interactable;
+	}
+}
+
+// The nearest Control ancestor in the same viewport decides, even through other nodes like Node2D.
+bool Control::_is_parent_interactable() const {
+	for (const Node *node = get_parent(); node && !Object::cast_to<Viewport>(node); node = node->get_parent()) {
+		const Control *control = Object::cast_to<Control>(node);
+		if (control) {
+			return control->is_interactable_in_tree();
+		}
+	}
+	return true;
+}
+
+void Control::_update_interactable() {
+	_propagate_interactable(_is_parent_interactable());
+	if (is_inside_tree()) {
+		// Drop the hover state and the cursor shape of controls that stopped receiving input.
+		get_viewport()->update_mouse_cursor_state();
+	}
+}
+
+void Control::_set_parent_interactable(bool p_parent_interactable) {
+	data.parent_interactable = p_parent_interactable;
+	const bool interactable_in_tree = is_interactable_in_tree();
+	if (data.interactable_in_tree == interactable_in_tree) {
+		return;
+	}
+	data.interactable_in_tree = interactable_in_tree;
+
+	// The control reacts first, so a button cancels its press before the release below.
+	_interactable_changed();
+	queue_accessibility_update();
+	if (!interactable_in_tree && is_inside_tree()) {
+		// Like a hidden control, it loses the mouse and keyboard focus, hover and tooltip. A held mouse button is
+		// released, so controls that are dragged, like sliders, stop.
+		get_viewport()->_gui_hide_control(this);
+	}
+}
+
+void Control::_propagate_interactable(bool p_parent_interactable) {
+	_set_parent_interactable(p_parent_interactable);
+	_propagate_interactable_to_children(this, is_interactable_in_tree());
+}
+
+void Control::_propagate_interactable_to_children(Node *p_node, bool p_interactable) {
+	for (int i = 0; i < p_node->get_child_count(); i++) {
+		Node *child = p_node->get_child(i);
+		Control *control = Object::cast_to<Control>(child);
+		if (control) {
+			control->_propagate_interactable(p_interactable);
+		} else if (!Object::cast_to<Viewport>(child)) {
+			_propagate_interactable_to_children(child, p_interactable);
+		}
+	}
+}
+
 void Control::set_raycast_padding(Side p_side, real_t p_value) {
 	ERR_MAIN_THREAD_GUARD;
 	ERR_FAIL_INDEX((int)p_side, 4);
@@ -2966,7 +3048,7 @@ Control::FocusMode Control::get_focus_mode() const {
 
 Control::FocusMode Control::get_focus_mode_with_override() const {
 	ERR_READ_THREAD_GUARD_V(FOCUS_NONE);
-	if (!_is_focus_mode_enabled()) {
+	if (!_is_focus_mode_enabled() || !is_interactable_in_tree()) {
 		return FOCUS_NONE;
 	}
 	return data.focus_mode;
@@ -3049,6 +3131,10 @@ void Control::grab_focus(bool p_hide_focus) {
 			WARN_PRINT("This control can grab focus only when screen reader is active. Use set_focus_mode() and set_focus_behavior_recursive() to allow a control to get focus. Use get_tree().is_accessibility_enabled() to check screen-reader state.");
 			return;
 		}
+	}
+
+	if (!is_interactable_in_tree()) {
+		return;
 	}
 
 	if (get_focus_mode_with_override() == FOCUS_NONE) {
@@ -4529,6 +4615,7 @@ void Control::_notification(int p_notification) {
 			AccessibilityServer::get_singleton()->update_set_tooltip(ae, data.tooltip);
 			AccessibilityServer::get_singleton()->update_set_flag(ae, AccessibilityServerEnums::AccessibilityFlags::FLAG_CLIPS_CHILDREN, data.clip_contents);
 			AccessibilityServer::get_singleton()->update_set_flag(ae, AccessibilityServerEnums::AccessibilityFlags::FLAG_TOUCH_PASSTHROUGH, data.mouse_filter == MOUSE_FILTER_PASS);
+			AccessibilityServer::get_singleton()->update_set_flag(ae, AccessibilityServerEnums::AccessibilityFlags::FLAG_DISABLED, !is_interactable_in_tree());
 
 			if (_is_focusable()) {
 				AccessibilityServer::get_singleton()->update_add_action(ae, AccessibilityServerEnums::AccessibilityAction::ACTION_FOCUS, callable_mp(this, &Control::_accessibility_action_foucs));
@@ -4602,11 +4689,13 @@ void Control::_notification(int p_notification) {
 
 			_update_focus_behavior_recursive();
 			_update_mouse_behavior_recursive();
+			_propagate_interactable(_is_parent_interactable());
 		} break;
 
 		case NOTIFICATION_UNPARENTED: {
 			data.parent_control = nullptr;
 			data.parent_window = nullptr;
+			_propagate_interactable(true);
 
 			data.theme_owner->clear_theme_on_unparented(this);
 		} break;
@@ -4614,6 +4703,8 @@ void Control::_notification(int p_notification) {
 		case NOTIFICATION_ENTER_TREE: {
 			// Emits NOTIFICATION_THEME_CHANGED internally.
 			set_theme_context(ThemeDB::get_singleton()->get_nearest_theme_context(this));
+			// A node between this control and its Control ancestor may have moved. The children update when they enter too.
+			_set_parent_interactable(_is_parent_interactable());
 		} break;
 
 		case NOTIFICATION_POST_ENTER_TREE: {
@@ -4973,6 +5064,10 @@ void Control::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_clip_contents", "enable"), &Control::set_clip_contents);
 	ClassDB::bind_method(D_METHOD("is_clipping_contents"), &Control::is_clipping_contents);
 
+	ClassDB::bind_method(D_METHOD("set_interaction_behavior_recursive", "interaction_behavior_recursive"), &Control::set_interaction_behavior_recursive);
+	ClassDB::bind_method(D_METHOD("get_interaction_behavior_recursive"), &Control::get_interaction_behavior_recursive);
+	ClassDB::bind_method(D_METHOD("is_interactable_in_tree"), &Control::is_interactable_in_tree);
+
 	ClassDB::bind_method(D_METHOD("set_raycast_padding", "side", "padding"), &Control::set_raycast_padding);
 	ClassDB::bind_method(D_METHOD("get_raycast_padding", "side"), &Control::get_raycast_padding);
 
@@ -5131,6 +5226,7 @@ void Control::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "raycast_padding_bottom", PROPERTY_HINT_RANGE, "-1024,1024,1,or_less,or_greater,suffix:px"), "set_raycast_padding", "get_raycast_padding", SIDE_BOTTOM);
 
 	ADD_GROUP("Input", "");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "interaction_behavior_recursive", PROPERTY_HINT_ENUM, "Inherited,Disabled,Enabled"), "set_interaction_behavior_recursive", "get_interaction_behavior_recursive");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "shortcut_context", PROPERTY_HINT_NODE_TYPE, "Node"), "set_shortcut_context", "get_shortcut_context");
 
 	ADD_GROUP("Accessibility", "accessibility_");
@@ -5154,6 +5250,10 @@ void Control::_bind_methods() {
 	BIND_ENUM_CONSTANT(FOCUS_BEHAVIOR_INHERITED);
 	BIND_ENUM_CONSTANT(FOCUS_BEHAVIOR_DISABLED);
 	BIND_ENUM_CONSTANT(FOCUS_BEHAVIOR_ENABLED);
+
+	BIND_ENUM_CONSTANT(INTERACTION_BEHAVIOR_INHERITED);
+	BIND_ENUM_CONSTANT(INTERACTION_BEHAVIOR_DISABLED);
+	BIND_ENUM_CONSTANT(INTERACTION_BEHAVIOR_ENABLED);
 
 	BIND_ENUM_CONSTANT(MOUSE_BEHAVIOR_INHERITED);
 	BIND_ENUM_CONSTANT(MOUSE_BEHAVIOR_DISABLED);

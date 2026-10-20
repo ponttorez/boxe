@@ -75,6 +75,7 @@ class SplitContainerDragger : public Control {
 
 protected:
 	void _notification(int p_what);
+	virtual void _interactable_changed() override;
 	virtual void gui_input(const Ref<InputEvent> &p_event) override;
 
 	void _accessibility_action_inc(const Variant &p_data);

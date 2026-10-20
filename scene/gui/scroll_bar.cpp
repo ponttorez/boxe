@@ -257,6 +257,17 @@ void ScrollBar::gui_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
+// A press or drag can't end with input once the scroll bar stops receiving it.
+void ScrollBar::_interactable_changed() {
+	if (is_interactable_in_tree()) {
+		return;
+	}
+	incr_active = false;
+	decr_active = false;
+	drag.active = false;
+	queue_redraw();
+}
+
 void ScrollBar::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ACCESSIBILITY_UPDATE: {

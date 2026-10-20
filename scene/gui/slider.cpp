@@ -201,6 +201,16 @@ void Slider::gui_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
+// A drag can't end with input once the slider stops receiving it.
+void Slider::_interactable_changed() {
+	if (is_interactable_in_tree()) {
+		return;
+	}
+	mouse_inside = false;
+	grab.active = false;
+	queue_redraw();
+}
+
 void Slider::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_INTERNAL_PROCESS: {

@@ -110,6 +110,7 @@ protected:
 	} theme_cache;
 
 	void _notification(int p_what);
+	virtual void _interactable_changed() override;
 	static void _bind_methods();
 
 public:

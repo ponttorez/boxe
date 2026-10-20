@@ -155,6 +155,7 @@ protected:
 	void _validate_property(PropertyInfo &p_property) const;
 
 	void _notification(int p_what);
+	virtual void _interactable_changed() override;
 	static void _bind_methods();
 
 public:

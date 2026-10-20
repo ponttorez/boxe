@@ -40,7 +40,7 @@ static const int NONE_SELECTED = -1;
 void OptionButton::shortcut_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
-	if (disable_shortcuts) {
+	if (disable_shortcuts || !is_interactable_in_tree()) {
 		return;
 	}
 
@@ -77,6 +77,14 @@ Size2 OptionButton::get_minimum_size() const {
 	}
 
 	return minsize;
+}
+
+// The popup can't be used once the button stops receiving input.
+void OptionButton::_interactable_changed() {
+	Button::_interactable_changed();
+	if (!is_interactable_in_tree()) {
+		popup->hide();
+	}
 }
 
 void OptionButton::_notification(int p_what) {

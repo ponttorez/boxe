@@ -85,6 +85,7 @@ private:
 protected:
 	virtual void gui_input(const Ref<InputEvent> &p_event) override;
 	void _notification(int p_what);
+	virtual void _interactable_changed() override;
 	static void _bind_methods();
 
 public:

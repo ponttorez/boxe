@@ -538,6 +538,7 @@ class ColorPickerButton : public Button {
 
 protected:
 	void _notification(int);
+	virtual void _interactable_changed() override;
 	static void _bind_methods();
 	virtual void gui_input(const Ref<InputEvent> &p_event) override;
 

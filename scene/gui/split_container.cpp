@@ -326,6 +326,13 @@ String SplitContainerDragger::_get_accessibility_name() const {
 	return RTR("Drag to resize");
 }
 
+// A drag can't end with input once the dragger stops receiving it.
+void SplitContainerDragger::_interactable_changed() {
+	if (dragging && !is_interactable_in_tree()) {
+		stop_dragging();
+	}
+}
+
 void SplitContainerDragger::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ACCESSIBILITY_UPDATE: {
