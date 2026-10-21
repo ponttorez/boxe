@@ -389,7 +389,8 @@ void ThemeDB::get_class_items(const StringName &p_class_name, List<ThemeItemBind
 		class_name = ClassDB::get_parent_class_nocheck(class_name);
 	}
 
-	HashSet<StringName> inherited_props;
+	// Items of different data types may share a name (e.g. the "hover" style and the "hover" sound).
+	HashSet<String> inherited_props;
 	for (const StringName &theme_type : class_hierarchy) {
 		HashMap<StringName, List<ThemeItemBind>>::Iterator E = theme_item_binds_list.find(theme_type);
 		if (E) {
@@ -397,11 +398,12 @@ void ThemeDB::get_class_items(const StringName &p_class_name, List<ThemeItemBind
 				if (p_filter_type != Theme::DATA_TYPE_MAX && F.data_type != p_filter_type) {
 					continue;
 				}
-				if (inherited_props.has(F.item_name)) {
+				const String prop_key = itos(F.data_type) + "/" + String(F.item_name);
+				if (inherited_props.has(prop_key)) {
 					continue; // Skip inherited properties.
 				}
 				if (F.external || F.class_name != p_class_name) {
-					inherited_props.insert(F.item_name);
+					inherited_props.insert(prop_key);
 
 					if (!p_include_inherited) {
 						continue; // Track properties defined in parent classes, and skip them.

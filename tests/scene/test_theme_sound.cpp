@@ -41,7 +41,9 @@ TEST_FORCE_LINK(test_theme_sound)
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 #include "scene/resources/audio_stream_wav.h"
+#include "scene/resources/theme.h"
 #include "servers/audio/audio_server.h"
+#include "tests/display_server_mock.h"
 
 namespace TestThemeSound {
 
@@ -226,6 +228,81 @@ TEST_CASE("[SceneTree][ThemeSound] Touches don't play hover sounds") {
 	CHECK(ThemeSound::play_hover(make_sound(), control));
 
 	memdelete(control);
+}
+
+TEST_CASE("[Theme] Sounds") {
+	Ref<Theme> theme;
+	theme.instantiate();
+	const Ref<AudioStream> sound = make_sound();
+
+	theme->set_sound("pressed", "Button", sound);
+	CHECK(theme->has_sound("pressed", "Button"));
+	CHECK(theme->get_sound("pressed", "Button") == sound);
+	CHECK(theme->get_theme_item(Theme::DATA_TYPE_SOUND, "pressed", "Button") == Variant(sound));
+
+	List<StringName> types;
+	theme->get_type_list(&types);
+	CHECK(types.find("Button") != nullptr);
+
+	theme->rename_sound("pressed", "toggled_on", "Button");
+	CHECK_FALSE(theme->has_sound("pressed", "Button"));
+	CHECK(theme->get_sound("toggled_on", "Button") == sound);
+
+	Ref<Theme> merged;
+	merged.instantiate();
+	merged->merge_with(theme);
+	CHECK_MESSAGE(merged->get_sound("toggled_on", "Button") == sound, "Merging copies the sounds.");
+
+	theme->clear_sound("toggled_on", "Button");
+	CHECK_FALSE(theme->has_sound("toggled_on", "Button"));
+}
+
+TEST_CASE("[SceneTree][Control][Window] Theme sounds and their overrides") {
+	Ref<Theme> theme;
+	theme.instantiate();
+	const Ref<AudioStream> theme_sound = make_sound();
+	const Ref<AudioStream> override_sound = make_sound();
+	theme->set_sound("hover", "Control", theme_sound);
+
+	Control *control = memnew(Control);
+	control->set_theme(theme);
+	SceneTree::get_singleton()->get_root()->add_child(control);
+	CHECK(control->has_theme_sound("hover"));
+	CHECK(control->get_theme_sound("hover") == theme_sound);
+
+	control->add_theme_sound_override("hover", override_sound);
+	CHECK(control->has_theme_sound_override("hover"));
+	CHECK(control->get_theme_sound("hover") == override_sound);
+	control->remove_theme_sound_override("hover");
+	CHECK(control->get_theme_sound("hover") == theme_sound);
+
+	Window *window = memnew(Window);
+	SceneTree::get_singleton()->get_root()->add_child(window);
+	CHECK_FALSE(window->has_theme_sound("hover"));
+	window->add_theme_sound_override("hover", override_sound);
+	CHECK(window->get_theme_sound("hover") == override_sound);
+
+	memdelete(window);
+	memdelete(control);
+}
+
+TEST_CASE("[SceneTree][Control] A press on a control that isn't interactable plays no sound") {
+	ThemeSound::clear();
+	Control *parent = memnew(Control);
+	SceneTree::get_singleton()->get_root()->add_child(parent);
+	Control *child = memnew(Control);
+	parent->add_child(child);
+	parent->set_size(Size2(100, 100));
+	child->set_size(Size2(100, 100));
+	child->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+	parent->add_theme_sound_override("denied", make_sound());
+
+	const uint64_t played = ThemeSound::get_played_count();
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2(50, 50), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(50, 50), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+	CHECK(ThemeSound::get_played_count() == played);
+
+	memdelete(parent);
 }
 
 } // namespace TestThemeSound
