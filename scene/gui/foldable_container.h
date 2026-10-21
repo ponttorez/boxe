@@ -85,6 +85,9 @@ private:
 		Ref<Texture2D> folded_arrow_mirrored;
 
 		int h_separation = 0;
+
+		Ref<AudioStream> sound_toggled_on;
+		Ref<AudioStream> sound_toggled_off;
 	} theme_cache;
 
 	Ref<StyleBox> _get_title_style() const;
@@ -93,6 +96,7 @@ private:
 	int _get_h_separation() const { return MAX(theme_cache.h_separation, 0); }
 	real_t _get_title_controls_width() const;
 
+	void _toggle_folded_by_user();
 	void _update_title_min_size() const;
 	void _shape();
 	HorizontalAlignment _get_actual_alignment() const;

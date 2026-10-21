@@ -84,4 +84,9 @@
 			</description>
 		</signal>
 	</signals>
+	<theme_items>
+		<theme_item name="value_changed" data_type="sound" type="AudioStream">
+			Sound played when the user changes the value of a [Slider], [ScrollBar] or [SpinBox]. Repeated changes are throttled to one sound per 50 milliseconds.
+		</theme_item>
+	</theme_items>
 </class>

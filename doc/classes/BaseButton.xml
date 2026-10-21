@@ -129,4 +129,21 @@
 			Require a press and a subsequent release before considering the button clicked.
 		</constant>
 	</constants>
+	<theme_items>
+		<theme_item name="denied" data_type="sound" type="AudioStream">
+			Sound played when the user presses the button while it is disabled. Also played when the user presses a control that is not interactable, see [member Control.interactable].
+		</theme_item>
+		<theme_item name="hover" data_type="sound" type="AudioStream">
+			Sound played when the mouse enters the button, unless it is disabled.
+		</theme_item>
+		<theme_item name="pressed" data_type="sound" type="AudioStream">
+			Sound played when the user activates the button. In toggle mode, [theme_item toggled_on] and [theme_item toggled_off] take precedence if set.
+		</theme_item>
+		<theme_item name="toggled_off" data_type="sound" type="AudioStream">
+			Sound played when the user toggles the button off. Falls back to [theme_item pressed] if not set.
+		</theme_item>
+		<theme_item name="toggled_on" data_type="sound" type="AudioStream">
+			Sound played when the user toggles the button on. Falls back to [theme_item pressed] if not set.
+		</theme_item>
+	</theme_items>
 </class>

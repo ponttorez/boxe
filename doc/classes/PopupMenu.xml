@@ -853,6 +853,18 @@
 		<theme_item name="unchecked_disabled" data_type="icon" type="Texture2D">
 			[Texture2D] icon for the unchecked checkbox items when they are disabled.
 		</theme_item>
+		<theme_item name="closed" data_type="sound" type="AudioStream">
+			Sound played when the menu is hidden.
+		</theme_item>
+		<theme_item name="hover" data_type="sound" type="AudioStream">
+			Sound played when the user focuses another item.
+		</theme_item>
+		<theme_item name="opened" data_type="sound" type="AudioStream">
+			Sound played when the menu is shown.
+		</theme_item>
+		<theme_item name="selected" data_type="sound" type="AudioStream">
+			Sound played when the user activates an item.
+		</theme_item>
 		<theme_item name="checked" data_type="style" type="StyleBox">
 			The style box of the check of checked items. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the check.
 		</theme_item>

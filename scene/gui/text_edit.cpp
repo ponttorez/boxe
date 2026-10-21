@@ -45,6 +45,7 @@
 #include "core/string/string_builder.h"
 #include "scene/gui/label.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -2256,6 +2257,17 @@ bool TextEdit::alt_input(const Ref<InputEvent> &p_gui_input) {
 
 void TextEdit::gui_input(const Ref<InputEvent> &p_gui_input) {
 	ERR_FAIL_COND(p_gui_input.is_null());
+
+	// Plays the "typed" theme sound when the input changed the text.
+	struct TypedSoundGuard {
+		TextEdit *text_edit;
+		uint32_t version;
+		~TypedSoundGuard() {
+			if (text_edit->get_version() != version) {
+				ThemeSound::play(text_edit->theme_cache.sound_typed, text_edit);
+			}
+		}
+	} typed_sound_guard{ this, get_version() };
 
 	double prev_v_scroll = v_scroll->get_value();
 	double prev_h_scroll = h_scroll->get_value();
@@ -7730,6 +7742,8 @@ void TextEdit::_bind_methods() {
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, TextEdit, current_line_color);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, TextEdit, word_highlighted_color);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, TextEdit, sound_typed, "typed");
 
 	/* Settings. */
 	GLOBAL_DEF(PropertyInfo(Variant::FLOAT, "gui/timers/text_edit_idle_detect_sec", PROPERTY_HINT_RANGE, "0,10,0.01,or_greater"), 3);

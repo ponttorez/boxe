@@ -144,6 +144,9 @@ private:
 	float gamepad_event_delay_ms = DEFAULT_GAMEPAD_EVENT_DELAY_MS;
 
 	struct ThemeCache {
+		Ref<AudioStream> sound_selected;
+		Ref<AudioStream> sound_hover;
+
 		int h_separation = 0;
 		int tab_separation = 0;
 		int icon_max_width = 0;

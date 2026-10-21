@@ -164,6 +164,7 @@ class PopupMenu : public Popup {
 	void _accessibility_action_click(const Variant &p_data, int p_idx);
 
 	void _activate_submenu(int p_over, bool p_by_keyboard = false);
+	void _play_hover_sound();
 	void _submenu_timeout();
 	bool _is_mouse_moving_toward_submenu(const Vector2 &p_relative, bool p_is_submenu_left, const Vector2 &p_mouse_position, const Vector<Point2> &p_active_submenu_target_line) const;
 	void _close_or_suspend();
@@ -204,6 +205,11 @@ class PopupMenu : public Popup {
 	struct ThemeCache {
 		Ref<StyleBox> panel_style;
 		Ref<StyleBox> hover_style;
+
+		Ref<AudioStream> sound_opened;
+		Ref<AudioStream> sound_closed;
+		Ref<AudioStream> sound_hover;
+		Ref<AudioStream> sound_selected;
 
 		Ref<StyleBox> separator_style;
 		Ref<StyleBox> labeled_separator_left;

@@ -262,6 +262,7 @@ void SpinBox::_mouse_exited() {
 
 void SpinBox::gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
+	ValueSoundGuard value_sound_guard(this);
 
 	if (!is_editable()) {
 		return;

@@ -61,7 +61,23 @@ class Range : public Control {
 	void _changed_notify();
 	void _set_value_no_signal(double p_val);
 
+	struct ThemeCache {
+		Ref<AudioStream> sound_value_changed;
+	} theme_cache;
+
+	uint64_t last_value_sound_usec = 0;
+
 protected:
+	// Plays the "value_changed" theme sound when the value changed while handling user input.
+	struct ValueSoundGuard {
+		Range *range = nullptr;
+		double value = 0.0;
+		ValueSoundGuard(Range *p_range) :
+				range(p_range), value(p_range->get_value()) {}
+		~ValueSoundGuard() { range->_play_value_sound(value); }
+	};
+	void _play_value_sound(double p_previous_value);
+
 	static double _snapped_r128(double p_value, double p_step);
 	double _calc_value(double p_val, double p_step) const;
 	virtual void _value_changed(double p_value);

@@ -35,6 +35,7 @@
 #include "core/object/class_db.h"
 #include "core/os/os.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 #include "servers/rendering/rendering_server.h"
@@ -772,6 +773,9 @@ void ItemList::gui_input(const Ref<InputEvent> &p_event) {
 		if (closest != hovered) {
 			prev_hovered = hovered;
 			hovered = closest;
+			if (hovered != -1 && !items[hovered].disabled) {
+				ThemeSound::play(theme_cache.sound_hover, this);
+			}
 			queue_accessibility_update();
 			queue_redraw();
 		}
@@ -2500,6 +2504,10 @@ void ItemList::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, ItemList, cursor_focus_style, "cursor");
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, ItemList, guide_color);
 
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, ItemList, sound_selected, "selected");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, ItemList, sound_activated, "activated");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, ItemList, sound_hover, "hover");
+
 	Item defaults(true);
 
 	base_property_helper.set_prefix("item_");
@@ -2509,6 +2517,20 @@ void ItemList::_bind_methods() {
 	base_property_helper.register_property(PropertyInfo(Variant::BOOL, "selectable"), defaults.selectable, &ItemList::set_item_selectable, &ItemList::is_item_selectable);
 	base_property_helper.register_property(PropertyInfo(Variant::BOOL, "disabled"), defaults.disabled, &ItemList::set_item_disabled, &ItemList::is_item_disabled);
 	PropertyListHelper::register_base_helper(get_class_static(), &base_property_helper);
+}
+
+void ItemList::_play_selected_sound() {
+	ThemeSound::play(theme_cache.sound_selected, this);
+}
+
+void ItemList::_play_multi_selected_sound(int p_index, bool p_selected) {
+	if (p_selected) {
+		ThemeSound::play(theme_cache.sound_selected, this);
+	}
+}
+
+void ItemList::_play_activated_sound() {
+	ThemeSound::play(theme_cache.sound_activated, this);
 }
 
 ItemList::ItemList() {
@@ -2528,6 +2550,11 @@ ItemList::ItemList() {
 	set_clip_contents(true);
 
 	property_helper.setup_for_instance(base_property_helper, this);
+
+	// These signals are only emitted for user interaction.
+	connect(SceneStringName(item_selected), callable_mp(this, &ItemList::_play_selected_sound).unbind(1));
+	connect(SNAME("multi_selected"), callable_mp(this, &ItemList::_play_multi_selected_sound));
+	connect(SNAME("item_activated"), callable_mp(this, &ItemList::_play_activated_sound).unbind(1));
 }
 
 ItemList::~ItemList() {

@@ -32,6 +32,9 @@
 
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
+#include "core/os/os.h"
+#include "scene/gui/theme_sound.h"
+#include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
 #include <thirdparty/misc/r128.h>
@@ -386,6 +389,20 @@ void Range::_unref_shared() {
 	}
 }
 
+void Range::_play_value_sound(double p_previous_value) {
+	// Dragging changes the value every frame, so the sound is limited to a few times per second.
+	static constexpr uint64_t MIN_SOUND_INTERVAL_USEC = 50000;
+	if (get_value() == p_previous_value) {
+		return;
+	}
+	const uint64_t now = OS::get_singleton()->get_ticks_usec();
+	if (now - last_value_sound_usec < MIN_SOUND_INTERVAL_USEC) {
+		return;
+	}
+	last_value_sound_usec = now;
+	ThemeSound::play(theme_cache.sound_value_changed, this);
+}
+
 void Range::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_value"), &Range::get_value);
 	ClassDB::bind_method(D_METHOD("get_min"), &Range::get_min);
@@ -433,6 +450,8 @@ void Range::_bind_methods() {
 	ADD_LINKED_PROPERTY("min_value", "page");
 	ADD_LINKED_PROPERTY("max_value", "value");
 	ADD_LINKED_PROPERTY("max_value", "page");
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Range, sound_value_changed, "value_changed");
 }
 
 void Range::set_use_rounded_values(bool p_enable) {

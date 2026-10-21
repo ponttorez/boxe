@@ -68,6 +68,16 @@ private:
 
 	Ref<ButtonGroup> button_group;
 
+	struct ThemeCache {
+		Ref<AudioStream> sound_pressed;
+		Ref<AudioStream> sound_toggled_on;
+		Ref<AudioStream> sound_toggled_off;
+		Ref<AudioStream> sound_hover;
+		Ref<AudioStream> sound_denied;
+	} theme_cache;
+
+	void _play_action_sound();
+
 	void _unpress_group();
 	void _pressed();
 	void _toggled(bool p_pressed);

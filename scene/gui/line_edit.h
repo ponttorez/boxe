@@ -204,7 +204,13 @@ private:
 	bool pending_select_all_on_focus = false;
 	bool select_all_on_focus = false;
 
+	void _play_typed_sound();
+	void _play_submitted_sound();
+
 	struct ThemeCache {
+		Ref<AudioStream> sound_typed;
+		Ref<AudioStream> sound_submitted;
+
 		Ref<StyleBox> normal;
 		Ref<StyleBox> read_only;
 		Ref<StyleBox> focus;

@@ -65,6 +65,9 @@ private:
 		Ref<StyleBox> normal_tip;
 		Ref<StyleBox> pressed_joystick;
 		Ref<StyleBox> pressed_tip;
+
+		Ref<AudioStream> sound_pressed;
+		Ref<AudioStream> sound_released;
 	} theme_cache;
 
 	bool is_pressed = false;

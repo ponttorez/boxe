@@ -32,6 +32,7 @@
 
 #include "core/object/class_db.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/resources/text_line.h"
 #include "scene/theme/theme_db.h"
 
@@ -264,8 +265,7 @@ void FoldableContainer::gui_input(const Ref<InputEvent> &p_event) {
 	}
 
 	if (p_event->is_action_pressed(SNAME("ui_accept"), false, true)) {
-		set_folded(!folded);
-		emit_signal(SNAME("folding_changed"), folded);
+		_toggle_folded_by_user();
 		accept_event();
 		return;
 	}
@@ -273,11 +273,16 @@ void FoldableContainer::gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventMouseButton> b = p_event;
 	if (b.is_valid()) {
 		if (b->get_button_index() == MouseButton::LEFT && b->is_pressed() && _get_title_rect().has_point(b->get_position())) {
-			set_folded(!folded);
-			emit_signal(SNAME("folding_changed"), folded);
+			_toggle_folded_by_user();
 			accept_event();
 		}
 	}
+}
+
+void FoldableContainer::_toggle_folded_by_user() {
+	set_folded(!folded);
+	ThemeSound::play(folded ? theme_cache.sound_toggled_off : theme_cache.sound_toggled_on, this);
+	emit_signal(SNAME("folding_changed"), folded);
 }
 
 String FoldableContainer::get_tooltip(const Point2 &p_pos) const {
@@ -625,6 +630,9 @@ void FoldableContainer::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, FoldableContainer, folded_arrow_mirrored);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, FoldableContainer, h_separation);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_toggled_on, "toggled_on");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_toggled_off, "toggled_off");
 }
 
 FoldableContainer::FoldableContainer(const String &p_text) {

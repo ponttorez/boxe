@@ -43,6 +43,7 @@
 #include "core/string/alt_codes.h"
 #include "scene/gui/label.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -3566,7 +3567,18 @@ void LineEdit::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LineEdit, clear_button_color);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LineEdit, clear_button_color_pressed);
 
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, LineEdit, sound_typed, "typed");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, LineEdit, sound_submitted, "submitted");
+
 	ADD_CLASS_DEPENDENCY("PopupMenu");
+}
+
+void LineEdit::_play_typed_sound() {
+	ThemeSound::play(theme_cache.sound_typed, this);
+}
+
+void LineEdit::_play_submitted_sound() {
+	ThemeSound::play(theme_cache.sound_submitted, this);
 }
 
 LineEdit::LineEdit(const String &p_placeholder) {
@@ -3584,6 +3596,10 @@ LineEdit::LineEdit(const String &p_placeholder) {
 	set_placeholder(p_placeholder);
 
 	set_editable(true); // Initialize to opposite first, so we get past the early-out in set_editable.
+
+	// These signals are only emitted for user input.
+	connect(SceneStringName(text_changed), callable_mp(this, &LineEdit::_play_typed_sound).unbind(1));
+	connect(SceneStringName(text_submitted), callable_mp(this, &LineEdit::_play_submitted_sound).unbind(1));
 }
 
 LineEdit::~LineEdit() {

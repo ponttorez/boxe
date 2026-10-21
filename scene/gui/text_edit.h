@@ -607,6 +607,8 @@ private:
 
 	/* Visual. */
 	struct ThemeCache {
+		Ref<AudioStream> sound_typed;
+
 		float base_scale = 1.0;
 
 		/* Search */

@@ -31,6 +31,7 @@
 #include "tree.h"
 #include "tree.compat.inc"
 
+#include "core/config/engine.h"
 #include "core/config/project_settings.h"
 #include "core/input/input.h"
 #include "core/math/math_funcs.h"
@@ -45,6 +46,7 @@
 #include "scene/gui/slider.h"
 #include "scene/gui/style_transitions.h"
 #include "scene/gui/text_edit.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/timer.h"
 #include "scene/main/window.h"
@@ -4364,6 +4366,29 @@ void Tree::_incr_search_as_needed(const Ref<InputEventKey> &p_event_key) {
 	}
 }
 
+// The index of an enabled button of a cell, -1 for disabled or missing buttons.
+int Tree::_get_enabled_button(const TreeItem *p_item, int p_column, int p_button_index) {
+	if (!p_item || p_column < 0 || p_column >= p_item->cells.size() || p_button_index < 0 || p_button_index >= p_item->cells[p_column].buttons.size()) {
+		return -1;
+	}
+	return p_item->cells[p_column].buttons[p_button_index].disabled ? -1 : p_button_index;
+}
+
+void Tree::_play_hover_sound(TreeItem *p_old_item, int p_old_column, int p_old_button_index) {
+	if (!cache.hover_item) {
+		return;
+	}
+
+	// The hovered target follows the hover highlight: the row, the cell unless whole rows are selected, and the enabled cell button.
+	const bool per_cell = select_mode != SELECT_ROW;
+	const int old_button = _get_enabled_button(p_old_item, p_old_column, p_old_button_index);
+	const int new_button = _get_enabled_button(cache.hover_item, cache.hover_column, cache.hover_button_index_in_column);
+
+	if (cache.hover_item != p_old_item || (per_cell && cache.hover_column != p_old_column) || new_button != old_button || (new_button != -1 && cache.hover_column != p_old_column)) {
+		ThemeSound::play(theme_cache.sound_hover, this);
+	}
+}
+
 void Tree::_determine_hovered_item() {
 	hovered_update_queued = false;
 
@@ -4461,6 +4486,7 @@ void Tree::_determine_hovered_item() {
 		cache.hover_item = it;
 		cache.hover_column = col;
 		cache.hover_button_index_in_column = col_button_index;
+		_play_hover_sound(old_item, old_column, old_button_index_in_column);
 
 		if (it != old_item || col != old_column) {
 			if (old_item && old_column >= old_item->cells.size()) {
@@ -5673,6 +5699,9 @@ void Tree::item_edited(int p_column, TreeItem *p_item, MouseButton p_custom_mous
 	if (p_item != nullptr && p_column >= 0 && p_column < p_item->cells.size()) {
 		edited_item->cells.write[p_column].dirty = true;
 		edited_item->cells.write[p_column].cached_minimum_size_dirty = true;
+	}
+	if (p_item != nullptr && p_column >= 0 && p_column < p_item->cells.size() && p_item->cells[p_column].mode == TreeItem::CELL_MODE_CHECK) {
+		ThemeSound::play(p_item->cells[p_column].checked ? theme_cache.sound_toggled_on : theme_cache.sound_toggled_off, this);
 	}
 	emit_signal(SNAME("item_edited"));
 	if (p_custom_mouse_index != MouseButton::NONE) {
@@ -7470,6 +7499,13 @@ void Tree::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, Tree, title_button_hover);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, Tree, title_button_color);
 
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_selected, "selected");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_activated, "activated");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_hover, "hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_pressed, "pressed");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_toggled_on, "toggled_on");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_toggled_off, "toggled_off");
+
 	ADD_CLASS_DEPENDENCY("HScrollBar");
 	ADD_CLASS_DEPENDENCY("HSlider");
 	ADD_CLASS_DEPENDENCY("LineEdit");
@@ -7477,6 +7513,30 @@ void Tree::_bind_methods() {
 	ADD_CLASS_DEPENDENCY("TextEdit");
 	ADD_CLASS_DEPENDENCY("Timer");
 	ADD_CLASS_DEPENDENCY("VScrollBar");
+}
+
+// A selection emits several of the selection signals, depending on the select mode.
+void Tree::_play_selected_sound() {
+	const uint64_t frame = Engine::get_singleton()->get_process_frames();
+	if (frame == selected_sound_frame) {
+		return;
+	}
+	selected_sound_frame = frame;
+	ThemeSound::play(theme_cache.sound_selected, this);
+}
+
+void Tree::_play_multi_selected_sound(Object *p_item, int p_column, bool p_selected) {
+	if (p_selected) {
+		_play_selected_sound();
+	}
+}
+
+void Tree::_play_activated_sound() {
+	ThemeSound::play(theme_cache.sound_activated, this);
+}
+
+void Tree::_play_pressed_sound() {
+	ThemeSound::play(theme_cache.sound_pressed, this);
 }
 
 Tree::Tree() {
@@ -7553,6 +7613,13 @@ Tree::Tree() {
 	set_mouse_filter(MOUSE_FILTER_STOP);
 
 	set_clip_contents(true);
+
+	// These signals are only emitted for user interaction.
+	connect(SNAME("item_selected"), callable_mp(this, &Tree::_play_selected_sound));
+	connect(SNAME("cell_selected"), callable_mp(this, &Tree::_play_selected_sound));
+	connect(SNAME("multi_selected"), callable_mp(this, &Tree::_play_multi_selected_sound));
+	connect(SNAME("item_activated"), callable_mp(this, &Tree::_play_activated_sound));
+	connect(SNAME("button_clicked"), callable_mp(this, &Tree::_play_pressed_sound).unbind(4));
 }
 
 Tree::~Tree() {

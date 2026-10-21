@@ -46,6 +46,7 @@ void ScrollBar::set_can_focus_by_default(bool p_can_focus) {
 
 void ScrollBar::gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
+	ValueSoundGuard value_sound_guard(this);
 
 	Ref<InputEventMouseMotion> m = p_event;
 

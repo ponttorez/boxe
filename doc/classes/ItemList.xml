@@ -578,6 +578,15 @@
 		<theme_item name="scroll_hint" data_type="icon" type="Texture2D">
 			The indicator that will be shown when the content can still be scrolled. See [member scroll_hint_mode].
 		</theme_item>
+		<theme_item name="activated" data_type="sound" type="AudioStream">
+			Sound played when the user activates an item (double-click or [kbd]Enter[/kbd]).
+		</theme_item>
+		<theme_item name="hover" data_type="sound" type="AudioStream">
+			Sound played when the mouse moves onto another enabled item.
+		</theme_item>
+		<theme_item name="selected" data_type="sound" type="AudioStream">
+			Sound played when the user selects an item.
+		</theme_item>
 		<theme_item name="cursor" data_type="style" type="StyleBox">
 			[StyleBox] used for the cursor, when the [ItemList] is being focused.
 		</theme_item>

@@ -97,6 +97,12 @@
 		</constant>
 	</constants>
 	<theme_items>
+		<theme_item name="pressed" data_type="sound" type="AudioStream">
+			Sound played when the joystick is touched.
+		</theme_item>
+		<theme_item name="released" data_type="sound" type="AudioStream">
+			Sound played when the joystick is released.
+		</theme_item>
 		<theme_item name="normal_joystick" data_type="style" type="StyleBox">
 			Base joystick [StyleBox].
 		</theme_item>
