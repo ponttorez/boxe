@@ -156,11 +156,12 @@ Ref<StyleBox> Button::_get_current_stylebox() const {
 
 String Button::_get_accessibility_name() const {
 	const String &ac_name = Control::_get_accessibility_name();
-	if (!xl_text.is_empty() && ac_name.is_empty()) {
-		return xl_text;
-	} else if (!xl_text.is_empty() && !ac_name.is_empty() && ac_name != xl_text) {
-		return ac_name + ": " + xl_text;
-	} else if (xl_text.is_empty() && ac_name.is_empty() && !get_tooltip_text().is_empty()) {
+	const String displayed_text = _get_displayed_text();
+	if (!displayed_text.is_empty() && ac_name.is_empty()) {
+		return displayed_text;
+	} else if (!displayed_text.is_empty() && !ac_name.is_empty() && ac_name != displayed_text) {
+		return ac_name + ": " + displayed_text;
+	} else if (displayed_text.is_empty() && ac_name.is_empty() && !get_tooltip_text().is_empty()) {
 		return get_tooltip_text(); // Fall back to tooltip.
 	} else {
 		return ac_name;
@@ -354,7 +355,7 @@ void Button::_notification(int p_what) {
 					icon_size = _icon->get_size();
 
 					if (expand_icon) {
-						const Size2 text_buf_size = text_buf->get_size();
+						const Size2 text_buf_size = _get_text_size();
 						Size2 _size = custom_element_size;
 						if (!is_clipped && icon_align_rtl_checked != HORIZONTAL_ALIGNMENT_CENTER && text_buf_size.width > 0.0f) {
 							// If there is not enough space for icon and h_separation, h_separation will occupy the space first,
@@ -437,13 +438,20 @@ void Button::_notification(int p_what) {
 
 			// Draw the text.
 			if (!xl_text.is_empty()) {
-				text_buf->set_alignment(align_rtl_checked);
-
 				float text_buf_width = Math::ceil(MAX(1.0f, drawable_size_remained.width)); // The space's width filled by the text_buf.
-				if (autowrap_mode != TextServer::AUTOWRAP_OFF && !Math::is_equal_approx(text_buf_width, text_buf->get_width())) {
-					update_minimum_size();
+				if (bbcode_enabled) {
+					bbcode->set_horizontal_alignment(align_rtl_checked);
+					if (autowrap_mode != TextServer::AUTOWRAP_OFF && bbcode_rect.size.width != text_buf_width) {
+						update_minimum_size();
+					}
+					bbcode->set_width(text_buf_width);
+				} else {
+					text_buf->set_alignment(align_rtl_checked);
+					if (autowrap_mode != TextServer::AUTOWRAP_OFF && !Math::is_equal_approx(text_buf_width, text_buf->get_width())) {
+						update_minimum_size();
+					}
+					text_buf->set_width(text_buf_width);
 				}
-				text_buf->set_width(text_buf_width);
 
 				Point2 text_ofs;
 
@@ -464,13 +472,22 @@ void Button::_notification(int p_what) {
 					} break;
 				}
 
-				text_ofs.y = (drawable_size_remained.height - text_buf->get_size().height) / 2.0f + style_margin_top;
+				text_ofs.y = (drawable_size_remained.height - _get_text_size().height) / 2.0f + style_margin_top;
 				if (vertical_icon_alignment == VERTICAL_ALIGNMENT_TOP) {
 					text_ofs.y += custom_element_size.height - drawable_size_remained.height; // Offset by the icon's height.
 				}
 
 				Color font_outline_color = theme_cache.font_outline_color;
 				int outline_size = theme_cache.outline_size;
+				if (bbcode_enabled) {
+					BBCodeText::DrawStyle draw_style;
+					draw_style.font_color = font_color;
+					draw_style.hr_color = font_color;
+					draw_style.outline_size = outline_size;
+					draw_style.outline_color = font_outline_color;
+					bbcode->draw_at(ci, text_ofs, draw_style, &bbcode_rect);
+					break;
+				}
 				if (outline_size > 0 && font_outline_color.a > 0.0f) {
 					text_buf->draw_outline(ci, text_ofs, outline_size, font_outline_color);
 				}
@@ -495,15 +512,26 @@ Size2 Button::_fit_icon_size(const Size2 &p_size) const {
 Size2 Button::get_minimum_size_for_text_and_icon(const String &p_text, Ref<Texture2D> p_icon) const {
 	// Do not include `_internal_margin`, it's already added in the `get_minimum_size` overrides.
 
-	Ref<TextParagraph> paragraph;
-	if (p_text.is_empty()) {
-		paragraph = text_buf;
+	Size2 minsize;
+	if (bbcode_enabled) {
+		if (p_text.is_empty()) {
+			minsize = bbcode->get_size();
+		} else {
+			Ref<BBCodeText> measure;
+			measure.instantiate();
+			_shape_bbcode(measure, p_text);
+			minsize = measure->get_size();
+		}
 	} else {
-		paragraph.instantiate();
-		_shape(paragraph, p_text);
+		Ref<TextParagraph> paragraph;
+		if (p_text.is_empty()) {
+			paragraph = text_buf;
+		} else {
+			paragraph.instantiate();
+			_shape(paragraph, p_text);
+		}
+		minsize = paragraph->get_size();
 	}
-
-	Size2 minsize = paragraph->get_size();
 	if (clip_text || overrun_behavior != TextServer::OVERRUN_NO_TRIMMING || autowrap_mode != TextServer::AUTOWRAP_OFF) {
 		minsize.width = 0;
 	}
@@ -539,9 +567,47 @@ Size2 Button::get_minimum_size_for_text_and_icon(const String &p_text, Ref<Textu
 	return (theme_cache.align_to_largest_stylebox ? _get_largest_stylebox_size() : _get_current_stylebox()->get_minimum_size()) + minsize;
 }
 
+void Button::_shape_bbcode(const Ref<BBCodeText> &p_bbcode, const String &p_text) const {
+	Ref<Font> font = theme_cache.font;
+	if (font.is_null() || theme_cache.font_size == 0) {
+		return;
+	}
+	p_bbcode->set_owner(this);
+	p_bbcode->update_theme_fonts(this, font, theme_cache.font_size);
+	p_bbcode->set_language(language.is_empty() ? _get_locale() : language);
+	p_bbcode->set_text(p_text);
+	p_bbcode->set_autowrap_mode(autowrap_mode);
+	p_bbcode->set_autowrap_trim_flags(autowrap_flags_trim);
+	p_bbcode->set_line_spacing(theme_cache.line_spacing);
+	p_bbcode->set_text_overrun_behavior(overrun_behavior);
+	p_bbcode->set_text_direction(text_direction, is_layout_rtl());
+}
+
+Size2 Button::_get_text_size() const {
+	return bbcode_enabled ? bbcode->get_size() : text_buf->get_size();
+}
+
+String Button::_get_displayed_text() const {
+	return bbcode_enabled ? bbcode->get_parsed_text() : xl_text;
+}
+
+String Button::get_tooltip(const Point2 &p_pos) const {
+	if (bbcode_enabled && bbcode->has_hints()) {
+		String tooltip = bbcode->get_tooltip_at(bbcode_rect, VERTICAL_ALIGNMENT_TOP, p_pos);
+		if (!tooltip.is_empty()) {
+			return tooltip;
+		}
+	}
+	return BaseButton::get_tooltip(p_pos);
+}
+
 void Button::_shape(Ref<TextParagraph> p_paragraph, String p_text) const {
 	if (p_paragraph.is_null()) {
 		p_paragraph = text_buf;
+		if (bbcode_enabled) {
+			_shape_bbcode(bbcode, xl_text);
+			return;
+		}
 	}
 
 	if (p_text.is_empty()) {
@@ -620,6 +686,28 @@ void Button::set_text(const String &p_text) {
 
 String Button::get_text() const {
 	return text;
+}
+
+void Button::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	if (bbcode_enabled) {
+		bbcode.instantiate();
+	} else {
+		bbcode = Ref<BBCodeText>();
+	}
+	_shape();
+
+	update_configuration_warnings();
+	queue_accessibility_update();
+	queue_redraw();
+	update_minimum_size();
+}
+
+bool Button::is_bbcode_enabled() const {
+	return bbcode_enabled;
 }
 
 void Button::set_autowrap_mode(TextServer::AutowrapMode p_mode) {
@@ -796,6 +884,8 @@ VerticalAlignment Button::get_vertical_icon_alignment() const {
 void Button::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &Button::set_text);
 	ClassDB::bind_method(D_METHOD("get_text"), &Button::get_text);
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &Button::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &Button::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_text_overrun_behavior", "overrun_behavior"), &Button::set_text_overrun_behavior);
 	ClassDB::bind_method(D_METHOD("get_text_overrun_behavior"), &Button::get_text_overrun_behavior);
 	ClassDB::bind_method(D_METHOD("set_autowrap_mode", "autowrap_mode"), &Button::set_autowrap_mode);
@@ -822,6 +912,7 @@ void Button::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_expand_icon"), &Button::is_expand_icon);
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text", PROPERTY_HINT_MULTILINE_TEXT), "set_text", "get_text");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "icon", PROPERTY_HINT_RESOURCE_TYPE, Texture2D::get_class_static()), "set_button_icon", "get_button_icon");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flat"), "set_flat", "is_flat");
 
@@ -879,6 +970,7 @@ void Button::_bind_methods() {
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Button, align_to_largest_stylebox);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Button, line_spacing);
+	BBCodeText::bind_theme_fonts(get_class_static());
 }
 
 Button::Button(const String &p_text) {

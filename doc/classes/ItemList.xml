@@ -398,6 +398,9 @@
 		<member name="auto_width" type="bool" setter="set_auto_width" getter="has_auto_width" default="false">
 			If [code]true[/code], the control will automatically resize the width to fit its content.
 		</member>
+		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
+			If [code]true[/code], the item texts are parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] and [code][hint][/code] tags are only drawn.
+		</member>
 		<member name="clip_contents" type="bool" setter="set_clip_contents" getter="is_clipping_contents" overrides="Control" default="true" />
 		<member name="fixed_column_width" type="int" setter="set_fixed_column_width" getter="get_fixed_column_width" default="0">
 			The width all columns will be adjusted to.
@@ -569,8 +572,20 @@
 		<theme_item name="v_separation" data_type="constant" type="int" default="4">
 			The vertical spacing between items.
 		</theme_item>
+		<theme_item name="bold_font" data_type="font" type="Font">
+			Font used for [code][b][/code] text when BBCode is enabled. If not set, the regular font is emboldened.
+		</theme_item>
+		<theme_item name="bold_italics_font" data_type="font" type="Font">
+			Font used for [code][b][i][/code] text when BBCode is enabled. If not set, the regular font is emboldened and slanted.
+		</theme_item>
 		<theme_item name="font" data_type="font" type="Font">
 			[Font] of the item's text.
+		</theme_item>
+		<theme_item name="italics_font" data_type="font" type="Font">
+			Font used for [code][i][/code] text when BBCode is enabled. If not set, the regular font is slanted.
+		</theme_item>
+		<theme_item name="mono_font" data_type="font" type="Font">
+			Font used for [code][code][/code] text when BBCode is enabled. If not set, the regular font is used.
 		</theme_item>
 		<theme_item name="font_size" data_type="font_size" type="int">
 			Font size of the item's text.

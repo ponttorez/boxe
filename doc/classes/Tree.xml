@@ -372,6 +372,9 @@
 		<member name="auto_tooltip" type="bool" setter="set_auto_tooltip" getter="is_auto_tooltip_enabled" default="true">
 			If [code]true[/code], tree items with no tooltip assigned display their text as their tooltip. See also [method TreeItem.get_tooltip_text] and [method TreeItem.get_button_tooltip_text].
 		</member>
+		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
+			If [code]true[/code], the cell texts are parsed as BBCode, as in [member Label.bbcode_enabled]. Column titles are not parsed. [code][url][/code] and [code][hint][/code] tags are only drawn.
+		</member>
 		<member name="clip_contents" type="bool" setter="set_clip_contents" getter="is_clipping_contents" overrides="Control" default="true" />
 		<member name="column_titles_visible" type="bool" setter="set_column_titles_visible" getter="are_column_titles_visible" default="false">
 			If [code]true[/code], column titles are visible.
@@ -678,8 +681,20 @@
 		<theme_item name="v_separation" data_type="constant" type="int" default="4">
 			The vertical padding inside each item, i.e. the distance between the item's content and top/bottom border.
 		</theme_item>
+		<theme_item name="bold_font" data_type="font" type="Font">
+			Font used for [code][b][/code] text when BBCode is enabled. If not set, the regular font is emboldened.
+		</theme_item>
+		<theme_item name="bold_italics_font" data_type="font" type="Font">
+			Font used for [code][b][i][/code] text when BBCode is enabled. If not set, the regular font is emboldened and slanted.
+		</theme_item>
 		<theme_item name="font" data_type="font" type="Font">
 			[Font] of the item's text.
+		</theme_item>
+		<theme_item name="italics_font" data_type="font" type="Font">
+			Font used for [code][i][/code] text when BBCode is enabled. If not set, the regular font is slanted.
+		</theme_item>
+		<theme_item name="mono_font" data_type="font" type="Font">
+			Font used for [code][code][/code] text when BBCode is enabled. If not set, the regular font is used.
 		</theme_item>
 		<theme_item name="title_button_font" data_type="font" type="Font">
 			[Font] of the title button's text.

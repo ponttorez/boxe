@@ -46,6 +46,8 @@ struct Transform2D;
 class Control : public CanvasItem {
 	GDCLASS(Control, CanvasItem);
 
+	friend class BBCodeText; // Uses structured_text_parser() of its owner.
+
 #ifdef TOOLS_ENABLED
 	bool saving = false;
 #endif // TOOLS_ENABLED

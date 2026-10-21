@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/control.h"
 #include "scene/resources/text_paragraph.h"
 #include "servers/display/accessibility_server.h"
@@ -74,6 +75,7 @@ private:
 		bool edit_multiline = false;
 		String suffix;
 		Ref<TextParagraph> text_buf;
+		Ref<BBCodeText> bbcode; // Used instead of text_buf when BBCode is enabled.
 		String language;
 		TextServer::StructuredTextParser st_parser = TextServer::STRUCTURED_TEXT_DEFAULT;
 		Array st_args;
@@ -133,6 +135,9 @@ private:
 			text_buf->set_text_overrun_behavior(TextServer::OVERRUN_TRIM_ELLIPSIS);
 		}
 
+		Size2 get_text_size() const;
+		void set_text_width(float p_width);
+		void draw_text(const RID &p_where, const Point2 &p_pos, const Color &p_color, int p_outline_size, const Color &p_outline_color) const;
 		Size2 get_icon_size() const;
 		void draw_icon(const RID &p_where, const Point2 &p_pos, const Size2 &p_size = Size2(), const Rect2i &p_region = Rect2i(), const Color &p_color = Color()) const;
 	};
@@ -524,6 +529,7 @@ private:
 	int selected_button = -1;
 	int popup_edited_item_col = -1;
 	bool hide_root = false;
+	bool bbcode_enabled = false;
 	SelectMode select_mode = SELECT_SINGLE;
 
 	int blocked = 0;
@@ -869,6 +875,9 @@ protected:
 	void _accessibility_action_button_press(const Variant &p_data, TreeItem *p_item, int p_col, int p_btn);
 
 public:
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
+
 	PackedStringArray get_accessibility_configuration_warnings() const override;
 	virtual RID get_focused_accessibility_element() const override;
 

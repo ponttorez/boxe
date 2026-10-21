@@ -33,6 +33,12 @@
 				If there are no lines, returns font size in pixels.
 			</description>
 		</method>
+		<method name="get_parsed_text" qualifiers="const">
+			<return type="String" />
+			<description>
+				Returns the text without BBCode tags. Returns the translated [member text] if [member bbcode_enabled] is [code]false[/code].
+			</description>
+		</method>
 		<method name="get_total_character_count" qualifiers="const">
 			<return type="int" />
 			<description>
@@ -53,6 +59,10 @@
 		</member>
 		<member name="autowrap_trim_flags" type="int" setter="set_autowrap_trim_flags" getter="get_autowrap_trim_flags" enum="TextServer.LineBreakFlag" is_bitfield="true" default="192">
 			Autowrap space trimming flags. See [constant TextServer.BREAK_TRIM_START_EDGE_SPACES] and [constant TextServer.BREAK_TRIM_END_EDGE_SPACES] for more info.
+		</member>
+		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
+			If [code]true[/code], [member text] is parsed as BBCode, with the [RichTextLabel] tags except tables and effects, plus [code][spacer][/code] (see [method RichTextLabel.add_spacer]). Fonts, colors, outlines and shadows not set by tags come from [member label_settings] and the theme, and all other properties keep working, such as [member text_overrun_behavior] and [member visible_characters].
+			[code][url][/code] tags emit [signal meta_clicked], and [code][hint][/code] tags show tooltips, when [member Control.mouse_filter] is not [constant Control.MOUSE_FILTER_IGNORE].
 		</member>
 		<member name="clip_text" type="bool" setter="set_clip_text" getter="is_clipping_text" default="false">
 			If [code]true[/code], the Label only shows the text that fits inside its bounding rectangle and will clip text horizontally.
@@ -120,6 +130,26 @@
 			[b]Note:[/b] Setting this property updates [member visible_characters] accordingly.
 		</member>
 	</members>
+	<signals>
+		<signal name="meta_clicked">
+			<param index="0" name="meta" type="Variant" />
+			<description>
+				Triggered when the user clicks on content between [code][url][/code] tags, if [member bbcode_enabled] is [code]true[/code]. If the meta is defined in BBCode, e.g. [code skip-lint][url={"key": "value"}]Text[/url][/code], then the parameter for this signal will always be a [String] type.
+			</description>
+		</signal>
+		<signal name="meta_hover_ended">
+			<param index="0" name="meta" type="Variant" />
+			<description>
+				Triggers when the mouse exits a meta tag.
+			</description>
+		</signal>
+		<signal name="meta_hover_started">
+			<param index="0" name="meta" type="Variant" />
+			<description>
+				Triggers when the mouse enters a meta tag.
+			</description>
+		</signal>
+	</signals>
 	<theme_items>
 		<theme_item name="font_color" data_type="color" type="Color" default="Color(1, 1, 1, 1)">
 			Default text [Color] of the [Label].
@@ -150,8 +180,20 @@
 		<theme_item name="shadow_outline_size" data_type="constant" type="int" default="1">
 			The size of the shadow outline.
 		</theme_item>
+		<theme_item name="bold_font" data_type="font" type="Font">
+			Font used for [code][b][/code] text when BBCode is enabled. If not set, the regular font is emboldened.
+		</theme_item>
+		<theme_item name="bold_italics_font" data_type="font" type="Font">
+			Font used for [code][b][i][/code] text when BBCode is enabled. If not set, the regular font is emboldened and slanted.
+		</theme_item>
 		<theme_item name="font" data_type="font" type="Font">
 			[Font] used for the [Label]'s text.
+		</theme_item>
+		<theme_item name="italics_font" data_type="font" type="Font">
+			Font used for [code][i][/code] text when BBCode is enabled. If not set, the regular font is slanted.
+		</theme_item>
+		<theme_item name="mono_font" data_type="font" type="Font">
+			Font used for [code][code][/code] text when BBCode is enabled. If not set, the regular font is used.
 		</theme_item>
 		<theme_item name="font_size" data_type="font_size" type="int">
 			Font size of the [Label]'s text.

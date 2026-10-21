@@ -90,7 +90,7 @@ Size2 TabBar::get_minimum_size() const {
 		if (!tabs[i].text.is_empty()) {
 			ms.width += tabs[i].size_text + theme_cache.h_separation;
 		}
-		ms.height = MAX(ms.height, tabs[i].text_buf->get_size().y + y_margin);
+		ms.height = MAX(ms.height, _get_tab_text_size(i).y + y_margin);
 
 		bool close_visible = cb_displaypolicy == CLOSE_BUTTON_SHOW_ALWAYS || (cb_displaypolicy == CLOSE_BUTTON_SHOW_ACTIVE_ONLY && i == current);
 
@@ -363,6 +363,10 @@ String TabBar::get_tooltip(const Point2 &p_pos) const {
 	}
 
 	if (tabs[tab_idx].tooltip.is_empty() && tabs[tab_idx].truncated) {
+		// Tooltips are plain text, so BBCode tabs show their text without tags.
+		if (tabs[tab_idx].bbcode.is_valid()) {
+			return tabs[tab_idx].bbcode->get_parsed_text();
+		}
 		return tabs[tab_idx].text;
 	}
 
@@ -370,6 +374,23 @@ String TabBar::get_tooltip(const Point2 &p_pos) const {
 }
 
 void TabBar::_shape(int p_tab) {
+	if (bbcode_enabled) {
+		Tab &tab = tabs.write[p_tab];
+		if (tab.bbcode.is_null()) {
+			tab.bbcode.instantiate();
+			tab.bbcode->set_owner(this);
+		}
+		if (theme_cache.font.is_valid()) {
+			tab.bbcode->update_theme_fonts(this, theme_cache.font, theme_cache.font_size);
+		}
+		tab.bbcode->set_language(tab.language.is_empty() ? _get_locale() : tab.language);
+		tab.bbcode->set_text(atr(tab.text));
+		tab.bbcode->set_width(-1);
+		tab.bbcode->set_text_overrun_behavior(TextServer::OVERRUN_TRIM_CHAR);
+		tab.bbcode->set_text_direction(tab.text_direction, is_layout_rtl());
+		return;
+	}
+
 	tabs.write[p_tab].text_buf->clear();
 	tabs.write[p_tab].text_buf->set_width(-1);
 	if (tabs[p_tab].text_direction == Control::TEXT_DIRECTION_INHERITED) {
@@ -380,6 +401,38 @@ void TabBar::_shape(int p_tab) {
 
 	const String &lang = tabs[p_tab].language.is_empty() ? _get_locale() : tabs[p_tab].language;
 	tabs.write[p_tab].text_buf->add_string(atr(tabs[p_tab].text), theme_cache.font, theme_cache.font_size, lang);
+}
+
+Size2 TabBar::_get_tab_text_size(int p_tab) const {
+	return bbcode_enabled ? tabs[p_tab].bbcode->get_size() : tabs[p_tab].text_buf->get_size();
+}
+
+void TabBar::_set_tab_text_width(int p_tab, int p_width) {
+	if (bbcode_enabled) {
+		tabs.write[p_tab].bbcode->set_width(p_width);
+	} else {
+		tabs.write[p_tab].text_buf->set_width(p_width);
+	}
+}
+
+void TabBar::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	for (int i = 0; i < tabs.size(); i++) {
+		if (!bbcode_enabled) {
+			tabs.write[i].bbcode = Ref<BBCodeText>();
+		}
+		_shape(i);
+	}
+	_update_cache();
+	update_minimum_size();
+	queue_redraw();
+}
+
+bool TabBar::is_bbcode_enabled() const {
+	return bbcode_enabled;
 }
 
 RID TabBar::get_tab_accessibility_element(int p_tab) const {
@@ -470,7 +523,7 @@ void TabBar::_notification(int p_what) {
 					AccessibilityServer::get_singleton()->update_add_action(item.accessibility_item_element, AccessibilityServerEnums::AccessibilityAction::ACTION_FOCUS, callable_mp(this, &TabBar::_accessibility_action_focus).bind(i));
 
 					AccessibilityServer::get_singleton()->update_set_list_item_index(item.accessibility_item_element, i);
-					AccessibilityServer::get_singleton()->update_set_name(item.accessibility_item_element, atr(item.text));
+					AccessibilityServer::get_singleton()->update_set_name(item.accessibility_item_element, (bbcode_enabled && item.bbcode.is_valid()) ? item.bbcode->get_parsed_text() : atr(item.text));
 					AccessibilityServer::get_singleton()->update_set_list_item_selected(item.accessibility_item_element, i == current);
 					AccessibilityServer::get_singleton()->update_set_flag(item.accessibility_item_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_DISABLED, item.disabled);
 					AccessibilityServer::get_singleton()->update_set_flag(item.accessibility_item_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_HIDDEN, item.hidden);
@@ -705,12 +758,21 @@ void TabBar::_draw_tab(Ref<StyleBox> &p_tab_style, const Color &p_font_color, co
 	// Draw the text.
 	if (!tabs[p_index].text.is_empty()) {
 		Point2i text_pos = Point2i(rtl ? p_x - tabs[p_index].size_text : p_x,
-				p_tab_style->get_margin(SIDE_TOP) + ((sb_rect.size.y - sb_ms.y) - tabs[p_index].text_buf->get_size().y) / 2);
+				p_tab_style->get_margin(SIDE_TOP) + ((sb_rect.size.y - sb_ms.y) - _get_tab_text_size(p_index).y) / 2);
 
-		if (theme_cache.outline_size > 0 && theme_cache.font_outline_color.a > 0) {
+		if (bbcode_enabled) {
+			BBCodeText::DrawStyle draw_style;
+			draw_style.font_color = font_color;
+			draw_style.hr_color = font_color;
+			draw_style.outline_size = theme_cache.outline_size;
+			draw_style.outline_color = theme_cache.font_outline_color;
+			tabs[p_index].bbcode->draw_at(ci, text_pos, draw_style);
+		} else if (theme_cache.outline_size > 0 && theme_cache.font_outline_color.a > 0) {
 			tabs[p_index].text_buf->draw_outline(ci, text_pos, theme_cache.outline_size, theme_cache.font_outline_color);
 		}
-		tabs[p_index].text_buf->draw(ci, text_pos, font_color);
+		if (!bbcode_enabled) {
+			tabs[p_index].text_buf->draw(ci, text_pos, font_color);
+		}
 
 		p_x = rtl ? p_x - tabs[p_index].size_text - theme_cache.h_separation : p_x + tabs[p_index].size_text + theme_cache.h_separation;
 	}
@@ -783,7 +845,14 @@ void TabBar::set_tab_count(int p_count) {
 			}
 		}
 	}
+	const int previous_count = tabs.size();
 	tabs.resize(p_count);
+	if (bbcode_enabled) {
+		// New tabs need their BBCode text before their size is cached.
+		for (int i = previous_count; i < p_count; i++) {
+			_shape(i);
+		}
+	}
 
 	if (p_count == 0) {
 		offset = 0;
@@ -1255,8 +1324,8 @@ void TabBar::_update_cache(bool p_update_hover) {
 	max_drawn_tab = tabs.size() - 1;
 
 	for (int i = 0; i < tabs.size(); i++) {
-		tabs.write[i].text_buf->set_width(-1);
-		tabs.write[i].size_text = Math::ceil(tabs[i].text_buf->get_size().x);
+		_set_tab_text_width(i, -1);
+		tabs.write[i].size_text = Math::ceil(_get_tab_text_size(i).x);
 		tabs.write[i].size_cache = get_tab_width(i);
 		tabs.write[i].accessibility_item_dirty = true;
 
@@ -1266,7 +1335,7 @@ void TabBar::_update_cache(bool p_update_hover) {
 			int mw = MAX(size_textless, effective_max_width);
 
 			tabs.write[i].size_text = MAX(mw - size_textless, 1);
-			tabs.write[i].text_buf->set_width(tabs[i].size_text);
+			_set_tab_text_width(i, tabs[i].size_text);
 			tabs.write[i].size_cache = size_textless + tabs[i].size_text;
 		}
 
@@ -2170,6 +2239,8 @@ void TabBar::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_tab_count", "count"), &TabBar::set_tab_count);
 	ClassDB::bind_method(D_METHOD("get_tab_count"), &TabBar::get_tab_count);
 	ClassDB::bind_method(D_METHOD("set_current_tab", "tab_idx"), &TabBar::set_current_tab);
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &TabBar::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &TabBar::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("get_current_tab"), &TabBar::get_current_tab);
 	ClassDB::bind_method(D_METHOD("get_previous_tab"), &TabBar::get_previous_tab);
 	ClassDB::bind_method(D_METHOD("select_previous_available"), &TabBar::select_previous_available);
@@ -2238,6 +2309,7 @@ void TabBar::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("active_tab_rearranged", PropertyInfo(Variant::INT, "idx_to")));
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_tab", PROPERTY_HINT_RANGE, "-1,4096,1"), "set_current_tab", "get_current_tab");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "tab_alignment", PROPERTY_HINT_ENUM, "Left,Center,Right"), "set_tab_alignment", "get_tab_alignment");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "clip_tabs"), "set_clip_tabs", "get_clip_tabs");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "close_with_middle_mouse"), "set_close_with_middle_mouse", "get_close_with_middle_mouse");
@@ -2302,6 +2374,8 @@ void TabBar::_bind_methods() {
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, TabBar, sound_selected, "selected");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, TabBar, sound_hover, "hover");
+
+	BBCodeText::bind_theme_fonts(get_class_static());
 
 	Tab defaults(true);
 

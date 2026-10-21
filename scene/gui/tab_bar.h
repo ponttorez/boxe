@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/control.h"
 #include "scene/property_list_helper.h"
 #include "scene/resources/text_line.h"
@@ -77,6 +78,7 @@ private:
 		Control::TextDirection text_direction = Control::TEXT_DIRECTION_INHERITED;
 
 		Ref<TextLine> text_buf;
+		Ref<BBCodeText> bbcode;
 		Ref<Texture2D> icon;
 		int icon_max_width = 0;
 
@@ -198,7 +200,11 @@ private:
 
 	void _on_mouse_exited();
 
+	bool bbcode_enabled = false;
+
 	void _shape(int p_tab);
+	Size2 _get_tab_text_size(int p_tab) const;
+	void _set_tab_text_width(int p_tab, int p_width);
 	void _draw_tab(Ref<StyleBox> &p_tab_style, const Color &p_font_color, const Color &p_icon_color, int p_index, float p_x, bool p_focus);
 
 	void _accessibility_action_scroll_into_view(const Variant &p_data, int p_index);
@@ -222,6 +228,9 @@ protected:
 	void _move_tab_from(TabBar *p_from_tabbar, int p_from_index, int p_to_index);
 
 public:
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
+
 	RID get_tab_accessibility_element(int p_tab) const;
 	virtual RID get_focused_accessibility_element() const override;
 

@@ -264,7 +264,7 @@ Size2 PopupMenu::_get_contents_minimum_size() const {
 			accel_max_w = MAX(accel_w, accel_max_w);
 		}
 
-		real_t body_w = items[i].indent * theme_cache.indent + items[i].text_buf->get_size().x;
+		real_t body_w = items[i].indent * theme_cache.indent + _get_item_text_size(i).x;
 		if (items[i].submenu) {
 			body_w += theme_cache.submenu->get_width();
 		}
@@ -372,7 +372,7 @@ int PopupMenu::_get_item_height(int p_idx) const {
 		icon_height = MAX(icon_height, _get_check_max_size().height);
 	}
 
-	int text_height = items[p_idx].text_buf->get_size().height;
+	int text_height = _get_item_text_size(p_idx).height;
 	if (text_height == 0 && !items[p_idx].separator) {
 		text_height = theme_cache.font->get_height(theme_cache.font_size);
 	}
@@ -1007,7 +1007,7 @@ void PopupMenu::_draw_items() {
 		item_ofs.x += items[i].indent * theme_cache.indent;
 		if (items[i].separator) {
 			if (!text.is_empty() || items[i].icon.is_valid()) {
-				int content_size = items[i].text_buf->get_size().width + theme_cache.h_separation * 2;
+				int content_size = _get_item_text_size(i).width + theme_cache.h_separation * 2;
 				if (items[i].icon.is_valid()) {
 					content_size += icon_size.width + theme_cache.h_separation;
 				}
@@ -1057,7 +1057,7 @@ void PopupMenu::_draw_items() {
 			}
 		}
 
-		int separator_ofs = (display_width - items[i].text_buf->get_size().width) / 2;
+		int separator_ofs = (display_width - _get_item_text_size(i).width) / 2;
 
 		// Icon
 		if (items[i].icon.is_valid()) {
@@ -1097,12 +1097,9 @@ void PopupMenu::_draw_items() {
 		// Text
 		if (items[i].separator) {
 			if (!text.is_empty()) {
-				Vector2 text_pos = Point2(separator_ofs, item_ofs.y + Math::floor((h - items[i].text_buf->get_size().y) / 2.0));
+				Vector2 text_pos = Point2(separator_ofs, item_ofs.y + Math::floor((h - _get_item_text_size(i).y) / 2.0));
 
-				if (theme_cache.font_separator_outline_size > 0 && theme_cache.font_separator_outline_color.a > 0) {
-					items[i].text_buf->draw_outline(ci, text_pos, theme_cache.font_separator_outline_size, theme_cache.font_separator_outline_color);
-				}
-				items[i].text_buf->draw(ci, text_pos, theme_cache.font_separator_color);
+				_draw_item_text(ci, i, text_pos, theme_cache.font_separator_color, theme_cache.font_separator_outline_size, theme_cache.font_separator_outline_color);
 			}
 		} else {
 			if (gutter_compact) {
@@ -1115,18 +1112,23 @@ void PopupMenu::_draw_items() {
 					item_ofs.x += check_max_w + theme_cache.h_separation;
 				}
 			}
+			if (bbcode_enabled && items[i].bbcode.is_valid()) {
+				// The text fills the item up to the shortcut or the submenu arrow, so [spacer] can push text to the end.
+				float text_w = display_width - item_ofs.x - theme_cache.item_end_padding;
+				if (items[i].accel != Key::NONE || (items[i].shortcut.is_valid() && items[i].shortcut->has_valid_event())) {
+					text_w -= theme_cache.h_separation * 2 + items[i].accel_text_buf->get_size().x;
+				}
+				if (items[i].submenu) {
+					text_w -= theme_cache.submenu->get_width();
+				}
+				items[i].bbcode->set_width(MAX(1, int(text_w)));
+			}
 			if (rtl) {
-				Vector2 text_pos = Size2(control->get_size().width - items[i].text_buf->get_size().width - item_ofs.x, item_ofs.y) + Point2(0, Math::floor((h - items[i].text_buf->get_size().y) / 2.0));
-				if (theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
-					items[i].text_buf->draw_outline(ci, text_pos, theme_cache.font_outline_size, theme_cache.font_outline_color);
-				}
-				items[i].text_buf->draw(ci, text_pos, item_font_color);
+				Vector2 text_pos = Size2(control->get_size().width - _get_item_text_size(i).width - item_ofs.x, item_ofs.y) + Point2(0, Math::floor((h - _get_item_text_size(i).y) / 2.0));
+				_draw_item_text(ci, i, text_pos, item_font_color, theme_cache.font_outline_size, theme_cache.font_outline_color);
 			} else {
-				Vector2 text_pos = item_ofs + Point2(0, Math::floor((h - items[i].text_buf->get_size().y) / 2.0));
-				if (theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
-					items[i].text_buf->draw_outline(ci, text_pos, theme_cache.font_outline_size, theme_cache.font_outline_color);
-				}
-				items[i].text_buf->draw(ci, text_pos, item_font_color);
+				Vector2 text_pos = item_ofs + Point2(0, Math::floor((h - _get_item_text_size(i).y) / 2.0));
+				_draw_item_text(ci, i, text_pos, item_font_color, theme_cache.font_outline_size, theme_cache.font_outline_color);
 			}
 		}
 
@@ -1319,6 +1321,22 @@ void PopupMenu::_shape_item(int p_idx) const {
 		Ref<Font> font = items[p_idx].separator ? theme_cache.font_separator : theme_cache.font;
 		int font_size = items[p_idx].separator ? theme_cache.font_separator_size : theme_cache.font_size;
 
+		if (bbcode_enabled) {
+			Item &item = items.write[p_idx];
+			if (item.bbcode.is_null()) {
+				item.bbcode.instantiate();
+				item.bbcode->set_owner(control);
+			}
+			if (font.is_valid()) {
+				item.bbcode->update_theme_fonts(this, font, font_size);
+			}
+			item.bbcode->set_language(item.language.is_empty() ? _get_locale() : item.language);
+			item.bbcode->set_text(item.xl_text);
+			item.bbcode->set_text_direction(item.text_direction, is_layout_rtl());
+		} else {
+			items.write[p_idx].bbcode = Ref<BBCodeText>();
+		}
+
 		if (items[p_idx].text_direction == Control::TEXT_DIRECTION_INHERITED) {
 			items.write[p_idx].text_buf->set_direction(is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR);
 		} else {
@@ -1332,6 +1350,46 @@ void PopupMenu::_shape_item(int p_idx) const {
 		items.write[p_idx].accel_text_buf->add_string(_get_accel_text(items.write[p_idx]), font, font_size, lang);
 		items.write[p_idx].dirty = false;
 	}
+}
+
+Size2 PopupMenu::_get_item_text_size(int p_idx) const {
+	const Item &item = items[p_idx];
+	return (bbcode_enabled && item.bbcode.is_valid()) ? item.bbcode->get_size() : item.text_buf->get_size();
+}
+
+void PopupMenu::_draw_item_text(RID p_ci, int p_idx, const Vector2 &p_pos, const Color &p_color, int p_outline_size, const Color &p_outline_color) const {
+	const Item &item = items[p_idx];
+	if (bbcode_enabled && item.bbcode.is_valid()) {
+		BBCodeText::DrawStyle draw_style;
+		draw_style.font_color = p_color;
+		draw_style.hr_color = p_color;
+		draw_style.outline_size = p_outline_size;
+		draw_style.outline_color = p_outline_color;
+		item.bbcode->draw_at(p_ci, p_pos, draw_style);
+		return;
+	}
+	if (p_outline_size > 0 && p_outline_color.a > 0) {
+		item.text_buf->draw_outline(p_ci, p_pos, p_outline_size, p_outline_color);
+	}
+	item.text_buf->draw(p_ci, p_pos, p_color);
+}
+
+void PopupMenu::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	for (int i = 0; i < items.size(); i++) {
+		items.write[i].dirty = true;
+		_shape_item(i);
+	}
+	_menu_changed();
+	control->queue_redraw();
+	child_controls_changed();
+}
+
+bool PopupMenu::is_bbcode_enabled() const {
+	return bbcode_enabled;
 }
 
 void PopupMenu::_menu_changed() {
@@ -1527,7 +1585,7 @@ void PopupMenu::_notification(int p_what) {
 					AccessibilityServer::get_singleton()->update_set_list_item_index(item.accessibility_item_element, item_index);
 					AccessibilityServer::get_singleton()->update_set_list_item_level(item.accessibility_item_element, 0);
 					AccessibilityServer::get_singleton()->update_set_list_item_selected(item.accessibility_item_element, i == mouse_over);
-					AccessibilityServer::get_singleton()->update_set_name(item.accessibility_item_element, item.xl_text);
+					AccessibilityServer::get_singleton()->update_set_name(item.accessibility_item_element, (bbcode_enabled && item.bbcode.is_valid()) ? item.bbcode->get_parsed_text() : item.xl_text);
 					AccessibilityServer::get_singleton()->update_set_flag(item.accessibility_item_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_DISABLED, item.disabled);
 					AccessibilityServer::get_singleton()->update_set_flag(item.accessibility_item_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_HIDDEN, !item.visible);
 					AccessibilityServer::get_singleton()->update_set_tooltip(item.accessibility_item_element, item.tooltip);
@@ -3558,6 +3616,8 @@ void PopupMenu::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_separator", "label", "id"), &PopupMenu::add_separator, DEFVAL(String()), DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("clear", "free_submenus"), &PopupMenu::clear, DEFVAL(false));
 
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &PopupMenu::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &PopupMenu::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_hide_on_item_selection", "enable"), &PopupMenu::set_hide_on_item_selection);
 	ClassDB::bind_method(D_METHOD("is_hide_on_item_selection"), &PopupMenu::is_hide_on_item_selection);
 
@@ -3592,6 +3652,7 @@ void PopupMenu::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_shrink_width", "shrink"), &PopupMenu::set_shrink_width);
 	ClassDB::bind_method(D_METHOD("get_shrink_width"), &PopupMenu::get_shrink_width);
 
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide_on_item_selection"), "set_hide_on_item_selection", "is_hide_on_item_selection");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide_on_checkable_item_selection"), "set_hide_on_checkable_item_selection", "is_hide_on_checkable_item_selection");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide_on_state_item_selection"), "set_hide_on_state_item_selection", "is_hide_on_state_item_selection");
@@ -3673,6 +3734,8 @@ void PopupMenu::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, PopupMenu, sound_closed, "closed");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, PopupMenu, sound_hover, "hover");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, PopupMenu, sound_selected, "selected");
+
+	BBCodeText::bind_theme_fonts(get_class_static());
 
 	Item defaults(true);
 

@@ -40,6 +40,21 @@ void LinkButton::_shape() {
 	Ref<Font> font = theme_cache.font;
 	int font_size = theme_cache.font_size;
 
+	if (bbcode_enabled) {
+		if (font.is_valid()) {
+			bbcode->update_theme_fonts(this, font, font_size);
+		}
+		bbcode->set_language(language.is_empty() ? _get_locale() : language);
+		bbcode->set_text(xl_text);
+		bbcode->set_width(-1);
+		bbcode->set_text_direction(text_direction, is_layout_rtl());
+		bbcode->set_structured_text_bidi_override(st_parser, st_args);
+		bbcode->set_text_overrun_behavior(overrun_behavior);
+		bbcode->set_ellipsis_char(el_char);
+		queue_accessibility_update();
+		return;
+	}
+
 	text_buf->clear();
 	text_buf->set_width(-1);
 	if (text_direction == Control::TEXT_DIRECTION_INHERITED) {
@@ -196,7 +211,7 @@ void LinkButton::pressed() {
 }
 
 Size2 LinkButton::get_minimum_size() const {
-	Size2 minsize = text_buf->get_size();
+	Size2 minsize = bbcode_enabled ? bbcode->get_size() : text_buf->get_size();
 	if (overrun_behavior != TextServer::OVERRUN_NO_TRIMMING) {
 		minsize.width = 0;
 	}
@@ -208,13 +223,50 @@ Control::CursorShape LinkButton::get_cursor_shape(const Point2 &p_pos) const {
 	return is_disabled() ? CURSOR_ARROW : get_default_cursor_shape();
 }
 
+Rect2 LinkButton::_get_bbcode_rect() const {
+	bbcode->set_width(overrun_behavior != TextServer::OVERRUN_NO_TRIMMING ? MAX(1, int(get_size().width)) : -1);
+	// The text aligns itself to the right in RTL layouts.
+	return Rect2(Point2(), Size2(get_size().width, bbcode->get_size().height));
+}
+
+String LinkButton::get_tooltip(const Point2 &p_pos) const {
+	if (bbcode_enabled && bbcode->has_hints()) {
+		String tooltip = bbcode->get_tooltip_at(_get_bbcode_rect(), VERTICAL_ALIGNMENT_TOP, p_pos);
+		if (!tooltip.is_empty()) {
+			return tooltip;
+		}
+	}
+	return BaseButton::get_tooltip(p_pos);
+}
+
+void LinkButton::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	if (bbcode_enabled) {
+		bbcode.instantiate();
+		bbcode->set_owner(this);
+	} else {
+		bbcode = Ref<BBCodeText>();
+	}
+	_shape();
+	update_minimum_size();
+	queue_redraw();
+}
+
+bool LinkButton::is_bbcode_enabled() const {
+	return bbcode_enabled;
+}
+
 String LinkButton::_get_accessibility_name() const {
 	const String &ac_name = Control::_get_accessibility_name();
-	if (!xl_text.is_empty() && ac_name.is_empty()) {
-		return xl_text;
-	} else if (!xl_text.is_empty() && !ac_name.is_empty() && ac_name != xl_text) {
-		return ac_name + ": " + xl_text;
-	} else if (xl_text.is_empty() && ac_name.is_empty() && !get_tooltip_text().is_empty()) {
+	const String displayed_text = bbcode_enabled ? bbcode->get_parsed_text() : xl_text;
+	if (!displayed_text.is_empty() && ac_name.is_empty()) {
+		return displayed_text;
+	} else if (!displayed_text.is_empty() && !ac_name.is_empty() && ac_name != displayed_text) {
+		return ac_name + ": " + displayed_text;
+	} else if (displayed_text.is_empty() && ac_name.is_empty() && !get_tooltip_text().is_empty()) {
 		return get_tooltip_text(); // Fall back to tooltip.
 	} else {
 		return ac_name;
@@ -295,13 +347,33 @@ void LinkButton::_notification(int p_what) {
 				focus_style->draw(ci, Rect2(Point2(), size));
 			}
 
+			Color font_outline_color = theme_cache.font_outline_color;
+			int outline_size = theme_cache.outline_size;
+
+			if (bbcode_enabled) {
+				const Rect2 bbcode_rect = _get_bbcode_rect();
+				// As drawn, which is shorter than the text when it's trimmed.
+				int width = Math::ceil(bbcode->get_drawn_size().width);
+				BBCodeText::DrawStyle draw_style;
+				draw_style.font_color = color;
+				draw_style.hr_color = color;
+				draw_style.outline_size = outline_size;
+				draw_style.outline_color = font_outline_color;
+				bbcode->draw(ci, bbcode_rect, VERTICAL_ALIGNMENT_TOP, draw_style);
+				if (do_underline && theme_cache.font.is_valid()) {
+					const Ref<Font> &font = theme_cache.font;
+					int y = font->get_ascent(theme_cache.font_size) + theme_cache.underline_spacing + font->get_underline_position(theme_cache.font_size);
+					int underline_thickness = MAX(1, font->get_underline_thickness(theme_cache.font_size));
+					int x = is_layout_rtl() ? size.width - width : 0;
+					draw_line(Vector2(x, y), Vector2(x + width, y), color, underline_thickness);
+				}
+				break;
+			}
+
 			if (overrun_behavior != TextServer::OVERRUN_NO_TRIMMING) {
 				text_buf->set_width(MAX(1.0f, size.width));
 			}
 			int width = text_buf->get_line_width();
-
-			Color font_outline_color = theme_cache.font_outline_color;
-			int outline_size = theme_cache.outline_size;
 			if (is_layout_rtl()) {
 				if (outline_size > 0 && font_outline_color.a > 0) {
 					text_buf->draw_outline(get_canvas_item(), Vector2(size.width - width, 0), outline_size, font_outline_color);
@@ -332,6 +404,8 @@ void LinkButton::_notification(int p_what) {
 void LinkButton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &LinkButton::set_text);
 	ClassDB::bind_method(D_METHOD("get_text"), &LinkButton::get_text);
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &LinkButton::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &LinkButton::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_text_overrun_behavior", "overrun_behavior"), &LinkButton::set_text_overrun_behavior);
 	ClassDB::bind_method(D_METHOD("get_text_overrun_behavior"), &LinkButton::get_text_overrun_behavior);
 	ClassDB::bind_method(D_METHOD("set_ellipsis_char", "char"), &LinkButton::set_ellipsis_char);
@@ -354,6 +428,7 @@ void LinkButton::_bind_methods() {
 	BIND_ENUM_CONSTANT(UNDERLINE_MODE_NEVER);
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text"), "set_text", "get_text");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "underline", PROPERTY_HINT_ENUM, "Always,On Hover,Never"), "set_underline_mode", "get_underline_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "uri"), "set_uri", "get_uri");
 
@@ -382,6 +457,7 @@ void LinkButton::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LinkButton, font_outline_color);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, LinkButton, underline_spacing);
+	BBCodeText::bind_theme_fonts(get_class_static());
 }
 
 LinkButton::LinkButton(const String &p_text) {

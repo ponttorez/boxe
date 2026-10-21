@@ -258,7 +258,7 @@ void MenuBar::bind_global_menu() {
 	for (int i = 0; i < menu_cache.size(); i++) {
 		RID submenu_rid = popups[i]->bind_global_menu();
 		if (!popups[i]->is_system_menu()) {
-			int index = nmenu->add_submenu_item(main_menu, menu_cache[i].name, submenu_rid, global_menu_tag + "#" + itos(i), global_start_idx + i);
+			int index = nmenu->add_submenu_item(main_menu, _get_native_title(menu_cache[i], menu_cache[i].name), submenu_rid, global_menu_tag + "#" + itos(i), global_start_idx + i);
 			menu_cache.write[i].submenu_rid = submenu_rid;
 			menu_cache.write[i].sysmenu_id = NativeMenu::INVALID_MENU_ID;
 			nmenu->set_item_hidden(main_menu, index, menu_cache[i].hidden);
@@ -331,10 +331,10 @@ void MenuBar::_notification(int p_what) {
 					if (menu_cache[i].submenu_rid.is_valid()) {
 						int item_idx = nmenu->find_item_index_with_submenu(main_menu, menu_cache[i].submenu_rid);
 						if (item_idx >= 0) {
-							nmenu->set_item_text(main_menu, item_idx, atr(menu_cache[i].name));
+							nmenu->set_item_text(main_menu, item_idx, _get_native_title(menu_cache[i], atr(menu_cache[i].name)));
 						}
 					} else if (menu_cache[i].sysmenu_id != NativeMenu::INVALID_MENU_ID) {
-						nmenu->set_system_menu_text(menu_cache[i].sysmenu_id, atr(menu_cache[i].name));
+						nmenu->set_system_menu_text(menu_cache[i].sysmenu_id, _get_native_title(menu_cache[i], atr(menu_cache[i].name)));
 					}
 				}
 			}
@@ -406,7 +406,7 @@ int MenuBar::_get_index_at_point(const Point2 &p_point) const {
 		if (menu_cache[i].hidden) {
 			continue;
 		}
-		Size2 size = menu_cache[i].text_buf->get_size() + style->get_minimum_size();
+		Size2 size = _get_menu_text_size(i) + style->get_minimum_size();
 		if (point.x > offset && point.x < offset + size.x) {
 			if (point.y > 0 && point.y < size.y) {
 				return i;
@@ -427,11 +427,11 @@ Rect2 MenuBar::_get_menu_item_rect(int p_index) const {
 		if (menu_cache[i].hidden) {
 			continue;
 		}
-		Size2 size = menu_cache[i].text_buf->get_size() + style->get_minimum_size();
+		Size2 size = _get_menu_text_size(i) + style->get_minimum_size();
 		offset += size.x + theme_cache.h_separation;
 	}
 
-	Size2 size = menu_cache[p_index].text_buf->get_size() + style->get_minimum_size();
+	Size2 size = _get_menu_text_size(p_index) + style->get_minimum_size();
 	if (is_layout_rtl()) {
 		return Rect2(Point2(get_size().x - offset - size.x, 0), size);
 	} else {
@@ -512,6 +512,15 @@ void MenuBar::_draw_menu_item(int p_index) {
 
 	Color font_outline_color = theme_cache.font_outline_color;
 	int outline_size = theme_cache.outline_size;
+	if (bbcode_enabled && menu_cache[p_index].bbcode.is_valid()) {
+		BBCodeText::DrawStyle draw_style;
+		draw_style.font_color = color;
+		draw_style.hr_color = color;
+		draw_style.outline_size = outline_size;
+		draw_style.outline_color = font_outline_color;
+		menu_cache[p_index].bbcode->draw_at(ci, text_ofs, draw_style);
+		return;
+	}
 	if (outline_size > 0 && font_outline_color.a > 0) {
 		menu_cache[p_index].text_buf->draw_outline(ci, text_ofs, outline_size, font_outline_color);
 	}
@@ -519,6 +528,20 @@ void MenuBar::_draw_menu_item(int p_index) {
 }
 
 void MenuBar::shape(Menu &p_menu) {
+	if (bbcode_enabled) {
+		if (p_menu.bbcode.is_null()) {
+			p_menu.bbcode.instantiate();
+			p_menu.bbcode->set_owner(this);
+		}
+		if (theme_cache.font.is_valid()) {
+			p_menu.bbcode->update_theme_fonts(this, theme_cache.font, theme_cache.font_size);
+		}
+		p_menu.bbcode->set_language(language.is_empty() ? _get_locale() : language);
+		p_menu.bbcode->set_text(atr(p_menu.name));
+		p_menu.bbcode->set_text_direction(text_direction, is_layout_rtl());
+		return;
+	}
+	p_menu.bbcode = Ref<BBCodeText>();
 	p_menu.text_buf->clear();
 	if (text_direction == Control::TEXT_DIRECTION_INHERITED) {
 		p_menu.text_buf->set_direction(is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR);
@@ -527,6 +550,60 @@ void MenuBar::shape(Menu &p_menu) {
 	}
 	const String &lang = language.is_empty() ? _get_locale() : language;
 	p_menu.text_buf->add_string(atr(p_menu.name), theme_cache.font, theme_cache.font_size, lang);
+}
+
+Size2 MenuBar::_get_menu_text_size(int p_index) const {
+	const Menu &menu = menu_cache[p_index];
+	return (bbcode_enabled && menu.bbcode.is_valid()) ? menu.bbcode->get_size() : menu.text_buf->get_size();
+}
+
+void MenuBar::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	for (int i = 0; i < menu_cache.size(); i++) {
+		shape(menu_cache.write[i]);
+	}
+	_update_native_titles();
+	update_minimum_size();
+	queue_redraw();
+}
+
+// Native menus can't draw BBCode, so they show the text without tags.
+String MenuBar::_get_native_title(const Menu &p_menu, const String &p_title) const {
+	if (!bbcode_enabled) {
+		return p_title;
+	}
+	if (p_menu.bbcode.is_valid()) {
+		return p_menu.bbcode->get_parsed_text();
+	}
+	Ref<BBCodeText> bbcode;
+	bbcode.instantiate();
+	bbcode->set_text(p_title);
+	return bbcode->get_parsed_text();
+}
+
+void MenuBar::_update_native_titles() {
+	if (global_menu_tag.is_empty()) {
+		return;
+	}
+	NativeMenu *nmenu = NativeMenu::get_singleton();
+	const RID main_menu = nmenu->get_system_menu(NativeMenu::MAIN_MENU_ID);
+	for (int i = 0; i < menu_cache.size(); i++) {
+		if (menu_cache[i].submenu_rid.is_valid()) {
+			const int item_idx = nmenu->find_item_index_with_submenu(main_menu, menu_cache[i].submenu_rid);
+			if (item_idx >= 0) {
+				nmenu->set_item_text(main_menu, item_idx, _get_native_title(menu_cache[i], atr(menu_cache[i].name)));
+			}
+		} else if (menu_cache[i].sysmenu_id != NativeMenu::INVALID_MENU_ID) {
+			nmenu->set_system_menu_text(menu_cache[i].sysmenu_id, _get_native_title(menu_cache[i], atr(menu_cache[i].name)));
+		}
+	}
+}
+
+bool MenuBar::is_bbcode_enabled() const {
+	return bbcode_enabled;
 }
 
 void MenuBar::_refresh_menu_names() {
@@ -545,7 +622,7 @@ void MenuBar::_refresh_menu_names() {
 			if (is_global && menu_cache[i].submenu_rid.is_valid()) {
 				int item_idx = nmenu->find_item_index_with_submenu(main_menu, menu_cache[i].submenu_rid);
 				if (item_idx >= 0) {
-					nmenu->set_item_text(main_menu, item_idx, atr(menu_cache[i].name));
+					nmenu->set_item_text(main_menu, item_idx, _get_native_title(menu_cache[i], atr(menu_cache[i].name)));
 				}
 			}
 		}
@@ -625,7 +702,7 @@ void MenuBar::add_child_notify(Node *p_child) {
 
 		RID submenu_rid = pm->bind_global_menu();
 		if (!pm->is_system_menu()) {
-			nmenu->add_submenu_item(main_menu, atr(menu.name), submenu_rid, global_menu_tag + "#" + itos(menu_cache.size() - 1), _find_global_start_index() + menu_cache.size() - 1);
+			nmenu->add_submenu_item(main_menu, _get_native_title(menu, atr(menu.name)), submenu_rid, global_menu_tag + "#" + itos(menu_cache.size() - 1), _find_global_start_index() + menu_cache.size() - 1);
 			menu_cache.write[menu_cache.size() - 1].submenu_rid = submenu_rid;
 			menu_cache.write[menu_cache.size() - 1].sysmenu_id = NativeMenu::INVALID_MENU_ID;
 		} else {
@@ -672,7 +749,7 @@ void MenuBar::move_child_notify(Node *p_child) {
 				}
 			}
 			if (new_idx != -1) {
-				nmenu->add_submenu_item(main_menu, atr(menu.name), menu.submenu_rid, global_menu_tag + "#" + itos(new_idx), global_start + new_idx);
+				nmenu->add_submenu_item(main_menu, _get_native_title(menu, atr(menu.name)), menu.submenu_rid, global_menu_tag + "#" + itos(new_idx), global_start + new_idx);
 			}
 		}
 	}
@@ -731,6 +808,8 @@ void MenuBar::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_direction"), &MenuBar::get_text_direction);
 	ClassDB::bind_method(D_METHOD("set_language", "language"), &MenuBar::set_language);
 	ClassDB::bind_method(D_METHOD("get_language"), &MenuBar::get_language);
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &MenuBar::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &MenuBar::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_flat", "enabled"), &MenuBar::set_flat);
 	ClassDB::bind_method(D_METHOD("is_flat"), &MenuBar::is_flat);
 	ClassDB::bind_method(D_METHOD("set_start_index", "enabled"), &MenuBar::set_start_index);
@@ -751,6 +830,7 @@ void MenuBar::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_menu_popup", "menu"), &MenuBar::get_menu_popup);
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flat"), "set_flat", "is_flat");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "start_index"), "set_start_index", "get_start_index");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "switch_on_hover"), "set_switch_on_hover", "is_switch_on_hover");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "prefer_global_menu"), "set_prefer_global_menu", "is_prefer_global_menu");
@@ -786,6 +866,7 @@ void MenuBar::_bind_methods() {
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, MenuBar, sound_hover, "hover");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, MenuBar, sound_pressed, "pressed");
+	BBCodeText::bind_theme_fonts(get_class_static());
 
 	ADD_CLASS_DEPENDENCY("PopupMenu");
 }
@@ -879,7 +960,7 @@ Size2 MenuBar::get_minimum_size() const {
 		if (menu_cache[i].hidden) {
 			continue;
 		}
-		Size2 sz = menu_cache[i].text_buf->get_size() + style->get_minimum_size();
+		Size2 sz = _get_menu_text_size(i) + style->get_minimum_size();
 		size.y = MAX(size.y, sz.y);
 		size.x += sz.x;
 	}
@@ -910,7 +991,7 @@ void MenuBar::set_menu_title(int p_menu, const String &p_title) {
 		RID main_menu = nmenu->get_system_menu(NativeMenu::MAIN_MENU_ID);
 		int item_idx = nmenu->find_item_index_with_submenu(main_menu, menu_cache[p_menu].submenu_rid);
 		if (item_idx >= 0) {
-			nmenu->set_item_text(main_menu, item_idx, atr(menu_cache[p_menu].name));
+			nmenu->set_item_text(main_menu, item_idx, _get_native_title(menu_cache[p_menu], atr(menu_cache[p_menu].name)));
 		}
 	}
 	update_minimum_size();

@@ -67,6 +67,35 @@ Size2 TreeItem::Cell::get_icon_size() const {
 	}
 }
 
+Size2 TreeItem::Cell::get_text_size() const {
+	return bbcode.is_valid() ? bbcode->get_size() : text_buf->get_size();
+}
+
+void TreeItem::Cell::set_text_width(float p_width) {
+	if (bbcode.is_valid()) {
+		bbcode->set_width(p_width);
+	} else {
+		text_buf->set_width(p_width);
+	}
+}
+
+void TreeItem::Cell::draw_text(const RID &p_where, const Point2 &p_pos, const Color &p_color, int p_outline_size, const Color &p_outline_color) const {
+	if (bbcode.is_valid()) {
+		BBCodeText::DrawStyle draw_style;
+		draw_style.font_color = p_color;
+		draw_style.hr_color = p_color;
+		draw_style.outline_size = p_outline_size;
+		draw_style.outline_color = p_outline_color;
+		// The callers already aligned the text, so it's drawn in its own size instead of the width of the cell.
+		bbcode->draw(p_where, Rect2(p_pos, bbcode->get_size()), VERTICAL_ALIGNMENT_TOP, draw_style);
+		return;
+	}
+	if (p_outline_size > 0 && p_outline_color.a > 0) {
+		text_buf->draw_outline(p_where, p_pos, p_outline_size, p_outline_color);
+	}
+	text_buf->draw(p_where, p_pos, p_color);
+}
+
 void TreeItem::Cell::draw_icon(const RID &p_where, const Point2 &p_pos, const Size2 &p_size, const Rect2i &p_region, const Color &p_color) const {
 	if (icon.is_null()) {
 		return;
@@ -1754,7 +1783,7 @@ Size2 TreeItem::get_minimum_size(int p_column) {
 			if (cell.dirty) {
 				parent_tree->update_item_cell(this, p_column);
 			}
-			Size2 text_size = cell.text_buf->get_size();
+			Size2 text_size = cell.get_text_size();
 			if (get_text_overrun_behavior(p_column) == TextServer::OVERRUN_NO_TRIMMING) {
 				size.width += text_size.width;
 			}
@@ -2178,7 +2207,7 @@ void Tree::draw_item_rect(const TreeItem::Cell &p_cell, const Rect2i &p_rect, co
 	ERR_FAIL_COND(theme_cache.font.is_null());
 
 	Rect2i rect = p_rect;
-	Size2 ts = p_cell.text_buf->get_size();
+	Size2 ts = p_cell.get_text_size();
 	bool rtl = is_layout_rtl();
 
 	Size2i icon_size;
@@ -2219,11 +2248,8 @@ void Tree::draw_item_rect(const TreeItem::Cell &p_cell, const Rect2i &p_rect, co
 	if (rtl) {
 		if (ts.width > 0) {
 			Point2 draw_pos = rect.position;
-			draw_pos.y += Math::floor((rect.size.y - p_cell.text_buf->get_size().y) * 0.5);
-			if (p_ol_size > 0 && p_ol_color.a > 0) {
-				p_cell.text_buf->draw_outline(ci, draw_pos, p_ol_size, p_ol_color);
-			}
-			p_cell.text_buf->draw(ci, draw_pos, p_color);
+			draw_pos.y += Math::floor((rect.size.y - p_cell.get_text_size().y) * 0.5);
+			p_cell.draw_text(ci, draw_pos, p_color, p_ol_size, p_ol_color);
 		}
 		rect.position.x += ts.width + theme_cache.icon_h_separation;
 	}
@@ -2241,11 +2267,8 @@ void Tree::draw_item_rect(const TreeItem::Cell &p_cell, const Rect2i &p_rect, co
 
 	if (!rtl && ts.width > 0) {
 		Point2 draw_pos = rect.position;
-		draw_pos.y += Math::floor((rect.size.y - p_cell.text_buf->get_size().y) * 0.5);
-		if (p_ol_size > 0 && p_ol_color.a > 0) {
-			p_cell.text_buf->draw_outline(ci, draw_pos, p_ol_size, p_ol_color);
-		}
-		p_cell.text_buf->draw(ci, draw_pos, p_color);
+		draw_pos.y += Math::floor((rect.size.y - p_cell.get_text_size().y) * 0.5);
+		p_cell.draw_text(ci, draw_pos, p_color, p_ol_size, p_ol_color);
 	}
 }
 
@@ -2350,7 +2373,29 @@ void Tree::update_item_cell(TreeItem *p_item, int p_col) const {
 	p_item->cells.write[p_col].text_buf->set_break_flags(break_flags);
 
 	TS->shaped_text_set_bidi_override(p_item->cells[p_col].text_buf->get_rid(), structured_text_parser(p_item->cells[p_col].st_parser, p_item->cells[p_col].st_args, valtext));
-	p_item->cells.write[p_col].dirty = false;
+
+	TreeItem::Cell &cell = p_item->cells.write[p_col];
+	if (bbcode_enabled) {
+		if (cell.bbcode.is_null()) {
+			cell.bbcode.instantiate();
+			cell.bbcode->set_owner(this);
+		}
+		if (cell.custom_font.is_valid()) {
+			cell.bbcode->set_fonts(font, Ref<Font>(), Ref<Font>(), Ref<Font>(), Ref<Font>(), font_size);
+		} else {
+			cell.bbcode->update_theme_fonts(this, font, font_size);
+		}
+		cell.bbcode->set_language(lang);
+		cell.bbcode->set_text(valtext);
+		cell.bbcode->set_text_direction(cell.text_direction, is_layout_rtl());
+		cell.bbcode->set_autowrap_mode(cell.autowrap_mode);
+		cell.bbcode->set_autowrap_trim_flags(cell.autowrap_trim_flags);
+		cell.bbcode->set_text_overrun_behavior(cell.text_buf->get_text_overrun_behavior());
+		cell.bbcode->set_structured_text_bidi_override(cell.st_parser, cell.st_args);
+	} else {
+		cell.bbcode = Ref<BBCodeText>();
+	}
+	cell.dirty = false;
 }
 
 void Tree::update_item_cache(TreeItem *p_item) const {
@@ -2464,7 +2509,7 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 				text_width -= _get_cell_icon_size(p_item->cells[i]).x + theme_cache.icon_h_separation;
 			}
 
-			p_item->cells.write[i].text_buf->set_width(text_width);
+			p_item->cells.write[i].set_text_width(text_width);
 
 			r_self_height = compute_item_height(p_item);
 			label_h = r_self_height + theme_cache.v_separation;
@@ -2591,7 +2636,7 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 			item_rect = item_rect.grow_individual(-theme_cache.inner_item_margin_left, -theme_cache.inner_item_margin_top, -theme_cache.inner_item_margin_right, -theme_cache.inner_item_margin_bottom);
 
 			Point2i text_pos = item_rect.position;
-			text_pos.y += Math::floor((item_rect.size.y - p_item->cells[i].text_buf->get_size().y) * 0.5);
+			text_pos.y += Math::floor((item_rect.size.y - p_item->cells[i].get_text_size().y) * 0.5);
 
 			switch (p_item->cells[i].mode) {
 				case TreeItem::CELL_MODE_STRING: {
@@ -2635,15 +2680,9 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 						int cell_width = item_rect.size.x - downarrow->get_width();
 
 						if (rtl) {
-							if (outline_size > 0 && font_outline_color.a > 0) {
-								p_item->cells[i].text_buf->draw_outline(ci, text_pos + Vector2(cell_width - text_width, 0), outline_size, font_outline_color);
-							}
-							p_item->cells[i].text_buf->draw(ci, text_pos + Vector2(cell_width - text_width, 0), cell_color);
+							p_item->cells[i].draw_text(ci, text_pos + Vector2(cell_width - text_width, 0), cell_color, outline_size, font_outline_color);
 						} else {
-							if (outline_size > 0 && font_outline_color.a > 0) {
-								p_item->cells[i].text_buf->draw_outline(ci, text_pos, outline_size, font_outline_color);
-							}
-							p_item->cells[i].text_buf->draw(ci, text_pos, cell_color);
+							p_item->cells[i].draw_text(ci, text_pos, cell_color, outline_size, font_outline_color);
 						}
 
 						Point2i arrow_pos = item_rect.position;
@@ -2657,15 +2696,9 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 						int cell_width = item_rect.size.x - updown->get_width();
 
 						if (rtl) {
-							if (outline_size > 0 && font_outline_color.a > 0) {
-								p_item->cells[i].text_buf->draw_outline(ci, text_pos + Vector2(cell_width - text_width, 0), outline_size, font_outline_color);
-							}
-							p_item->cells[i].text_buf->draw(ci, text_pos + Vector2(cell_width - text_width, 0), cell_color);
+							p_item->cells[i].draw_text(ci, text_pos + Vector2(cell_width - text_width, 0), cell_color, outline_size, font_outline_color);
 						} else {
-							if (outline_size > 0 && font_outline_color.a > 0) {
-								p_item->cells[i].text_buf->draw_outline(ci, text_pos, outline_size, font_outline_color);
-							}
-							p_item->cells[i].text_buf->draw(ci, text_pos, cell_color);
+							p_item->cells[i].draw_text(ci, text_pos, cell_color, outline_size, font_outline_color);
 						}
 
 						if (!p_item->cells[i].editable) {
@@ -4994,7 +5027,7 @@ void Tree::_accessibility_update_item(Point2 &r_ofs, TreeItem *p_item, int &r_ro
 				AccessibilityServer::get_singleton()->update_set_table_cell_position(cell.accessibility_cell_element, r_row, i);
 				AccessibilityServer::get_singleton()->update_set_list_item_selected(cell.accessibility_cell_element, cell.selected);
 				if (cell.description.is_empty()) {
-					AccessibilityServer::get_singleton()->update_set_name(cell.accessibility_cell_element, cell.xl_text);
+					AccessibilityServer::get_singleton()->update_set_name(cell.accessibility_cell_element, (bbcode_enabled && cell.bbcode.is_valid()) ? cell.bbcode->get_parsed_text() : cell.xl_text);
 				} else {
 					AccessibilityServer::get_singleton()->update_set_name(cell.accessibility_cell_element, cell.description);
 				}
@@ -5642,6 +5675,22 @@ void Tree::set_self_modulate(const Color &p_self_modulate) {
 	RS::get_singleton()->canvas_item_set_self_modulate(content_ci, p_self_modulate);
 	RS::get_singleton()->canvas_item_set_self_modulate(custom_ci, p_self_modulate);
 	RS::get_singleton()->canvas_item_set_self_modulate(stylebox_ci, p_self_modulate);
+}
+
+void Tree::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	if (root) {
+		update_item_cache(root);
+	}
+	update_minimum_size();
+	queue_redraw();
+}
+
+bool Tree::is_bbcode_enabled() const {
+	return bbcode_enabled;
 }
 
 void Tree::_update_all() {
@@ -7153,6 +7202,10 @@ String Tree::get_tooltip(const Point2 &p_pos) const {
 	if (it) {
 		const String item_tooltip = it->get_tooltip_text(col);
 		if (enable_auto_tooltip && item_tooltip.is_empty()) {
+			// Tooltips are plain text, so BBCode cells show their text without tags.
+			if (it->cells[col].bbcode.is_valid()) {
+				return it->cells[col].bbcode->get_parsed_text();
+			}
 			return it->get_text(col);
 		}
 		return item_tooltip;
@@ -7294,6 +7347,8 @@ void Tree::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_custom_drawing_canvas_item"), &Tree::get_custom_drawing_canvas_item);
 
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &Tree::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &Tree::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_hide_root", "enable"), &Tree::set_hide_root);
 	ClassDB::bind_method(D_METHOD("is_root_hidden"), &Tree::is_root_hidden);
 	ClassDB::bind_method(D_METHOD("get_next_selected", "from"), &Tree::get_next_selected);
@@ -7385,6 +7440,7 @@ void Tree::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide_folding"), "set_hide_folding", "is_folding_hidden");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enable_recursive_folding"), "set_enable_recursive_folding", "is_recursive_folding_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enable_drag_unfolding"), "set_enable_drag_unfolding", "is_drag_unfolding_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide_root"), "set_hide_root", "is_root_hidden");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "drop_mode_flags", PROPERTY_HINT_FLAGS, "On Item,In Between"), "set_drop_mode_flags", "get_drop_mode_flags");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "select_mode", PROPERTY_HINT_ENUM, "Single,Row,Multi"), "set_select_mode", "get_select_mode");
@@ -7525,6 +7581,8 @@ void Tree::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_pressed, "pressed");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_toggled_on, "toggled_on");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Tree, sound_toggled_off, "toggled_off");
+
+	BBCodeText::bind_theme_fonts(get_class_static());
 
 	ADD_CLASS_DEPENDENCY("HScrollBar");
 	ADD_CLASS_DEPENDENCY("HSlider");

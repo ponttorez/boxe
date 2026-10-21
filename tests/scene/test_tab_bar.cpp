@@ -1162,6 +1162,22 @@ TEST_CASE("[SceneTree][TabBar] Mouse interaction") {
 	memdelete(tab_bar);
 }
 
+TEST_CASE("[SceneTree][TabBar] BBCode") {
+	TabBar *tab_bar = memnew(TabBar);
+	SceneTree::get_singleton()->get_root()->add_child(tab_bar);
+	tab_bar->set_bbcode_enabled(true);
+
+	SUBCASE("[TabBar] Tabs added by the tab count, like when loaded from a scene") {
+		tab_bar->set_tab_count(2);
+		tab_bar->set_tab_title(0, "A");
+		tab_bar->set_tab_title(1, "[b]Bold[/b] title");
+		CHECK(tab_bar->get_tab_count() == 2);
+		CHECK(tab_bar->get_tab_rect(1).size.x > tab_bar->get_tab_rect(0).size.x);
+	}
+
+	memdelete(tab_bar);
+}
+
 // FIXME: Add tests for keyboard navigation and other methods.
 
 } // namespace TestTabBar

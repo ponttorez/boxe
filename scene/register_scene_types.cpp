@@ -48,6 +48,7 @@
 #include "scene/audio/audio_stream_player.h"
 #include "scene/debugger/scene_debugger.h"
 #include "scene/gui/aspect_ratio_container.h"
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
@@ -474,6 +475,7 @@ void register_scene_types() {
 	GDREGISTER_CLASS(Control);
 	GDREGISTER_VIRTUAL_CLASS(BaseButton);
 	GDREGISTER_CLASS(Button);
+	GDREGISTER_INTERNAL_CLASS(BBCodeText);
 	GDREGISTER_CLASS(Label);
 	GDREGISTER_VIRTUAL_CLASS(Range);
 	GDREGISTER_ABSTRACT_CLASS(ScrollBar);
