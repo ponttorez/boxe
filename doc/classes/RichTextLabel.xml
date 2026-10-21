@@ -55,6 +55,14 @@
 				[param alt_text] is used as the image description for assistive apps.
 			</description>
 		</method>
+		<method name="add_spacer">
+			<return type="void" />
+			<param index="0" name="weight" type="float" default="1.0" />
+			<description>
+				Adds a spacer that takes the free width of its line. The spacers of a line share the free width by [param weight], so [code]Name[spacer]100[/code] pushes [code]100[/code] to the line end and [code][spacer]Title[spacer][/code] centers the title. A spacer collapses when the line is full.
+				Same as the [code][spacer][/code] and [code][spacer=weight][/code] BBCode tags.
+			</description>
+		</method>
 		<method name="add_text">
 			<return type="void" />
 			<param index="0" name="text" type="String" />
