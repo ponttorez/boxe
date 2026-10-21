@@ -272,4 +272,11 @@
 			If [code]true[/code], enables the use of pseudolocalization on the main translation domain. See [member ProjectSettings.internationalization/pseudolocalization/use_pseudolocalization] for details.
 		</member>
 	</members>
+	<signals>
+		<signal name="locale_changed">
+			<description>
+				Emitted when the locale changes with [method set_locale], or when the locale override of the main translation domain changes, like the preview locale of the editor. [LocalizedTexture2D], [LocalizedAudioStream] and [LocalizedFont] use it to switch their resource.
+			</description>
+		</signal>
+	</signals>
 </class>

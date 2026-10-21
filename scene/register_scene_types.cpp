@@ -137,6 +137,9 @@
 #include "scene/resources/image_texture.h"
 #include "scene/resources/immediate_mesh.h"
 #include "scene/resources/label_settings.h"
+#include "scene/resources/localized_audio_stream.h"
+#include "scene/resources/localized_font.h"
+#include "scene/resources/localized_texture_2d.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh_data_tool.h"
 #include "scene/resources/mesh_texture.h"
@@ -976,6 +979,7 @@ void register_scene_types() {
 	GDREGISTER_CLASS(PlaceholderCubemap);
 	GDREGISTER_CLASS(PlaceholderCubemapArray);
 	GDREGISTER_CLASS(DPITexture);
+	GDREGISTER_CLASS(LocalizedTexture2D);
 #ifndef DISABLE_DEPRECATED
 	GDREGISTER_CLASS(AnimatedTexture);
 #endif
@@ -994,6 +998,8 @@ void register_scene_types() {
 	GDREGISTER_ABSTRACT_CLASS(Font);
 	GDREGISTER_CLASS(FontFile);
 	GDREGISTER_CLASS(FontVariation);
+	GDREGISTER_CLASS(LocalizedFont);
+	GDREGISTER_CLASS(LocalizedAudioStream);
 	GDREGISTER_CLASS(SystemFont);
 	GDREGISTER_CLASS(ColorPalette);
 

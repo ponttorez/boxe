@@ -163,6 +163,10 @@ public:
 	// The text of an argument: a resource saved to a file gives its path, e.g. for [img]{icon}[/img] in BBCode.
 	static String format_argument(const Variant &p_value);
 
+	// The locale used by localized resources, and the best match for it among the locales of a resource.
+	String get_resource_locale() const;
+	String find_resource_locale(const Vector<String> &p_locales) const;
+
 	StringName pseudolocalize(const StringName &p_message) const;
 
 	bool is_pseudolocalization_enabled() const;

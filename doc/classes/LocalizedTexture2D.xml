@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="LocalizedTexture2D" inherits="Texture2D" api_type="core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+		A texture with a different texture per locale.
+	</brief_description>
+	<description>
+		A texture showing a different texture for each locale, such as images with text. It can be used wherever a [Texture2D] is, and the nodes using it update when the locale changes.
+		The resource of the locale is chosen like translations: the one of the current locale, or else of its language (for example [code]pt[/code] for [code]pt_BR[/code]), or else of the [member ProjectSettings.internationalization/locale/fallback] locale, or else the default one. In the editor, the preview locale is used, or else the fallback locale. It changes when [signal TranslationServer.locale_changed] is emitted.
+		The texture of the locale is drawn by that texture, so [AtlasTexture]s draw their region. [method Resource.get_rid] returns the same proxy texture for all locales, so materials and shaders show the texture of the new locale too.
+		[b]Note:[/b] The textures of all the locales are loaded with this resource and stay in memory, so the locale can change at once. For large resources, such as big images, the remaps of the localization settings of the project load only the resource of the current locale, when the scene using it is loaded.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_current_texture" qualifiers="const">
+			<return type="Texture2D" />
+			<description>
+				Returns the texture used for the current locale.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="default_texture" type="Texture2D" setter="set_default_texture" getter="get_default_texture">
+			The texture used when no texture of [member textures] matches the locale.
+		</member>
+		<member name="resource_local_to_scene" type="bool" setter="set_local_to_scene" getter="is_local_to_scene" overrides="Resource" default="false" />
+		<member name="textures" type="Dictionary" setter="set_textures" getter="get_textures" default="{}">
+			The texture of each locale, the keys being locale codes such as [code]en[/code] or [code]pt_BR[/code].
+		</member>
+	</members>
+</class>
