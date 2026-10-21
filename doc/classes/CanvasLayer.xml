@@ -65,6 +65,9 @@
 		<member name="scale" type="Vector2" setter="set_scale" getter="get_scale" default="Vector2(1, 1)">
 			The layer's scale.
 		</member>
+		<member name="theme_sound_bus" type="StringName" setter="set_theme_sound_bus" getter="get_theme_sound_bus" default="&amp;&quot;&quot;">
+			The audio bus on which the theme sounds of the controls in this layer are played, unless a closer [Control] has one, see [member Control.theme_sound_bus]. Useful to play the sounds of a HUD or a menu on their own bus. If empty, the bus is taken from the ancestors of the layer, or else from [member ProjectSettings.gui/theme/sound_bus].
+		</member>
 		<member name="transform" type="Transform2D" setter="set_transform" getter="get_transform" default="Transform2D(1, 0, 0, 1, 0, 0)">
 			The layer's transform.
 		</member>

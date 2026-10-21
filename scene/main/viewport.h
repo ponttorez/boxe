@@ -374,8 +374,12 @@ private:
 	VRSUpdateMode vrs_update_mode = VRS_UPDATE_ONCE;
 	Ref<Texture2D> vrs_texture;
 
+	StringName theme_sound_bus;
+
 	struct GUI {
 		bool mouse_in_viewport = false;
+		// The last mouse event was made from a touch, which doesn't hover.
+		bool mouse_emulated_from_touch = false;
 		HashMap<int, ObjectID> touch_focus;
 		Control *mouse_focus = nullptr;
 		Control *mouse_click_grabber = nullptr;
@@ -694,6 +698,10 @@ public:
 	bool gui_shortcut_use_focus_owner() const;
 
 	bool gui_is_dragging() const;
+	bool gui_is_mouse_emulated_from_touch() const;
+
+	void set_theme_sound_bus(const StringName &p_bus);
+	StringName get_theme_sound_bus() const;
 	bool gui_is_drag_successful() const;
 	void gui_cancel_drag();
 	void gui_perform_drop_at(const Point2 &p_pos, Control *p_control = nullptr);

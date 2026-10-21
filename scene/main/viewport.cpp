@@ -45,6 +45,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "scene/gui/label.h"
 #include "scene/gui/popup.h"
 #include "scene/gui/subviewport_container.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
@@ -3539,6 +3540,7 @@ void Viewport::push_input(RequiredParam<InputEvent> rp_event, bool p_local_coord
 
 	Ref<InputEventMouse> me = ev;
 	if (me.is_valid()) {
+		gui.mouse_emulated_from_touch = me->get_device() == InputEvent::DEVICE_ID_EMULATION;
 		_update_mouse_over(me);
 	}
 
@@ -3973,6 +3975,21 @@ bool Viewport::is_snap_2d_vertices_to_pixel_enabled() const {
 bool Viewport::gui_is_dragging() const {
 	ERR_READ_THREAD_GUARD_V(false);
 	return get_section_root_viewport()->gui.global_dragging;
+}
+
+bool Viewport::gui_is_mouse_emulated_from_touch() const {
+	ERR_READ_THREAD_GUARD_V(false);
+	return gui.mouse_emulated_from_touch;
+}
+
+void Viewport::set_theme_sound_bus(const StringName &p_bus) {
+	ERR_MAIN_THREAD_GUARD;
+	theme_sound_bus = p_bus;
+}
+
+StringName Viewport::get_theme_sound_bus() const {
+	ERR_READ_THREAD_GUARD_V(StringName());
+	return theme_sound_bus;
 }
 
 bool Viewport::gui_is_drag_successful() const {
@@ -5246,6 +5263,9 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gui_get_drag_description"), &Viewport::gui_get_drag_description);
 	ClassDB::bind_method(D_METHOD("gui_set_drag_description", "description"), &Viewport::gui_set_drag_description);
 	ClassDB::bind_method(D_METHOD("gui_is_dragging"), &Viewport::gui_is_dragging);
+
+	ClassDB::bind_method(D_METHOD("set_theme_sound_bus", "bus"), &Viewport::set_theme_sound_bus);
+	ClassDB::bind_method(D_METHOD("get_theme_sound_bus"), &Viewport::get_theme_sound_bus);
 	ClassDB::bind_method(D_METHOD("gui_is_drag_successful"), &Viewport::gui_is_drag_successful);
 
 	ClassDB::bind_method(D_METHOD("gui_release_focus"), &Viewport::gui_release_focus);
@@ -5417,6 +5437,8 @@ void Viewport::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "gui_snap_controls_to_pixels"), "set_snap_controls_to_pixels", "is_snap_controls_to_pixels_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "gui_embed_subwindows"), "set_embedding_subwindows", "is_embedding_subwindows");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "gui_drag_threshold"), "set_drag_threshold", "get_drag_threshold");
+	ADD_GROUP("Theme", "theme_");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "theme_sound_bus", PROPERTY_HINT_ENUM_SUGGESTION), "set_theme_sound_bus", "get_theme_sound_bus");
 	ADD_GROUP("SDF", "sdf_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sdf_oversize", PROPERTY_HINT_ENUM, "100%,120%,150%,200%"), "set_sdf_oversize", "get_sdf_oversize");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sdf_scale", PROPERTY_HINT_ENUM, "100%,50%,25%"), "set_sdf_scale", "get_sdf_scale");
@@ -5550,6 +5572,9 @@ void Viewport::_bind_methods() {
 void Viewport::_validate_property(PropertyInfo &p_property) const {
 	if (!Engine::get_singleton()->is_editor_hint()) {
 		return;
+	}
+	if (p_property.name == "theme_sound_bus") {
+		p_property.hint_string = ThemeSound::get_bus_hint();
 	}
 	if (vrs_mode != VRS_TEXTURE && (p_property.name == "vrs_texture")) {
 		p_property.usage = PROPERTY_USAGE_NO_EDITOR;

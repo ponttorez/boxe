@@ -30,8 +30,10 @@
 
 #include "canvas_layer.h"
 
+#include "core/config/engine.h"
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/canvas_item.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/world_2d.h"
@@ -295,6 +297,20 @@ float CanvasLayer::get_follow_viewport_scale() const {
 	return follow_viewport_scale;
 }
 
+void CanvasLayer::set_theme_sound_bus(const StringName &p_bus) {
+	theme_sound_bus = p_bus;
+}
+
+StringName CanvasLayer::get_theme_sound_bus() const {
+	return theme_sound_bus;
+}
+
+void CanvasLayer::_validate_property(PropertyInfo &p_property) const {
+	if (Engine::get_singleton()->is_editor_hint() && p_property.name == "theme_sound_bus") {
+		p_property.hint_string = ThemeSound::get_bus_hint();
+	}
+}
+
 void CanvasLayer::_update_follow_viewport(bool p_force_exit) {
 	if (!is_inside_tree()) {
 		return;
@@ -333,6 +349,8 @@ void CanvasLayer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_follow_viewport_scale", "scale"), &CanvasLayer::set_follow_viewport_scale);
 	ClassDB::bind_method(D_METHOD("get_follow_viewport_scale"), &CanvasLayer::get_follow_viewport_scale);
+	ClassDB::bind_method(D_METHOD("set_theme_sound_bus", "bus"), &CanvasLayer::set_theme_sound_bus);
+	ClassDB::bind_method(D_METHOD("get_theme_sound_bus"), &CanvasLayer::get_theme_sound_bus);
 
 	ClassDB::bind_method(D_METHOD("set_custom_viewport", "viewport"), &CanvasLayer::set_custom_viewport);
 	ClassDB::bind_method(D_METHOD("get_custom_viewport"), &CanvasLayer::get_custom_viewport);
@@ -352,6 +370,8 @@ void CanvasLayer::_bind_methods() {
 	ADD_GROUP("Follow Viewport", "follow_viewport");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "follow_viewport_enabled", PROPERTY_HINT_GROUP_ENABLE), "set_follow_viewport", "is_following_viewport");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "follow_viewport_scale", PROPERTY_HINT_RANGE, "0.001,1000,0.001,or_greater,or_less"), "set_follow_viewport_scale", "get_follow_viewport_scale");
+	ADD_GROUP("Theme", "theme_");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "theme_sound_bus", PROPERTY_HINT_ENUM_SUGGESTION), "set_theme_sound_bus", "get_theme_sound_bus");
 
 	ADD_SIGNAL(MethodInfo("visibility_changed"));
 }

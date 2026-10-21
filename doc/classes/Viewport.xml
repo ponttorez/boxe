@@ -458,6 +458,9 @@
 			[b]Note:[/b] If [member scaling_3d_scale] is lower than [code]1.0[/code] (exclusive), [member texture_mipmap_bias] is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is [code]log2(scaling_3d_scale) + mipmap_bias[/code].
 			[b]Note:[/b] This property is only supported in the Forward+ and Mobile renderers, not Compatibility. In Compatibility, this property is always treated as if it was set to [code]0.0[/code].
 		</member>
+		<member name="theme_sound_bus" type="StringName" setter="set_theme_sound_bus" getter="get_theme_sound_bus" default="&amp;&quot;&quot;">
+			The audio bus on which the theme sounds of the controls in this viewport are played, unless a closer [Control] or [CanvasLayer] has one, see [member Control.theme_sound_bus]. If empty, the bus is taken from the ancestors of the viewport, or else from [member ProjectSettings.gui/theme/sound_bus].
+		</member>
 		<member name="transparent_bg" type="bool" setter="set_transparent_background" getter="has_transparent_background" default="false">
 			If [code]true[/code], the viewport should render its background as transparent.
 			[b]Note:[/b] Due to technical limitations, certain rendering features are disabled when a viewport has a transparent background. This currently applies to screen-space reflections, subsurface scattering, and depth of field.

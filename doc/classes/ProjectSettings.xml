@@ -1306,6 +1306,15 @@
 		<member name="gui/theme/lcd_subpixel_layout" type="int" setter="" getter="" default="1">
 			LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
 		</member>
+		<member name="gui/theme/sound_bus" type="StringName" setter="" getter="" default="&amp;&quot;Master&quot;">
+			The default audio bus for theme sounds, used when neither the control playing the sound nor its ancestors have a bus set, see [member Control.theme_sound_bus], [member Viewport.theme_sound_bus] and [member CanvasLayer.theme_sound_bus].
+		</member>
+		<member name="gui/theme/sound_max_voices" type="int" setter="" getter="" default="4">
+			The most times the same theme sound plays at once. A press while that many are playing plays no sound, e.g. with a long sound and quick presses. [code]0[/code] doesn't limit them.
+		</member>
+		<member name="gui/theme/sound_min_interval_msec" type="int" setter="" getter="" default="50">
+			The shortest time in milliseconds between two starts of the same theme sound, so quick repeated presses or scrolling don't pile up the sound. A start sooner than that is skipped. [code]0[/code] lets every press play it.
+		</member>
 		<member name="gui/timers/button_shortcut_feedback_highlight_time" type="float" setter="" getter="" default="0.2">
 			When [member BaseButton.shortcut_feedback] is enabled, this is the time the [BaseButton] will remain highlighted after a shortcut. This duration is not affected by [member Engine.time_scale].
 		</member>

@@ -1315,6 +1315,9 @@
 			The [Theme] resource this node and all its [Control] and [Window] children use. If a child node has its own [Theme] resource set, theme items are merged with child's definitions having higher priority.
 			[b]Note:[/b] [Window] styles will have no effect unless the window is embedded.
 		</member>
+		<member name="theme_sound_bus" type="StringName" setter="set_theme_sound_bus" getter="get_theme_sound_bus" default="&amp;&quot;&quot;">
+			The audio bus on which the theme sounds of this control and its descendants are played. If empty, the bus is taken from the closest ancestor that has one, which can also be a [CanvasLayer] or a [Viewport], or else from [member ProjectSettings.gui/theme/sound_bus]. Other nodes between them don't stop the search.
+		</member>
 		<member name="theme_type_variation" type="StringName" setter="set_theme_type_variation" getter="get_theme_type_variation" default="&amp;&quot;&quot;">
 			The name of a theme type variation used by this [Control] to look up its own theme items. When empty, the class name of the node is used (e.g. [code skip-lint]Button[/code] for the [Button] control), as well as the class names of all parent classes (in order of inheritance).
 			When set, this property gives the highest priority to the type of the specified name. This type can in turn extend another type, forming a dependency chain. See [method Theme.set_type_variation]. If the theme item cannot be found using this type or its base types, lookup falls back on the class names.

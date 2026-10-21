@@ -37,6 +37,7 @@
 #include "core/object/class_db.h"
 #include "core/object/message_queue.h"
 #include "scene/gui/control.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/node.h"
 #include "scene/main/window.h"
 #include "scene/resources/font.h"
@@ -53,6 +54,10 @@ void ThemeDB::initialize_theme() {
 
 	// Allow creating the default theme at a different scale to suit higher/lower base resolutions.
 	float default_theme_scale = GLOBAL_DEF(PropertyInfo(Variant::FLOAT, "gui/theme/default_theme_scale", PROPERTY_HINT_RANGE, "0.5,8,0.01", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED), 1.0);
+
+	GLOBAL_DEF_BASIC(PropertyInfo(Variant::STRING_NAME, "gui/theme/sound_bus"), StringName("Master"));
+	GLOBAL_DEF(PropertyInfo(Variant::INT, "gui/theme/sound_min_interval_msec", PROPERTY_HINT_RANGE, "0,1000,1,or_greater,suffix:ms"), 50);
+	GLOBAL_DEF(PropertyInfo(Variant::INT, "gui/theme/sound_max_voices", PROPERTY_HINT_RANGE, "0,32,1,or_greater"), 4);
 
 	String project_theme_path = GLOBAL_DEF_RST_BASIC(PropertyInfo(Variant::STRING, "gui/theme/custom", PROPERTY_HINT_FILE, "*.tres,*.res,*.theme", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED), "");
 	String project_font_path = GLOBAL_DEF_RST_BASIC(PropertyInfo(Variant::STRING, "gui/theme/custom_font", PROPERTY_HINT_FILE, "*.tres,*.res,*.otf,*.ttf,*.woff,*.woff2,*.fnt,*.font,*.pfb,*.pfm", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED), "");
@@ -108,6 +113,7 @@ void ThemeDB::finalize_theme() {
 	}
 
 	_finalize_theme_contexts();
+	ThemeSound::clear();
 	default_theme.unref();
 
 	fallback_font.unref();

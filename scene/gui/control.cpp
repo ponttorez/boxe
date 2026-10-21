@@ -44,6 +44,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "scene/gui/container.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
@@ -498,6 +499,10 @@ void Control::_get_property_list(List<PropertyInfo> *p_list) const {
 }
 
 void Control::_validate_property(PropertyInfo &p_property) const {
+	if (Engine::get_singleton()->is_editor_hint() && p_property.name == "theme_sound_bus") {
+		p_property.hint_string = ThemeSound::get_bus_hint();
+	}
+
 	// Update theme type variation options.
 	if (Engine::get_singleton()->is_editor_hint() && p_property.name == "theme_type_variation") {
 		List<StringName> names;
@@ -3877,6 +3882,16 @@ StringName Control::get_theme_type_variation() const {
 	return data.theme_type_variation;
 }
 
+void Control::set_theme_sound_bus(const StringName &p_bus) {
+	ERR_MAIN_THREAD_GUARD;
+	data.theme_sound_bus = p_bus;
+}
+
+StringName Control::get_theme_sound_bus() const {
+	ERR_READ_THREAD_GUARD_V(StringName());
+	return data.theme_sound_bus;
+}
+
 /// Theme property lookup.
 
 Ref<Texture2D> Control::get_theme_icon(const StringName &p_name, const StringName &p_theme_type) const {
@@ -4986,6 +5001,8 @@ void Control::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_theme_type_variation", "theme_type"), &Control::set_theme_type_variation);
 	ClassDB::bind_method(D_METHOD("get_theme_type_variation"), &Control::get_theme_type_variation);
+	ClassDB::bind_method(D_METHOD("set_theme_sound_bus", "bus"), &Control::set_theme_sound_bus);
+	ClassDB::bind_method(D_METHOD("get_theme_sound_bus"), &Control::get_theme_sound_bus);
 
 	ClassDB::bind_method(D_METHOD("begin_bulk_theme_override"), &Control::begin_bulk_theme_override);
 	ClassDB::bind_method(D_METHOD("end_bulk_theme_override"), &Control::end_bulk_theme_override);
@@ -5273,6 +5290,7 @@ void Control::_bind_methods() {
 	ADD_GROUP("Theme", "theme_");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "theme", PROPERTY_HINT_RESOURCE_TYPE, Theme::get_class_static()), "set_theme", "get_theme");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "theme_type_variation", PROPERTY_HINT_ENUM_SUGGESTION), "set_theme_type_variation", "get_theme_type_variation");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "theme_sound_bus", PROPERTY_HINT_ENUM_SUGGESTION), "set_theme_sound_bus", "get_theme_sound_bus");
 
 	BIND_ENUM_CONSTANT(FOCUS_NONE);
 	BIND_ENUM_CONSTANT(FOCUS_CLICK);

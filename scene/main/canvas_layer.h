@@ -57,12 +57,15 @@ class CanvasLayer : public Node {
 	bool follow_viewport = false;
 	float follow_viewport_scale = 1.0;
 
+	StringName theme_sound_bus;
+
 	void _update_xform();
 	void _update_locrotscale() const;
 	void _update_follow_viewport(bool p_force_exit = false);
 
 protected:
 	void _notification(int p_what);
+	void _validate_property(PropertyInfo &p_property) const;
 	static void _bind_methods();
 
 public:
@@ -104,6 +107,9 @@ public:
 
 	void set_follow_viewport_scale(float p_ratio);
 	float get_follow_viewport_scale() const;
+
+	void set_theme_sound_bus(const StringName &p_bus);
+	StringName get_theme_sound_bus() const;
 
 	RID get_canvas() const;
 

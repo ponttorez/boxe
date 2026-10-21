@@ -329,6 +329,7 @@ private:
 		StyleTransitions *style_transitions = nullptr;
 		Ref<Theme> theme;
 		StringName theme_type_variation;
+		StringName theme_sound_bus;
 
 		bool bulk_theme_override = false;
 		Theme::ThemeIconMap theme_icon_override;
@@ -842,6 +843,9 @@ public:
 
 	void set_theme_type_variation(const StringName &p_theme_type);
 	StringName get_theme_type_variation() const;
+
+	void set_theme_sound_bus(const StringName &p_bus);
+	StringName get_theme_sound_bus() const;
 
 	void begin_bulk_theme_override();
 	void end_bulk_theme_override();
