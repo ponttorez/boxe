@@ -2206,6 +2206,7 @@ void Tree::draw_item_rect(const TreeItem::Cell &p_cell, const Rect2i &p_rect, co
 
 void Tree::update_column(int p_col) {
 	columns.write[p_col].text_buf->clear();
+	columns.write[p_col].text_buf->set_width(-1);
 	if (columns[p_col].text_direction == Control::TEXT_DIRECTION_INHERITED) {
 		columns.write[p_col].text_buf->set_direction(is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR);
 	} else {
