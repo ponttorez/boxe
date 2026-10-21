@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="LocalizedAudioStream" inherits="AudioStream" api_type="core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+		An audio stream with a different stream per locale.
+	</brief_description>
+	<description>
+		An audio stream playing a different stream for each locale, such as voice lines. It can be used wherever an [AudioStream] is, and the stream of the locale is played each time playback starts. A stream already playing keeps playing when the locale changes.
+		The resource of the locale is chosen like translations: the one of the current locale, or else of its language (for example [code]pt[/code] for [code]pt_BR[/code]), or else of the [member ProjectSettings.internationalization/locale/fallback] locale, or else the default one. In the editor, the preview locale is used, or else the fallback locale. It changes when [signal TranslationServer.locale_changed] is emitted.
+		[b]Note:[/b] The settings of the streams, such as looping, are set on the stream of each locale.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_current_stream" qualifiers="const">
+			<return type="AudioStream" />
+			<description>
+				Returns the stream used for the current locale.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="default_stream" type="AudioStream" setter="set_default_stream" getter="get_default_stream">
+			The stream used when no stream of [member streams] matches the locale.
+		</member>
+		<member name="streams" type="Dictionary" setter="set_streams" getter="get_streams" default="{}">
+			The stream of each locale, the keys being locale codes such as [code]en[/code] or [code]pt_BR[/code].
+		</member>
+	</members>
+</class>

@@ -156,6 +156,10 @@ public:
 	StringName translate_plural(const StringName &p_message, const StringName &p_message_plural, int p_n, const StringName &p_context = "") const;
 	String format_arguments(const String &p_text, const Dictionary &p_arguments, const String &p_locale = "") const;
 
+	// The locale used by localized resources, and the best match for it among the locales of a resource.
+	String get_resource_locale() const;
+	String find_resource_locale(const Vector<String> &p_locales) const;
+
 	StringName pseudolocalize(const StringName &p_message) const;
 
 	bool is_pseudolocalization_enabled() const;

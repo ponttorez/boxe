@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="LocalizedFont" inherits="FontVariation" api_type="core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+		A font variation of a different font per locale.
+	</brief_description>
+	<description>
+		A [FontVariation] of a different font for each locale, such as a font with the glyph shapes of Japanese. It can be used wherever a [Font] is, like the default font of a [Theme], and the text using it is drawn with the font of the new locale when the locale changes. The variation settings apply to the font of every locale.
+		The resource of the locale is chosen like translations: the one of the current locale, or else of its language (for example [code]pt[/code] for [code]pt_BR[/code]), or else of the [member ProjectSettings.internationalization/locale/fallback] locale, or else the default one. In the editor, the preview locale is used, or else the fallback locale. It changes when [signal TranslationServer.locale_changed] is emitted.
+		If no font matches the locale and [member default_font] is not set, the default font of the theme is used.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_current_font" qualifiers="const">
+			<return type="Font" />
+			<description>
+				Returns the font used for the current locale.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="default_font" type="Font" setter="set_default_font" getter="get_default_font">
+			The font used when no font of [member fonts] matches the locale.
+		</member>
+		<member name="fonts" type="Dictionary" setter="set_fonts" getter="get_fonts" default="{}">
+			The font of each locale, the keys being locale codes such as [code]en[/code] or [code]ja[/code].
+		</member>
+	</members>
+</class>

@@ -435,7 +435,15 @@ String TranslationDomain::get_locale_override() const {
 }
 
 void TranslationDomain::set_locale_override(const String &p_locale) {
-	locale_override = p_locale.is_empty() ? p_locale : TranslationServer::get_singleton()->standardize_locale(p_locale);
+	const String new_override = p_locale.is_empty() ? p_locale : TranslationServer::get_singleton()->standardize_locale(p_locale);
+	if (locale_override == new_override) {
+		return;
+	}
+	locale_override = new_override;
+	// The locale of the main domain is the one of localized resources, like the preview locale of the editor.
+	if (TranslationServer::get_singleton()->get_main_domain().ptr() == this) {
+		TranslationServer::get_singleton()->emit_signal(SNAME("locale_changed"));
+	}
 }
 
 bool TranslationDomain::is_enabled() const {
