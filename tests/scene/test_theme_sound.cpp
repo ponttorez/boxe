@@ -33,15 +33,20 @@
 TEST_FORCE_LINK(test_theme_sound)
 
 #include "core/config/project_settings.h"
+#include "core/input/input_map.h"
+#include "core/object/message_queue.h"
 #include "core/os/os.h"
 #include "scene/2d/node_2d.h"
+#include "scene/gui/button.h"
 #include "scene/gui/control.h"
+#include "scene/gui/line_edit.h"
 #include "scene/gui/theme_sound.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 #include "scene/resources/audio_stream_wav.h"
 #include "scene/resources/theme.h"
+#include "scene/theme/theme_db.h"
 #include "servers/audio/audio_server.h"
 #include "tests/display_server_mock.h"
 
@@ -303,6 +308,121 @@ TEST_CASE("[SceneTree][Control] A press on a control that isn't interactable pla
 	CHECK(ThemeSound::get_played_count() == played);
 
 	memdelete(parent);
+}
+
+TEST_CASE("[SceneTree][BaseButton] Sounds of presses and toggles") {
+	ThemeSound::clear();
+	Button *button = memnew(Button);
+	SceneTree::get_singleton()->get_root()->add_child(button);
+	button->set_position(Point2());
+	button->set_size(Size2(100, 40));
+	const Ref<AudioStream> pressed = make_sound();
+	const Ref<AudioStream> toggled_on = make_sound();
+	const Ref<AudioStream> toggled_off = make_sound();
+	button->add_theme_sound_override("pressed", pressed);
+
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+	CHECK(ThemeSound::get_last_played() == pressed->get_instance_id());
+
+	button->set_toggle_mode(true);
+	button->add_theme_sound_override("toggled_on", toggled_on);
+	button->add_theme_sound_override("toggled_off", toggled_off);
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+	CHECK(ThemeSound::get_last_played() == toggled_on->get_instance_id());
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+	CHECK(ThemeSound::get_last_played() == toggled_off->get_instance_id());
+
+	SUBCASE("Changes from code are silent") {
+		const uint64_t played = ThemeSound::get_played_count();
+		button->set_pressed(true);
+		button->set_pressed(false);
+		CHECK(ThemeSound::get_played_count() == played);
+	}
+
+	memdelete(button);
+}
+
+TEST_CASE("[SceneTree][BaseButton] Hover and denied sounds") {
+	ThemeSound::clear();
+	Control *parent = memnew(Control);
+	SceneTree::get_singleton()->get_root()->add_child(parent);
+	Button *button = memnew(Button);
+	parent->add_child(button);
+	button->set_position(Point2());
+	button->set_size(Size2(100, 40));
+	const Ref<AudioStream> hover = make_sound();
+	const Ref<AudioStream> denied = make_sound();
+	button->add_theme_sound_override("hover", hover);
+	parent->add_theme_sound_override("denied", denied);
+
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 150), MouseButtonMask::NONE, Key::NONE);
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(50, 20), MouseButtonMask::NONE, Key::NONE);
+	CHECK(ThemeSound::get_last_played() == hover->get_instance_id());
+
+	button->set_disabled(true);
+	const uint64_t played = ThemeSound::get_played_count();
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 150), MouseButtonMask::NONE, Key::NONE);
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(50, 20), MouseButtonMask::NONE, Key::NONE);
+	CHECK_MESSAGE(ThemeSound::get_played_count() == played, "Disabled buttons don't play the hover sound.");
+
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+	CHECK_MESSAGE(ThemeSound::get_last_played() == denied->get_instance_id(), "A disabled button plays the denied sound of its closest ancestor that has one.");
+
+	ThemeSound::clear();
+	parent->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+	const uint64_t played_before = ThemeSound::get_played_count();
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2(50, 20), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+	CHECK_MESSAGE(ThemeSound::get_played_count() == played_before, "Not when an ancestor of the button isn't interactable.");
+
+	memdelete(parent);
+}
+
+TEST_CASE("[SceneTree][LineEdit] Typed and submitted sounds are only played for user input") {
+	ThemeSound::clear();
+	LineEdit *line_edit = memnew(LineEdit);
+	SceneTree::get_singleton()->get_root()->add_child(line_edit);
+	const Ref<AudioStream> typed = make_sound();
+	const Ref<AudioStream> submitted = make_sound();
+	line_edit->add_theme_sound_override("typed", typed);
+	line_edit->add_theme_sound_override("submitted", submitted);
+
+	const uint64_t played = ThemeSound::get_played_count();
+	line_edit->set_text("abc");
+	line_edit->delete_text(0, 1);
+	MessageQueue::get_singleton()->flush();
+	CHECK_MESSAGE(ThemeSound::get_played_count() == played, "Changes from code are silent.");
+
+	line_edit->grab_focus();
+	line_edit->edit();
+	line_edit->set_caret_column(2);
+	SEND_GUI_ACTION("ui_text_backspace");
+	CHECK(line_edit->get_text() == "b");
+	CHECK(ThemeSound::get_last_played() == typed->get_instance_id());
+
+	SEND_GUI_ACTION("ui_text_submit");
+	CHECK(ThemeSound::get_last_played() == submitted->get_instance_id());
+
+	memdelete(line_edit);
+}
+
+TEST_CASE("[ThemeDB] Inherited items with the same name and different data types are all listed") {
+	List<ThemeDB::ThemeItemBind> items;
+	ThemeDB::get_singleton()->get_class_items("Button", &items, true);
+	bool hover_style = false;
+	bool hover_sound = false;
+	for (const ThemeDB::ThemeItemBind &item : items) {
+		if (item.item_name == StringName("hover")) {
+			hover_style = hover_style || item.data_type == Theme::DATA_TYPE_STYLEBOX;
+			hover_sound = hover_sound || item.data_type == Theme::DATA_TYPE_SOUND;
+		}
+	}
+	CHECK(hover_style);
+	CHECK_MESSAGE(hover_sound, "The hover sound of BaseButton isn't hidden by the hover style of Button.");
 }
 
 } // namespace TestThemeSound

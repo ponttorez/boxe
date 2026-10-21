@@ -105,6 +105,9 @@ private:
 
 		Ref<Font> tab_font;
 		int tab_font_size;
+
+		Ref<AudioStream> sound_hover;
+		Ref<AudioStream> sound_selected;
 	} theme_cache;
 	struct CachedTab {
 		bool has_title = false;

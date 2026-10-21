@@ -99,6 +99,7 @@ Size2 Slider::get_minimum_size() const {
 
 void Slider::gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
+	ValueSoundGuard value_sound_guard(this);
 
 	if (!editable) {
 		return;

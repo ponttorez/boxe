@@ -602,6 +602,12 @@
 		<theme_item name="clear" data_type="icon" type="Texture2D">
 			Texture for the clear button. See [member clear_button_enabled].
 		</theme_item>
+		<theme_item name="submitted" data_type="sound" type="AudioStream">
+			Sound played when the user submits the text with [kbd]Enter[/kbd].
+		</theme_item>
+		<theme_item name="typed" data_type="sound" type="AudioStream">
+			Sound played when the user changes the text, by typing, pasting or dropping text. Changes made from code are silent.
+		</theme_item>
 		<theme_item name="focus" data_type="style" type="StyleBox">
 			Background used when [LineEdit] has GUI focus. The [theme_item focus] [StyleBox] is displayed [i]over[/i] the base [StyleBox], so a partially transparent [StyleBox] should be used to ensure the base [StyleBox] remains visible. A [StyleBox] that represents an outline or an underline works well for this purpose. To disable the focus visual effect, assign a [StyleBoxEmpty] resource. Note that disabling the focus visual effect will harm keyboard/controller navigation usability, so this is not recommended for accessibility reasons.
 		</theme_item>

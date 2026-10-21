@@ -139,6 +139,12 @@
 		<theme_item name="updown" data_type="icon" type="Texture2D" deprecated="Use [theme_item up] and [theme_item down] instead.">
 			Single texture representing both the up and down buttons icons. It is displayed in the middle of the buttons and does not change upon interaction. If a valid icon is assigned, it will replace [theme_item up] and [theme_item down].
 		</theme_item>
+		<theme_item name="button_hover" data_type="sound" type="AudioStream">
+			Sound played when the mouse enters the up or down button. It isn't played for touches, which don't hover.
+		</theme_item>
+		<theme_item name="button_pressed" data_type="sound" type="AudioStream">
+			Sound played when the up or down button is clicked. The [theme_item Range.value_changed] sound also plays when the value changes.
+		</theme_item>
 		<theme_item name="down_background" data_type="style" type="StyleBox">
 			Background style of the down button.
 		</theme_item>

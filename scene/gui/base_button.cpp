@@ -34,7 +34,9 @@
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "scene/gui/label.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/timer.h"
+#include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
 void BaseButton::_unpress_group() {
@@ -60,6 +62,11 @@ void BaseButton::gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
 	if (status.disabled) { // no interaction with disabled button
+		const Ref<InputEventMouseButton> mb = p_event;
+		const Ref<InputEventScreenTouch> st = p_event;
+		if ((mb.is_valid() && mb->is_pressed() && mb->get_button_index() == MouseButton::LEFT) || (st.is_valid() && st->is_pressed())) {
+			play_denied_sound();
+		}
 		return;
 	}
 
@@ -171,6 +178,9 @@ void BaseButton::_notification(int p_what) {
 
 		case NOTIFICATION_MOUSE_ENTER: {
 			status.hovering = true;
+			if (!status.disabled) {
+				ThemeSound::play_hover(theme_cache.sound_hover, this);
+			}
 			queue_accessibility_update();
 			queue_redraw();
 		} break;
@@ -225,6 +235,18 @@ void BaseButton::_notification(int p_what) {
 	}
 }
 
+void BaseButton::_play_action_sound() {
+	// Toggles use their own sounds when the theme has them.
+	if (toggle_mode) {
+		const Ref<AudioStream> &toggle_sound = status.pressed ? theme_cache.sound_toggled_on : theme_cache.sound_toggled_off;
+		if (toggle_sound.is_valid()) {
+			ThemeSound::play(toggle_sound, this);
+			return;
+		}
+	}
+	ThemeSound::play(theme_cache.sound_pressed, this);
+}
+
 void BaseButton::_pressed() {
 	GDVIRTUAL_CALL(_pressed);
 	pressed();
@@ -267,11 +289,13 @@ void BaseButton::on_action_event(Ref<InputEvent> p_event) {
 					button_group->emit_signal(SceneStringName(pressed), this);
 				}
 				_toggled(status.pressed);
+				_play_action_sound();
 				_pressed();
 				queue_accessibility_update();
 			}
 		} else {
 			if ((p_event->is_pressed() && action_mode == ACTION_MODE_BUTTON_PRESS) || (p_event->is_released() && action_mode == ACTION_MODE_BUTTON_RELEASE)) {
+				_play_action_sound();
 				_pressed();
 			}
 		}
@@ -502,9 +526,11 @@ void BaseButton::shortcut_input(const Ref<InputEvent> &p_event) {
 			}
 
 			_toggled(status.pressed);
+			_play_action_sound();
 			_pressed();
 			queue_accessibility_update();
 		} else {
+			_play_action_sound();
 			_pressed();
 		}
 		queue_redraw();
@@ -655,6 +681,12 @@ void BaseButton::_bind_methods() {
 	BIND_ENUM_CONSTANT(ACTION_MODE_BUTTON_RELEASE);
 
 	GLOBAL_DEF(PropertyInfo(Variant::FLOAT, "gui/timers/button_shortcut_feedback_highlight_time", PROPERTY_HINT_RANGE, "0.01,10,0.01,suffix:s"), 0.2);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, BaseButton, sound_pressed, "pressed");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, BaseButton, sound_toggled_on, "toggled_on");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, BaseButton, sound_toggled_off, "toggled_off");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, BaseButton, sound_hover, "hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, BaseButton, sound_denied, "denied");
 }
 
 BaseButton::BaseButton() {

@@ -160,7 +160,15 @@ private:
 	String _atr(int p_idx, const String &p_text) const;
 
 protected:
+	void _play_selected_sound();
+	void _play_multi_selected_sound(int p_index, bool p_selected);
+	void _play_activated_sound();
+
 	struct ThemeCache {
+		Ref<AudioStream> sound_selected;
+		Ref<AudioStream> sound_activated;
+		Ref<AudioStream> sound_hover;
+
 		int h_separation = 0;
 		int v_separation = 0;
 

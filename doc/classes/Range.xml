@@ -84,4 +84,9 @@
 			</description>
 		</signal>
 	</signals>
+	<theme_items>
+		<theme_item name="value_changed" data_type="sound" type="AudioStream">
+			Sound played when the user changes the value of a [Slider], [ScrollBar] or [SpinBox]. Like every theme sound, it doesn't start again sooner than 50 milliseconds after it started, or play more than four times at once.
+		</theme_item>
+	</theme_items>
 </class>

@@ -97,6 +97,9 @@ class MenuBar : public Control {
 		Color font_hover_pressed_color;
 		Color font_focus_color;
 
+		Ref<AudioStream> sound_hover;
+		Ref<AudioStream> sound_pressed;
+
 		int h_separation = 0;
 	} theme_cache;
 

@@ -147,6 +147,10 @@ private:
 		Ref<Texture2D> grabber_icon_v;
 		float base_scale = 1.0;
 		Ref<StyleBox> split_bar_background;
+
+		Ref<AudioStream> sound_grabber_hover;
+		Ref<AudioStream> sound_drag_started;
+		Ref<AudioStream> sound_drag_ended;
 	} theme_cache;
 
 	Ref<Texture2D> _get_grabber_icon() const;

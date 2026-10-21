@@ -36,6 +36,7 @@
 #include "core/object/class_db.h"
 #include "core/string/translation_server.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
@@ -262,6 +263,7 @@ void SpinBox::_mouse_exited() {
 
 void SpinBox::gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
+	ValueSoundGuard value_sound_guard(this);
 
 	if (!is_editable()) {
 		return;
@@ -292,6 +294,9 @@ void SpinBox::gui_input(const Ref<InputEvent> &p_event) {
 				line_edit->grab_focus(true);
 
 				if (mouse_on_up_button || mouse_on_down_button) {
+					if (!(mouse_on_up_button ? state_cache.up_button_disabled : state_cache.down_button_disabled)) {
+						ThemeSound::play(theme_cache.sound_button_pressed, this);
+					}
 					_arrow_clicked(mouse_on_up_button);
 				}
 				state_cache.up_button_pressed = mouse_on_up_button;
@@ -350,6 +355,9 @@ void SpinBox::gui_input(const Ref<InputEvent> &p_event) {
 		state_cache.down_button_hovered = mouse_on_down_button;
 
 		if (old_up_hovered != state_cache.up_button_hovered || old_down_hovered != state_cache.down_button_hovered) {
+			if ((state_cache.up_button_hovered && !state_cache.up_button_disabled) || (state_cache.down_button_hovered && !state_cache.down_button_disabled)) {
+				ThemeSound::play_hover(theme_cache.sound_button_hover, this);
+			}
 			queue_redraw();
 		}
 	}
@@ -738,6 +746,9 @@ void SpinBox::_bind_methods() {
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, SpinBox, field_and_buttons_separator, "field_and_buttons_separator");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, SpinBox, up_down_buttons_separator, "up_down_buttons_separator");
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, SpinBox, sound_button_hover, "button_hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, SpinBox, sound_button_pressed, "button_pressed");
 
 	ADD_CLASS_DEPENDENCY("LineEdit");
 }

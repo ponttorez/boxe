@@ -726,6 +726,24 @@
 		<theme_item name="updown" data_type="icon" type="Texture2D">
 			The updown arrow icon to display for the [constant TreeItem.CELL_MODE_RANGE] mode cell.
 		</theme_item>
+		<theme_item name="activated" data_type="sound" type="AudioStream">
+			Sound played when the user activates an item (double-click or [kbd]Enter[/kbd]).
+		</theme_item>
+		<theme_item name="hover" data_type="sound" type="AudioStream">
+			Sound played when the hover highlight moves: onto another item, onto another cell (unless [member select_mode] is [constant SELECT_ROW]), or onto or off an enabled cell button. It isn't played for touches, which don't hover.
+		</theme_item>
+		<theme_item name="pressed" data_type="sound" type="AudioStream">
+			Sound played when the user presses a button of a cell.
+		</theme_item>
+		<theme_item name="selected" data_type="sound" type="AudioStream">
+			Sound played when the user selects an item or a cell.
+		</theme_item>
+		<theme_item name="toggled_off" data_type="sound" type="AudioStream">
+			Sound played when the user unchecks a checkbox cell.
+		</theme_item>
+		<theme_item name="toggled_on" data_type="sound" type="AudioStream">
+			Sound played when the user checks a checkbox cell.
+		</theme_item>
 		<theme_item name="button_hover" data_type="style" type="StyleBox">
 			[StyleBox] used when a button in the tree is hovered.
 		</theme_item>

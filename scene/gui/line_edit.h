@@ -204,7 +204,19 @@ private:
 	bool pending_select_all_on_focus = false;
 	bool select_all_on_focus = false;
 
+	// Plays the "typed" theme sound when the text changed while it's alive, e.g. while handling user input.
+	struct TypedSoundGuard {
+		LineEdit *line_edit = nullptr;
+		String text;
+		TypedSoundGuard(LineEdit *p_line_edit);
+		~TypedSoundGuard();
+	};
+	void _menu_option_from_user(int p_option);
+
 	struct ThemeCache {
+		Ref<AudioStream> sound_typed;
+		Ref<AudioStream> sound_submitted;
+
 		Ref<StyleBox> normal;
 		Ref<StyleBox> read_only;
 		Ref<StyleBox> focus;

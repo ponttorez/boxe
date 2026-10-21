@@ -607,6 +607,8 @@ private:
 
 	/* Visual. */
 	struct ThemeCache {
+		Ref<AudioStream> sound_typed;
+
 		float base_scale = 1.0;
 
 		/* Search */
@@ -649,6 +651,15 @@ private:
 		Color background_color = Color(1, 1, 1);
 #endif // DISABLE_DEPRECATED
 	} theme_cache;
+
+	// Plays the "typed" theme sound when the text changed while it's alive, e.g. while handling user input.
+	struct TypedSoundGuard {
+		TextEdit *text_edit = nullptr;
+		uint32_t version = 0;
+		TypedSoundGuard(TextEdit *p_text_edit);
+		~TypedSoundGuard();
+	};
+	void _menu_option_from_user(int p_option);
 
 	bool window_has_focus = true;
 	bool first_draw = true;

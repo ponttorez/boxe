@@ -34,6 +34,7 @@
 #include "core/input/input.h"
 #include "core/object/class_db.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/theme/theme_db.h"
 
 void VirtualJoystick::gui_input(const Ref<InputEvent> &p_event) {
@@ -47,6 +48,7 @@ void VirtualJoystick::gui_input(const Ref<InputEvent> &p_event) {
 						joystick_pos = touch->get_position();
 					}
 
+					ThemeSound::play(theme_cache.sound_pressed, this);
 					emit_signal(SceneStringName(pressed));
 
 					is_pressed = true;
@@ -56,6 +58,7 @@ void VirtualJoystick::gui_input(const Ref<InputEvent> &p_event) {
 			}
 		} else if (touch->get_index() == touch_index) {
 			is_pressed = false;
+			ThemeSound::play(theme_cache.sound_released, this);
 			emit_signal(SNAME("released"), input_vector);
 
 			if (!is_flick_canceled && !has_moved) {
@@ -269,6 +272,9 @@ void VirtualJoystick::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, VirtualJoystick, normal_tip);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, VirtualJoystick, pressed_joystick);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, VirtualJoystick, pressed_tip);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, VirtualJoystick, sound_pressed, "pressed");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, VirtualJoystick, sound_released, "released");
 }
 
 Vector2 VirtualJoystick::get_joystick_position() const {

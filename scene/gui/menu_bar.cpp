@@ -33,6 +33,7 @@
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -108,6 +109,9 @@ void MenuBar::gui_input(const Ref<InputEvent> &p_event) {
 			selected_menu = focused_menu;
 		}
 		if (selected_menu != old_sel) {
+			if (focused_menu >= 0 && !menu_cache[focused_menu].disabled) {
+				ThemeSound::play_hover(theme_cache.sound_hover, this);
+			}
 			queue_redraw();
 		}
 	}
@@ -117,6 +121,9 @@ void MenuBar::gui_input(const Ref<InputEvent> &p_event) {
 		if (mb->is_pressed() && (mb->get_button_index() == MouseButton::LEFT || mb->get_button_index() == MouseButton::RIGHT)) {
 			int index = _get_index_at_point(mb->get_position());
 			if (index >= 0) {
+				if (!menu_cache[index].disabled) {
+					ThemeSound::play(theme_cache.sound_pressed, this);
+				}
 				_open_popup(index);
 			}
 		}
@@ -776,6 +783,9 @@ void MenuBar::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, MenuBar, font_focus_color);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, MenuBar, h_separation);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, MenuBar, sound_hover, "hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, MenuBar, sound_pressed, "pressed");
 
 	ADD_CLASS_DEPENDENCY("PopupMenu");
 }

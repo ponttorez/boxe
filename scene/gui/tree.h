@@ -611,7 +611,20 @@ private:
 
 	void propagate_set_columns(TreeItem *p_item);
 
+	uint64_t selected_sound_frame = UINT64_MAX;
+	void _play_selected_sound();
+	void _play_multi_selected_sound(Object *p_item, int p_column, bool p_selected);
+	void _play_activated_sound();
+	void _play_pressed_sound();
+
 	struct ThemeCache {
+		Ref<AudioStream> sound_selected;
+		Ref<AudioStream> sound_activated;
+		Ref<AudioStream> sound_hover;
+		Ref<AudioStream> sound_pressed;
+		Ref<AudioStream> sound_toggled_on;
+		Ref<AudioStream> sound_toggled_off;
+
 		Ref<StyleBox> panel_style;
 		Ref<StyleBox> focus_style;
 
@@ -806,6 +819,8 @@ private:
 
 	bool hovered_update_queued = false;
 	void _determine_hovered_item();
+	static int _get_enabled_button(const TreeItem *p_item, int p_column, int p_button_index);
+	void _play_hover_sound(TreeItem *p_old_item, int p_old_column, int p_old_button_index);
 	void _queue_update_hovered_item();
 
 	int _count_selected_items(TreeItem *p_from) const;

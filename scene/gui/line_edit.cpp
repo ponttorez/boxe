@@ -43,6 +43,7 @@
 #include "core/string/alt_codes.h"
 #include "scene/gui/label.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/window.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -439,6 +440,7 @@ void LineEdit::unhandled_key_input(const Ref<InputEvent> &p_event) {
 
 void LineEdit::gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
+	const TypedSoundGuard typed_sound_guard(this);
 
 	Ref<InputEventMouseButton> b = p_event;
 
@@ -924,6 +926,7 @@ void LineEdit::gui_input(const Ref<InputEvent> &p_event) {
 
 	// Default is ENTER and KP_ENTER. Cannot use ui_accept as default includes SPACE.
 	if (k->is_action_pressed("ui_text_submit")) {
+		ThemeSound::play(theme_cache.sound_submitted, this);
 		emit_signal(SceneStringName(text_submitted), text);
 
 		if (editing && !keep_editing_on_text_submit) {
@@ -1120,6 +1123,7 @@ bool LineEdit::can_drop_data(const Point2 &p_point, const Variant &p_data) const
 
 void LineEdit::drop_data(const Point2 &p_point, const Variant &p_data) {
 	Control::drop_data(p_point, p_data);
+	const TypedSoundGuard typed_sound_guard(this);
 
 	if (p_data.is_string() && is_editable()) {
 		apply_ime();
@@ -3265,9 +3269,9 @@ void LineEdit::_generate_context_menu() {
 	menu->add_check_item(ETR("Display Control Characters"), MENU_DISPLAY_UCC);
 	menu->add_submenu_node_item(ETR("Insert Control Character"), menu_ctl, MENU_SUBMENU_INSERT_UCC);
 
-	menu->connect(SceneStringName(id_pressed), callable_mp(this, &LineEdit::menu_option));
-	menu_dir->connect(SceneStringName(id_pressed), callable_mp(this, &LineEdit::menu_option));
-	menu_ctl->connect(SceneStringName(id_pressed), callable_mp(this, &LineEdit::menu_option));
+	menu->connect(SceneStringName(id_pressed), callable_mp(this, &LineEdit::_menu_option_from_user));
+	menu_dir->connect(SceneStringName(id_pressed), callable_mp(this, &LineEdit::_menu_option_from_user));
+	menu_ctl->connect(SceneStringName(id_pressed), callable_mp(this, &LineEdit::_menu_option_from_user));
 
 	menu->connect(SceneStringName(focus_entered), callable_mp(this, &LineEdit::_validate_caret_can_draw));
 	menu->connect(SceneStringName(focus_exited), callable_mp(this, &LineEdit::_validate_caret_can_draw));
@@ -3566,7 +3570,24 @@ void LineEdit::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LineEdit, clear_button_color);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LineEdit, clear_button_color_pressed);
 
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, LineEdit, sound_typed, "typed");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, LineEdit, sound_submitted, "submitted");
+
 	ADD_CLASS_DEPENDENCY("PopupMenu");
+}
+
+LineEdit::TypedSoundGuard::TypedSoundGuard(LineEdit *p_line_edit) :
+		line_edit(p_line_edit), text(p_line_edit->text) {}
+
+LineEdit::TypedSoundGuard::~TypedSoundGuard() {
+	if (line_edit->text != text) {
+		ThemeSound::play(line_edit->theme_cache.sound_typed, line_edit);
+	}
+}
+
+void LineEdit::_menu_option_from_user(int p_option) {
+	const TypedSoundGuard typed_sound_guard(this);
+	menu_option(p_option);
 }
 
 LineEdit::LineEdit(const String &p_placeholder) {

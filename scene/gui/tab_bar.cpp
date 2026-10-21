@@ -37,6 +37,7 @@
 #include "scene/gui/label.h"
 #include "scene/gui/style_transitions.h"
 #include "scene/gui/texture_rect.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"
 #include "scene/theme/theme_db.h"
@@ -308,6 +309,7 @@ void TabBar::gui_input(const Ref<InputEvent> &p_event) {
 
 				// Selecting a tab.
 				if (selecting && !tabs[found].disabled) {
+					ThemeSound::play(theme_cache.sound_selected, this);
 					if (deselect_enabled && get_current_tab() == found) {
 						set_current_tab(-1);
 					} else {
@@ -898,6 +900,7 @@ int TabBar::get_next_available(int p_idx) const {
 bool TabBar::select_previous_available() {
 	const int previous_available = get_previous_available();
 	if (previous_available != -1) {
+		ThemeSound::play(theme_cache.sound_selected, this);
 		set_current_tab(previous_available);
 	}
 	return previous_available != -1;
@@ -906,6 +909,7 @@ bool TabBar::select_previous_available() {
 bool TabBar::select_next_available() {
 	const int next_available = get_next_available();
 	if (next_available != -1) {
+		ThemeSound::play(theme_cache.sound_selected, this);
 		set_current_tab(next_available);
 	}
 	return next_available != -1;
@@ -1210,6 +1214,9 @@ void TabBar::_update_hover() {
 		hover = hover_now;
 
 		if (hover != -1) {
+			if (!tabs[hover].disabled) {
+				ThemeSound::play_hover(theme_cache.sound_hover, this);
+			}
 			emit_signal(SNAME("tab_hovered"), hover);
 		}
 
@@ -2292,6 +2299,9 @@ void TabBar::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_ICON, TabBar, close_icon, "close");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, TabBar, button_pressed_style, "button_pressed");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, TabBar, button_hl_style, "button_highlight");
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, TabBar, sound_selected, "selected");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, TabBar, sound_hover, "hover");
 
 	Tab defaults(true);
 

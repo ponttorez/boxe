@@ -245,6 +245,17 @@ void TabContainer::_on_theme_changed() {
 	tab_bar->add_theme_constant_override(SNAME("icon_max_width"), theme_cache.icon_max_width);
 	tab_bar->add_theme_constant_override(SNAME("outline_size"), theme_cache.outline_size);
 
+	// Without sounds of its own, the tab bar plays the sounds of TabBar.
+	const Ref<AudioStream> sounds[] = { theme_cache.sound_hover, theme_cache.sound_selected };
+	const StringName sound_names[] = { SNAME("hover"), SNAME("selected") };
+	for (int i = 0; i < 2; i++) {
+		if (sounds[i].is_valid()) {
+			tab_bar->add_theme_sound_override(sound_names[i], sounds[i]);
+		} else if (tab_bar->has_theme_sound_override(sound_names[i])) {
+			tab_bar->remove_theme_sound_override(sound_names[i]);
+		}
+	}
+
 	tab_bar->end_bulk_theme_override();
 
 	_update_margins();
@@ -1310,6 +1321,9 @@ void TabContainer::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_FONT, TabContainer, tab_font, "font");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_FONT_SIZE, TabContainer, tab_font_size, "font_size");
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, TabContainer, outline_size);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, TabContainer, sound_hover, "hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, TabContainer, sound_selected, "selected");
 
 	CachedTab defaults;
 

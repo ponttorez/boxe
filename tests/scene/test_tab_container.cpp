@@ -36,6 +36,7 @@ TEST_FORCE_LINK(test_tab_container)
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/tab_container.h"
+#include "scene/resources/audio_stream_wav.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 #include "tests/display_server_mock.h"
@@ -919,6 +920,27 @@ TEST_CASE("[SceneTree][TabContainer] Mouse interaction") {
 	SIGNAL_UNWATCH(tab_container, "tab_changed");
 	SIGNAL_UNWATCH(tab_container, "tab_clicked");
 	SIGNAL_UNWATCH(tab_container, "tab_selected");
+
+	memdelete(tab_container);
+}
+
+TEST_CASE("[SceneTree][TabContainer] Sounds of the tab bar") {
+	TabContainer *tab_container = memnew(TabContainer);
+	SceneTree::get_singleton()->get_root()->add_child(tab_container);
+	MessageQueue::get_singleton()->flush();
+	TabBar *tab_bar = tab_container->get_tab_bar();
+	CHECK_FALSE(tab_bar->has_theme_sound_override("hover"));
+
+	Ref<AudioStreamWAV> sound;
+	sound.instantiate();
+	tab_container->add_theme_sound_override("hover", sound);
+	MessageQueue::get_singleton()->flush();
+	CHECK(tab_bar->get_theme_sound("hover") == sound);
+	CHECK_FALSE(tab_bar->has_theme_sound_override("selected"));
+
+	tab_container->remove_theme_sound_override("hover");
+	MessageQueue::get_singleton()->flush();
+	CHECK_FALSE(tab_bar->has_theme_sound_override("hover"));
 
 	memdelete(tab_container);
 }
