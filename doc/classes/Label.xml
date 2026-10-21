@@ -160,6 +160,9 @@
 		<theme_item name="font_shadow_color" data_type="color" type="Color" default="Color(0, 0, 0, 0)">
 			[Color] of the text's shadow effect.
 		</theme_item>
+		<theme_item name="composite_text_effects" data_type="constant" type="int" default="0">
+			If not [code]0[/code], the text shadows and outlines are drawn as layers, see [member LabelSettings.composite_effects]. Used when [member label_settings] is not set. Each layer costs an extra pass, see [member LabelSettings.composite_effects].
+		</theme_item>
 		<theme_item name="line_spacing" data_type="constant" type="int" default="3">
 			Additional vertical spacing between lines (in pixels), spacing is added to line descent. This value can be negative.
 		</theme_item>

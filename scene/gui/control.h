@@ -302,6 +302,7 @@ private:
 		bool disable_visibility_clip = false;
 
 		bool composite_enabled = false;
+		bool redraw_on_self_modulate = false;
 		real_t composite_margin = 0.0;
 
 		CursorShape default_cursor = CURSOR_ARROW;
@@ -827,6 +828,10 @@ public:
 	void set_raycast_padding(Side p_side, real_t p_value);
 	real_t get_raycast_padding(Side p_side) const;
 	Rect2 get_raycast_rect() const;
+
+	virtual void set_self_modulate(const Color &p_self_modulate) override;
+	// Redraws when the self modulation changes, for drawing that applies it itself (see TextEffectLayers).
+	void set_redraw_on_self_modulate(bool p_enabled);
 
 	void set_composite_enabled(bool p_enabled);
 	bool is_composite_enabled() const;

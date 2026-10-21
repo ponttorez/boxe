@@ -426,6 +426,8 @@ void Label::_update_visible() const {
 	}
 }
 
+// A shadow (glyph and its outline at an offset) or an outline drawn under the text.
+
 inline void draw_glyph(const Glyph &p_gl, const RID &p_canvas, const Color &p_font_color, const Vector2 &p_ofs) {
 	if (p_gl.font_rid != RID()) {
 		TS->font_draw_glyph(p_gl.font_rid, p_canvas, p_gl.font_size, p_ofs + Vector2(p_gl.x_off, p_gl.y_off), p_gl.index, p_font_color);
@@ -452,6 +454,18 @@ inline void draw_glyph_outline(const Glyph &p_gl, const RID &p_canvas, const Col
 			TS->font_draw_glyph_outline(p_gl.font_rid, p_canvas, p_gl.font_size, p_outline_size, p_ofs + Vector2(p_gl.x_off, p_gl.y_off), p_gl.index, p_font_outline_color);
 		}
 	}
+}
+
+// A shadow is drawn with its outline, an outline alone.
+void Label::_draw_text_effect(const TextEffect &p_effect, const RID &p_target, const Color &p_color, bool p_rtl, int p_ellipsis_pos, int p_ellipsis_gl_size, const Glyph *p_ellipsis_glyphs, bool p_trim_chars, int p_para_start, int p_visible_chars, bool p_trim_glyphs_ltr, int &p_processed_glyphs_step, int p_processed_glyphs, int p_visible_glyphs, bool p_trim_glyphs_rtl, int p_total_glyphs, const Vector2 &p_ofs, int p_gl_size, int p_trim_pos, const Glyph *p_glyphs) {
+	if (p_effect.outline) {
+		draw_text(p_rtl, p_ellipsis_pos, p_ellipsis_gl_size, p_ellipsis_glyphs, p_trim_chars, p_para_start, p_visible_chars, p_trim_glyphs_ltr, p_processed_glyphs_step, p_processed_glyphs, p_visible_glyphs, p_trim_glyphs_rtl, p_total_glyphs, p_target, p_ofs, p_gl_size, p_trim_pos, p_glyphs, p_color, draw_glyph_outline, p_effect.size);
+		return;
+	}
+	if (p_effect.size > 0) {
+		draw_text(p_rtl, p_ellipsis_pos, p_ellipsis_gl_size, p_ellipsis_glyphs, p_trim_chars, p_para_start, p_visible_chars, p_trim_glyphs_ltr, p_processed_glyphs_step, p_processed_glyphs, p_visible_glyphs, p_trim_glyphs_rtl, p_total_glyphs, p_target, p_ofs, p_gl_size, p_trim_pos, p_glyphs, p_color, draw_glyph_shadow_outline, p_effect.size, p_effect.offset);
+	}
+	draw_text(p_rtl, p_ellipsis_pos, p_ellipsis_gl_size, p_ellipsis_glyphs, p_trim_chars, p_para_start, p_visible_chars, p_trim_glyphs_ltr, p_processed_glyphs_step, p_processed_glyphs, p_visible_glyphs, p_trim_glyphs_rtl, p_total_glyphs, p_target, p_ofs, p_gl_size, p_trim_pos, p_glyphs, p_color, draw_glyph_shadow, p_effect.offset);
 }
 
 void Label::_sync_bbcode() const {
@@ -550,7 +564,12 @@ BBCodeText::DrawStyle Label::_get_bbcode_draw_style() const {
 		ret.stacked_shadows = settings->get_stacked_shadow_data();
 	}
 	ret.hr_color = ret.font_color;
+	ret.self_modulate = get_self_modulate();
 	return ret;
+}
+
+bool Label::_is_composite_effects() const {
+	return settings.is_valid() ? settings->is_composite_effects() : theme_cache.composite_text_effects != 0;
 }
 
 void Label::_set_hovered_meta(int p_index) {
@@ -968,6 +987,8 @@ void Label::_notification(int p_what) {
 			get_transition_style(StyleTransitions::Key(StyleTransitions::PART_BACKGROUND), has_focus(true) ? theme_cache.focus_style : theme_cache.normal_style)->draw(ci, Rect2(Point2(0, 0), get_size()));
 
 			if (bbcode_enabled) {
+				effect_layers.clear();
+				bbcode->set_composite_effects(_is_composite_effects());
 				bbcode->draw(ci, _get_bbcode_rect(), vertical_alignment, _get_bbcode_draw_style());
 				break;
 			}
@@ -975,6 +996,46 @@ void Label::_notification(int p_what) {
 			bool trim_chars = (visible_chars >= 0) && (visible_chars_behavior == TextServer::VC_CHARS_AFTER_SHAPING);
 			bool trim_glyphs_ltr = (visible_chars >= 0) && ((visible_chars_behavior == TextServer::VC_GLYPHS_LTR) || ((visible_chars_behavior == TextServer::VC_GLYPHS_AUTO) && !rtl_layout));
 			bool trim_glyphs_rtl = (visible_chars >= 0) && ((visible_chars_behavior == TextServer::VC_GLYPHS_RTL) || ((visible_chars_behavior == TextServer::VC_GLYPHS_AUTO) && rtl_layout));
+
+			// Shadows and outlines from the bottom, see BBCodeText::_prepare_targets().
+			LocalVector<TextEffect> effects;
+			if (font_shadow_color.a > 0) {
+				effects.push_back({ false, shadow_outline_size, font_shadow_color, shadow_ofs });
+			}
+			for (int j = stacked_shadow_datas.size() - 1; j >= 0; j--) {
+				effects.push_back({ false, stacked_shadow_datas[j].outline_size, stacked_shadow_datas[j].color, stacked_shadow_datas[j].offset });
+			}
+			int stacked_outline_draw_size = outline_size;
+			for (const LabelSettings::StackedOutlineData &outline_data : stacked_outline_datas) {
+				stacked_outline_draw_size += MAX(0, outline_data.size);
+			}
+			for (int j = stacked_outline_datas.size() - 1; j >= 0; j--) {
+				if (stacked_outline_datas[j].size <= 0) {
+					continue;
+				}
+				if (stacked_outline_datas[j].color.a != 0) {
+					effects.push_back({ true, stacked_outline_draw_size, stacked_outline_datas[j].color, Vector2() });
+				}
+				stacked_outline_draw_size -= stacked_outline_datas[j].size;
+			}
+			if (outline_size > 0 && font_outline_color.a != 0) {
+				effects.push_back({ true, outline_size, font_outline_color, Vector2() });
+			}
+
+			const bool layered = _is_composite_effects() && !effects.is_empty() && TextEffectLayers::is_supported(this);
+			RID text_ci = ci;
+			if (layered) {
+				float margin = 4;
+				for (const TextEffect &effect : effects) {
+					margin = MAX(margin, effect.size + effect.offset.length() + 4);
+				}
+				effect_layers.begin(this, ci, effects.size(), get_self_modulate(), margin);
+				text_ci = effect_layers.get_text_item();
+			} else {
+				effect_layers.clear();
+			}
+			// The layers apply the self modulation themselves.
+			set_redraw_on_self_modulate(layered);
 
 			Vector2 ofs;
 			int line_spacing;
@@ -1022,63 +1083,24 @@ void Label::_notification(int p_what) {
 						// Draw text effects and main texts. Note: Do not merge this into the single loop iteration, to prevent overlaps.
 						int processed_glyphs_step = 0;
 
-						// Draw shadow outline.
-						if (font_shadow_color.a != 0 && shadow_outline_size > 0) {
-							draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ci, ofs, gl_size, trim_pos, glyphs, font_shadow_color, draw_glyph_shadow_outline, shadow_outline_size, shadow_ofs);
-						}
-
-						// Draw shadow.
-						if (font_shadow_color.a > 0) {
-							draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ci, ofs, gl_size, trim_pos, glyphs, font_shadow_color, draw_glyph_shadow, shadow_ofs);
-						}
-
-						// Draw stacked shadow.
-						if (stacked_shadow_datas.size() != 0) {
-							int draw_iterations = stacked_shadow_datas.size();
-
-							for (int draw_iteration_index = draw_iterations - 1; draw_iteration_index >= 0; --draw_iteration_index) {
-								LabelSettings::StackedShadowData stacked_shadow_data = stacked_shadow_datas[draw_iteration_index];
-								if (stacked_shadow_data.outline_size > 0) {
-									draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ci, ofs, gl_size, trim_pos, glyphs, stacked_shadow_data.color, draw_glyph_shadow_outline, stacked_shadow_data.outline_size, stacked_shadow_data.offset);
-								}
-
-								draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ci, ofs, gl_size, trim_pos, glyphs, stacked_shadow_data.color, draw_glyph_shadow, stacked_shadow_data.offset);
+						// Shadows and outlines, from the bottom. With layers, each one is opaque in its own layer and the
+						// shapes of the upper layers and of the text are cut out of it.
+						for (uint32_t j = 0; j < effects.size(); j++) {
+							const TextEffect &effect = effects[j];
+							if (!layered) {
+								_draw_text_effect(effect, ci, effect.color, rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ofs, gl_size, trim_pos, glyphs);
+								continue;
 							}
-						}
-
-						// Draw stacked outline.
-						if (stacked_outline_datas.size() != 0) {
-							int stacked_outline_draw_size = outline_size;
-
-							int draw_iterations = stacked_outline_datas.size();
-
-							for (int j = 0; j < draw_iterations; j++) {
-								int stacked_outline_size = stacked_outline_datas[j].size;
-								if (stacked_outline_size <= 0) {
-									continue;
-								}
-								stacked_outline_draw_size += stacked_outline_size;
+							_draw_text_effect(effect, effect_layers.get_content(j, effect.color.a), Color(effect.color, 1.0), rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ofs, gl_size, trim_pos, glyphs);
+							const RID eraser = effect_layers.get_eraser(j);
+							for (uint32_t k = j + 1; k < effects.size(); k++) {
+								_draw_text_effect(effects[k], eraser, Color(1, 1, 1), rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ofs, gl_size, trim_pos, glyphs);
 							}
-
-							for (int draw_iteration_index = draw_iterations - 1; draw_iteration_index >= 0; --draw_iteration_index) {
-								LabelSettings::StackedOutlineData stacked_outline_data = stacked_outline_datas[draw_iteration_index];
-								if (stacked_outline_data.size <= 0) {
-									continue;
-								}
-								draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ci, ofs, gl_size, trim_pos, glyphs, stacked_outline_data.color, draw_glyph_outline, stacked_outline_draw_size);
-								stacked_outline_draw_size -= stacked_outline_data.size;
-							}
-						}
-
-						// Draw outline.
-						if (outline_size > 0 && font_outline_color.a != 0) {
-							draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ci, ofs, gl_size, trim_pos, glyphs, font_outline_color, draw_glyph_outline, outline_size);
+							draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, eraser, ofs, gl_size, trim_pos, glyphs, Color(1, 1, 1), draw_glyph);
 						}
 
 						// Draw text.
-						{
-							draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, ci, ofs, gl_size, trim_pos, glyphs, font_color, draw_glyph);
-						}
+						draw_text(rtl, ellipsis_pos, ellipsis_gl_size, ellipsis_glyphs, trim_chars, para.start, visible_chars, trim_glyphs_ltr, processed_glyphs_step, processed_glyphs, visible_glyphs, trim_glyphs_rtl, total_glyphs, text_ci, ofs, gl_size, trim_pos, glyphs, font_color, draw_glyph);
 
 						processed_glyphs = processed_glyphs_step;
 						ofs.y += dsc + line_spacing;
@@ -1768,6 +1790,7 @@ void Label::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, Label, font_outline_color);
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_CONSTANT, Label, font_outline_size, "outline_size");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_CONSTANT, Label, font_shadow_outline_size, "shadow_outline_size");
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Label, composite_text_effects);
 	BBCodeText::bind_theme_fonts(get_class_static());
 }
 

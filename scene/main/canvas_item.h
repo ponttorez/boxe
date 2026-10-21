@@ -183,6 +183,8 @@ private:
 	const StringName *_instance_shader_parameter_get_remap(const StringName &p_name) const;
 
 protected:
+	// Redraws the canvas items below, e.g. when this item starts or stops grouping or clipping them.
+	void _queue_redraw_descendants();
 	bool _set(const StringName &p_name, const Variant &p_value);
 	bool _get(const StringName &p_name, Variant &r_ret) const;
 	void _get_property_list(List<PropertyInfo> *p_list) const;

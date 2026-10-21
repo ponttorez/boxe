@@ -3751,6 +3751,20 @@ bool Control::is_clipping_contents() {
 	return data.clip_contents;
 }
 
+void Control::set_self_modulate(const Color &p_self_modulate) {
+	if (get_self_modulate() == p_self_modulate) {
+		return;
+	}
+	CanvasItem::set_self_modulate(p_self_modulate);
+	if (data.redraw_on_self_modulate) {
+		queue_redraw();
+	}
+}
+
+void Control::set_redraw_on_self_modulate(bool p_enabled) {
+	data.redraw_on_self_modulate = p_enabled;
+}
+
 void Control::set_composite_enabled(bool p_enabled) {
 	ERR_MAIN_THREAD_GUARD;
 	if (data.composite_enabled == p_enabled) {
@@ -3758,6 +3772,7 @@ void Control::set_composite_enabled(bool p_enabled) {
 	}
 	data.composite_enabled = p_enabled;
 	_update_composite();
+	_queue_redraw_descendants();
 	update_configuration_warnings();
 	if (Engine::get_singleton()->is_editor_hint() && is_inside_tree()) {
 		// The composites inside this one warn about it.

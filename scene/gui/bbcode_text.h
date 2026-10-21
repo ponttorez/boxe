@@ -32,6 +32,7 @@
 
 #include "core/object/ref_counted.h"
 #include "scene/gui/control.h"
+#include "scene/gui/text_effect_layers.h"
 #include "scene/resources/label_settings.h"
 #include "servers/text/text_server.h"
 
@@ -70,6 +71,7 @@ public:
 		Vector<LabelSettings::StackedOutlineData> stacked_outlines;
 		Vector<LabelSettings::StackedShadowData> stacked_shadows;
 		Color hr_color = Color(1, 1, 1);
+		Color self_modulate = Color(1, 1, 1); // Of the owner, applied to the effect layers.
 		int underline_alpha = 50;
 		int strikethrough_alpha = 50;
 		int highlight_h_padding = 3;
@@ -170,6 +172,29 @@ private:
 		Variant meta;
 		MetaUnderline underline = META_UNDERLINE_ALWAYS;
 		String tooltip;
+	};
+
+	// A shadow or outline drawn under the text, from LabelSettings, the theme or [outline_size].
+	struct Effect {
+		bool span_outline = false; // Size and color can be changed by tags.
+		bool draw_glyph = false; // Shadows fill the glyph too.
+		int outline_size = 0;
+		Color color;
+		Vector2 offset;
+	};
+
+	enum EffectMode {
+		EFFECT_MODE_COLOR,
+		EFFECT_MODE_LAYER, // Opaque, the layer applies the alpha.
+		EFFECT_MODE_ERASER,
+	};
+
+	struct DrawTargets {
+		RID background;
+		RID text;
+		Vector<Effect> effects;
+		LocalVector<RID> effect_items;
+		LocalVector<RID> eraser_items; // Empty without layers.
 	};
 
 	// Visibility limits of the drawn glyphs, see Label::draw_text().
@@ -285,6 +310,9 @@ private:
 	Vector<String> hints;
 	String parsed_text;
 	bool has_relative_objects = false;
+	bool has_span_outlines = false;
+	bool composite_effects = false;
+	mutable TextEffectLayers effect_layers;
 	int list_count = 0;
 
 	Ref<Font> base_fonts[FONT_KIND_MAX];
@@ -351,7 +379,7 @@ private:
 	bool _is_paragraph_rtl(const Paragraph &p_para) const;
 
 	// Drawing.
-	void _draw_line(RID p_ci, const Paragraph &p_para, int p_line, const Vector2 &p_ofs, const DrawStyle &p_style, int &r_processed_glyphs, int p_total_glyphs) const;
+	void _draw_line(const DrawTargets &p_targets, const Paragraph &p_para, int p_line, const Vector2 &p_ofs, const DrawStyle &p_style, int &r_processed_glyphs, int p_total_glyphs) const;
 	Trim _make_trim(const Paragraph &p_para, int p_total_glyphs) const;
 	Vector<int> _get_glyph_styles(RID p_rid) const;
 	bool _is_object_skipped(const Trim &p_trim, const Paragraph &p_para, RID p_rid, const Variant &p_key, int p_processed) const;
@@ -359,9 +387,10 @@ private:
 	bool _is_glyph_drawn(const PlacedGlyph &p_glyph, const DrawStyle &p_style) const;
 	static void _draw_box(RID p_target, float p_start, float p_end, const Color &p_color, const Vector2 &p_ofs, double p_ascent, double p_line_height, const DrawStyle &p_style);
 	void _draw_boxes(const LocalVector<PlacedGlyph> &p_glyphs, RID p_target, bool p_foreground, const Vector2 &p_ofs, double p_ascent, double p_line_height, const DrawStyle &p_style) const;
-	void _draw_glyph_effect(const LocalVector<PlacedGlyph> &p_glyphs, RID p_ci, int p_outline_size, bool p_fill, const Color &p_color, const Vector2 &p_offset, const DrawStyle &p_style) const;
+	void _draw_effect(const LocalVector<PlacedGlyph> &p_glyphs, const Effect &p_effect, RID p_target, EffectMode p_mode, const DrawStyle &p_style) const;
 	static void _draw_decoration(RID p_target, DecorationKind p_kind, float p_start, float p_end, float p_y, const Color &p_color, float p_thickness);
 	void _draw_decorations(const LocalVector<PlacedGlyph> &p_glyphs, RID p_target, const Vector2 &p_ofs, double p_ascent, double p_line_height, float p_underline_position, float p_underline_thickness, const DrawStyle &p_style) const;
+	void _prepare_targets(RID p_ci, const DrawStyle &p_style, DrawTargets &r_targets) const;
 	Color _get_style_color(int p_style, const DrawStyle &p_draw) const;
 	int _get_glyph_style(RID p_line, const Glyph &p_glyph) const;
 
@@ -405,6 +434,9 @@ public:
 	void set_lines_skipped(int p_lines);
 	void set_max_lines_visible(int p_lines);
 	void set_line_spacing(int p_spacing);
+	// Draws shadows and outlines as layers blended as a whole, see TextEffectLayers.
+	void set_composite_effects(bool p_enabled);
+	bool is_composite_effects() const { return composite_effects; }
 	void set_paragraph_spacing(int p_spacing);
 
 	// Width for wrapping, alignment and spacers, negative to never wrap.

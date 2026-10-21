@@ -1894,6 +1894,18 @@ void CanvasItem::set_clip_children_mode(ClipChildrenMode p_clip_mode) {
 	}
 
 	RS::get_singleton()->canvas_item_set_canvas_group_mode(get_canvas_item(), RSE::CanvasGroupMode(clip_children_mode));
+	_queue_redraw_descendants();
+}
+
+void CanvasItem::_queue_redraw_descendants() {
+	// Some descendants draw differently inside a canvas group, e.g. text effects drawn as layers.
+	for (Node *child : iterate_children()) {
+		CanvasItem *child_ci = Object::cast_to<CanvasItem>(child);
+		if (child_ci && !child_ci->is_set_as_top_level()) {
+			child_ci->queue_redraw();
+			child_ci->_queue_redraw_descendants();
+		}
+	}
 }
 
 CanvasItem::ClipChildrenMode CanvasItem::get_clip_children_mode() const {

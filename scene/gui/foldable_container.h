@@ -82,6 +82,7 @@ private:
 		Ref<Font> title_font;
 		int title_font_size = 0;
 		int title_font_outline_size = 0;
+		int composite_text_effects = 0;
 
 		Ref<Texture2D> expanded_arrow;
 		Ref<Texture2D> expanded_arrow_mirrored;

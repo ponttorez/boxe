@@ -485,6 +485,8 @@ void Button::_notification(int p_what) {
 					draw_style.hr_color = font_color;
 					draw_style.outline_size = outline_size;
 					draw_style.outline_color = font_outline_color;
+					draw_style.self_modulate = get_self_modulate();
+					bbcode->set_composite_effects(theme_cache.composite_text_effects != 0);
 					bbcode->draw_at(ci, text_ofs, draw_style, &bbcode_rect);
 					break;
 				}
@@ -970,6 +972,7 @@ void Button::_bind_methods() {
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Button, align_to_largest_stylebox);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Button, line_spacing);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Button, composite_text_effects);
 	BBCodeText::bind_theme_fonts(get_class_static());
 }
 
