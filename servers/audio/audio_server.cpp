@@ -1655,6 +1655,12 @@ void AudioServer::finish() {
 		AudioDriverManager::get_driver(i)->finish();
 	}
 
+	// Free playbacks still running without an owner, e.g. theme sounds.
+	for (AudioStreamPlaybackListNode *playback_node : playback_list) {
+		_delete_stream_playback_list_node(playback_node);
+	}
+	_cleanup_lists();
+
 	for (int i = 0; i < buses.size(); i++) {
 		memdelete(buses[i]);
 	}

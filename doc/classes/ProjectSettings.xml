@@ -1302,6 +1302,9 @@
 		<member name="gui/theme/lcd_subpixel_layout" type="int" setter="" getter="" default="1">
 			LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
 		</member>
+		<member name="gui/theme/sound_bus" type="StringName" setter="" getter="" default="&amp;&quot;Master&quot;">
+			The default audio bus for theme sounds, used when no node in the tree has [member Node.sound_bus] set.
+		</member>
 		<member name="gui/timers/button_shortcut_feedback_highlight_time" type="float" setter="" getter="" default="0.2">
 			When [member BaseButton.shortcut_feedback] is enabled, this is the time the [BaseButton] will remain highlighted after a shortcut. This duration is not affected by [member Engine.time_scale].
 		</member>

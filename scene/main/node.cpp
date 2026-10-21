@@ -53,6 +53,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, Engine);
 #include "scene/main/viewport.h"
 #include "scene/main/window.h"
 #include "scene/resources/packed_scene.h"
+#include "servers/audio/audio_server.h"
 #include "servers/display/accessibility_server.h"
 
 #ifdef DEBUG_ENABLED
@@ -2654,6 +2655,23 @@ String Node::get_editor_description() const {
 	return data.editor_description;
 }
 
+void Node::set_sound_bus(const StringName &p_bus) {
+	data.sound_bus = p_bus;
+}
+
+StringName Node::get_sound_bus() const {
+	return data.sound_bus;
+}
+
+StringName Node::get_sound_bus_in_tree() const {
+	for (const Node *node = this; node; node = node->data.parent) {
+		if (!node->data.sound_bus.is_empty()) {
+			return node->data.sound_bus;
+		}
+	}
+	return GLOBAL_GET("gui/theme/sound_bus");
+}
+
 void Node::set_editable_instance(RequiredParam<Node> rp_node, bool p_editable) {
 	ERR_THREAD_GUARD
 	EXTRACT_PARAM_OR_FAIL(p_node, rp_node);
@@ -3605,6 +3623,13 @@ void Node::_validate_property(PropertyInfo &p_property) const {
 	if ((p_property.name == "process_thread_group_order" || p_property.name == "process_thread_messages") && data.process_thread_group == PROCESS_THREAD_GROUP_INHERIT) {
 		p_property.usage = PROPERTY_USAGE_NONE;
 	}
+	if (p_property.name == "sound_bus" && Engine::get_singleton()->is_editor_hint() && AudioServer::get_singleton()) {
+		String options;
+		for (int i = 0; i < AudioServer::get_singleton()->get_bus_count(); i++) {
+			options += (i > 0 ? "," : "") + AudioServer::get_singleton()->get_bus_name(i);
+		}
+		p_property.hint_string = options;
+	}
 }
 
 String Node::_to_string() {
@@ -3883,6 +3908,9 @@ void Node::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("rpc_config", "method", "config"), &Node::rpc_config);
 	ClassDB::bind_method(D_METHOD("get_node_rpc_config"), &Node::_get_node_rpc_config_bind);
 
+	ClassDB::bind_method(D_METHOD("set_sound_bus", "bus"), &Node::set_sound_bus);
+	ClassDB::bind_method(D_METHOD("get_sound_bus"), &Node::get_sound_bus);
+	ClassDB::bind_method(D_METHOD("get_sound_bus_in_tree"), &Node::get_sound_bus_in_tree);
 	ClassDB::bind_method(D_METHOD("set_editor_description", "editor_description"), &Node::set_editor_description);
 	ClassDB::bind_method(D_METHOD("get_editor_description"), &Node::get_editor_description);
 
@@ -4057,6 +4085,9 @@ void Node::_bind_methods() {
 
 	ADD_GROUP("Auto Translate", "auto_translate_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "auto_translate_mode", PROPERTY_HINT_ENUM, "Inherit,Always,Disabled"), "set_auto_translate_mode", "get_auto_translate_mode");
+
+	ADD_GROUP("Audio", "sound_");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "sound_bus", PROPERTY_HINT_ENUM_SUGGESTION, ""), "set_sound_bus", "get_sound_bus");
 
 	ADD_GROUP("Editor Description", "editor_");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "editor_description", PROPERTY_HINT_MULTILINE_TEXT), "set_editor_description", "get_editor_description");

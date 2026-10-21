@@ -219,6 +219,7 @@ private:
 		SceneTree *tree = nullptr;
 
 		String editor_description;
+		StringName sound_bus;
 
 		Viewport *viewport = nullptr;
 
@@ -630,6 +631,11 @@ public:
 
 	void set_editor_description(const String &p_editor_description);
 	String get_editor_description() const;
+
+	void set_sound_bus(const StringName &p_bus);
+	StringName get_sound_bus() const;
+	// The bus of the closest node with a sound bus, or the project's default, for theme sounds.
+	StringName get_sound_bus_in_tree() const;
 
 	void set_editable_instance(RequiredParam<Node> rp_node, bool p_editable);
 	bool is_editable_instance(const Node *p_node) const;

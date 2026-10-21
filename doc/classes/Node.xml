@@ -553,6 +553,12 @@
 				Returns [code]true[/code] if this node is an instance load placeholder. See [InstancePlaceholder] and [method set_scene_instance_load_placeholder].
 			</description>
 		</method>
+		<method name="get_sound_bus_in_tree" qualifiers="const">
+			<return type="StringName" />
+			<description>
+				Returns the audio bus used by theme sounds of this node: the first non-empty [member sound_bus] of this node or its ancestors, or [member ProjectSettings.gui/theme/sound_bus] if none is set.
+			</description>
+		</method>
 		<method name="get_tree" qualifiers="const">
 			<return type="SceneTree" />
 			<description>
@@ -1087,6 +1093,9 @@
 		</member>
 		<member name="scene_file_path" type="String" setter="set_scene_file_path" getter="get_scene_file_path">
 			The original scene's file path, if the node has been instantiated from a [PackedScene] file. Only scene root nodes contains this.
+		</member>
+		<member name="sound_bus" type="StringName" setter="set_sound_bus" getter="get_sound_bus" default="&amp;&quot;&quot;">
+			The audio bus on which theme sounds of this node and its descendants are played (see [method Control.play_theme_sound]). If empty, the bus is inherited from the parent, see [method get_sound_bus_in_tree].
 		</member>
 		<member name="unique_name_in_owner" type="bool" setter="set_unique_name_in_owner" getter="is_unique_name_in_owner" default="false">
 			If [code]true[/code], the node can be accessed from any node sharing the same [member owner] or from the [member owner] itself, with special [code]%Name[/code] syntax in [method get_node].
