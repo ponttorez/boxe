@@ -339,6 +339,15 @@
 				See also [method get_theme_icon].
 			</description>
 		</method>
+		<method name="add_theme_sound_override">
+			<return type="void" />
+			<param index="0" name="name" type="StringName" />
+			<param index="1" name="sound" type="AudioStream" />
+			<description>
+				Creates a local override for a theme [AudioStream] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_sound_override].
+				See also [method get_theme_sound].
+			</description>
+		</method>
 		<method name="add_theme_stylebox_override">
 			<return type="void" />
 			<param index="0" name="name" type="StringName" />
@@ -642,6 +651,15 @@
 				See [method get_theme_color] for details.
 			</description>
 		</method>
+		<method name="get_theme_sound" qualifiers="const">
+			<return type="AudioStream" />
+			<param index="0" name="name" type="StringName" />
+			<param index="1" name="theme_type" type="StringName" default="&amp;&quot;&quot;" />
+			<description>
+				Returns an [AudioStream] from the first matching [Theme] in the tree if that [Theme] has a sound item with the specified [param name] and [param theme_type].
+				See [method get_theme_color] for details.
+			</description>
+		</method>
 		<method name="get_theme_stylebox" qualifiers="const">
 			<return type="StyleBox" />
 			<param index="0" name="name" type="StringName" />
@@ -780,6 +798,23 @@
 				See [method add_theme_icon_override].
 			</description>
 		</method>
+		<method name="has_theme_sound" qualifiers="const">
+			<return type="bool" />
+			<param index="0" name="name" type="StringName" />
+			<param index="1" name="theme_type" type="StringName" default="&amp;&quot;&quot;" />
+			<description>
+				Returns [code]true[/code] if there is a matching [Theme] in the tree that has a sound item with the specified [param name] and [param theme_type].
+				See [method get_theme_color] for details.
+			</description>
+		</method>
+		<method name="has_theme_sound_override" qualifiers="const">
+			<return type="bool" />
+			<param index="0" name="name" type="StringName" />
+			<description>
+				Returns [code]true[/code] if there is a local override for a theme [AudioStream] with the specified [param name] in this [Control] node.
+				See [method add_theme_sound_override].
+			</description>
+		</method>
 		<method name="has_theme_stylebox" qualifiers="const">
 			<return type="bool" />
 			<param index="0" name="name" type="StringName" />
@@ -814,6 +849,14 @@
 			<return type="bool" />
 			<description>
 				Returns [code]true[/code] if the layout is right-to-left. See also [member layout_direction].
+			</description>
+		</method>
+		<method name="play_theme_sound">
+			<return type="void" />
+			<param index="0" name="name" type="StringName" />
+			<description>
+				Plays the theme [AudioStream] with the specified [param name] on the bus returned by [method Node.get_sound_bus_in_tree]. Does nothing if the node is not inside the tree, if there is no such sound, or when running in the editor.
+				The playback is not bound to this node: it continues after the node is freed.
 			</description>
 		</method>
 		<method name="release_focus">
@@ -855,6 +898,13 @@
 			<param index="0" name="name" type="StringName" />
 			<description>
 				Removes a local override for a theme icon with the specified [param name] previously added by [method add_theme_icon_override] or via the Inspector dock.
+			</description>
+		</method>
+		<method name="remove_theme_sound_override">
+			<return type="void" />
+			<param index="0" name="name" type="StringName" />
+			<description>
+				Removes a local override for a theme [AudioStream] with the specified [param name] previously added by [method add_theme_sound_override] or via the Inspector dock.
 			</description>
 		</method>
 		<method name="remove_theme_stylebox_override">
@@ -1153,6 +1203,7 @@
 		<member name="interactable" type="bool" setter="set_interactable" getter="is_interactable" default="true">
 			If [code]false[/code], this control and its [Control] descendants in the same viewport don't react to input, but keep their current appearance, unlike [member BaseButton.disabled]. Descendants below other nodes, such as a [Button] in a [Node2D], are included.
 			Mouse and touch events that would reach them are consumed, so they don't pass through to the controls behind. They don't get the hover state, focus, drag and drop or [member BaseButton.shortcut] presses, and the mouse cursor uses the default shape over them. A control that has focus loses it when it stops being interactable. Their [member mouse_filter] and [member focus_mode] values aren't changed.
+			When the user presses such a control, the [code]denied[/code] theme sound of the nearest control (the pressed one or its ancestor) that has it is played, see [method play_theme_sound].
 			See also [method is_interactable_in_tree].
 		</member>
 		<member name="layout_direction" type="int" setter="set_layout_direction" getter="get_layout_direction" enum="Control.LayoutDirection" default="0">

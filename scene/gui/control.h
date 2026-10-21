@@ -327,6 +327,7 @@ private:
 		bool bulk_theme_override = false;
 		Theme::ThemeIconMap theme_icon_override;
 		Theme::ThemeStyleMap theme_style_override;
+		Theme::ThemeSoundMap theme_sound_override;
 		Theme::ThemeFontMap theme_font_override;
 		Theme::ThemeFontSizeMap theme_font_size_override;
 		Theme::ThemeColorMap theme_color_override;
@@ -334,6 +335,7 @@ private:
 
 		mutable HashMap<StringName, Theme::ThemeIconMap> theme_icon_cache;
 		mutable HashMap<StringName, Theme::ThemeStyleMap> theme_style_cache;
+		mutable HashMap<StringName, Theme::ThemeSoundMap> theme_sound_cache;
 		mutable HashMap<StringName, Theme::ThemeFontMap> theme_font_cache;
 		mutable HashMap<StringName, Theme::ThemeFontSizeMap> theme_font_size_cache;
 		mutable HashMap<StringName, Theme::ThemeColorMap> theme_color_cache;
@@ -836,6 +838,7 @@ public:
 
 	void add_theme_icon_override(const StringName &p_name, RequiredParam<Texture2D> rp_icon);
 	void add_theme_style_override(const StringName &p_name, RequiredParam<StyleBox> rp_style);
+	void add_theme_sound_override(const StringName &p_name, RequiredParam<AudioStream> rp_sound);
 	void add_theme_font_override(const StringName &p_name, RequiredParam<Font> rp_font);
 	void add_theme_font_size_override(const StringName &p_name, int p_font_size);
 	void add_theme_color_override(const StringName &p_name, const Color &p_color);
@@ -843,6 +846,7 @@ public:
 
 	void remove_theme_icon_override(const StringName &p_name);
 	void remove_theme_style_override(const StringName &p_name);
+	void remove_theme_sound_override(const StringName &p_name);
 	void remove_theme_font_override(const StringName &p_name);
 	void remove_theme_font_size_override(const StringName &p_name);
 	void remove_theme_color_override(const StringName &p_name);
@@ -850,6 +854,7 @@ public:
 
 	Ref<Texture2D> get_theme_icon(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 	Ref<StyleBox> get_theme_stylebox(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	Ref<AudioStream> get_theme_sound(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 	Ref<Font> get_theme_font(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 	int get_theme_font_size(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 	Color get_theme_color(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
@@ -862,6 +867,7 @@ public:
 
 	bool has_theme_icon_override(const StringName &p_name) const;
 	bool has_theme_stylebox_override(const StringName &p_name) const;
+	bool has_theme_sound_override(const StringName &p_name) const;
 	bool has_theme_font_override(const StringName &p_name) const;
 	bool has_theme_font_size_override(const StringName &p_name) const;
 	bool has_theme_color_override(const StringName &p_name) const;
@@ -869,6 +875,10 @@ public:
 
 	bool has_theme_icon(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 	bool has_theme_stylebox(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	bool has_theme_sound(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+
+	// Plays the theme sound with the given name, if it exists.
+	void play_theme_sound(const StringName &p_name);
 	bool has_theme_font(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 	bool has_theme_font_size(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 	bool has_theme_color(const StringName &p_name, const StringName &p_theme_type = StringName()) const;

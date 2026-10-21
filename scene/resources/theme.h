@@ -34,6 +34,7 @@
 #include "scene/resources/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
+#include "servers/audio/audio_stream.h"
 
 class Theme : public Resource {
 	GDCLASS(Theme, Resource);
@@ -48,6 +49,7 @@ class Theme : public Resource {
 public:
 	using ThemeIconMap = HashMap<StringName, Ref<Texture2D>>;
 	using ThemeStyleMap = HashMap<StringName, Ref<StyleBox>>;
+	using ThemeSoundMap = HashMap<StringName, Ref<AudioStream>>;
 	using ThemeFontMap = HashMap<StringName, Ref<Font>>;
 	using ThemeFontSizeMap = HashMap<StringName, int>;
 	using ThemeColorMap = HashMap<StringName, Color>;
@@ -60,6 +62,7 @@ public:
 		DATA_TYPE_FONT_SIZE,
 		DATA_TYPE_ICON,
 		DATA_TYPE_STYLEBOX,
+		DATA_TYPE_SOUND,
 		DATA_TYPE_MAX
 	};
 
@@ -72,6 +75,8 @@ private:
 	Vector<String> _get_icon_type_list() const;
 	Vector<String> _get_stylebox_list(const String &p_theme_type) const;
 	Vector<String> _get_stylebox_type_list() const;
+	Vector<String> _get_sound_list(const String &p_theme_type) const;
+	Vector<String> _get_sound_type_list() const;
 	Vector<String> _get_font_list(const String &p_theme_type) const;
 	Vector<String> _get_font_type_list() const;
 	Vector<String> _get_font_size_list(const String &p_theme_type) const;
@@ -99,6 +104,7 @@ protected:
 
 	HashMap<StringName, ThemeIconMap> icon_map;
 	HashMap<StringName, ThemeStyleMap> style_map;
+	HashMap<StringName, ThemeSoundMap> sound_map;
 	HashMap<StringName, ThemeFontMap> font_map;
 	HashMap<StringName, ThemeFontSizeMap> font_size_map;
 	HashMap<StringName, ThemeColorMap> color_map;
@@ -153,6 +159,18 @@ public:
 	void remove_stylebox_type(const StringName &p_theme_type);
 	void rename_stylebox_type(const StringName &p_old_theme_type, const StringName &p_theme_type);
 	void get_stylebox_type_list(List<StringName> *p_list) const;
+
+	void set_sound(const StringName &p_name, const StringName &p_theme_type, const Ref<AudioStream> &p_sound);
+	Ref<AudioStream> get_sound(const StringName &p_name, const StringName &p_theme_type) const;
+	bool has_sound(const StringName &p_name, const StringName &p_theme_type) const;
+	bool has_sound_nocheck(const StringName &p_name, const StringName &p_theme_type) const;
+	void rename_sound(const StringName &p_old_name, const StringName &p_name, const StringName &p_theme_type);
+	void clear_sound(const StringName &p_name, const StringName &p_theme_type);
+	void get_sound_list(const StringName &p_theme_type, List<StringName> *p_list) const;
+	void add_sound_type(const StringName &p_theme_type);
+	void remove_sound_type(const StringName &p_theme_type);
+	void rename_sound_type(const StringName &p_old_theme_type, const StringName &p_theme_type);
+	void get_sound_type_list(List<StringName> *p_list) const;
 
 	void set_font(const StringName &p_name, const StringName &p_theme_type, const Ref<Font> &p_font);
 	virtual Ref<Font> get_font(const StringName &p_name, const StringName &p_theme_type) const;

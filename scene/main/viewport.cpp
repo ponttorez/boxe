@@ -1756,6 +1756,7 @@ void Viewport::_gui_call_input(Control *p_control, const Ref<InputEvent> &p_inpu
 		if (control) {
 			if (!control->is_interactable_in_tree()) {
 				// Non-interactable controls consume the input without reacting to it.
+				_gui_play_denied_sound(control, p_input);
 				set_input_as_handled();
 				break;
 			}
@@ -1785,6 +1786,27 @@ void Viewport::_gui_call_input(Control *p_control, const Ref<InputEvent> &p_inpu
 
 		ev = ev->xformed_by(ci->get_transform()); // Transform event upwards.
 		ci = ci->get_parent_item();
+	}
+}
+
+void Viewport::_gui_play_denied_sound(Control *p_control, const Ref<InputEvent> &p_input) {
+	// Plays the "denied" theme sound of the first control under the press that has one.
+	const Ref<InputEventMouseButton> mb = p_input;
+	const Ref<InputEventScreenTouch> st = p_input;
+	const bool pressed = (mb.is_valid() && mb->is_pressed() && mb->get_button_index() == MouseButton::LEFT) || (st.is_valid() && st->is_pressed());
+	if (!pressed) {
+		return;
+	}
+
+	for (CanvasItem *ci = p_control; ci; ci = ci->get_parent_item()) {
+		Control *control = Object::cast_to<Control>(ci);
+		if (control && control->has_theme_sound(SNAME("denied"))) {
+			control->play_theme_sound(SNAME("denied"));
+			return;
+		}
+		if (ci->is_set_as_top_level()) {
+			return;
+		}
 	}
 }
 

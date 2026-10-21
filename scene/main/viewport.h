@@ -438,6 +438,7 @@ private:
 
 	void _gui_call_input(Control *p_control, const Ref<InputEvent> &p_input);
 	void _gui_call_notification(Control *p_control, int p_what);
+	void _gui_play_denied_sound(Control *p_control, const Ref<InputEvent> &p_input);
 
 	void _gui_sort_roots();
 	Control *_gui_find_control_at_pos(CanvasItem *p_node, const Point2 &p_global, const Transform2D &p_xform);
