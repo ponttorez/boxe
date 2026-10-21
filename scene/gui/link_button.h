@@ -31,6 +31,7 @@
 #pragma once
 
 #include "scene/gui/base_button.h"
+#include "scene/gui/bbcode_text.h"
 #include "scene/resources/text_line.h"
 
 class LinkButton : public BaseButton {
@@ -47,6 +48,9 @@ private:
 	String text;
 	String xl_text;
 	Ref<TextLine> text_buf;
+	bool bbcode_enabled = false;
+	Ref<BBCodeText> bbcode;
+	Rect2 bbcode_rect;
 	UnderlineMode underline_mode = UNDERLINE_MODE_ALWAYS;
 	String uri;
 
@@ -87,8 +91,12 @@ protected:
 	virtual String _get_accessibility_name() const override;
 
 public:
+	virtual String get_tooltip(const Point2 &p_pos) const override;
+
 	void set_text(const String &p_text);
 	String get_text() const;
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
 	void set_uri(const String &p_uri);
 	String get_uri() const;
 

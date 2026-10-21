@@ -51,6 +51,7 @@ class MenuBar : public Control {
 		String tooltip;
 
 		Ref<TextLine> text_buf;
+		Ref<BBCodeText> bbcode;
 		bool hidden = false;
 		bool disabled = false;
 		RID submenu_rid;
@@ -104,8 +105,13 @@ class MenuBar : public Control {
 	Rect2 _get_menu_item_rect(int p_index) const;
 	void _draw_menu_item(int p_index);
 
+	bool bbcode_enabled = false;
+
 	void shape(Menu &p_menu);
+	Size2 _get_menu_text_size(int p_index) const;
 	void _refresh_menu_names();
+	String _get_native_title(const Menu &p_menu, const String &p_title) const;
+	void _update_native_titles();
 	Vector<PopupMenu *> _get_popups() const;
 	int get_menu_idx_from_control(PopupMenu *p_child) const;
 
@@ -148,6 +154,9 @@ protected:
 	static void _bind_methods();
 
 public:
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
+
 	virtual void gui_input(const Ref<InputEvent> &p_event) override;
 
 	void set_switch_on_hover(bool p_enabled);

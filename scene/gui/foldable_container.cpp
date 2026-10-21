@@ -286,6 +286,12 @@ void FoldableContainer::_toggle_folded_by_user() {
 }
 
 String FoldableContainer::get_tooltip(const Point2 &p_pos) const {
+	if (title_bbcode_enabled && bbcode->has_hints()) {
+		String tooltip = bbcode->get_tooltip_at(bbcode_rect, VERTICAL_ALIGNMENT_TOP, p_pos);
+		if (!tooltip.is_empty()) {
+			return tooltip;
+		}
+	}
 	if (Rect2(0, (title_position == POSITION_TOP) ? 0 : get_size().height - title_minimum_size.height, get_size().width, title_minimum_size.height).has_point(p_pos)) {
 		return Control::get_tooltip(p_pos);
 	}
@@ -322,7 +328,7 @@ void FoldableContainer::_notification(int p_what) {
 
 			int title_style_ofs = (title_position == POSITION_TOP) ? title_style->get_margin(SIDE_TOP) : title_style->get_margin(SIDE_BOTTOM);
 			Point2 title_text_pos(title_style->get_margin(SIDE_LEFT), title_style_ofs);
-			title_text_pos.y += MAX((title_minimum_size.height - title_ms.height - text_buf->get_size().height) * 0.5, 0);
+			title_text_pos.y += MAX((title_minimum_size.height - title_ms.height - (title_bbcode_enabled ? bbcode->get_size().height : text_buf->get_size().height)) * 0.5, 0);
 
 			title_text_width -= icon->get_width() + h_separation + title_controls_width;
 			Point2 icon_pos(0, MAX((title_minimum_size.height - title_ms.height - icon->get_height()) * 0.5, 0) + title_style_ofs);
@@ -344,7 +350,15 @@ void FoldableContainer::_notification(int p_what) {
 			font_color = get_transition_color(StyleTransitions::make_key(1), font_color, title_style);
 			text_buf->set_width(title_text_width);
 
-			if (title_text_width > 0) {
+			if (title_bbcode_enabled && title_text_width > 0) {
+				bbcode->set_width(title_text_width);
+				BBCodeText::DrawStyle draw_style;
+				draw_style.font_color = font_color;
+				draw_style.hr_color = font_color;
+				draw_style.outline_size = theme_cache.title_font_outline_size;
+				draw_style.outline_color = theme_cache.title_font_outline_color;
+				bbcode->draw_at(ci, title_rect.position + title_text_pos, draw_style, &bbcode_rect);
+			} else if (title_text_width > 0) {
 				if (theme_cache.title_font_outline_size > 0 && theme_cache.title_font_outline_color.a > 0) {
 					text_buf->draw_outline(ci, title_rect.position + title_text_pos, theme_cache.title_font_outline_size, theme_cache.title_font_outline_color);
 				}
@@ -488,7 +502,7 @@ void FoldableContainer::_update_title_min_size() const {
 
 	if (!title.is_empty()) {
 		title_minimum_size.width += h_separation;
-		Size2 text_size = text_buf->get_size();
+		Size2 text_size = title_bbcode_enabled ? bbcode->get_size() : text_buf->get_size();
 		title_minimum_size.height += MAX(text_size.height, icon->get_height());
 		if (overrun_behavior == TextServer::OverrunBehavior::OVERRUN_NO_TRIMMING) {
 			title_minimum_size.width += text_size.width;
@@ -527,6 +541,22 @@ void FoldableContainer::_shape() {
 	text_buf->clear();
 	text_buf->set_width(-1);
 
+	if (title_bbcode_enabled) {
+		text_buf->set_horizontal_alignment(_get_actual_alignment());
+		bbcode->update_theme_fonts(this, font, font_size);
+		bbcode->set_language(language.is_empty() ? _get_locale() : language);
+		bbcode->set_text(atr(title));
+		bbcode->set_width(-1);
+		bbcode->set_horizontal_alignment(_get_actual_alignment());
+		bbcode->set_text_overrun_behavior(overrun_behavior);
+		if (title_text_direction == TEXT_DIRECTION_INHERITED) {
+			bbcode->set_direction(is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR, is_layout_rtl());
+		} else {
+			bbcode->set_direction((TextServer::Direction)title_text_direction, is_layout_rtl());
+		}
+		return;
+	}
+
 	if (title_text_direction == TEXT_DIRECTION_INHERITED) {
 		text_buf->set_direction(is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR);
 	} else {
@@ -536,6 +566,26 @@ void FoldableContainer::_shape() {
 	text_buf->set_text_overrun_behavior(overrun_behavior);
 	const String &lang = language.is_empty() ? _get_locale() : language;
 	text_buf->add_string(atr(title), font, font_size, lang);
+}
+
+void FoldableContainer::set_title_bbcode_enabled(bool p_enabled) {
+	if (title_bbcode_enabled == p_enabled) {
+		return;
+	}
+	title_bbcode_enabled = p_enabled;
+	if (title_bbcode_enabled) {
+		bbcode.instantiate();
+		bbcode->set_owner(this);
+	} else {
+		bbcode = Ref<BBCodeText>();
+	}
+	_shape();
+	update_minimum_size();
+	queue_redraw();
+}
+
+bool FoldableContainer::is_title_bbcode_enabled() const {
+	return title_bbcode_enabled;
 }
 
 HorizontalAlignment FoldableContainer::_get_actual_alignment() const {
@@ -579,6 +629,8 @@ void FoldableContainer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_foldable_group"), &FoldableContainer::get_foldable_group);
 	ClassDB::bind_method(D_METHOD("set_title", "text"), &FoldableContainer::set_title);
 	ClassDB::bind_method(D_METHOD("get_title"), &FoldableContainer::get_title);
+	ClassDB::bind_method(D_METHOD("set_title_bbcode_enabled", "enabled"), &FoldableContainer::set_title_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_title_bbcode_enabled"), &FoldableContainer::is_title_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_title_alignment", "alignment"), &FoldableContainer::set_title_alignment);
 	ClassDB::bind_method(D_METHOD("get_title_alignment"), &FoldableContainer::get_title_alignment);
 	ClassDB::bind_method(D_METHOD("set_language", "language"), &FoldableContainer::set_language);
@@ -596,6 +648,7 @@ void FoldableContainer::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "folded"), "set_folded", "is_folded");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "title"), "set_title", "get_title");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "title_bbcode_enabled"), "set_title_bbcode_enabled", "is_title_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "title_alignment", PROPERTY_HINT_ENUM, "Left,Center,Right"), "set_title_alignment", "get_title_alignment");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "title_position", PROPERTY_HINT_ENUM, "Top,Bottom"), "set_title_position", "get_title_position");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "title_text_overrun_behavior", PROPERTY_HINT_ENUM, "Trim Nothing,Trim Characters,Trim Words,Ellipsis,Word Ellipsis"), "set_title_text_overrun_behavior", "get_title_text_overrun_behavior");
@@ -630,6 +683,7 @@ void FoldableContainer::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, FoldableContainer, folded_arrow_mirrored);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, FoldableContainer, h_separation);
+	BBCodeText::bind_theme_fonts(get_class_static());
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_toggled_on, "toggled_on");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_toggled_off, "toggled_off");

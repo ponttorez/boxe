@@ -58,6 +58,86 @@ void ItemList::_shape_text(int p_idx) {
 	}
 	item.text_buf->set_text_overrun_behavior(text_overrun_behavior);
 	item.text_buf->set_max_lines_visible(max_text_lines);
+	_sync_item_bbcode(p_idx);
+}
+
+void ItemList::_sync_item_bbcode(int p_idx) {
+	Item &item = items.write[p_idx];
+	if (!bbcode_enabled) {
+		item.bbcode = Ref<BBCodeText>();
+		return;
+	}
+	if (item.bbcode.is_null()) {
+		item.bbcode.instantiate();
+		item.bbcode->set_owner(this);
+	}
+	if (theme_cache.font.is_valid()) {
+		item.bbcode->update_theme_fonts(this, theme_cache.font, theme_cache.font_size);
+	}
+	item.bbcode->set_language(item.language.is_empty() ? _get_locale() : item.language);
+	item.bbcode->set_text(item.xl_text);
+	if (item.text_direction == Control::TEXT_DIRECTION_INHERITED) {
+		item.bbcode->set_direction(is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR, is_layout_rtl());
+	} else {
+		item.bbcode->set_direction((TextServer::Direction)item.text_direction, is_layout_rtl());
+	}
+	const bool wrap = icon_mode == ICON_MODE_TOP && max_text_lines > 0;
+	item.bbcode->set_autowrap_mode(wrap ? TextServer::AUTOWRAP_WORD_SMART : TextServer::AUTOWRAP_OFF);
+	item.bbcode->set_max_lines_visible(wrap ? max_text_lines : -1);
+	item.bbcode->set_text_overrun_behavior(text_overrun_behavior);
+}
+
+Size2 ItemList::_get_item_text_size(int p_idx) const {
+	const Item &item = items[p_idx];
+	return item.bbcode.is_valid() ? item.bbcode->get_size() : item.text_buf->get_size();
+}
+
+void ItemList::_set_item_text_width(int p_idx, float p_width) {
+	Item &item = items.write[p_idx];
+	if (item.bbcode.is_valid()) {
+		item.bbcode->set_width(p_width < 0 ? -1 : int(p_width));
+	} else {
+		item.text_buf->set_width(p_width);
+	}
+}
+
+void ItemList::_set_item_text_alignment(int p_idx, HorizontalAlignment p_alignment) {
+	Item &item = items.write[p_idx];
+	if (item.bbcode.is_valid()) {
+		item.bbcode->set_horizontal_alignment(p_alignment);
+	} else {
+		item.text_buf->set_alignment(p_alignment);
+	}
+}
+
+void ItemList::_draw_item_text(int p_idx, const Vector2 &p_pos, const Color &p_color) {
+	const Item &item = items[p_idx];
+	if (item.bbcode.is_valid()) {
+		BBCodeText::DrawStyle draw_style;
+		draw_style.font_color = p_color;
+		draw_style.hr_color = p_color;
+		draw_style.outline_size = theme_cache.font_outline_size;
+		draw_style.outline_color = theme_cache.font_outline_color;
+		item.bbcode->draw_at(get_canvas_item(), p_pos, draw_style);
+	} else {
+		item.text_buf->draw(get_canvas_item(), p_pos, p_color);
+	}
+}
+
+void ItemList::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	for (int i = 0; i < items.size(); i++) {
+		_sync_item_bbcode(i);
+	}
+	shape_changed = true;
+	queue_redraw();
+}
+
+bool ItemList::is_bbcode_enabled() const {
+	return bbcode_enabled;
 }
 
 int ItemList::add_item(const String &p_item, const Ref<Texture2D> &p_texture, bool p_selectable) {
@@ -632,6 +712,7 @@ void ItemList::set_max_text_lines(int p_lines) {
 			} else {
 				items.write[i].text_buf->set_break_flags(TextServer::BREAK_NONE);
 			}
+			_sync_item_bbcode(i);
 		}
 		shape_changed = true;
 		queue_accessibility_update();
@@ -684,6 +765,7 @@ void ItemList::set_icon_mode(IconMode p_mode) {
 			} else {
 				items.write[i].text_buf->set_break_flags(TextServer::BREAK_NONE);
 			}
+			_sync_item_bbcode(i);
 		}
 		shape_changed = true;
 		queue_redraw();
@@ -1661,13 +1743,13 @@ void ItemList::_notification(int p_what) {
 						text_ofs.y += MAX(theme_cache.v_separation, 0) / 2;
 						text_ofs.x += MAX(theme_cache.h_separation, 0) / 2;
 
-						items.write[i].text_buf->set_alignment(HORIZONTAL_ALIGNMENT_CENTER);
+						_set_item_text_alignment(i, HORIZONTAL_ALIGNMENT_CENTER);
 
 						float text_w = items[i].rect_cache.size.width - text_ofs.x * 2;
 						if (wraparound_items && text_w + text_ofs.x > width) {
 							text_w = width - text_ofs.x;
 						}
-						items.write[i].text_buf->set_width(text_w);
+						_set_item_text_width(i, text_w);
 
 						text_ofs += base_ofs;
 						text_ofs += items[i].rect_cache.position;
@@ -1676,13 +1758,13 @@ void ItemList::_notification(int p_what) {
 							text_ofs.x = size.width - text_ofs.x - text_w;
 						}
 
-						if (theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
+						if (!bbcode_enabled && theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
 							items[i].text_buf->draw_outline(get_canvas_item(), text_ofs, theme_cache.font_outline_size, theme_cache.font_outline_color);
 						}
 
-						items[i].text_buf->draw(get_canvas_item(), text_ofs, txt_modulate);
+						_draw_item_text(i, text_ofs, txt_modulate);
 					} else {
-						text_ofs.y += (items[i].rect_cache.size.height - items[i].text_buf->get_size().y) / 2;
+						text_ofs.y += (items[i].rect_cache.size.height - _get_item_text_size(i).y) / 2;
 						text_ofs.x += MAX(theme_cache.h_separation, 0) / 2;
 
 						real_t text_width_ofs = text_ofs.x;
@@ -1694,33 +1776,33 @@ void ItemList::_notification(int p_what) {
 						if (wraparound_items && items[i].rect_cache.size.width > width) {
 							text_w -= items[i].rect_cache.size.width - width;
 						}
-						items.write[i].text_buf->set_width(text_w);
+						_set_item_text_width(i, text_w);
 
 						if (rtl) {
 							text_ofs.x = size.width - items[i].rect_cache.size.width + icon_size.x - text_ofs.x + MAX(theme_cache.h_separation, 0);
 							if (wraparound_items) {
 								text_ofs.x += MAX(items[i].rect_cache.size.width - width, 0);
 							}
-							items.write[i].text_buf->set_alignment(HORIZONTAL_ALIGNMENT_RIGHT);
+							_set_item_text_alignment(i, HORIZONTAL_ALIGNMENT_RIGHT);
 						} else {
-							items.write[i].text_buf->set_alignment(HORIZONTAL_ALIGNMENT_LEFT);
+							_set_item_text_alignment(i, HORIZONTAL_ALIGNMENT_LEFT);
 						}
 
-						if (theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
+						if (!bbcode_enabled && theme_cache.font_outline_size > 0 && theme_cache.font_outline_color.a > 0) {
 							items[i].text_buf->draw_outline(get_canvas_item(), text_ofs, theme_cache.font_outline_size, theme_cache.font_outline_color);
 						}
 
 						if (fixed_column_width > 0) {
 							if (items[i].rect_cache.size.width - icon_size.x - MAX(theme_cache.h_separation, 0) > 0) {
-								items[i].text_buf->draw(get_canvas_item(), text_ofs, txt_modulate);
+								_draw_item_text(i, text_ofs, txt_modulate);
 							}
 						} else {
 							if (wraparound_items) {
 								if (width - icon_size.x - MAX(theme_cache.h_separation, 0) - int(scroll_bar_h->get_value()) > 0) {
-									items[i].text_buf->draw(get_canvas_item(), text_ofs, txt_modulate);
+									_draw_item_text(i, text_ofs, txt_modulate);
 								}
 							} else {
-								items[i].text_buf->draw(get_canvas_item(), text_ofs, txt_modulate);
+								_draw_item_text(i, text_ofs, txt_modulate);
 							}
 						}
 					}
@@ -1802,8 +1884,8 @@ void ItemList::force_update_list_size() {
 			if (fixed_column_width) {
 				max_width = fixed_column_width;
 			}
-			items.write[i].text_buf->set_width(max_width);
-			Size2 s = items[i].text_buf->get_size();
+			_set_item_text_width(i, max_width);
+			Size2 s = _get_item_text_size(i);
 
 			if (icon_mode == ICON_MODE_TOP) {
 				minsize.x = MAX(minsize.x, s.width);
@@ -2076,6 +2158,10 @@ String ItemList::get_tooltip(const Point2 &p_pos) const {
 			return items[closest].tooltip;
 		}
 		if (!items[closest].text.is_empty()) {
+			// Tooltips are plain text, so BBCode items show their text without tags.
+			if (items[closest].bbcode.is_valid()) {
+				return items[closest].bbcode->get_parsed_text();
+			}
 			return items[closest].text;
 		}
 	}
@@ -2231,6 +2317,7 @@ void ItemList::set_text_overrun_behavior(TextServer::OverrunBehavior p_behavior)
 		text_overrun_behavior = p_behavior;
 		for (int i = 0; i < items.size(); i++) {
 			items.write[i].text_buf->set_text_overrun_behavior(p_behavior);
+			_sync_item_bbcode(i);
 		}
 		shape_changed = true;
 		queue_redraw();
@@ -2380,6 +2467,8 @@ void ItemList::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_same_column_width", "enable"), &ItemList::set_same_column_width);
 	ClassDB::bind_method(D_METHOD("is_same_column_width"), &ItemList::is_same_column_width);
 
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &ItemList::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &ItemList::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_max_text_lines", "lines"), &ItemList::set_max_text_lines);
 	ClassDB::bind_method(D_METHOD("get_max_text_lines"), &ItemList::get_max_text_lines);
 
@@ -2441,6 +2530,7 @@ void ItemList::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_reselect"), "set_allow_reselect", "get_allow_reselect");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_rmb_select"), "set_allow_rmb_select", "get_allow_rmb_select");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_search"), "set_allow_search", "get_allow_search");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_text_lines", PROPERTY_HINT_RANGE, "1,10,1,or_greater"), "set_max_text_lines", "get_max_text_lines");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "auto_width"), "set_auto_width", "has_auto_width");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "auto_height"), "set_auto_height", "has_auto_height");
@@ -2507,6 +2597,8 @@ void ItemList::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, ItemList, sound_selected, "selected");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, ItemList, sound_activated, "activated");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, ItemList, sound_hover, "hover");
+
+	BBCodeText::bind_theme_fonts(get_class_static());
 
 	Item defaults(true);
 

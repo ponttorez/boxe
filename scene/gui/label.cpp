@@ -116,6 +116,11 @@ bool Label::is_uppercase() const {
 }
 
 int Label::get_line_height(int p_line) const {
+	if (bbcode_enabled) {
+		_ensure_shaped();
+		return bbcode->get_line_height(p_line);
+	}
+
 	Ref<Font> font = (settings.is_valid() && settings->get_font().is_valid()) ? settings->get_font() : theme_cache.font;
 	int font_size = settings.is_valid() ? settings->get_font_size() : theme_cache.font_size;
 	int font_h = font->get_height(font_size);
@@ -143,6 +148,11 @@ int Label::get_line_height(int p_line) const {
 }
 
 void Label::_shape() const {
+	if (bbcode_enabled) {
+		_shape_bbcode();
+		return;
+	}
+
 	const String &lang = language.is_empty() ? _get_locale() : language;
 
 	Ref<StyleBox> style = theme_cache.normal_style;
@@ -365,6 +375,12 @@ void Label::_shape() const {
 }
 
 void Label::_update_visible() const {
+	if (bbcode_enabled) {
+		_sync_bbcode();
+		minsize.height = bbcode->get_visible_height();
+		return;
+	}
+
 	int line_spacing = settings.is_valid() ? settings->get_line_spacing() : theme_cache.line_spacing;
 	int paragraph_spacing = settings.is_valid() ? settings->get_paragraph_spacing() : theme_cache.paragraph_spacing;
 	Ref<StyleBox> style = theme_cache.normal_style;
@@ -438,7 +454,169 @@ inline void draw_glyph_outline(const Glyph &p_gl, const RID &p_canvas, const Col
 	}
 }
 
+void Label::_sync_bbcode() const {
+	if (bbcode.is_null()) {
+		bbcode.instantiate();
+		bbcode->set_owner(this);
+		text_dirty = true;
+		font_dirty = true;
+	}
+
+	if (text_dirty) {
+		String ps = paragraph_separator.c_unescape();
+		bbcode->set_text((ps.is_empty() || ps == "\n") ? xl_text : xl_text.replace(ps, "\n"));
+		text_dirty = false;
+	}
+	if (font_dirty) {
+		const Ref<Font> &font = (settings.is_valid() && settings->get_font().is_valid()) ? settings->get_font() : theme_cache.font;
+		int font_size = settings.is_valid() ? settings->get_font_size() : theme_cache.font_size;
+		bbcode->update_theme_fonts(this, font, font_size);
+		font_dirty = false;
+	}
+
+	bbcode->set_language(language.is_empty() ? _get_locale() : language);
+	bbcode->set_horizontal_alignment(horizontal_alignment);
+	bbcode->set_autowrap_mode(autowrap_mode);
+	bbcode->set_autowrap_trim_flags(autowrap_flags_trim);
+	bbcode->set_justification_flags(jst_flags);
+	bbcode->set_text_overrun_behavior(overrun_behavior);
+	bbcode->set_ellipsis_char(el_char);
+	bbcode->set_uppercase(uppercase);
+	bbcode->set_tab_stops(tab_stops);
+	if (text_direction == Control::TEXT_DIRECTION_INHERITED) {
+		bbcode->set_direction(is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR, is_layout_rtl());
+	} else {
+		bbcode->set_direction((TextServer::Direction)text_direction, is_layout_rtl());
+	}
+	bbcode->set_structured_text_bidi_override(st_parser, st_args);
+	bbcode->set_visible_characters_behavior(visible_chars_behavior);
+	bbcode->set_visible_characters(visible_chars);
+	bbcode->set_visible_ratio(visible_ratio);
+	bbcode->set_lines_skipped(lines_skipped);
+	bbcode->set_max_lines_visible(max_lines_visible);
+	bbcode->set_line_spacing(settings.is_valid() ? settings->get_line_spacing() : theme_cache.line_spacing);
+	bbcode->set_paragraph_spacing(settings.is_valid() ? settings->get_paragraph_spacing() : theme_cache.paragraph_spacing);
+
+	// Same width as in _shape().
+	Ref<StyleBox> style = theme_cache.normal_style;
+	int width = (get_size().width - style->get_minimum_size().width);
+	float combined_maximum_width = get_combined_maximum_size().x;
+	if (autowrap_mode != TextServer::AUTOWRAP_OFF && combined_maximum_width > 0) {
+		width = MAX(1, int(combined_maximum_width - style->get_minimum_size().width));
+	}
+	bbcode->set_width(width);
+	bbcode->set_height(get_size().height - style->get_minimum_size().height);
+}
+
+void Label::_shape_bbcode() const {
+	_sync_bbcode();
+	total_line_count = bbcode->get_line_count();
+	dirty = false;
+
+	Size2 old_minsize = minsize;
+	if (xl_text.is_empty()) {
+		minsize = Size2(1, bbcode->get_line_height());
+		return;
+	}
+
+	Ref<StyleBox> style = theme_cache.normal_style;
+	float combined_maximum_width = get_combined_maximum_size().x;
+	bool wrap_with_max_width = autowrap_mode != TextServer::AUTOWRAP_OFF && combined_maximum_width > 0;
+	if (autowrap_mode == TextServer::AUTOWRAP_OFF) {
+		minsize.width = Math::ceil(bbcode->get_lines_width());
+	} else if (wrap_with_max_width) {
+		int maximum_width = MAX(1, int(combined_maximum_width - style->get_minimum_size().width));
+		minsize.width = MIN(Math::ceil(bbcode->get_unwrapped_width()), maximum_width);
+	}
+	minsize.height = bbcode->get_visible_height();
+
+	if (minsize != old_minsize && (autowrap_mode == TextServer::AUTOWRAP_OFF || !clip || overrun_behavior == TextServer::OVERRUN_NO_TRIMMING)) {
+		const_cast<Label *>(this)->update_minimum_size();
+	}
+}
+
+Rect2 Label::_get_bbcode_rect() const {
+	Ref<StyleBox> style = theme_cache.normal_style;
+	return Rect2(style->get_offset(), get_size() - style->get_minimum_size());
+}
+
+BBCodeText::DrawStyle Label::_get_bbcode_draw_style() const {
+	bool has_settings = settings.is_valid();
+	BBCodeText::DrawStyle ret;
+	ret.font_color = has_settings ? settings->get_font_color() : theme_cache.font_color;
+	ret.shadow_color = has_settings ? settings->get_shadow_color() : theme_cache.font_shadow_color;
+	ret.shadow_offset = has_settings ? settings->get_shadow_offset() : theme_cache.font_shadow_offset;
+	ret.shadow_outline_size = has_settings ? settings->get_shadow_size() : theme_cache.font_shadow_outline_size;
+	ret.outline_color = has_settings ? settings->get_outline_color() : theme_cache.font_outline_color;
+	ret.outline_size = has_settings ? settings->get_outline_size() : theme_cache.font_outline_size;
+	if (has_settings) {
+		ret.stacked_outlines = settings->get_stacked_outline_data();
+		ret.stacked_shadows = settings->get_stacked_shadow_data();
+	}
+	ret.hr_color = ret.font_color;
+	return ret;
+}
+
+void Label::_set_hovered_meta(int p_index) {
+	if (bbcode.is_null() || bbcode->get_hovered_meta() == p_index) {
+		return;
+	}
+	int old_index = bbcode->get_hovered_meta();
+	bbcode->set_hovered_meta(p_index);
+	if (old_index >= 0) {
+		emit_signal(SNAME("meta_hover_ended"), bbcode->get_url_meta(old_index));
+	}
+	if (p_index >= 0) {
+		emit_signal(SNAME("meta_hover_started"), bbcode->get_url_meta(p_index));
+	}
+	queue_redraw();
+}
+
+void Label::gui_input(const Ref<InputEvent> &p_event) {
+	ERR_FAIL_COND(p_event.is_null());
+
+	if (!bbcode_enabled || bbcode.is_null() || !bbcode->has_metas()) {
+		return;
+	}
+
+	Ref<InputEventMouseMotion> mm = p_event;
+	if (mm.is_valid()) {
+		_set_hovered_meta(bbcode->get_meta_index_at(_get_bbcode_rect(), vertical_alignment, mm->get_position()));
+	}
+
+	Ref<InputEventMouseButton> mb = p_event;
+	if (mb.is_valid() && mb->get_button_index() == MouseButton::LEFT && mb->is_pressed()) {
+		int index = bbcode->get_meta_index_at(_get_bbcode_rect(), vertical_alignment, mb->get_position());
+		if (index >= 0) {
+			emit_signal(SNAME("meta_clicked"), bbcode->get_url_meta(index));
+			accept_event();
+		}
+	}
+}
+
+Control::CursorShape Label::get_cursor_shape(const Point2 &p_pos) const {
+	if (bbcode_enabled && bbcode.is_valid() && bbcode->has_metas() && bbcode->get_meta_index_at(_get_bbcode_rect(), vertical_alignment, p_pos) >= 0) {
+		return CURSOR_POINTING_HAND;
+	}
+	return Control::get_cursor_shape(p_pos);
+}
+
+String Label::get_tooltip(const Point2 &p_pos) const {
+	if (bbcode_enabled && bbcode.is_valid() && bbcode->has_hints()) {
+		String tooltip = bbcode->get_tooltip_at(_get_bbcode_rect(), vertical_alignment, p_pos);
+		if (!tooltip.is_empty()) {
+			return tooltip;
+		}
+	}
+	return Control::get_tooltip(p_pos);
+}
+
 void Label::_ensure_shaped() const {
+	if (bbcode_enabled) {
+		_shape_bbcode();
+		return;
+	}
+
 	if (dirty || font_dirty || text_dirty) {
 		_shape();
 	} else {
@@ -653,6 +831,10 @@ PackedStringArray Label::get_configuration_warnings() const {
 		}
 	}
 
+	if (bbcode_enabled && bbcode.is_valid() && (bbcode->has_metas() || bbcode->has_hints()) && get_mouse_filter() == MOUSE_FILTER_IGNORE) {
+		warnings.push_back(RTR("Links and hints in BBCode only react to the mouse when Mouse > Filter is set to \"Stop\" or \"Pass\"."));
+	}
+
 	// Ensure that the font can render all of the required glyphs.
 	Ref<Font> font;
 	if (settings.is_valid()) {
@@ -724,7 +906,7 @@ void Label::_notification(int p_what) {
 			ERR_FAIL_COND(ae.is_null());
 
 			AccessibilityServer::get_singleton()->update_set_role(ae, AccessibilityServerEnums::AccessibilityRole::ROLE_STATIC_TEXT);
-			AccessibilityServer::get_singleton()->update_set_value(ae, xl_text);
+			AccessibilityServer::get_singleton()->update_set_value(ae, bbcode_enabled ? get_parsed_text() : xl_text);
 			AccessibilityServer::get_singleton()->update_set_text_align(ae, horizontal_alignment);
 		} break;
 
@@ -788,6 +970,11 @@ void Label::_notification(int p_what) {
 			bool rtl_layout = is_layout_rtl();
 
 			get_transition_style(StyleTransitions::make_key(0), has_focus(true) ? theme_cache.focus_style : theme_cache.normal_style)->draw(ci, Rect2(Point2(0, 0), get_size()));
+
+			if (bbcode_enabled) {
+				bbcode->draw(ci, _get_bbcode_rect(), vertical_alignment, _get_bbcode_draw_style());
+				break;
+			}
 
 			bool trim_chars = (visible_chars >= 0) && (visible_chars_behavior == TextServer::VC_CHARS_AFTER_SHAPING);
 			bool trim_glyphs_ltr = (visible_chars >= 0) && ((visible_chars_behavior == TextServer::VC_GLYPHS_LTR) || ((visible_chars_behavior == TextServer::VC_GLYPHS_AUTO) && !rtl_layout));
@@ -918,11 +1105,19 @@ void Label::_notification(int p_what) {
 				para.lines_dirty = true;
 			}
 		} break;
+
+		case NOTIFICATION_MOUSE_EXIT: {
+			_set_hovered_meta(-1);
+		} break;
 	}
 }
 
 Rect2 Label::get_character_bounds(int p_pos) const {
 	_ensure_shaped();
+
+	if (bbcode_enabled) {
+		return bbcode->get_character_bounds(_get_bbcode_rect(), vertical_alignment, p_pos);
+	}
 
 	int paragraph_spacing = settings.is_valid() ? settings->get_paragraph_spacing() : theme_cache.paragraph_spacing;
 	Ref<Font> font = (settings.is_valid() && settings->get_font().is_valid()) ? settings->get_font() : theme_cache.font;
@@ -1049,6 +1244,11 @@ int Label::get_line_count() const {
 }
 
 int Label::get_visible_line_count() const {
+	if (bbcode_enabled) {
+		_ensure_shaped();
+		return bbcode->get_visible_line_count();
+	}
+
 	Ref<StyleBox> style = theme_cache.normal_style;
 	Ref<Font> font = (settings.is_valid() && settings->get_font().is_valid()) ? settings->get_font() : theme_cache.font;
 	int font_size = settings.is_valid() ? settings->get_font_size() : theme_cache.font_size;
@@ -1329,6 +1529,48 @@ String Label::get_text() const {
 	return text;
 }
 
+void Label::set_bbcode_enabled(bool p_enabled) {
+	if (bbcode_enabled == p_enabled) {
+		return;
+	}
+	bbcode_enabled = p_enabled;
+	if (bbcode_enabled) {
+		// The paragraphs are rebuilt when BBCode is disabled again.
+		for (Paragraph &para : paragraphs) {
+			for (const RID &line_rid : para.lines_rid) {
+				TS->free_rid(line_rid);
+			}
+			TS->free_rid(para.text_rid);
+		}
+		paragraphs.clear();
+		total_line_count = 0;
+	} else {
+		bbcode = Ref<BBCodeText>();
+	}
+	text_dirty = true;
+	font_dirty = true;
+	if (visible_ratio < 1) {
+		visible_chars = get_total_character_count() * visible_ratio;
+	}
+	queue_accessibility_update();
+	queue_redraw();
+	update_minimum_size();
+	update_desired_size();
+	update_configuration_warnings();
+}
+
+bool Label::is_bbcode_enabled() const {
+	return bbcode_enabled;
+}
+
+String Label::get_parsed_text() const {
+	if (!bbcode_enabled) {
+		return xl_text;
+	}
+	_sync_bbcode();
+	return bbcode->get_parsed_text();
+}
+
 void Label::set_visible_characters(int p_amount) {
 	if (visible_chars != p_amount) {
 		visible_chars = p_amount;
@@ -1420,6 +1662,10 @@ int Label::get_max_lines_visible() const {
 }
 
 int Label::get_total_character_count() const {
+	if (bbcode_enabled) {
+		_sync_bbcode();
+		return bbcode->get_total_character_count();
+	}
 	return xl_text.length();
 }
 
@@ -1430,6 +1676,9 @@ void Label::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_vertical_alignment"), &Label::get_vertical_alignment);
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &Label::set_text);
 	ClassDB::bind_method(D_METHOD("get_text"), &Label::get_text);
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &Label::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &Label::is_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("get_parsed_text"), &Label::get_parsed_text);
 	ClassDB::bind_method(D_METHOD("set_label_settings", "settings"), &Label::set_label_settings);
 	ClassDB::bind_method(D_METHOD("get_label_settings"), &Label::get_label_settings);
 	ClassDB::bind_method(D_METHOD("set_text_direction", "direction"), &Label::set_text_direction);
@@ -1476,6 +1725,7 @@ void Label::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_character_bounds", "pos"), &Label::get_character_bounds);
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text", PROPERTY_HINT_MULTILINE_TEXT), "set_text", "get_text");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "label_settings", PROPERTY_HINT_RESOURCE_TYPE, LabelSettings::get_class_static()), "set_label_settings", "get_label_settings");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "horizontal_alignment", PROPERTY_HINT_ENUM, "Left,Center,Right,Fill"), "set_horizontal_alignment", "get_horizontal_alignment");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "vertical_alignment", PROPERTY_HINT_ENUM, "Top,Center,Bottom,Fill"), "set_vertical_alignment", "get_vertical_alignment");
@@ -1504,6 +1754,10 @@ void Label::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "structured_text_bidi_override", PROPERTY_HINT_ENUM, "Default,URI,File,Email,List,None,Custom"), "set_structured_text_bidi_override", "get_structured_text_bidi_override");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "structured_text_bidi_override_options"), "set_structured_text_bidi_override_options", "get_structured_text_bidi_override_options");
 
+	ADD_SIGNAL(MethodInfo("meta_clicked", PropertyInfo(Variant::NIL, "meta", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NIL_IS_VARIANT)));
+	ADD_SIGNAL(MethodInfo("meta_hover_started", PropertyInfo(Variant::NIL, "meta", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NIL_IS_VARIANT)));
+	ADD_SIGNAL(MethodInfo("meta_hover_ended", PropertyInfo(Variant::NIL, "meta", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NIL_IS_VARIANT)));
+
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Label, normal_style, "normal");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Label, focus_style, "focus");
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Label, line_spacing);
@@ -1518,6 +1772,7 @@ void Label::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, Label, font_outline_color);
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_CONSTANT, Label, font_outline_size, "outline_size");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_CONSTANT, Label, font_shadow_outline_size, "shadow_outline_size");
+	BBCodeText::bind_theme_fonts(get_class_static());
 }
 
 Label::Label(const String &p_text) {

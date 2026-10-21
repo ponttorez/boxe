@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/container.h"
 
 class FoldableGroup;
@@ -56,6 +57,9 @@ private:
 	TitlePosition title_position = POSITION_TOP;
 
 	Ref<TextLine> text_buf;
+	bool title_bbcode_enabled = false;
+	Ref<BBCodeText> bbcode;
+	Rect2 bbcode_rect;
 	bool changing_group = false;
 	bool is_hovering = false;
 	mutable Vector2 title_minimum_size;
@@ -111,6 +115,9 @@ protected:
 	static void _bind_methods();
 
 public:
+	void set_title_bbcode_enabled(bool p_enabled);
+	bool is_title_bbcode_enabled() const;
+
 	void fold();
 	void expand();
 

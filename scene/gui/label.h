@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/control.h"
 #include "scene/resources/label_settings.h"
 
@@ -49,6 +50,8 @@ private:
 	TextServer::OverrunBehavior overrun_behavior = TextServer::OVERRUN_NO_TRIMMING;
 	mutable Size2 minsize;
 	bool uppercase = false;
+	bool bbcode_enabled = false;
+	mutable Ref<BBCodeText> bbcode;
 
 	struct Paragraph {
 		bool lines_dirty = true;
@@ -97,6 +100,11 @@ private:
 	} theme_cache;
 
 	Rect2 _get_line_rect(int p_para, int p_line) const;
+	void _sync_bbcode() const;
+	void _shape_bbcode() const;
+	Rect2 _get_bbcode_rect() const;
+	BBCodeText::DrawStyle _get_bbcode_draw_style() const;
+	void _set_hovered_meta(int p_index);
 	void _ensure_shaped() const;
 	void _update_visible() const;
 	void _shape() const;
@@ -115,6 +123,9 @@ protected:
 #endif
 
 public:
+	virtual void gui_input(const Ref<InputEvent> &p_event) override;
+	virtual CursorShape get_cursor_shape(const Point2 &p_pos = Point2()) const override;
+	virtual String get_tooltip(const Point2 &p_pos) const override;
 	virtual Size2 get_minimum_size() const override;
 	virtual Size2 get_desired_size() const override;
 	virtual PackedStringArray get_configuration_warnings() const override;
@@ -127,6 +138,10 @@ public:
 
 	void set_text(const String &p_string);
 	String get_text() const;
+
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
+	String get_parsed_text() const;
 
 	void set_label_settings(const Ref<LabelSettings> &p_settings);
 	Ref<LabelSettings> get_label_settings() const;

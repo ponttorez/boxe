@@ -242,6 +242,9 @@
 		</method>
 	</methods>
 	<members>
+		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
+			If [code]true[/code], the tab titles are parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] and [code][hint][/code] tags are only drawn.
+		</member>
 		<member name="clip_tabs" type="bool" setter="set_clip_tabs" getter="get_clip_tabs" default="true">
 			If [code]true[/code], tabs overflowing this node's width will be hidden, displaying two navigation buttons instead. Otherwise, this node's minimum size is updated so that all tabs are visible.
 		</member>
@@ -435,8 +438,20 @@
 		<theme_item name="tab_separation" data_type="constant" type="int" default="0">
 			The space between tabs in the tab bar.
 		</theme_item>
+		<theme_item name="bold_font" data_type="font" type="Font">
+			Font used for [code][b][/code] text when BBCode is enabled. If not set, the regular font is emboldened.
+		</theme_item>
+		<theme_item name="bold_italics_font" data_type="font" type="Font">
+			Font used for [code][b][i][/code] text when BBCode is enabled. If not set, the regular font is emboldened and slanted.
+		</theme_item>
 		<theme_item name="font" data_type="font" type="Font">
 			The font used to draw tab names.
+		</theme_item>
+		<theme_item name="italics_font" data_type="font" type="Font">
+			Font used for [code][i][/code] text when BBCode is enabled. If not set, the regular font is slanted.
+		</theme_item>
+		<theme_item name="mono_font" data_type="font" type="Font">
+			Font used for [code][code][/code] text when BBCode is enabled. If not set, the regular font is used.
 		</theme_item>
 		<theme_item name="font_size" data_type="font_size" type="int">
 			Font size of the tab names.

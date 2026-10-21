@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/control.h"
 #include "scene/gui/scroll_bar.h"
 #include "scene/property_list_helper.h"
@@ -70,6 +71,7 @@ private:
 		String text;
 		String xl_text;
 		Ref<TextParagraph> text_buf;
+		Ref<BBCodeText> bbcode;
 		String language;
 		TextDirection text_direction = TEXT_DIRECTION_AUTO;
 		AutoTranslateMode auto_translate_mode = AUTO_TRANSLATE_MODE_INHERIT;
@@ -153,7 +155,14 @@ private:
 	bool do_autoscroll_to_bottom = false;
 
 	void _scroll_changed(double);
+	bool bbcode_enabled = false;
+
 	void _shape_text(int p_idx);
+	void _sync_item_bbcode(int p_idx);
+	Size2 _get_item_text_size(int p_idx) const;
+	void _set_item_text_width(int p_idx, float p_width);
+	void _set_item_text_alignment(int p_idx, HorizontalAlignment p_alignment);
+	void _draw_item_text(int p_idx, const Vector2 &p_pos, const Color &p_color);
 	void _mouse_exited();
 	void _shift_range_select(int p_from, int p_to);
 
@@ -217,6 +226,9 @@ protected:
 	void _accessibility_action_blur(const Variant &p_data, int p_index);
 
 public:
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
+
 	virtual RID get_focused_accessibility_element() const override;
 
 	virtual void gui_input(const Ref<InputEvent> &p_event) override;

@@ -57,6 +57,9 @@
 		<member name="title_alignment" type="int" setter="set_title_alignment" getter="get_title_alignment" enum="HorizontalAlignment" default="0">
 			Title's horizontal text alignment.
 		</member>
+		<member name="title_bbcode_enabled" type="bool" setter="set_title_bbcode_enabled" getter="is_title_bbcode_enabled" default="false">
+			If [code]true[/code], [member title] is parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] tags are only drawn, [code][hint][/code] tags show tooltips.
+		</member>
 		<member name="title_position" type="int" setter="set_title_position" getter="get_title_position" enum="FoldableContainer.TitlePosition" default="0">
 			Title's position.
 		</member>
@@ -102,8 +105,20 @@
 		<theme_item name="outline_size" data_type="constant" type="int" default="0">
 			The title's font outline size.
 		</theme_item>
+		<theme_item name="bold_font" data_type="font" type="Font">
+			Font used for [code][b][/code] text when BBCode is enabled. If not set, the regular font is emboldened.
+		</theme_item>
+		<theme_item name="bold_italics_font" data_type="font" type="Font">
+			Font used for [code][b][i][/code] text when BBCode is enabled. If not set, the regular font is emboldened and slanted.
+		</theme_item>
 		<theme_item name="font" data_type="font" type="Font">
 			The title's font.
+		</theme_item>
+		<theme_item name="italics_font" data_type="font" type="Font">
+			Font used for [code][i][/code] text when BBCode is enabled. If not set, the regular font is slanted.
+		</theme_item>
+		<theme_item name="mono_font" data_type="font" type="Font">
+			Font used for [code][code][/code] text when BBCode is enabled. If not set, the regular font is used.
 		</theme_item>
 		<theme_item name="font_size" data_type="font_size" type="int">
 			The title's font size.
