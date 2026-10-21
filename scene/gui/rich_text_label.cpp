@@ -239,7 +239,8 @@ RichTextLabel::Item *RichTextLabel::_get_item_at_pos(RichTextLabel::Item *p_item
 					return it;
 				}
 			} break;
-			case ITEM_IMAGE: {
+			case ITEM_IMAGE:
+			case ITEM_SPACER: {
 				offset += 1;
 				if (offset > p_position) {
 					return it;
@@ -622,8 +623,60 @@ float RichTextLabel::_resize_line(ItemFrame *p_frame, int p_line, const Ref<Font
 		}
 	}
 
+	_fit_line_spacers(p_frame, p_line);
+
 	l.offset.y = p_h;
 	return _calculate_line_vertical_offset(l);
+}
+
+void RichTextLabel::_fit_line_spacers(ItemFrame *p_frame, int p_line) {
+	Line &l = p_frame->lines[p_line];
+
+	// Collapse the spacers, then give each wrapped line's free width to its spacers.
+	HashMap<RID, float> weights;
+	Item *it_to = (p_line + 1 < (int)p_frame->lines.size()) ? p_frame->lines[p_line + 1].from : nullptr;
+	for (Item *it = l.from; it && it != it_to; it = _get_next_item(it)) {
+		if (it->type == ITEM_SPACER) {
+			weights[it->rid] = static_cast<ItemSpacer *>(it)->weight;
+			l.text_buf->resize_object(it->rid, Size2(), INLINE_ALIGNMENT_CENTER);
+			if (l.text_buf_disp.is_valid() && l.text_buf_disp->has_object(it->rid)) {
+				l.text_buf_disp->resize_object(it->rid, Size2(), INLINE_ALIGNMENT_CENTER);
+			}
+		}
+	}
+	l.natural_width = weights.is_empty() ? -1.0 : l.text_buf->get_size().x;
+	const float width = l.text_buf->get_width();
+	if (weights.is_empty() || width <= 0) {
+		return;
+	}
+
+	HashMap<RID, float> sizes;
+	const int dc_lines = l.text_buf->get_dropcap_lines();
+	const float dc_width = l.text_buf->get_dropcap_size().x;
+	for (int i = 0; i < l.text_buf->get_line_count(); i++) {
+		Array objects = l.text_buf->get_line_objects(i);
+		float total_weight = 0;
+		for (const Variant &key : objects) {
+			if (weights.has(key)) {
+				total_weight += weights[key];
+			}
+		}
+		const float free_width = width - ((dc_width > 0 && i <= dc_lines) ? dc_width : 0) - l.text_buf->get_line_size(i).x;
+		if (total_weight <= 0 || free_width <= 0) {
+			continue;
+		}
+		for (const Variant &key : objects) {
+			if (weights.has(key)) {
+				sizes[key] = Math::floor(free_width * weights[key] / total_weight);
+			}
+		}
+	}
+	for (const KeyValue<RID, float> &E : sizes) {
+		l.text_buf->resize_object(E.key, Size2(E.value, 0), INLINE_ALIGNMENT_CENTER);
+		if (l.text_buf_disp.is_valid() && l.text_buf_disp->has_object(E.key)) {
+			l.text_buf_disp->resize_object(E.key, Size2(E.value, 0), INLINE_ALIGNMENT_CENTER);
+		}
+	}
 }
 
 int RichTextLabel::_get_line_max_width(ItemFrame *p_frame, int p_line) const {
@@ -798,6 +851,12 @@ float RichTextLabel::_shape_line(ItemFrame *p_frame, int p_line, const Ref<Font>
 				l.char_count++;
 				remaining_characters--;
 			} break;
+			case ITEM_SPACER: {
+				l.text_buf->add_object(it->rid, Size2(), INLINE_ALIGNMENT_CENTER, 1);
+				txt += String::chr(0xfffc);
+				l.char_count++;
+				remaining_characters--;
+			} break;
 			case ITEM_TABLE: {
 				ItemTable *table = static_cast<ItemTable *>(it);
 				int col_count = table->columns.size();
@@ -834,7 +893,7 @@ float RichTextLabel::_shape_line(ItemFrame *p_frame, int p_line, const Ref<Font>
 						t_char_count += cell_ch;
 						remaining_characters -= cell_ch;
 
-						C.min_width = MAX(C.min_width, Math::ceil(frame_padding_space + line.indent) + Math::ceil(line.text_buf->get_size().x));
+						C.min_width = MAX(C.min_width, Math::ceil(frame_padding_space + line.indent) + Math::ceil(line.get_natural_width()));
 						C.max_width = MAX(C.max_width, _get_line_max_width(frame, i));
 					}
 					idx++;
@@ -910,6 +969,8 @@ float RichTextLabel::_shape_line(ItemFrame *p_frame, int p_line, const Ref<Font>
 	}
 
 	*r_char_offset = l.char_offset + l.char_count;
+
+	_fit_line_spacers(p_frame, p_line);
 
 	l.offset.y = p_h;
 	return _calculate_line_vertical_offset(l);
@@ -4350,7 +4411,7 @@ void RichTextLabel::_add_item(Item *p_item, bool p_enter, bool p_ensure_newline)
 	if (p_item->type == ITEM_TEXT) {
 		ItemText *t = static_cast<ItemText *>(p_item);
 		current_char_ofs += t->text.length();
-	} else if (p_item->type == ITEM_IMAGE) {
+	} else if (p_item->type == ITEM_IMAGE || p_item->type == ITEM_SPACER) {
 		current_char_ofs++;
 	} else if (p_item->type == ITEM_NEWLINE) {
 		current_char_ofs++;
@@ -4420,6 +4481,20 @@ Size2 RichTextLabel::_get_image_size(const Ref<Texture2D> &p_image, float p_widt
 		}
 	}
 	return ret;
+}
+
+void RichTextLabel::add_spacer(float p_weight) {
+	_stop_thread();
+	MutexLock data_lock(data_mutex);
+
+	if (current->type == ITEM_TABLE) {
+		return;
+	}
+
+	ItemSpacer *item = memnew(ItemSpacer);
+	item->rid = items.make_rid(item);
+	item->weight = MAX(0.0f, p_weight);
+	_add_item(item, false);
 }
 
 void RichTextLabel::add_hr(int p_width, int p_height, const Color &p_color, HorizontalAlignment p_alignment, bool p_width_in_percent, bool p_height_in_percent) {
@@ -6413,6 +6488,9 @@ void RichTextLabel::append_text(const String &p_bbcode) {
 			pos = brk_end + 1;
 			tag_stack.push_front("pulse");
 			set_process_internal(true);
+		} else if (tag == "spacer" || tag.begins_with("spacer=")) {
+			add_spacer(bbcode_value.is_empty() ? 1.0 : bbcode_value.to_float());
+			pos = brk_end + 1;
 		} else if (tag.begins_with("bgcolor=")) {
 			String color_str = _get_tag_value(tag).unquote();
 			Color color = Color::from_string(color_str, theme_cache.default_color);
@@ -6697,7 +6775,8 @@ bool RichTextLabel::_search_line(ItemFrame *p_frame, int p_line, const String &p
 				ItemText *t = static_cast<ItemText *>(it);
 				txt += t->text;
 			} break;
-			case ITEM_IMAGE: {
+			case ITEM_IMAGE:
+			case ITEM_SPACER: {
 				txt += " ";
 			} break;
 			case ITEM_TABLE: {
@@ -6878,7 +6957,7 @@ String RichTextLabel::_get_line_text(ItemFrame *p_frame, int p_line) const {
 			txt += t->text;
 		} else if (it->type == ITEM_NEWLINE) {
 			txt += "\n";
-		} else if (it->type == ITEM_IMAGE) {
+		} else if (it->type == ITEM_IMAGE || it->type == ITEM_SPACER) {
 			txt += " ";
 		}
 	}
@@ -7134,7 +7213,7 @@ String RichTextLabel::get_parsed_text() const {
 			txt += t->text;
 		} else if (it->type == ITEM_NEWLINE) {
 			txt += "\n";
-		} else if (it->type == ITEM_IMAGE) {
+		} else if (it->type == ITEM_IMAGE || it->type == ITEM_SPACER) {
 			txt += " ";
 		} else if (it->type == ITEM_INDENT || it->type == ITEM_LIST) {
 			txt += "\t";
@@ -7445,7 +7524,7 @@ int RichTextLabel::get_content_width() const {
 	int to_line = main->first_invalid_line.load();
 	for (int i = 0; i < to_line; i++) {
 		MutexLock lock(main->lines[i].text_buf->get_mutex());
-		total_width = MAX(total_width, main->lines[i].offset.x + main->lines[i].text_buf->get_size().x);
+		total_width = MAX(total_width, main->lines[i].offset.x + main->lines[i].get_natural_width());
 	}
 	return total_width;
 }
@@ -7514,6 +7593,7 @@ void RichTextLabel::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_parsed_text"), &RichTextLabel::get_parsed_text);
 	ClassDB::bind_method(D_METHOD("add_text", "text"), &RichTextLabel::add_text);
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &RichTextLabel::set_text);
+	ClassDB::bind_method(D_METHOD("add_spacer", "weight"), &RichTextLabel::add_spacer, DEFVAL(1.0));
 	ClassDB::bind_method(D_METHOD("add_hr", "width", "height", "color", "alignment", "width_in_percent", "height_in_percent"), &RichTextLabel::add_hr, DEFVAL(90), DEFVAL(2), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(HORIZONTAL_ALIGNMENT_CENTER), DEFVAL(true), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("add_image", "image", "width", "height", "color", "inline_align", "region", "key", "pad", "tooltip", "width_unit", "height_unit", "alt_text"), &RichTextLabel::add_image, DEFVAL(0), DEFVAL(0), DEFVAL(Color(1.0, 1.0, 1.0)), DEFVAL(INLINE_ALIGNMENT_CENTER), DEFVAL(Rect2()), DEFVAL(Variant()), DEFVAL(false), DEFVAL(String()), DEFVAL(IMAGE_UNIT_PIXEL), DEFVAL(IMAGE_UNIT_PIXEL), DEFVAL(String()));
 	ClassDB::bind_method(D_METHOD("update_image", "key", "mask", "image", "width", "height", "color", "inline_align", "region", "pad", "tooltip", "width_unit", "height_unit"), &RichTextLabel::update_image, DEFVAL(0), DEFVAL(0), DEFVAL(Color(1.0, 1.0, 1.0)), DEFVAL(INLINE_ALIGNMENT_CENTER), DEFVAL(Rect2()), DEFVAL(false), DEFVAL(String()), DEFVAL(IMAGE_UNIT_PIXEL), DEFVAL(IMAGE_UNIT_PIXEL));
@@ -7952,7 +8032,7 @@ int RichTextLabel::get_total_character_count() const {
 			tc += t->text.length();
 		} else if (it->type == ITEM_NEWLINE) {
 			tc++;
-		} else if (it->type == ITEM_IMAGE) {
+		} else if (it->type == ITEM_IMAGE || it->type == ITEM_SPACER) {
 			tc++;
 		}
 		it = _get_next_item(it, true);

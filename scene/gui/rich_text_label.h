@@ -105,6 +105,7 @@ public:
 		ITEM_CUSTOMFX,
 		ITEM_CONTEXT,
 		ITEM_LANGUAGE,
+		ITEM_SPACER,
 	};
 
 	enum MenuItems {
@@ -190,6 +191,10 @@ private:
 		float indent = 0.0;
 		int char_offset = 0;
 		int char_count = 0;
+		// The width without the free space given to spacers, or -1 without spacers. Content sizes use it, as spacers fill any width.
+		float natural_width = -1.0;
+
+		float get_natural_width() const { return natural_width >= 0 ? natural_width : text_buf->get_size().x; }
 
 		Line() {
 			text_buf.instantiate();
@@ -288,6 +293,11 @@ private:
 		ObjectID owner;
 		ItemImage() { type = ITEM_IMAGE; }
 		~ItemImage();
+	};
+
+	struct ItemSpacer : public Item {
+		float weight = 1.0;
+		ItemSpacer() { type = ITEM_SPACER; }
 	};
 
 	struct ItemFont : public Item {
@@ -660,6 +670,7 @@ private:
 
 	float _shape_line(ItemFrame *p_frame, int p_line, const Ref<Font> &p_base_font, int p_base_font_size, int p_width, float p_h, int *r_char_offset);
 	float _resize_line(ItemFrame *p_frame, int p_line, const Ref<Font> &p_base_font, int p_base_font_size, int p_width, float p_h);
+	void _fit_line_spacers(ItemFrame *p_frame, int p_line);
 
 	int _get_line_max_width(ItemFrame *p_frame, int p_line) const;
 	void _update_table_column_width(ItemTable *p_table, int p_available_width);
@@ -820,6 +831,7 @@ public:
 
 	String get_parsed_text() const;
 	void add_text(const String &p_text);
+	void add_spacer(float p_weight = 1.0);
 	void add_hr(int p_width = 90, int p_height = 2, const Color &p_color = Color(1.0, 1.0, 1.0), HorizontalAlignment p_alignment = HORIZONTAL_ALIGNMENT_LEFT, bool p_width_in_percent = true, bool p_height_in_percent = false);
 	void add_image(const Ref<Texture2D> &p_image, float p_width = 0, float p_height = 0, const Color &p_color = Color(1.0, 1.0, 1.0), InlineAlignment p_alignment = INLINE_ALIGNMENT_CENTER, const Rect2 &p_region = Rect2(), const Variant &p_key = Variant(), bool p_pad = false, const String &p_tooltip = String(), ImageUnit p_width_unit = IMAGE_UNIT_PIXEL, ImageUnit p_height_unit = IMAGE_UNIT_PIXEL, const String &p_alt_text = String());
 	void update_image(const Variant &p_key, BitField<ImageUpdateMask> p_mask, const Ref<Texture2D> &p_image, float p_width = 0, float p_height = 0, const Color &p_color = Color(1.0, 1.0, 1.0), InlineAlignment p_alignment = INLINE_ALIGNMENT_CENTER, const Rect2 &p_region = Rect2(), bool p_pad = false, const String &p_tooltip = String(), ImageUnit p_width_unit = IMAGE_UNIT_PIXEL, ImageUnit p_height_unit = IMAGE_UNIT_PIXEL);

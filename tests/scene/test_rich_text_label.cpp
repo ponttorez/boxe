@@ -137,6 +137,39 @@ TEST_CASE("[SceneTree][RichTextLabel] Sizing with fit content") {
 	memdelete(test_label);
 }
 
+TEST_CASE("[SceneTree][RichTextLabel] Spacers") {
+	RichTextLabel *rtl = memnew(RichTextLabel);
+	SceneTree::get_singleton()->get_root()->add_child(rtl);
+	rtl->set_use_bbcode(true);
+	rtl->set_autowrap_mode(TextServer::AUTOWRAP_OFF);
+	rtl->set_size(Size2(400, 100));
+
+	rtl->set_text("Name100");
+	const int natural_width = rtl->get_content_width();
+	REQUIRE(natural_width < 400);
+
+	rtl->set_text("Name[spacer]100");
+	CHECK_MESSAGE(rtl->get_content_width() == natural_width, "The free space taken by spacers isn't part of the content width.");
+	CHECK(rtl->get_parsed_text().length() == 8);
+
+	rtl->clear();
+	rtl->add_text("Name");
+	rtl->add_spacer(2);
+	rtl->add_text("100");
+	CHECK(rtl->get_content_width() == natural_width);
+
+	SUBCASE("A label that fits its content still shrinks") {
+		rtl->set_fit_content(true);
+		rtl->set_text("Name[spacer]100");
+		const float minimum_width = rtl->get_combined_minimum_size().width;
+		rtl->set_size(Size2(600, 100));
+		CHECK(rtl->get_combined_minimum_size().width == doctest::Approx(minimum_width));
+		CHECK(minimum_width < 400);
+	}
+
+	memdelete(rtl);
+}
+
 } // namespace TestRichTextLabel
 
 #endif // ADVANCED_GUI_DISABLED
