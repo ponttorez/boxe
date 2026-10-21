@@ -93,6 +93,7 @@
 #include "scene/gui/tab_bar.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/text_edit.h"
+#include "scene/gui/text_effect_layers.h"
 #include "scene/gui/texture_button.h"
 #include "scene/gui/texture_progress_bar.h"
 #include "scene/gui/texture_rect.h"
@@ -1324,6 +1325,8 @@ void register_scene_types() {
 
 void unregister_scene_types() {
 	OS::get_singleton()->benchmark_begin_measure("Scene", "Unregister Types");
+
+	TextEffectLayers::finish();
 
 	SceneDebugger::deinitialize();
 

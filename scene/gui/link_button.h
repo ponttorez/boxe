@@ -74,6 +74,7 @@ private:
 		Ref<Font> font;
 		int font_size = 0;
 		int outline_size = 0;
+		int composite_text_effects = 0;
 		Color font_outline_color;
 
 		int underline_spacing = 0;

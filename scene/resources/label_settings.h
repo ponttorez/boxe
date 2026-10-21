@@ -65,6 +65,8 @@ private:
 	Color shadow_color = Color(0, 0, 0, 0);
 	Vector2 shadow_offset = Vector2(1, 1);
 
+	bool composite_effects = false;
+
 	Vector<StackedOutlineData> stacked_outline_data;
 	Vector<StackedShadowData> stacked_shadow_data;
 
@@ -124,6 +126,9 @@ public:
 
 	void set_shadow_offset(const Vector2 &p_offset);
 	Vector2 get_shadow_offset() const;
+
+	void set_composite_effects(bool p_enabled);
+	bool is_composite_effects() const;
 
 	Vector<StackedOutlineData> get_stacked_outline_data() const;
 	int get_stacked_outline_count() const;

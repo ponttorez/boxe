@@ -356,6 +356,8 @@ void LinkButton::_notification(int p_what) {
 				draw_style.hr_color = color;
 				draw_style.outline_size = outline_size;
 				draw_style.outline_color = font_outline_color;
+				draw_style.self_modulate = get_self_modulate();
+				bbcode->set_composite_effects(theme_cache.composite_text_effects != 0);
 				bbcode->draw_at(ci, Vector2(is_layout_rtl() ? size.width - width : 0, 0), draw_style, &bbcode_rect);
 				if (do_underline && theme_cache.font.is_valid()) {
 					const Ref<Font> &font = theme_cache.font;
@@ -453,6 +455,7 @@ void LinkButton::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LinkButton, font_outline_color);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, LinkButton, underline_spacing);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, LinkButton, composite_text_effects);
 	BBCodeText::bind_theme_fonts(get_class_static());
 }
 

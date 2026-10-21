@@ -130,6 +130,10 @@
 		</method>
 	</methods>
 	<members>
+		<member name="composite_effects" type="bool" setter="set_composite_effects" getter="is_composite_effects" default="false">
+			If [code]true[/code], the shadow, the stacked shadows, the stacked outlines and the outline are each drawn as a layer and blended as a whole, so the overlapping glyphs of a translucent effect don't add up. The shapes of the upper layers and of the text are cut out of the lower ones, so a translucent text, [member CanvasItem.modulate] or [member CanvasItem.self_modulate] don't show the effects through the text.
+			[b]Note:[/b] Each layer is drawn as a canvas group, which costs an extra pass per layer. The layers are not used inside a composite (see [member Control.composite_enabled]), a [CanvasGroup] or a node with [member CanvasItem.clip_children] enabled, since canvas groups can't be nested.
+		</member>
 		<member name="font" type="Font" setter="set_font" getter="get_font">
 			[Font] used for the text.
 		</member>

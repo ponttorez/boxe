@@ -105,6 +105,7 @@ private:
 		int h_separation = 0;
 		int icon_max_width = 0;
 		int line_spacing = 0;
+		int composite_text_effects = 0;
 	} theme_cache;
 
 	void _shape(Ref<TextParagraph> p_paragraph = Ref<TextParagraph>(), String p_text = "") const;

@@ -154,6 +154,7 @@ void BBCodeText::_parse() {
 	metas.clear();
 	hints.clear();
 	has_relative_objects = false;
+	has_span_outlines = false;
 	list_count = 0;
 
 	styles.push_back(SpanStyle());
@@ -566,6 +567,7 @@ void BBCodeText::_parse() {
 			builder.push_state("outline_size");
 			SpanStyle style = styles[builder.state().style];
 			style.outline_size = MAX(0, get_tag_value(tag).to_int());
+			has_span_outlines = has_span_outlines || style.outline_size > 0;
 			builder.push_style(style);
 		} else if (tag.begins_with("opentype_features=") || tag.begins_with("otf=")) {
 			builder.push_state(parsed.name);
@@ -897,6 +899,7 @@ void BBCodeText::_break_paragraph(Paragraph &p_para) const {
 	const PackedFloat32Array &para_tab_stops = p_para.style.has_tab_stops ? p_para.style.tab_stops : tab_stops;
 
 	PackedInt32Array ranges;
+
 	int start = 0;
 	Size2i range = TS->shaped_text_get_range(p_para.text_rid);
 	if (p_para.dropcap_rid.is_valid()) {
@@ -1395,7 +1398,7 @@ bool BBCodeText::_is_object_skipped(const Trim &p_trim, const Paragraph &p_para,
 	return false;
 }
 
-void BBCodeText::_draw_line(RID p_ci, const Paragraph &p_para, int p_line, const Vector2 &p_ofs, const DrawStyle &p_style, int &r_processed_glyphs, int p_total_glyphs) const {
+void BBCodeText::_draw_line(const DrawTargets &p_targets, const Paragraph &p_para, int p_line, const Vector2 &p_ofs, const DrawStyle &p_style, int &r_processed_glyphs, int p_total_glyphs) const {
 	const RID rid = p_para.lines[p_line].rid;
 	const bool rtl = _is_paragraph_rtl(p_para);
 	const Trim trim = _make_trim(p_para, p_total_glyphs);
@@ -1409,45 +1412,28 @@ void BBCodeText::_draw_line(RID p_ci, const Paragraph &p_para, int p_line, const
 	LocalVector<PlacedGlyph> placed_glyphs;
 	_place_line_glyphs(rid, rtl, p_ofs, gl_styles, trim, processed, placed_glyphs);
 
-	_draw_boxes(placed_glyphs, p_ci, false, p_ofs, ascent, line_h, p_style);
+	_draw_boxes(placed_glyphs, p_targets.background, false, p_ofs, ascent, line_h, p_style);
 
-	if (p_style.shadow_color.a > 0) {
-		if (p_style.shadow_outline_size > 0) {
-			_draw_glyph_effect(placed_glyphs, p_ci, p_style.shadow_outline_size, false, p_style.shadow_color, p_style.shadow_offset, p_style);
+	// Shadows and outlines, from the bottom. With layers, each one is opaque in its own layer and the
+	// shapes of the upper layers and of the text are cut out of it.
+	const bool layered = !p_targets.eraser_items.is_empty();
+	for (int i = 0; i < p_targets.effects.size(); i++) {
+		_draw_effect(placed_glyphs, p_targets.effects[i], p_targets.effect_items[i], layered ? EFFECT_MODE_LAYER : EFFECT_MODE_COLOR, p_style);
+		if (!layered) {
+			continue;
 		}
-		_draw_glyph_effect(placed_glyphs, p_ci, 0, true, p_style.shadow_color, p_style.shadow_offset, p_style);
-	}
-
-	for (int i = p_style.stacked_shadows.size() - 1; i >= 0; i--) {
-		const LabelSettings::StackedShadowData &shadow = p_style.stacked_shadows[i];
-		_draw_glyph_effect(placed_glyphs, p_ci, shadow.outline_size, true, shadow.color, shadow.offset, p_style);
-	}
-
-	if (!p_style.stacked_outlines.is_empty()) {
-		int stacked_size = p_style.outline_size;
-		for (const LabelSettings::StackedOutlineData &outline : p_style.stacked_outlines) {
-			stacked_size += MAX(0, outline.size);
+		const RID eraser = p_targets.eraser_items[i];
+		for (int j = i + 1; j < p_targets.effects.size(); j++) {
+			_draw_effect(placed_glyphs, p_targets.effects[j], eraser, EFFECT_MODE_ERASER, p_style);
 		}
-		for (int i = p_style.stacked_outlines.size() - 1; i >= 0; i--) {
-			const LabelSettings::StackedOutlineData &outline = p_style.stacked_outlines[i];
-			if (outline.size <= 0) {
-				continue;
+		for (const PlacedGlyph &placed : placed_glyphs) {
+			const Glyph &glyph = *placed.glyph;
+			if (_is_glyph_drawn(placed, p_style) && glyph.font_rid.is_valid()) {
+				TS->font_draw_glyph(glyph.font_rid, eraser, glyph.font_size, placed.pos + Vector2(glyph.x_off, glyph.y_off), glyph.index, Color(1, 1, 1));
 			}
-			_draw_glyph_effect(placed_glyphs, p_ci, stacked_size, false, outline.color, Vector2(), p_style);
-			stacked_size -= outline.size;
 		}
 	}
-
-	// The outline, which tags can change.
-	for (const PlacedGlyph &placed : placed_glyphs) {
-		const Glyph &glyph = *placed.glyph;
-		const SpanStyle &style = styles[placed.style];
-		const int size = style.outline_size >= 0 ? style.outline_size : p_style.outline_size;
-		const Color color = style.has_outline_color ? style.outline_color : p_style.outline_color;
-		if (_is_glyph_drawn(placed, p_style) && glyph.font_rid.is_valid() && size > 0 && color.a != 0) {
-			TS->font_draw_glyph_outline(glyph.font_rid, p_ci, glyph.font_size, size, placed.pos + Vector2(glyph.x_off, glyph.y_off), glyph.index, color);
-		}
-	}
+	const RID text_ci = p_targets.text;
 
 	// Inline images.
 	Array keys = TS->shaped_text_get_objects(rid);
@@ -1467,9 +1453,9 @@ void BBCodeText::_draw_line(RID p_ci, const Paragraph &p_para, int p_line, const
 			rect.size = pad_size;
 		}
 		if (object.region.has_area()) {
-			object.texture->draw_rect_region(p_ci, rect, object.region, object.color);
+			object.texture->draw_rect_region(text_ci, rect, object.region, object.color);
 		} else {
-			object.texture->draw_rect(p_ci, rect, false, object.color);
+			object.texture->draw_rect(text_ci, rect, false, object.color);
 		}
 	}
 
@@ -1481,31 +1467,46 @@ void BBCodeText::_draw_line(RID p_ci, const Paragraph &p_para, int p_line, const
 		const Vector2 pos = placed.pos + Vector2(glyph.x_off, glyph.y_off);
 		const Color color = _get_style_color(placed.style, p_style);
 		if (glyph.font_rid.is_valid()) {
-			TS->font_draw_glyph(glyph.font_rid, p_ci, glyph.font_size, pos, glyph.index, color);
+			TS->font_draw_glyph(glyph.font_rid, text_ci, glyph.font_size, pos, glyph.index, color);
 		} else if (((glyph.flags & TextServer::GRAPHEME_IS_VIRTUAL) != TextServer::GRAPHEME_IS_VIRTUAL) && ((glyph.flags & TextServer::GRAPHEME_IS_EMBEDDED_OBJECT) != TextServer::GRAPHEME_IS_EMBEDDED_OBJECT)) {
-			TS->draw_hex_code_box(p_ci, glyph.font_size, pos, glyph.index, color);
+			TS->draw_hex_code_box(text_ci, glyph.font_size, pos, glyph.index, color);
 		}
 	}
 
-	_draw_decorations(placed_glyphs, p_ci, p_ofs, ascent, line_h, upos, uthk, p_style);
-	_draw_boxes(placed_glyphs, p_ci, true, p_ofs, ascent, line_h, p_style);
+	_draw_decorations(placed_glyphs, text_ci, p_ofs, ascent, line_h, upos, uthk, p_style);
+	_draw_boxes(placed_glyphs, p_targets.text, true, p_ofs, ascent, line_h, p_style);
 
 	r_processed_glyphs = processed + placed_glyphs.size();
 }
 
-// Outlines and shadows: the outline of the glyphs, and the glyphs too when filled.
-void BBCodeText::_draw_glyph_effect(const LocalVector<PlacedGlyph> &p_glyphs, RID p_ci, int p_outline_size, bool p_fill, const Color &p_color, const Vector2 &p_offset, const DrawStyle &p_style) const {
+// A shadow or an outline of the glyphs, in the color of the effect, opaque for its layer or white for erasers.
+void BBCodeText::_draw_effect(const LocalVector<PlacedGlyph> &p_glyphs, const Effect &p_effect, RID p_target, EffectMode p_mode, const DrawStyle &p_style) const {
 	for (const PlacedGlyph &placed : p_glyphs) {
 		const Glyph &glyph = *placed.glyph;
-		if (!_is_glyph_drawn(placed, p_style) || !glyph.font_rid.is_valid() || p_color.a == 0) {
+		if (!_is_glyph_drawn(placed, p_style) || !glyph.font_rid.is_valid()) {
 			continue;
 		}
-		const Vector2 pos = placed.pos + Vector2(glyph.x_off, glyph.y_off) + p_offset;
-		if (p_outline_size > 0) {
-			TS->font_draw_glyph_outline(glyph.font_rid, p_ci, glyph.font_size, p_outline_size, pos, glyph.index, p_color);
+		int size = p_effect.outline_size;
+		Color color = p_effect.color;
+		if (p_effect.span_outline) {
+			const SpanStyle &style = styles[placed.style];
+			size = style.outline_size >= 0 ? style.outline_size : size;
+			color = style.has_outline_color ? style.outline_color : color;
 		}
-		if (p_fill) {
-			TS->font_draw_glyph(glyph.font_rid, p_ci, glyph.font_size, pos, glyph.index, p_color);
+		if (p_mode == EFFECT_MODE_LAYER) {
+			color.a = p_effect.color.a > 0 ? MIN(1.0f, color.a / p_effect.color.a) : color.a;
+		} else if (p_mode == EFFECT_MODE_ERASER) {
+			color = Color(1, 1, 1, color.a != 0 ? 1 : 0);
+		}
+		if (color.a == 0) {
+			continue;
+		}
+		const Vector2 pos = placed.pos + Vector2(glyph.x_off, glyph.y_off) + p_effect.offset;
+		if (size > 0) {
+			TS->font_draw_glyph_outline(glyph.font_rid, p_target, glyph.font_size, size, pos, glyph.index, color);
+		}
+		if (p_effect.draw_glyph) {
+			TS->font_draw_glyph(glyph.font_rid, p_target, glyph.font_size, pos, glyph.index, color);
 		}
 	}
 }
@@ -1670,6 +1671,7 @@ void BBCodeText::set_text(const String &p_bbcode) {
 	}
 	text = p_bbcode;
 	hovered_meta = -1;
+	effect_layers.clear(); // Owners may not draw empty text.
 	_parse();
 }
 
@@ -2060,6 +2062,10 @@ void BBCodeText::draw(RID p_ci, const Rect2 &p_rect, VerticalAlignment p_valign,
 	_ensure_shaped();
 	RenderingServer *rs = RenderingServer::get_singleton();
 
+	DrawTargets targets;
+	_prepare_targets(p_ci, p_style, targets);
+	const RID text_ci = targets.text;
+
 	float ofs_y;
 	int last_line;
 	float ls;
@@ -2099,9 +2105,9 @@ void BBCodeText::draw(RID p_ci, const Rect2 &p_rect, VerticalAlignment p_valign,
 					const float line_w = TS->shaped_text_get_size(rid).x;
 					Vector2 pos(rtl ? x + line_w : x - prefix_w, ofs_y + asc);
 					if (outline_size > 0 && outline_color.a != 0) {
-						TS->shaped_text_draw_outline(para.prefix_rid, p_ci, pos, -1, -1, outline_size, outline_color);
+						TS->shaped_text_draw_outline(para.prefix_rid, text_ci, pos, -1, -1, outline_size, outline_color);
 					}
-					TS->shaped_text_draw(para.prefix_rid, p_ci, pos, -1, -1, color);
+					TS->shaped_text_draw(para.prefix_rid, text_ci, pos, -1, -1, color);
 				}
 				// Dropcap, at the paragraph start.
 				if (para.dropcap_rid.is_valid()) {
@@ -2112,9 +2118,9 @@ void BBCodeText::draw(RID p_ci, const Rect2 &p_rect, VerticalAlignment p_valign,
 					const int outline_size = para.dropcap_outline_size >= 0 ? para.dropcap_outline_size : p_style.outline_size;
 					const Color outline_color = para.dropcap_has_outline_color ? para.dropcap_outline_color : p_style.outline_color;
 					if (outline_size > 0 && outline_color.a != 0) {
-						TS->shaped_text_draw_outline(para.dropcap_rid, p_ci, pos, -1, -1, outline_size, outline_color);
+						TS->shaped_text_draw_outline(para.dropcap_rid, text_ci, pos, -1, -1, outline_size, outline_color);
 					}
-					TS->shaped_text_draw(para.dropcap_rid, p_ci, pos, -1, -1, para.dropcap_has_color ? para.dropcap_color : p_style.font_color);
+					TS->shaped_text_draw(para.dropcap_rid, text_ci, pos, -1, -1, para.dropcap_has_color ? para.dropcap_color : p_style.font_color);
 				}
 				// Horizontal rule, centered in the line.
 				if (para.is_hr) {
@@ -2128,15 +2134,91 @@ void BBCodeText::draw(RID p_ci, const Rect2 &p_rect, VerticalAlignment p_valign,
 					} else if ((para.hr_alignment == HORIZONTAL_ALIGNMENT_RIGHT) != layout_rtl) {
 						hr_x += avail - hr_w;
 					}
-					rs->canvas_item_add_rect(p_ci, Rect2(hr_x, ofs_y + Math::floor((line_height - hr_h) / 2), hr_w, hr_h), para.hr_has_color ? para.hr_color : p_style.hr_color);
+					rs->canvas_item_add_rect(text_ci, Rect2(hr_x, ofs_y + Math::floor((line_height - hr_h) / 2), hr_w, hr_h), para.hr_has_color ? para.hr_color : p_style.hr_color);
 				}
 			}
 
-			_draw_line(p_ci, para, i, Vector2(x, ofs_y + asc), p_style, processed_glyphs, total_glyphs);
+			_draw_line(targets, para, i, Vector2(x, ofs_y + asc), p_style, processed_glyphs, total_glyphs);
 			ofs_y += asc + dsc + ls;
 		}
 		ofs_y += paragraph_spacing;
 		line_index += para.lines.size();
+	}
+}
+
+void BBCodeText::_prepare_targets(RID p_ci, const DrawStyle &p_style, DrawTargets &r_targets) const {
+	r_targets.background = p_ci;
+	r_targets.text = p_ci;
+
+	// Bottom to top, as in Label.
+	Effect shadow;
+	shadow.draw_glyph = true;
+	if (p_style.shadow_color.a > 0) {
+		shadow.outline_size = p_style.shadow_outline_size;
+		shadow.color = p_style.shadow_color;
+		shadow.offset = p_style.shadow_offset;
+		r_targets.effects.push_back(shadow);
+	}
+	for (int i = p_style.stacked_shadows.size() - 1; i >= 0; i--) {
+		shadow.outline_size = p_style.stacked_shadows[i].outline_size;
+		shadow.color = p_style.stacked_shadows[i].color;
+		shadow.offset = p_style.stacked_shadows[i].offset;
+		r_targets.effects.push_back(shadow);
+	}
+	int stacked_size = p_style.outline_size;
+	for (const LabelSettings::StackedOutlineData &outline : p_style.stacked_outlines) {
+		stacked_size += MAX(0, outline.size);
+	}
+	for (int i = p_style.stacked_outlines.size() - 1; i >= 0; i--) {
+		const LabelSettings::StackedOutlineData &data = p_style.stacked_outlines[i];
+		if (data.size <= 0) {
+			continue;
+		}
+		Effect outline;
+		outline.outline_size = stacked_size;
+		outline.color = data.color;
+		if (outline.color.a > 0) {
+			r_targets.effects.push_back(outline);
+		}
+		stacked_size -= data.size;
+	}
+	if ((p_style.outline_size > 0 && p_style.outline_color.a > 0) || has_span_outlines) {
+		Effect outline;
+		outline.span_outline = true;
+		outline.outline_size = p_style.outline_size;
+		outline.color = p_style.outline_color;
+		r_targets.effects.push_back(outline);
+	}
+
+	const bool layered = composite_effects && !r_targets.effects.is_empty() && TextEffectLayers::is_supported(owner);
+	if (!layered) {
+		effect_layers.clear();
+		for (int i = 0; i < r_targets.effects.size(); i++) {
+			r_targets.effect_items.push_back(p_ci);
+		}
+		return;
+	}
+
+	float margin = 4;
+	for (const Effect &effect : r_targets.effects) {
+		margin = MAX(margin, effect.outline_size + effect.offset.length() + 4);
+	}
+	effect_layers.begin(p_ci, r_targets.effects.size(), p_style.self_modulate, margin, TextEffectLayers::get_material_of(owner));
+	for (int i = 0; i < r_targets.effects.size(); i++) {
+		const float alpha = r_targets.effects[i].color.a > 0 ? r_targets.effects[i].color.a : 1.0f;
+		r_targets.effect_items.push_back(effect_layers.get_content(i, alpha));
+		r_targets.eraser_items.push_back(effect_layers.get_eraser(i));
+	}
+	r_targets.text = effect_layers.get_text_item();
+	if (owner) {
+		const_cast<Control *>(owner)->set_redraw_on_self_modulate(true);
+	}
+}
+
+void BBCodeText::set_composite_effects(bool p_enabled) {
+	composite_effects = p_enabled;
+	if (!composite_effects) {
+		effect_layers.clear();
 	}
 }
 

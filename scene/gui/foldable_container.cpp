@@ -357,6 +357,8 @@ void FoldableContainer::_notification(int p_what) {
 				draw_style.hr_color = font_color;
 				draw_style.outline_size = theme_cache.title_font_outline_size;
 				draw_style.outline_color = theme_cache.title_font_outline_color;
+				draw_style.self_modulate = get_self_modulate();
+				bbcode->set_composite_effects(theme_cache.composite_text_effects != 0);
 				bbcode->draw_at(ci, title_rect.position + title_text_pos, draw_style, &bbcode_rect);
 			} else if (title_text_width > 0) {
 				if (theme_cache.title_font_outline_size > 0 && theme_cache.title_font_outline_color.a > 0) {
@@ -683,6 +685,7 @@ void FoldableContainer::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, FoldableContainer, folded_arrow_mirrored);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, FoldableContainer, h_separation);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, FoldableContainer, composite_text_effects);
 	BBCodeText::bind_theme_fonts(get_class_static());
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_toggled_on, "toggled_on");

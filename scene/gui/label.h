@@ -52,6 +52,7 @@ private:
 	bool uppercase = false;
 	bool bbcode_enabled = false;
 	mutable Ref<BBCodeText> bbcode;
+	TextEffectLayers effect_layers;
 
 	struct Paragraph {
 		bool lines_dirty = true;
@@ -97,6 +98,7 @@ private:
 		Color font_outline_color;
 		int font_outline_size;
 		int font_shadow_outline_size;
+		int composite_text_effects = 0;
 	} theme_cache;
 
 	Rect2 _get_line_rect(int p_para, int p_line) const;
@@ -104,6 +106,7 @@ private:
 	void _shape_bbcode() const;
 	Rect2 _get_bbcode_rect() const;
 	BBCodeText::DrawStyle _get_bbcode_draw_style() const;
+	bool _is_composite_effects() const;
 	void _set_hovered_meta(int p_index);
 	void _ensure_shaped() const;
 	void _update_visible() const;
@@ -209,6 +212,15 @@ public:
 
 	Label(const String &p_text = String());
 	~Label();
+
+	// A shadow or an outline of the text.
+	struct TextEffect {
+		bool outline = false;
+		int size = 0;
+		Color color;
+		Vector2 offset;
+	};
+	void _draw_text_effect(const TextEffect &p_effect, const RID &p_target, const Color &p_color, bool p_rtl, int p_ellipsis_pos, int p_ellipsis_gl_size, const Glyph *p_ellipsis_glyphs, bool p_trim_chars, int p_para_start, int p_visible_chars, bool p_trim_glyphs_ltr, int &p_processed_glyphs_step, int p_processed_glyphs, int p_visible_glyphs, bool p_trim_glyphs_rtl, int p_total_glyphs, const Vector2 &p_ofs, int p_gl_size, int p_trim_pos, const Glyph *p_glyphs);
 
 	template <typename... VarArgsFunc, typename... VarArgs>
 	void draw_text(bool p_rtl, int p_ellipsis_pos, int p_ellipsis_gl_size, const Glyph *p_ellipsis_glyphs, bool p_trim_chars, int p_para_start, int p_visible_chars, bool p_trim_glyphs_ltr, int &p_processed_glyphs_step, int p_processed_glyphs, int p_visible_glyphs, bool p_trim_glyphs_rtl, int p_total_glyphs, const RID &p_ci, const Vector2 &p_ofs, int p_gl_size, int p_trim_pos, const Glyph *p_glyphs, const Color &p_color, void (*p_draw_func)(const Glyph &p_gl, const RID &p_canvas, const Color &p_font_outline_color, const Vector2 &p_ofs, VarArgsFunc... p_args), VarArgs &&...p_args) {

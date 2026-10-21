@@ -65,6 +65,8 @@ void LabelSettings::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_shadow_color", "color"), &LabelSettings::set_shadow_color);
 	ClassDB::bind_method(D_METHOD("get_shadow_color"), &LabelSettings::get_shadow_color);
 
+	ClassDB::bind_method(D_METHOD("set_composite_effects", "enabled"), &LabelSettings::set_composite_effects);
+	ClassDB::bind_method(D_METHOD("is_composite_effects"), &LabelSettings::is_composite_effects);
 	ClassDB::bind_method(D_METHOD("set_shadow_offset", "offset"), &LabelSettings::set_shadow_offset);
 	ClassDB::bind_method(D_METHOD("get_shadow_offset"), &LabelSettings::get_shadow_offset);
 
@@ -110,6 +112,7 @@ void LabelSettings::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "shadow_offset", PROPERTY_HINT_NONE, "suffix:px"), "set_shadow_offset", "get_shadow_offset");
 
 	ADD_GROUP("Stacked Effects", "");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "composite_effects"), "set_composite_effects", "is_composite_effects");
 	ADD_ARRAY_COUNT("Stacked Outlines", "stacked_outline_count", "set_stacked_outline_count", "get_stacked_outline_count", "stacked_outline_");
 	ADD_ARRAY_COUNT("Stacked Shadows", "stacked_shadow_count", "set_stacked_shadow_count", "get_stacked_shadow_count", "stacked_shadow_");
 
@@ -245,6 +248,17 @@ void LabelSettings::set_shadow_offset(const Vector2 &p_offset) {
 
 Vector2 LabelSettings::get_shadow_offset() const {
 	return shadow_offset;
+}
+
+void LabelSettings::set_composite_effects(bool p_enabled) {
+	if (composite_effects != p_enabled) {
+		composite_effects = p_enabled;
+		emit_changed();
+	}
+}
+
+bool LabelSettings::is_composite_effects() const {
+	return composite_effects;
 }
 
 Vector<LabelSettings::StackedOutlineData> LabelSettings::get_stacked_outline_data() const {

@@ -3724,6 +3724,20 @@ bool Control::is_clipping_contents() {
 	return data.clip_contents;
 }
 
+void Control::set_self_modulate(const Color &p_self_modulate) {
+	if (get_self_modulate() == p_self_modulate) {
+		return;
+	}
+	CanvasItem::set_self_modulate(p_self_modulate);
+	if (data.redraw_on_self_modulate) {
+		queue_redraw();
+	}
+}
+
+void Control::set_redraw_on_self_modulate(bool p_enabled) {
+	data.redraw_on_self_modulate = p_enabled;
+}
+
 void Control::set_composite_enabled(bool p_enabled) {
 	ERR_MAIN_THREAD_GUARD;
 	if (data.composite_enabled == p_enabled) {
