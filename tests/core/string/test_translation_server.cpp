@@ -32,6 +32,9 @@
 
 TEST_FORCE_LINK(test_translation_server)
 
+#include "core/io/dir_access.h"
+#include "core/io/file_access.h"
+#include "core/os/os.h"
 #include "core/string/translation_server.h"
 
 namespace TestTranslationServer {
@@ -236,6 +239,23 @@ TEST_CASE("[TranslationServer] Comparing locales") {
 	res = ts->compare_locales(locale_a, locale_b);
 
 	CHECK(res == 10);
+}
+
+TEST_CASE("[TranslationServer] Forgetting the selected locale") {
+	const String path = "user://locale.cfg";
+	// Other tests can change the project, so the user folder may not exist yet.
+	DirAccess::make_dir_recursive_absolute(OS::get_singleton()->get_user_data_dir());
+	Ref<FileAccess> f = FileAccess::open(path, FileAccess::WRITE);
+	REQUIRE(f.is_valid());
+	f->store_string("[locale]\nselected=\"de\"\n");
+	f.unref();
+	REQUIRE(FileAccess::exists(path));
+
+	TranslationServer::get_singleton()->forget_selected_locale();
+	CHECK_FALSE(FileAccess::exists(path));
+	// Nothing to forget.
+	TranslationServer::get_singleton()->forget_selected_locale();
+	CHECK_FALSE(FileAccess::exists(path));
 }
 
 } // namespace TestTranslationServer

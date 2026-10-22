@@ -33,6 +33,9 @@
 
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
+#include "core/io/config_file.h"
+#include "core/io/dir_access.h"
+#include "core/io/file_access.h"
 #include "core/io/resource_loader.h"
 #include "core/object/class_db.h"
 #include "core/os/main_loop.h"
@@ -483,11 +486,14 @@ void TranslationServer::set_locale(const String &p_locale) {
 
 	String new_locale = standardize_locale(p_locale);
 	if (locale == new_locale) {
+		// Still the choice of the game, e.g. the locale of the system picked from a menu.
+		_save_selected_locale();
 		return;
 	}
 
 	locale = new_locale;
 	ResourceLoader::reload_translation_remaps();
+	_save_selected_locale();
 
 	if (OS::get_singleton()->get_main_loop()) {
 		OS::get_singleton()->get_main_loop()->notification(MainLoop::NOTIFICATION_TRANSLATION_CHANGED);
@@ -594,8 +600,13 @@ void TranslationServer::remove_domain(const StringName &p_domain) {
 void TranslationServer::setup() {
 	String test = GLOBAL_DEF("internationalization/locale/test", "");
 	test = test.strip_edges();
+	remember_selected_locale = GLOBAL_DEF("internationalization/locale/remember_selected_locale", false) && !Engine::get_singleton()->is_editor_hint() && !Engine::get_singleton()->is_project_manager_hint();
+	const String saved = _load_selected_locale();
 	if (!test.is_empty()) {
 		set_locale(test);
+	} else if (!saved.is_empty()) {
+		set_locale(saved);
+		using_selected_locale = true;
 	} else {
 		set_locale(OS::get_singleton()->get_locale());
 	}
@@ -615,6 +626,51 @@ void TranslationServer::setup() {
 	ProjectSettings::get_singleton()->set_custom_property_info(PropertyInfo(Variant::STRING, "internationalization/locale/test", PROPERTY_HINT_LOCALE_ID, ""));
 	ProjectSettings::get_singleton()->set_custom_property_info(PropertyInfo(Variant::STRING, "internationalization/locale/fallback", PROPERTY_HINT_LOCALE_ID, ""));
 #endif
+}
+
+// The locale selected in the game, kept between launches.
+String TranslationServer::_load_selected_locale() const {
+	if (!remember_selected_locale) {
+		return String();
+	}
+	Ref<ConfigFile> config;
+	config.instantiate();
+	if (config->load(SELECTED_LOCALE_PATH) != OK) {
+		return String();
+	}
+	return String(config->get_value("locale", "selected", String())).strip_edges();
+}
+
+// A saved locale without translations, e.g. after they were removed from the project, is replaced by the locale of the system.
+void TranslationServer::_check_selected_locale() {
+	if (!using_selected_locale) {
+		return;
+	}
+	using_selected_locale = false;
+	for (const String &loaded : main_domain->get_loaded_locales()) {
+		if (compare_locales(locale, loaded) > 0) {
+			return;
+		}
+	}
+	set_locale(OS::get_singleton()->get_locale());
+}
+
+void TranslationServer::forget_selected_locale() {
+	if (FileAccess::exists(SELECTED_LOCALE_PATH)) {
+		DirAccess::remove_absolute(SELECTED_LOCALE_PATH);
+	}
+}
+
+void TranslationServer::_save_selected_locale() const {
+	// Only the locales selected by the game, not the one picked at startup.
+	if (!remember_selected_locale || !OS::get_singleton()->get_main_loop()) {
+		return;
+	}
+	Ref<ConfigFile> config;
+	config.instantiate();
+	config->set_value("locale", "selected", locale);
+	const Error err = config->save(SELECTED_LOCALE_PATH);
+	ERR_FAIL_COND_MSG(err != OK, vformat("Can't save the selected locale to '%s'.", SELECTED_LOCALE_PATH));
 }
 
 String TranslationServer::get_tool_locale() {
@@ -704,6 +760,7 @@ void TranslationServer::get_argument_options(const StringName &p_function, int p
 void TranslationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_locale", "locale"), &TranslationServer::set_locale);
 	ClassDB::bind_method(D_METHOD("get_locale"), &TranslationServer::get_locale);
+	ClassDB::bind_method(D_METHOD("forget_selected_locale"), &TranslationServer::forget_selected_locale);
 	ClassDB::bind_method(D_METHOD("get_tool_locale"), &TranslationServer::get_tool_locale);
 
 	ClassDB::bind_method(D_METHOD("compare_locales", "locale_a", "locale_b"), &TranslationServer::compare_locales);
@@ -769,6 +826,9 @@ void TranslationServer::load_project_translations(Ref<TranslationDomain> p_domai
 		if (tr.is_valid()) {
 			p_domain->add_translation(tr);
 		}
+	}
+	if (p_domain == main_domain) {
+		_check_selected_locale();
 	}
 }
 

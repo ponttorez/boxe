@@ -1754,6 +1754,10 @@
 			- [b]Strict[/b] ([code]3[/code]) - the most stringent set of line-breaking rules.
 			See [url=https://www.w3.org/TR/css-text-3/#line-break-property]Line Breaking Strictness: the line-break property[/url] for more info.
 		</member>
+		<member name="internationalization/locale/remember_selected_locale" type="bool" setter="" getter="" default="false">
+			If [code]true[/code], the locale set with [method TranslationServer.set_locale] while the project runs is saved to [code]user://locale.cfg[/code], and used instead of the system locale at the next launch, unless the project has no translation for it anymore. [member internationalization/locale/test] still takes priority. Call [method TranslationServer.forget_selected_locale] to go back to the system locale, e.g. for a "System language" option.
+			[b]Note:[/b] This setting has no effect in the editor.
+		</member>
 		<member name="internationalization/locale/test" type="String" setter="" getter="" default="&quot;&quot;">
 			If non-empty, this locale will be used instead of the automatically detected system locale.
 			[b]Note:[/b] This setting also applies to the exported project. To only affect testing within the editor, override this setting with an [code]editor[/code] [url=$DOCS_URL/tutorials/export/feature_tags.html]feature tag[/url] for localization testing purposes.

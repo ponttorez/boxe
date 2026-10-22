@@ -41,6 +41,12 @@
 				Returns the [Translation] instances in the main translation domain that match [param locale] (see [method compare_locales]). If [param exact] is [code]true[/code], only instances whose locale exactly equals [param locale] will be returned.
 			</description>
 		</method>
+		<method name="forget_selected_locale">
+			<return type="void" />
+			<description>
+				Removes the locale saved with [member ProjectSettings.internationalization/locale/remember_selected_locale], so the next launch uses the locale of the system again. The current locale doesn't change. A later [method set_locale] saves its locale again.
+			</description>
+		</method>
 		<method name="format_number" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="number" type="String" />
