@@ -1,5 +1,7 @@
 name: 🔗 GHA
-on: [push, pull_request, merge_group, workflow_dispatch]
+# Only run on demand in this fork, from the Actions tab (Run workflow), to save runner time.
+# on: [push, pull_request, merge_group, workflow_dispatch]
+on: [workflow_dispatch]
 
 concurrency:
   group: ${{ github.workflow }}|${{ github.ref_name }}
