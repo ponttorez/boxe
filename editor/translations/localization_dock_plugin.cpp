@@ -33,6 +33,7 @@
 #include "core/config/project_settings.h"
 #include "editor/docks/editor_dock_manager.h"
 #include "editor/translations/localization_dock.h"
+#include "editor/translations/localization_key_picker.h"
 #include "editor/translations/translation_document.h"
 
 void LocalizationDockPlugin::edit(Object *p_object) {
@@ -60,6 +61,10 @@ void LocalizationDockPlugin::make_visible(bool p_visible) {
 }
 
 LocalizationDockPlugin::LocalizationDockPlugin() {
+	Ref<EditorInspectorPluginLocalizationKey> key_plugin;
+	key_plugin.instantiate();
+	add_inspector_plugin(key_plugin);
+
 	dock = memnew(LocalizationDock);
 	EditorDockManager::get_singleton()->add_dock(dock);
 	dock->close();
