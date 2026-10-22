@@ -1,0 +1,50 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="boxe Demo"
+config/description="A tour of the features of the boxe fork of Godot."
+config/version="1.0"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+boot_splash/bg_color=Color(0.109804, 0.12549, 0.152941, 1)
+boot_splash/show_image=false
+config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="uid://dxgfole6bixk2"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/mode=2
+window/android/refresh_rate=1
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=6
+
+[gui]
+
+theme/sound_bus=&"UI"
+theme/custom="res://theme/demo_theme.tres"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/demo.en.translation", "res://localization/demo.ru.translation", "res://localization/demo.ar.translation")
+locale/remember_selected_locale=true
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.109804, 0.12549, 0.152941, 1)

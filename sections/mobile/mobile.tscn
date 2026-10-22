@@ -1,0 +1,318 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://sections/mobile/mobile.gd" id="mobile_gd"]
+[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="FontVariation" path="res://fonts/ui_mono.tres" id="ui_mono_tres"]
+[ext_resource type="Script" path="res://sections/mobile/phone_preview.gd" id="phone_preview_gd"]
+
+[node name="Mobile" type="VBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("mobile_gd")
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Overline" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "PLATFORMS"
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "Mobile"
+
+[node name="Subtitle" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Safe areas for display cutouts and system bars, 180° rotations, the display refresh rate and the version code on Android."
+autowrap_mode = 3
+
+[node name="Cards" type="GridContainer" parent="."]
+layout_mode = 2
+script = ExtResource("responsive_grid_gd")
+min_column_width = 380.0
+max_columns = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+
+[node name="SafeArea" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/SafeArea/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/SafeArea/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Safe area"
+
+[node name="Caption" type="Label" parent="Cards/SafeArea/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "MarginContainer.safe_area keeps the content out of display cutouts and system bars, or extends a background under them. The phones show a header laid out with each mode, the outlined one is used by this demo."
+autowrap_mode = 3
+
+[node name="Previews" type="HBoxContainer" parent="Cards/SafeArea/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="None" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/None"]
+layout_mode = 2
+script = ExtResource("phone_preview_gd")
+mode = 0
+
+[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/None"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "None"
+horizontal_alignment = 1
+auto_translate_mode = 2
+
+[node name="Inside" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Inside"]
+layout_mode = 2
+script = ExtResource("phone_preview_gd")
+mode = 1
+
+[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Inside"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Inside"
+horizontal_alignment = 1
+auto_translate_mode = 2
+
+[node name="Outside" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Outside"]
+layout_mode = 2
+script = ExtResource("phone_preview_gd")
+mode = 2
+
+[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Outside"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Outside"
+horizontal_alignment = 1
+auto_translate_mode = 2
+
+[node name="ModeRow" type="HBoxContainer" parent="Cards/SafeArea/Box"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ModeLabel" type="Label" parent="Cards/SafeArea/Box/ModeRow"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "safe_area"
+auto_translate_mode = 2
+
+[node name="Mode" type="OptionButton" parent="Cards/SafeArea/Box/ModeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 1
+item_count = 3
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Inside"
+popup/item_1/id = 1
+popup/item_2/text = "Outside"
+popup/item_2/id = 2
+
+[node name="SafeRect" type="HBoxContainer" parent="Cards/SafeArea/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Cards/SafeArea/Box/SafeRect"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CaptionLabel"
+text = "Safe area"
+
+[node name="Value" type="Label" parent="Cards/SafeArea/Box/SafeRect"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "—"
+auto_translate_mode = 2
+text_direction = 1
+
+[node name="ScreenSize" type="HBoxContainer" parent="Cards/SafeArea/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Cards/SafeArea/Box/ScreenSize"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CaptionLabel"
+text = "Screen"
+
+[node name="Value" type="Label" parent="Cards/SafeArea/Box/ScreenSize"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "—"
+auto_translate_mode = 2
+text_direction = 1
+
+[node name="Note" type="Label" parent="Cards/SafeArea/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "The safe area is used on Android and iOS."
+autowrap_mode = 3
+
+[node name="Rotation" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Rotation"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Rotation/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Rotation/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Rotation"
+
+[node name="Caption" type="Label" parent="Cards/Rotation/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "orientation_changed now fires on 180° rotations too, and safe_area_changed when a cutout moves to another side. Turn the phone around."
+autowrap_mode = 3
+
+[node name="Stage" type="PanelContainer" parent="Cards/Rotation/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Events" type="Label" parent="Cards/Rotation/Box/Stage"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0.0, 96.0)
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = ""
+autowrap_mode = 3
+theme_override_fonts/font = ExtResource("ui_mono_tres")
+auto_translate_mode = 2
+
+[node name="Display" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Display"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Display/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Display/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Display"
+
+[node name="Caption" type="Label" parent="Cards/Display/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "display/window/android/refresh_rate = Maximum asks Android for the highest refresh rate, as many phones keep apps at 60 Hz."
+autowrap_mode = 3
+
+[node name="RefreshRate" type="HBoxContainer" parent="Cards/Display/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Cards/Display/Box/RefreshRate"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CaptionLabel"
+text = "Refresh rate"
+
+[node name="Value" type="Label" parent="Cards/Display/Box/RefreshRate"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "—"
+auto_translate_mode = 2
+text_direction = 1
+
+[node name="Fps" type="HBoxContainer" parent="Cards/Display/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Cards/Display/Box/Fps"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CaptionLabel"
+text = "Frames per second"
+
+[node name="Value" type="Label" parent="Cards/Display/Box/Fps"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "—"
+auto_translate_mode = 2
+text_direction = 1
+
+[node name="Version" type="HBoxContainer" parent="Cards/Display/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Cards/Display/Box/Version"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CaptionLabel"
+text = "Version"
+
+[node name="Value" type="Label" parent="Cards/Display/Box/Version"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "—"
+auto_translate_mode = 2
+text_direction = 1
+
+[node name="VersionCode" type="HBoxContainer" parent="Cards/Display/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Cards/Display/Box/VersionCode"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CaptionLabel"
+text = "Version code"
+
+[node name="Value" type="Label" parent="Cards/Display/Box/VersionCode"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "—"
+auto_translate_mode = 2
+text_direction = 1

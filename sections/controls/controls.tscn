@@ -1,0 +1,299 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://sections/controls/controls.gd" id="controls_gd"]
+[ext_resource type="Script" path="res://common/responsive_row.gd" id="responsive_row_gd"]
+[ext_resource type="Texture2D" path="res://theme/icons/speaker.svg" id="speaker_svg"]
+
+[node name="Controls" type="VBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("controls_gd")
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Overline" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "CONTROLS"
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "Godot and boxe"
+
+[node name="Subtitle" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "The same controls twice. On the left, Godot with its default theme. On the right, boxe with the demo theme: states blend, styles are layered, controls play sounds, and every text takes BBCode."
+autowrap_mode = 3
+
+[node name="Stages" type="Container" parent="."]
+layout_mode = 2
+script = ExtResource("responsive_row_gd")
+
+[node name="Godot" type="PanelContainer" parent="Stages"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+sound_bus = &"Silent"
+
+[node name="Box" type="VBoxContainer" parent="Stages/Godot"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Badge" type="Label" parent="Stages/Godot/Box"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"BadgeLabel"
+text = "Godot"
+auto_translate_mode = 2
+
+[node name="GodotControls" type="VBoxContainer" parent="Stages/Godot/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Buttons" type="HFlowContainer" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Save" type="Button" parent="Stages/Godot/Box/GodotControls/Buttons"]
+layout_mode = 2
+text = "Save  Ctrl+S"
+
+[node name="Play" type="Button" parent="Stages/Godot/Box/GodotControls/Buttons"]
+layout_mode = 2
+text = "Play sound"
+icon = ExtResource("speaker_svg")
+theme_override_constants/icon_max_width = 20
+
+[node name="Link" type="LinkButton" parent="Stages/Godot/Box/GodotControls/Buttons"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Read the docs"
+uri = "https://github.com/ponttorez/boxe"
+
+[node name="Toggles" type="HFlowContainer" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="CheckBox" type="CheckBox" parent="Stages/Godot/Box/GodotControls/Toggles"]
+layout_mode = 2
+text = "Remember me"
+
+[node name="CheckButton" type="CheckButton" parent="Stages/Godot/Box/GodotControls/Toggles"]
+layout_mode = 2
+text = "Switch"
+
+[node name="Option" type="OptionButton" parent="Stages/Godot/Box/GodotControls/Toggles"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Small"
+popup/item_0/id = 0
+popup/item_1/text = "Medium"
+popup/item_1/id = 1
+popup/item_2/text = "Large"
+popup/item_2/id = 2
+
+[node name="Menu" type="MenuButton" parent="Stages/Godot/Box/GodotControls/Toggles"]
+layout_mode = 2
+text = "Open menu"
+flat = false
+
+[node name="Fields" type="HBoxContainer" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LineEdit" type="LineEdit" parent="Stages/Godot/Box/GodotControls/Fields"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Type, then press Enter"
+
+[node name="SpinBox" type="SpinBox" parent="Stages/Godot/Box/GodotControls/Fields"]
+layout_mode = 2
+value = 3.0
+
+[node name="Slider" type="HSlider" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+max_value = 10.0
+value = 4.0
+tick_count = 11
+ticks_on_borders = true
+
+[node name="Progress" type="ProgressBar" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+value = 60.0
+
+[node name="Tabs" type="TabBar" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+current_tab = 0
+tab_count = 3
+tab_0/title = "All"
+tab_1/title = "Unread 3"
+tab_2/title = "Drafts"
+
+[node name="List" type="ItemList" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+auto_height = true
+item_count = 3
+item_0/text = "Mira  online"
+item_1/text = "Tom  away"
+item_2/text = "Ada  in game"
+
+[node name="Foldable" type="FoldableContainer" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+title = "Details  (3)"
+folded = true
+
+[node name="Text" type="Label" parent="Stages/Godot/Box/GodotControls/Foldable"]
+layout_mode = 2
+text = "Folded content."
+
+[node name="Rich" type="Label" parent="Stages/Godot/Box/GodotControls"]
+layout_mode = 2
+text = "Bold, italic, colored, code, a link and a hint."
+autowrap_mode = 3
+
+[node name="Boxe" type="PanelContainer" parent="Stages"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Stages/Boxe"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Badge" type="Label" parent="Stages/Boxe/Box"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"AccentBadgeLabel"
+text = "boxe"
+auto_translate_mode = 2
+
+[node name="BoxeControls" type="VBoxContainer" parent="Stages/Boxe/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Buttons" type="HFlowContainer" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Save" type="Button" parent="Stages/Boxe/Box/BoxeControls/Buttons"]
+layout_mode = 2
+text = "[b]Save[/b]  [color=#a1a6ad]Ctrl+S[/color]"
+bbcode_enabled = true
+
+[node name="Play" type="Button" parent="Stages/Boxe/Box/BoxeControls/Buttons"]
+layout_mode = 2
+text = "[img=18]res://theme/icons/speaker.svg[/img] Play [b]sound[/b]"
+bbcode_enabled = true
+
+[node name="Link" type="LinkButton" parent="Stages/Boxe/Box/BoxeControls/Buttons"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Read the [i]docs[/i]"
+uri = "https://github.com/ponttorez/boxe"
+bbcode_enabled = true
+
+[node name="Toggles" type="HFlowContainer" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="CheckBox" type="CheckBox" parent="Stages/Boxe/Box/BoxeControls/Toggles"]
+layout_mode = 2
+text = "[b]Remember[/b] me"
+bbcode_enabled = true
+
+[node name="CheckButton" type="CheckButton" parent="Stages/Boxe/Box/BoxeControls/Toggles"]
+layout_mode = 2
+text = "Switch"
+
+[node name="Option" type="OptionButton" parent="Stages/Boxe/Box/BoxeControls/Toggles"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Small"
+popup/item_0/id = 0
+popup/item_1/text = "Medium"
+popup/item_1/id = 1
+popup/item_2/text = "Large"
+popup/item_2/id = 2
+
+[node name="Menu" type="MenuButton" parent="Stages/Boxe/Box/BoxeControls/Toggles"]
+layout_mode = 2
+text = "Open menu"
+flat = false
+
+[node name="Fields" type="HBoxContainer" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LineEdit" type="LineEdit" parent="Stages/Boxe/Box/BoxeControls/Fields"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Type, then press Enter"
+
+[node name="SpinBox" type="SpinBox" parent="Stages/Boxe/Box/BoxeControls/Fields"]
+layout_mode = 2
+value = 3.0
+
+[node name="Slider" type="HSlider" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+max_value = 10.0
+value = 4.0
+tick_count = 11
+ticks_on_borders = true
+
+[node name="Progress" type="ProgressBar" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+value = 60.0
+
+[node name="Tabs" type="TabBar" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+bbcode_enabled = true
+current_tab = 0
+tab_count = 3
+tab_0/title = "[b]All[/b]"
+tab_1/title = "Unread [color=#ff786b]3[/color]"
+tab_2/title = "[i]Drafts[/i]"
+
+[node name="List" type="ItemList" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+bbcode_enabled = true
+auto_height = true
+item_count = 3
+item_0/text = "[b]Mira[/b]  [color=#a1a6ad]online[/color]"
+item_1/text = "[b]Tom[/b]  [color=#a1a6ad]away[/color]"
+item_2/text = "[b]Ada[/b]  [color=#5ed58b]in game[/color]"
+
+[node name="Foldable" type="FoldableContainer" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+title = "[b]Details[/b]  [color=#a1a6ad](3)[/color]"
+title_bbcode_enabled = true
+folded = true
+
+[node name="Text" type="Label" parent="Stages/Boxe/Box/BoxeControls/Foldable"]
+layout_mode = 2
+text = "Folded content."
+
+[node name="Rich" type="Label" parent="Stages/Boxe/Box/BoxeControls"]
+layout_mode = 2
+text = "[b]Bold[/b], [i]italic[/i], [color=#fc7f7f]colored[/color], [code]code[/code], a [url=https://github.com/ponttorez/boxe]link[/url] and a [hint=Tooltips come from hint tags.]hint[/hint]."
+bbcode_enabled = true
+autowrap_mode = 3
+mouse_filter = 0
+
+[node name="Credits" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Fonts: Inter, JetBrains Mono and Vazirmatn (SIL OFL 1.1). BoldPixels Font by Yūki (@YukiPixels), CC BY-SA 4.0."
+autowrap_mode = 3
+auto_translate_mode = 2

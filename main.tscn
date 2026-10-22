@@ -1,0 +1,224 @@
+[gd_scene format=3 uid="uid://bsmfmf0v3ms7n"]
+
+[ext_resource type="Texture2D" path="res://localization/flag.tres" id="flag"]
+[ext_resource type="Script" uid="uid://d11o8nnvn52qj" path="res://common/section_link.gd" id="link"]
+[ext_resource type="Script" uid="uid://ckticxavoaajw" path="res://main.gd" id="main"]
+[ext_resource type="Texture2D" uid="uid://cd76je2btbojg" path="res://theme/icons/speaker.svg" id="speaker"]
+[ext_resource type="PackedScene" path="res://sections/text/text.tscn" id="s_text"]
+[ext_resource type="PackedScene" path="res://sections/composites/composites.tscn" id="s_composites"]
+[ext_resource type="PackedScene" path="res://sections/input/input.tscn" id="s_input"]
+[ext_resource type="PackedScene" path="res://sections/mobile/mobile.tscn" id="s_mobile"]
+[ext_resource type="PackedScene" path="res://sections/controls/controls.tscn" id="s_controls"]
+[ext_resource type="PackedScene" path="res://sections/theme/theme.tscn" id="s_theme"]
+
+[sub_resource type="ButtonGroup" id="nav_group"]
+
+[node name="Main" type="Control" unique_id=13280152]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("main")
+
+[node name="Background" type="Panel" parent="." unique_id=502524197]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SafeArea" type="MarginContainer" parent="." unique_id=956975911]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+safe_area = 1
+
+[node name="Layout" type="BoxContainer" parent="SafeArea" unique_id=1547707736]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Sidebar" type="PanelContainer" parent="SafeArea/Layout" unique_id=1661278389]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_type_variation = &"Sidebar"
+
+[node name="SidebarBox" type="VBoxContainer" parent="SafeArea/Layout/Sidebar" unique_id=234439649]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Brand" type="HBoxContainer" parent="SafeArea/Layout/Sidebar/SidebarBox" unique_id=195351723]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Titles" type="VBoxContainer" parent="SafeArea/Layout/Sidebar/SidebarBox/Brand" unique_id=1296878495]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="SafeArea/Layout/Sidebar/SidebarBox/Brand/Titles" unique_id=1141724218]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_font_sizes/font_size = 20
+text = "boxe"
+
+[node name="NavScroll" type="ScrollContainer" parent="SafeArea/Layout/Sidebar/SidebarBox" unique_id=238349162]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Nav" type="BoxContainer" parent="SafeArea/Layout/Sidebar/SidebarBox/NavScroll" unique_id=2043309929]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+vertical = true
+
+[node name="Controls" type="Button" parent="SafeArea/Layout/Sidebar/SidebarBox/NavScroll/Nav" unique_id=376865761]
+layout_mode = 2
+theme_type_variation = &"NavButton"
+toggle_mode = true
+button_group = SubResource("nav_group")
+text = "Controls"
+alignment = 0
+script = ExtResource("link")
+section = ExtResource("s_controls")
+
+[node name="Theme" type="Button" parent="SafeArea/Layout/Sidebar/SidebarBox/NavScroll/Nav" unique_id=1959685867]
+layout_mode = 2
+theme_type_variation = &"NavButton"
+toggle_mode = true
+button_group = SubResource("nav_group")
+text = "Theme"
+alignment = 0
+script = ExtResource("link")
+section = ExtResource("s_theme")
+
+[node name="Text" type="Button" parent="SafeArea/Layout/Sidebar/SidebarBox/NavScroll/Nav" unique_id=822604138]
+layout_mode = 2
+theme_type_variation = &"NavButton"
+toggle_mode = true
+button_group = SubResource("nav_group")
+text = "Text"
+alignment = 0
+script = ExtResource("link")
+section = ExtResource("s_text")
+
+[node name="Input" type="Button" parent="SafeArea/Layout/Sidebar/SidebarBox/NavScroll/Nav" unique_id=592695643]
+layout_mode = 2
+theme_type_variation = &"NavButton"
+toggle_mode = true
+button_group = SubResource("nav_group")
+text = "Input"
+alignment = 0
+script = ExtResource("link")
+section = ExtResource("s_input")
+
+[node name="Composites" type="Button" parent="SafeArea/Layout/Sidebar/SidebarBox/NavScroll/Nav" unique_id=1314905029]
+layout_mode = 2
+theme_type_variation = &"NavButton"
+toggle_mode = true
+button_group = SubResource("nav_group")
+text = "Composites"
+alignment = 0
+script = ExtResource("link")
+section = ExtResource("s_composites")
+
+[node name="Mobile" type="Button" parent="SafeArea/Layout/Sidebar/SidebarBox/NavScroll/Nav" unique_id=545635924]
+layout_mode = 2
+theme_type_variation = &"NavButton"
+toggle_mode = true
+button_group = SubResource("nav_group")
+text = "Mobile"
+alignment = 0
+script = ExtResource("link")
+section = ExtResource("s_mobile")
+
+[node name="Footer" type="VBoxContainer" parent="SafeArea/Layout/Sidebar/SidebarBox" unique_id=2065852476]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Separator" type="HSeparator" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer" unique_id=1069215468]
+layout_mode = 2
+
+[node name="VolumeBox" type="HBoxContainer" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer" unique_id=2102563860]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+
+[node name="Mute" type="Button" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer/VolumeBox" unique_id=1859378216]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+tooltip_text = "Mute UI sounds"
+theme_type_variation = &"FlatIconButton"
+toggle_mode = true
+icon = ExtResource("speaker")
+icon_alignment = 1
+theme_override_constants/icon_max_width = 20
+
+[node name="Volume" type="HSlider" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer/VolumeBox" unique_id=407833046]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Volume"
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="LanguageBox" type="HBoxContainer" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer" unique_id=816716927]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+
+[node name="Flag" type="TextureRect" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer/LanguageBox" unique_id=1926670732]
+texture_filter = 4
+custom_minimum_size = Vector2(27, 18)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("flag")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Language" type="OptionButton" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer/LanguageBox" unique_id=627619658]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Language"
+
+[node name="Content" type="MarginContainer" parent="SafeArea/Layout" unique_id=1313765892]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 4
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout/Content" unique_id=834422209]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Page" type="MarginContainer" parent="SafeArea/Layout/Content/Scroll" unique_id=2044987389]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 40

@@ -1,0 +1,13 @@
+[gd_resource type="LocalizedTexture2D" format=3]
+
+[ext_resource type="Texture2D" path="res://localization/flags/en.svg" id="1_en"]
+[ext_resource type="Texture2D" path="res://localization/flags/ru.svg" id="2_ru"]
+[ext_resource type="Texture2D" path="res://localization/flags/ar.svg" id="4_ar"]
+
+[resource]
+default_texture = ExtResource("1_en")
+textures = {
+"ar": ExtResource("4_ar"),
+"en": ExtResource("1_en"),
+"ru": ExtResource("2_ru")
+}

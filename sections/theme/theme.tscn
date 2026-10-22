@@ -1,0 +1,1435 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="Script" path="res://sections/theme/theme.gd" id="theme_gd"]
+[ext_resource type="FontFile" path="res://fonts/BoldPixels.ttf" id="boldpixels_ttf"]
+[ext_resource type="FontVariation" path="res://fonts/ui_bold.tres" id="ui_bold_tres"]
+[ext_resource type="AudioStream" path="res://sounds/submitted.wav" id="submitted_wav"]
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_14"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_15"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_16"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_17"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 0
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_14"), SubResource("StyleBoxLayer_15"), SubResource("StyleBoxLayer_16")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_18"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_19"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_20"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_21"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 0
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_18"), SubResource("StyleBoxLayer_19"), SubResource("StyleBoxLayer_20")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_22"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_23"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_24"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_25"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 1
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_22"), SubResource("StyleBoxLayer_23"), SubResource("StyleBoxLayer_24")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_26"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_27"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_28"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_29"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 1
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_26"), SubResource("StyleBoxLayer_27"), SubResource("StyleBoxLayer_28")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_30"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_31"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_32"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_33"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_30"), SubResource("StyleBoxLayer_31"), SubResource("StyleBoxLayer_32")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_34"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_35"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_36"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_37"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_34"), SubResource("StyleBoxLayer_35"), SubResource("StyleBoxLayer_36")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_38"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_39"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_40"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_41"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_38"), SubResource("StyleBoxLayer_39"), SubResource("StyleBoxLayer_40")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_42"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_43"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_44"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_45"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_42"), SubResource("StyleBoxLayer_43"), SubResource("StyleBoxLayer_44")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_46"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_47"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_48"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_49"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 6
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_46"), SubResource("StyleBoxLayer_47"), SubResource("StyleBoxLayer_48")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_50"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_51"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_52"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_53"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 6
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_50"), SubResource("StyleBoxLayer_51"), SubResource("StyleBoxLayer_52")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_54"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_55"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_56"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_57"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 9
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_54"), SubResource("StyleBoxLayer_55"), SubResource("StyleBoxLayer_56")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_58"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_59"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_60"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_61"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 9
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_58"), SubResource("StyleBoxLayer_59"), SubResource("StyleBoxLayer_60")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_62"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_63"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_64"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_65"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 11
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_62"), SubResource("StyleBoxLayer_63"), SubResource("StyleBoxLayer_64")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_66"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_67"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_68"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_69"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 0.7
+transition_type = 11
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_66"), SubResource("StyleBoxLayer_67"), SubResource("StyleBoxLayer_68")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_6"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 4.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_7"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_8"]
+mode = 1
+color = Color(1, 1, 1, 0.06275)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_9"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 1.5
+transition_type = 1
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_6"), SubResource("StyleBoxLayer_7"), SubResource("StyleBoxLayer_8")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_10"]
+mode = 2
+color = Color(0.2784, 0.549, 0.749, 0.302)
+blur = 8.0
+offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_11"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_12"]
+mode = 1
+color = Color(1, 1, 1, 0.302)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_13"]
+content_margin_left = 16.0
+content_margin_top = 9.0
+content_margin_right = 16.0
+content_margin_bottom = 9.0
+transition_duration = 1.5
+transition_type = 1
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_10"), SubResource("StyleBoxLayer_11"), SubResource("StyleBoxLayer_12")])
+corner_radius_top_left = 10.0
+corner_radius_top_right = 10.0
+corner_radius_bottom_right = 10.0
+corner_radius_bottom_left = 10.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_70"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 6.0
+offset = Vector2(0.0, 7.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_71"]
+color = Color(0.1804, 0.3725, 0.5255, 1)
+offset = Vector2(0.0, 6.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_72"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_73"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+width = 1.5
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_74"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.25
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_70"), SubResource("StyleBoxLayer_71"), SubResource("StyleBoxLayer_72"), SubResource("StyleBoxLayer_73")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+content_offset = Vector2(0.0, 0.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_75"]
+mode = 2
+color = Color(0, 0, 0, 0.4)
+blur = 8.0
+offset = Vector2(0.0, 8.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_76"]
+color = Color(0.2118, 0.4392, 0.6157, 1)
+offset = Vector2(0.0, 6.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_77"]
+color = Color(0.3529, 0.6235, 0.8314, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_78"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 1.5
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_79"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.15
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_75"), SubResource("StyleBoxLayer_76"), SubResource("StyleBoxLayer_77"), SubResource("StyleBoxLayer_78")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+content_offset = Vector2(0.0, 0.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_80"]
+mode = 2
+color = Color(0, 0, 0, 0.302)
+blur = 4.0
+offset = Vector2(0.0, 7.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_81"]
+color = Color(0.1804, 0.3725, 0.5255, 1)
+offset = Vector2(0.0, 6.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_82"]
+color = Color(0.2471, 0.4863, 0.6784, 1)
+offset = Vector2(0.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_83"]
+mode = 1
+color = Color(1, 1, 1, 0.149)
+offset = Vector2(0.0, 4.0)
+width = 1.5
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_84"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.06
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_80"), SubResource("StyleBoxLayer_81"), SubResource("StyleBoxLayer_82"), SubResource("StyleBoxLayer_83")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+content_offset = Vector2(0.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_95"]
+mode = 2
+color = Color(0.1176, 0.2275, 0.3725, 0.2)
+blur = 12.0
+offset = Vector2(0.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_96"]
+color = Color(1, 1, 1, 0.07059)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_97"]
+mode = 1
+color = Color(1, 1, 1, 0.1804)
+width = 6.0
+blend = true
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_98"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_99"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.06
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_95"), SubResource("StyleBoxLayer_96"), SubResource("StyleBoxLayer_97"), SubResource("StyleBoxLayer_98")])
+corner_radius_top_left = 16.0
+corner_radius_top_right = 16.0
+corner_radius_bottom_right = 16.0
+corner_radius_bottom_left = 16.0
+
+[sub_resource type="Gradient" id="Gradient_157"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.12, 0.23, 0.37, 1, 0.28, 0.55, 0.75, 1, 0.56, 0.94, 0.59, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_158"]
+gradient = SubResource("Gradient_157")
+width = 256
+height = 128
+fill_from = Vector2(0.0, 0.0)
+fill_to = Vector2(1.0, 1.0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_159"]
+texture = SubResource("GradientTexture2D_158")
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_90"]
+mode = 2
+color = Color(0.1176, 0.2275, 0.3725, 0.349)
+blur = 12.0
+offset = Vector2(0.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_91"]
+color = Color(1, 1, 1, 0.1098)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_92"]
+mode = 1
+color = Color(1, 1, 1, 0.251)
+width = 6.0
+blend = true
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_93"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_94"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.2
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_90"), SubResource("StyleBoxLayer_91"), SubResource("StyleBoxLayer_92"), SubResource("StyleBoxLayer_93")])
+corner_radius_top_left = 16.0
+corner_radius_top_right = 16.0
+corner_radius_bottom_right = 16.0
+corner_radius_bottom_left = 16.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_85"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 12.0
+offset = Vector2(0.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_86"]
+color = Color(1, 1, 1, 0.05098)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_87"]
+mode = 1
+color = Color(1, 1, 1, 0.102)
+width = 6.0
+blend = true
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_88"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_89"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.3
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_85"), SubResource("StyleBoxLayer_86"), SubResource("StyleBoxLayer_87"), SubResource("StyleBoxLayer_88")])
+corner_radius_top_left = 16.0
+corner_radius_top_right = 16.0
+corner_radius_bottom_right = 16.0
+corner_radius_bottom_left = 16.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_104"]
+mode = 2
+color = Color(0.4392, 0.7333, 1, 0.549)
+blur = 14.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_105"]
+color = Color(0.07451, 0.1569, 0.2353, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_106"]
+mode = 1
+color = Color(0.7804, 0.898, 1, 1)
+width = 2.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_107"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.2
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_104"), SubResource("StyleBoxLayer_105"), SubResource("StyleBoxLayer_106")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_108"]
+mode = 2
+color = Color(0.4392, 0.7333, 1, 0.8)
+blur = 20.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_109"]
+color = Color(0.102, 0.2078, 0.3137, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_110"]
+mode = 1
+color = Color(1, 1, 1, 1)
+width = 2.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_111"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.05
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_108"), SubResource("StyleBoxLayer_109"), SubResource("StyleBoxLayer_110")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_100"]
+mode = 2
+color = Color(0.4392, 0.7333, 1, 0.251)
+blur = 8.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_101"]
+color = Color(0.05882, 0.1137, 0.1686, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_102"]
+mode = 1
+color = Color(0.5608, 0.7961, 1, 0.702)
+width = 2.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_103"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 22.0
+content_margin_bottom = 11.0
+transition_duration = 0.4
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_100"), SubResource("StyleBoxLayer_101"), SubResource("StyleBoxLayer_102")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_122"]
+color = Color(0.05882, 0.2392, 0.1412, 1)
+offset = Vector2(4.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_123"]
+color = Color(0.3686, 0.8353, 0.5451, 1)
+offset = Vector2(4.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_124"]
+mode = 1
+color = Color(0.05882, 0.2392, 0.1412, 1)
+offset = Vector2(4.0, 4.0)
+width = 4.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_125"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+offset = Vector2(4.0, 4.0)
+width = 4.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_126"]
+content_margin_left = 22.0
+content_margin_top = 8.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+transition_duration = 0.05
+transition_type = 0
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_122"), SubResource("StyleBoxLayer_123"), SubResource("StyleBoxLayer_124"), SubResource("StyleBoxLayer_125")])
+corner_radius_top_left = 8.0
+corner_radius_top_right = 8.0
+corner_radius_bottom_right = 8.0
+corner_radius_bottom_left = 8.0
+corner_style = 1
+pixel_size = 4.0
+pixel_snap = false
+content_offset = Vector2(4.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_112"]
+color = Color(0.05882, 0.2392, 0.1412, 1)
+offset = Vector2(4.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_113"]
+color = Color(0.3686, 0.8353, 0.5451, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_114"]
+mode = 1
+color = Color(0.05882, 0.2392, 0.1412, 1)
+width = 4.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_115"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 4.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_116"]
+content_margin_left = 22.0
+content_margin_top = 8.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+transition_duration = 0.1
+transition_type = 0
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_112"), SubResource("StyleBoxLayer_113"), SubResource("StyleBoxLayer_114"), SubResource("StyleBoxLayer_115")])
+corner_radius_top_left = 8.0
+corner_radius_top_right = 8.0
+corner_radius_bottom_right = 8.0
+corner_radius_bottom_left = 8.0
+corner_style = 1
+pixel_size = 4.0
+pixel_snap = false
+content_offset = Vector2(0.0, 0.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_117"]
+color = Color(0.05882, 0.2392, 0.1412, 1)
+offset = Vector2(4.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_118"]
+color = Color(0.4941, 0.902, 0.651, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_119"]
+mode = 1
+color = Color(0.05882, 0.2392, 0.1412, 1)
+width = 4.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_120"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 4.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_121"]
+content_margin_left = 22.0
+content_margin_top = 8.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+transition_duration = 0.1
+transition_type = 0
+transition_ease = 2
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_117"), SubResource("StyleBoxLayer_118"), SubResource("StyleBoxLayer_119"), SubResource("StyleBoxLayer_120")])
+corner_radius_top_left = 8.0
+corner_radius_top_right = 8.0
+corner_radius_bottom_right = 8.0
+corner_radius_bottom_left = 8.0
+corner_style = 1
+pixel_size = 4.0
+pixel_snap = false
+content_offset = Vector2(0.0, 0.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_131"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 6.0
+offset = Vector2(0.0, 4.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_132"]
+color = Color(1, 0.8941, 0.5412, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_133"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_134"]
+content_margin_left = 26.0
+content_margin_top = 11.0
+content_margin_right = 26.0
+content_margin_bottom = 11.0
+transition_duration = 0.25
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_131"), SubResource("StyleBoxLayer_132"), SubResource("StyleBoxLayer_133")])
+corner_radius_top_left = 6.0
+corner_radius_top_right = 6.0
+corner_radius_bottom_right = 6.0
+corner_radius_bottom_left = 6.0
+skew = Vector2(0.12, 0.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_127"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 6.0
+offset = Vector2(0.0, 2.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_128"]
+color = Color(1, 0.8667, 0.3961, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_129"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_130"]
+content_margin_left = 26.0
+content_margin_top = 11.0
+content_margin_right = 26.0
+content_margin_bottom = 11.0
+transition_duration = 0.35
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_127"), SubResource("StyleBoxLayer_128"), SubResource("StyleBoxLayer_129")])
+corner_radius_top_left = 6.0
+corner_radius_top_right = 6.0
+corner_radius_bottom_right = 6.0
+corner_radius_bottom_left = 6.0
+skew = Vector2(0.35, 0.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_135"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 6.0
+offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_136"]
+color = Color(0.9412, 0.7843, 0.2706, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_137"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_138"]
+content_margin_left = 26.0
+content_margin_top = 11.0
+content_margin_right = 26.0
+content_margin_bottom = 11.0
+transition_duration = 0.06
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_135"), SubResource("StyleBoxLayer_136"), SubResource("StyleBoxLayer_137")])
+corner_radius_top_left = 6.0
+corner_radius_top_right = 6.0
+corner_radius_bottom_right = 6.0
+corner_radius_bottom_left = 6.0
+skew = Vector2(0.35, 0.0)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_143"]
+mode = 1
+color = Color(0.2784, 0.549, 0.749, 0.702)
+width = 2.0
+margin_left = -5.0
+margin_top = -5.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_144"]
+color = Color(0.2549, 0.2863, 0.3451, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_145"]
+mode = 1
+color = Color(1, 1, 1, 0.07843)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_146"]
+content_margin_left = 24.0
+content_margin_top = 11.0
+content_margin_right = 24.0
+content_margin_bottom = 11.0
+transition_duration = 0.3
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_143"), SubResource("StyleBoxLayer_144"), SubResource("StyleBoxLayer_145")])
+corner_radius_top_left = 24.0
+corner_radius_top_right = 24.0
+corner_radius_bottom_right = 24.0
+corner_radius_bottom_left = 24.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_139"]
+mode = 1
+color = Color(0.2784, 0.549, 0.749, 0)
+width = 2.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 2.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_140"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_141"]
+mode = 1
+color = Color(1, 1, 1, 0.07843)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_142"]
+content_margin_left = 24.0
+content_margin_top = 11.0
+content_margin_right = 24.0
+content_margin_bottom = 11.0
+transition_duration = 0.35
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_139"), SubResource("StyleBoxLayer_140"), SubResource("StyleBoxLayer_141")])
+corner_radius_top_left = 24.0
+corner_radius_top_right = 24.0
+corner_radius_bottom_right = 24.0
+corner_radius_bottom_left = 24.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_147"]
+mode = 1
+color = Color(0.4392, 0.7333, 1, 1)
+width = 2.0
+margin_left = -3.0
+margin_top = -3.0
+margin_right = -3.0
+margin_bottom = -3.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_148"]
+color = Color(0.1647, 0.2902, 0.4, 1)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_149"]
+mode = 1
+color = Color(1, 1, 1, 0.07843)
+width = 1.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_150"]
+content_margin_left = 24.0
+content_margin_top = 11.0
+content_margin_right = 24.0
+content_margin_bottom = 11.0
+transition_duration = 0.08
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_147"), SubResource("StyleBoxLayer_148"), SubResource("StyleBoxLayer_149")])
+corner_radius_top_left = 24.0
+corner_radius_top_right = 24.0
+corner_radius_bottom_right = 24.0
+corner_radius_bottom_left = 24.0
+
+[node name="Theme" type="VBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("theme_gd")
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Overline" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "THEME"
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "Theme styles and sounds"
+
+[node name="Subtitle" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Style boxes blend between the states of a control, StyleBoxLayered stacks fills, outlines and soft shadows, and controls play the sounds of the theme on user interaction."
+autowrap_mode = 3
+
+[node name="Cards" type="GridContainer" parent="."]
+layout_mode = 2
+script = ExtResource("responsive_grid_gd")
+min_column_width = 380.0
+max_columns = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+
+[node name="Layered" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Layered"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Layered/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Layered/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Layered styles"
+
+[node name="Caption" type="Label" parent="Cards/Layered/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Depth, glass, glows, pixel art, skew and rings, without textures. Each layer has its own offset, margins and color, and every layer blends during transitions. Hover a style to read how it is made."
+autowrap_mode = 3
+
+[node name="Styles" type="HFlowContainer" parent="Cards/Layered/Box"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Raised" type="PanelContainer" parent="Cards/Layered/Box/Styles"]
+custom_minimum_size = Vector2(150.0, 96.0)
+layout_mode = 2
+theme_type_variation = &"Stage"
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Raised"]
+custom_minimum_size = Vector2(150.0, 0.0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Raised"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxLayered_74")
+theme_override_styles/hover = SubResource("StyleBoxLayered_79")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_84")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_84")
+tooltip_text = "Shadow, depth, face and rim. The face moves down when pressed."
+
+[node name="Glass" type="PanelContainer" parent="Cards/Layered/Box/Styles"]
+custom_minimum_size = Vector2(150.0, 96.0)
+layout_mode = 2
+theme_type_variation = &"Stage"
+theme_override_styles/panel = SubResource("StyleBoxTexture_159")
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Glass"]
+custom_minimum_size = Vector2(150.0, 0.0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Glass"
+theme_override_styles/normal = SubResource("StyleBoxLayered_89")
+theme_override_styles/hover = SubResource("StyleBoxLayered_94")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_99")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_99")
+tooltip_text = "A translucent fill with a blended rim."
+
+[node name="Neon" type="PanelContainer" parent="Cards/Layered/Box/Styles"]
+custom_minimum_size = Vector2(150.0, 96.0)
+layout_mode = 2
+theme_type_variation = &"Stage"
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Neon"]
+custom_minimum_size = Vector2(150.0, 0.0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Neon"
+theme_override_colors/font_color = Color(0.5608, 0.7961, 1, 1)
+theme_override_colors/font_hover_color = Color(0.8471, 0.9333, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxLayered_103")
+theme_override_styles/hover = SubResource("StyleBoxLayered_107")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_111")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_111")
+tooltip_text = "A colored shadow without offset glows."
+
+[node name="Pixel" type="PanelContainer" parent="Cards/Layered/Box/Styles"]
+custom_minimum_size = Vector2(150.0, 96.0)
+layout_mode = 2
+theme_type_variation = &"Stage"
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Pixel"]
+custom_minimum_size = Vector2(150.0, 0.0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "PIXEL"
+theme_override_fonts/font = ExtResource("boldpixels_ttf")
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.05882, 0.2392, 0.1412, 1)
+theme_override_colors/font_hover_color = Color(0.05882, 0.2392, 0.1412, 1)
+theme_override_colors/font_pressed_color = Color(0.05882, 0.2392, 0.1412, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.05882, 0.2392, 0.1412, 1)
+theme_override_styles/normal = SubResource("StyleBoxLayered_116")
+theme_override_styles/hover = SubResource("StyleBoxLayered_121")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_126")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_126")
+tooltip_text = "Pixel corners, a hard shadow and a bevel, on a 4 px grid."
+
+[node name="Skewed" type="PanelContainer" parent="Cards/Layered/Box/Styles"]
+custom_minimum_size = Vector2(150.0, 96.0)
+layout_mode = 2
+theme_type_variation = &"Stage"
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Skewed"]
+custom_minimum_size = Vector2(150.0, 0.0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Skewed"
+theme_override_fonts/font = ExtResource("ui_bold_tres")
+theme_override_colors/font_color = Color(0.2275, 0.1804, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2275, 0.1804, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.2275, 0.1804, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.2275, 0.1804, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxLayered_130")
+theme_override_styles/hover = SubResource("StyleBoxLayered_134")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_138")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_138")
+tooltip_text = "Skew blends like any other property."
+
+[node name="Ring" type="PanelContainer" parent="Cards/Layered/Box/Styles"]
+custom_minimum_size = Vector2(150.0, 96.0)
+layout_mode = 2
+theme_type_variation = &"Stage"
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Ring"]
+custom_minimum_size = Vector2(150.0, 0.0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Ring"
+theme_override_styles/normal = SubResource("StyleBoxLayered_142")
+theme_override_styles/hover = SubResource("StyleBoxLayered_146")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_150")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_150")
+tooltip_text = "An outline with negative margins draws outside of the control."
+
+[node name="Easing" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Easing"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Easing/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Easing/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Easing"
+
+[node name="Caption" type="Label" parent="Cards/Easing/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Each button uses another transition_type. Move the mouse across them. Leaving a state midway takes only the time already travelled, so quick hovers never lag behind: the wide button is slowed down to 1.5 s."
+autowrap_mode = 3
+
+[node name="Buttons" type="HFlowContainer" parent="Cards/Easing/Box"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Linear" type="Button" parent="Cards/Easing/Box/Buttons"]
+custom_minimum_size = Vector2(110.0, 0.0)
+layout_mode = 2
+text = "Linear"
+theme_override_styles/normal = SubResource("StyleBoxLayered_17")
+theme_override_styles/hover = SubResource("StyleBoxLayered_21")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_21")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_21")
+
+[node name="Sine" type="Button" parent="Cards/Easing/Box/Buttons"]
+custom_minimum_size = Vector2(110.0, 0.0)
+layout_mode = 2
+text = "Sine"
+theme_override_styles/normal = SubResource("StyleBoxLayered_25")
+theme_override_styles/hover = SubResource("StyleBoxLayered_29")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_29")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_29")
+
+[node name="Cubic" type="Button" parent="Cards/Easing/Box/Buttons"]
+custom_minimum_size = Vector2(110.0, 0.0)
+layout_mode = 2
+text = "Cubic"
+theme_override_styles/normal = SubResource("StyleBoxLayered_33")
+theme_override_styles/hover = SubResource("StyleBoxLayered_37")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_37")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_37")
+
+[node name="Back" type="Button" parent="Cards/Easing/Box/Buttons"]
+custom_minimum_size = Vector2(110.0, 0.0)
+layout_mode = 2
+text = "Back"
+theme_override_styles/normal = SubResource("StyleBoxLayered_41")
+theme_override_styles/hover = SubResource("StyleBoxLayered_45")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_45")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_45")
+
+[node name="Elastic" type="Button" parent="Cards/Easing/Box/Buttons"]
+custom_minimum_size = Vector2(110.0, 0.0)
+layout_mode = 2
+text = "Elastic"
+theme_override_styles/normal = SubResource("StyleBoxLayered_49")
+theme_override_styles/hover = SubResource("StyleBoxLayered_53")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_53")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_53")
+
+[node name="Bounce" type="Button" parent="Cards/Easing/Box/Buttons"]
+custom_minimum_size = Vector2(110.0, 0.0)
+layout_mode = 2
+text = "Bounce"
+theme_override_styles/normal = SubResource("StyleBoxLayered_57")
+theme_override_styles/hover = SubResource("StyleBoxLayered_61")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_61")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_61")
+
+[node name="Spring" type="Button" parent="Cards/Easing/Box/Buttons"]
+custom_minimum_size = Vector2(110.0, 0.0)
+layout_mode = 2
+text = "Spring"
+theme_override_styles/normal = SubResource("StyleBoxLayered_65")
+theme_override_styles/hover = SubResource("StyleBoxLayered_69")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_69")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_69")
+
+[node name="Slow" type="Button" parent="Cards/Easing/Box"]
+custom_minimum_size = Vector2(260.0, 52.0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Hover and leave quickly"
+theme_override_styles/normal = SubResource("StyleBoxLayered_9")
+theme_override_styles/hover = SubResource("StyleBoxLayered_13")
+theme_override_styles/pressed = SubResource("StyleBoxLayered_13")
+theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_13")
+
+[node name="Sounds" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Sounds"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Sounds/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Sounds/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Sound buses and overrides"
+
+[node name="Caption" type="Label" parent="Cards/Sounds/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "sound_bus is inherited by children: the controls in this panel play the same theme sounds through another bus. A control can also override a theme sound, like a color or a font."
+autowrap_mode = 3
+
+[node name="BusRow" type="HBoxContainer" parent="Cards/Sounds/Box"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BusLabel" type="Label" parent="Cards/Sounds/Box/BusRow"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Bus"
+
+[node name="Bus" type="OptionButton" parent="Cards/Sounds/Box/BusRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+auto_translate_mode = 2
+selected = 1
+item_count = 3
+popup/item_0/text = "UI"
+popup/item_0/id = 0
+popup/item_1/text = "Hall"
+popup/item_1/id = 1
+popup/item_2/text = "Radio"
+popup/item_2/id = 2
+
+[node name="BusPanel" type="PanelContainer" parent="Cards/Sounds/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Inset"
+sound_bus = &"Hall"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Sounds/Box/BusPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Buttons" type="HFlowContainer" parent="Cards/Sounds/Box/BusPanel/Box"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Button" type="Button" parent="Cards/Sounds/Box/BusPanel/Box/Buttons"]
+layout_mode = 2
+text = "Press me"
+
+[node name="CheckBox" type="CheckBox" parent="Cards/Sounds/Box/BusPanel/Box/Buttons"]
+layout_mode = 2
+text = "Toggle"
+
+[node name="Slider" type="HSlider" parent="Cards/Sounds/Box/BusPanel/Box"]
+layout_mode = 2
+max_value = 10.0
+value = 6.0
+
+[node name="Overrides" type="HFlowContainer" parent="Cards/Sounds/Box"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Default" type="Button" parent="Cards/Sounds/Box/Overrides"]
+layout_mode = 2
+text = "Theme sound"
+
+[node name="Custom" type="Button" parent="Cards/Sounds/Box/Overrides"]
+layout_mode = 2
+theme_type_variation = &"AccentButton"
+text = "Custom sound"
+theme_override_sounds/pressed = ExtResource("submitted_wav")

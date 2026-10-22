@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" format=3 uid="uid://dqohcjgwsdc73"]
+
+[ext_resource type="FontFile" uid="uid://bd22ywglvdujs" path="res://fonts/Inter_Bold.woff2" id="1_sbr1c"]
+[ext_resource type="FontFile" uid="uid://xk332svirfas" path="res://fonts/Vazirmatn_Bold.woff2" id="3_o4d46"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("3_o4d46")])
+base_font = ExtResource("1_sbr1c")

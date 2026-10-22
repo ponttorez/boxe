@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" format=3]
+
+[ext_resource type="FontFile" path="res://fonts/JetBrainsMono_Regular.woff2" id="1_fc2xe"]
+[ext_resource type="FontVariation" path="res://fonts/ui_regular.tres" id="2_tynrs"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_tynrs")])
+base_font = ExtResource("1_fc2xe")

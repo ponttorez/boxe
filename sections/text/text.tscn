@@ -1,0 +1,294 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://sections/text/text.gd" id="text_gd"]
+[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="AudioStream" path="res://sounds/typed.wav" id="typed_wav"]
+
+[node name="Text" type="VBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("text_gd")
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Overline" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "TEXT"
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "Text"
+
+[node name="Subtitle" type="Label" parent="Header"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Labels, buttons, tabs, lists and menus take BBCode, and labels keep their features: ellipsis, visible characters, autowrap and label settings. The Localization dock edits the CSV and PO translations of the project in their files, and texts format arguments with plural forms."
+autowrap_mode = 3
+
+[node name="Cards" type="GridContainer" parent="."]
+layout_mode = 2
+script = ExtResource("responsive_grid_gd")
+min_column_width = 380.0
+max_columns = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+
+[node name="Label" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Label"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Label/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Label/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Label"
+
+[node name="Caption" type="Label" parent="Cards/Label/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Formatting, links and hints in a plain Label."
+autowrap_mode = 3
+
+[node name="Rich" type="Label" parent="Cards/Label/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "[b]Bold[/b], [i]italic[/i], [color=#fc7f7f]colored[/color], [font_size=22]big[/font_size], [code]code[/code], [u]underlined[/u], [s]struck[/s], [color=#ffffff][outline_size=6][outline_color=#36709d]outlined[/outline_color][/outline_size][/color], a [url=https://github.com/ponttorez/boxe]link[/url] and a [hint=Tooltips come from hint tags.]hint[/hint]."
+bbcode_enabled = true
+autowrap_mode = 3
+mouse_filter = 0
+
+[node name="Arguments" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Arguments"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Arguments/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Arguments/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Arguments and plurals"
+
+[node name="Caption" type="Label" parent="Cards/Arguments/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "text_arguments fills {name} placeholders and picks the plural form of each number by the rules of the language. Type a name and move the slider."
+autowrap_mode = 3
+
+[node name="Name" type="LineEdit" parent="Cards/Arguments/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "loc.name_placeholder"
+
+[node name="CountRow" type="HBoxContainer" parent="Cards/Arguments/Box"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Count" type="HSlider" parent="Cards/Arguments/Box/CountRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 30.0
+value = 1.0
+
+[node name="CountValue" type="Label" parent="Cards/Arguments/Box/CountRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40.0, 0.0)
+layout_mode = 2
+theme_type_variation = &"BadgeLabel"
+text = "1"
+horizontal_alignment = 1
+auto_translate_mode = 2
+
+[node name="Apples" type="Label" parent="Cards/Arguments/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "loc.apples"
+text_arguments = {
+"count": 1,
+"name": ""
+}
+
+[node name="Days" type="Label" parent="Cards/Arguments/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "loc.days_left"
+text_arguments = {
+"days": 1
+}
+
+[node name="Typewriter" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Typewriter"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Typewriter/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Typewriter/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Typewriter"
+
+[node name="Caption" type="Label" parent="Cards/Typewriter/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "visible_characters counts the visible text, not the tags."
+autowrap_mode = 3
+
+[node name="Stage" type="PanelContainer" parent="Cards/Typewriter/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Dialog" type="Label" parent="Cards/Typewriter/Box/Stage"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0.0, 70.0)
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "[color=#70bbff][b]Mira:[/b][/color] The [color=#ffdd65]old key[/color] opens the [i]east tower[/i]. Hurry, the [color=#ff786b]guards[/color] change at [b]midnight[/b]!"
+bbcode_enabled = true
+autowrap_mode = 3
+theme_override_sounds/typed = ExtResource("typed_wav")
+
+[node name="Replay" type="Button" parent="Cards/Typewriter/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Replay"
+
+[node name="Ellipsis" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Ellipsis"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Ellipsis/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Ellipsis/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Ellipsis"
+
+[node name="Caption" type="Label" parent="Cards/Ellipsis/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Trimmed text keeps its formatting."
+autowrap_mode = 3
+
+[node name="Stage" type="PanelContainer" parent="Cards/Ellipsis/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Ellipsis/Box/Stage"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Short" type="Label" parent="Cards/Ellipsis/Box/Stage/Box"]
+custom_minimum_size = Vector2(1.0, 0.0)
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "[b]Quest:[/b] Bring the [color=#ffdd65]old key[/color] back to the [i]east tower[/i] before midnight"
+bbcode_enabled = true
+text_overrun_behavior = 3
+clip_text = true
+
+[node name="Shorter" type="Label" parent="Cards/Ellipsis/Box/Stage/Box"]
+custom_minimum_size = Vector2(200.0, 0.0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"BodyLabel"
+text = "[b]Quest:[/b] Bring the [color=#ffdd65]old key[/color] back to the [i]east tower[/i] before midnight"
+bbcode_enabled = true
+text_overrun_behavior = 3
+clip_text = true
+
+[node name="Spacer" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Spacer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Spacer/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Spacer/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "[spacer]"
+
+[node name="Caption" type="Label" parent="Cards/Spacer/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "The new spacer tag pushes text to the end of the line, or centers it."
+autowrap_mode = 3
+
+[node name="Stage" type="PanelContainer" parent="Cards/Spacer/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Spacer/Box/Stage"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Cards/Spacer/Box/Stage/Box"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "[spacer][b]Merchant[/b][spacer]"
+bbcode_enabled = true
+
+[node name="Sword" type="Label" parent="Cards/Spacer/Box/Stage/Box"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Golden sword[spacer][color=#ffdd65]120[/color] coins"
+bbcode_enabled = true
+
+[node name="Shield" type="Label" parent="Cards/Spacer/Box/Stage/Box"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Oak shield[spacer][color=#ffdd65]45[/color] coins"
+bbcode_enabled = true
+
+[node name="Potion" type="Label" parent="Cards/Spacer/Box/Stage/Box"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Potion [color=#a1a6ad]×3[/color][spacer][color=#ffdd65]9[/color] coins"
+bbcode_enabled = true
