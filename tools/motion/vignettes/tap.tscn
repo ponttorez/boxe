@@ -1,0 +1,183 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/motion/vignettes/tap.gd" id="tap_gd"]
+[ext_resource type="FontVariation" path="res://fonts/ui_bold.tres" id="ui_bold_tres"]
+[ext_resource type="FontVariation" path="res://fonts/ui_mono.tres" id="ui_mono_tres"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/cross.svg" id="cross_svg"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/check.svg" id="check_svg"]
+
+[node name="Tap" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("tap_gd")
+
+[node name="Problem" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 30.0
+offset_bottom = 78.0
+grow_horizontal = 2
+text = "Small icons are hard to tap"
+horizontal_alignment = 1
+theme_override_fonts/font = ExtResource("ui_bold_tres")
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="Fix" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 82.0
+offset_bottom = 108.0
+grow_horizontal = 2
+text = "Control.raycast_padding"
+horizontal_alignment = 1
+theme_override_fonts/font = ExtResource("ui_mono_tres")
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.4392, 0.7333, 1, 1)
+
+[node name="Stages" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 132.0
+offset_right = -48.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+
+[node name="Godot" type="PanelContainer" parent="Stages"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Stages/Godot"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Stages/Godot/Box"]
+layout_mode = 2
+
+[node name="Badge" type="Label" parent="Stages/Godot/Box/Header"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"BadgeLabel"
+text = "Godot"
+
+[node name="Spacer" type="Control" parent="Stages/Godot/Box/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Mark" type="TextureRect" parent="Stages/Godot/Box/Header"]
+layout_mode = 2
+texture = ExtResource("cross_svg")
+stretch_mode = 3
+
+[node name="Content" type="CenterContainer" parent="Stages/Godot/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Card" type="PanelContainer" parent="Stages/Godot/Box/Content"]
+custom_minimum_size = Vector2(320.0, 0.0)
+layout_mode = 2
+theme_type_variation = &"Inset"
+
+[node name="Row" type="HBoxContainer" parent="Stages/Godot/Box/Content/Card"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Text" type="VBoxContainer" parent="Stages/Godot/Box/Content/Card/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Stages/Godot/Box/Content/Card/Row/Text"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "New message"
+
+[node name="Body" type="Label" parent="Stages/Godot/Box/Content/Card/Row/Text"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Mira: Are you coming tonight?"
+
+[node name="Close" type="Button" parent="Stages/Godot/Box/Content/Card/Row"]
+custom_minimum_size = Vector2(22.0, 22.0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"IconButton"
+text = "×"
+
+[node name="Boxe" type="PanelContainer" parent="Stages"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Stages/Boxe"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Stages/Boxe/Box"]
+layout_mode = 2
+
+[node name="Badge" type="Label" parent="Stages/Boxe/Box/Header"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"AccentBadgeLabel"
+text = "boxe"
+
+[node name="Spacer" type="Control" parent="Stages/Boxe/Box/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Mark" type="TextureRect" parent="Stages/Boxe/Box/Header"]
+layout_mode = 2
+texture = ExtResource("check_svg")
+stretch_mode = 3
+
+[node name="Content" type="CenterContainer" parent="Stages/Boxe/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Card" type="PanelContainer" parent="Stages/Boxe/Box/Content"]
+custom_minimum_size = Vector2(320.0, 0.0)
+layout_mode = 2
+theme_type_variation = &"Inset"
+
+[node name="Row" type="HBoxContainer" parent="Stages/Boxe/Box/Content/Card"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Text" type="VBoxContainer" parent="Stages/Boxe/Box/Content/Card/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Stages/Boxe/Box/Content/Card/Row/Text"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "New message"
+
+[node name="Body" type="Label" parent="Stages/Boxe/Box/Content/Card/Row/Text"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Mira: Are you coming tonight?"
+
+[node name="Close" type="Button" parent="Stages/Boxe/Box/Content/Card/Row"]
+custom_minimum_size = Vector2(22.0, 22.0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"IconButton"
+text = "×"
+raycast_padding_left = -14.0
+raycast_padding_top = -14.0
+raycast_padding_right = -14.0
+raycast_padding_bottom = -14.0
