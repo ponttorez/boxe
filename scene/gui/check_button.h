@@ -49,9 +49,21 @@ class CheckButton : public Button {
 		Ref<Texture2D> checked_disabled_mirrored;
 		Ref<Texture2D> unchecked_disabled_mirrored;
 
+		// Drawn instead of the icons when they aren't empty, and animated with the style transitions.
+		Ref<StyleBox> checked_style;
+		Ref<StyleBox> unchecked_style;
+		Ref<StyleBox> checked_disabled_style;
+		Ref<StyleBox> unchecked_disabled_style;
+		Ref<StyleBox> checked_mirrored_style;
+		Ref<StyleBox> unchecked_mirrored_style;
+		Ref<StyleBox> checked_disabled_mirrored_style;
+		Ref<StyleBox> unchecked_disabled_mirrored_style;
+
 		Color button_checked_color;
 		Color button_unchecked_color;
 	} theme_cache;
+
+	Ref<StyleBox> _get_indicator_style(bool p_pressed) const;
 
 protected:
 	Size2 get_icon_size() const;

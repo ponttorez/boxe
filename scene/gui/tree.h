@@ -639,6 +639,13 @@ private:
 
 		Color title_button_color;
 
+		Ref<StyleBox> checked_style;
+		Ref<StyleBox> unchecked_style;
+		Ref<StyleBox> checked_disabled_style;
+		Ref<StyleBox> unchecked_disabled_style;
+		Ref<StyleBox> indeterminate_style;
+		Ref<StyleBox> indeterminate_disabled_style;
+
 		Ref<Texture2D> checked;
 		Ref<Texture2D> unchecked;
 		Ref<Texture2D> checked_disabled;
@@ -730,6 +737,9 @@ private:
 
 	int _get_title_button_height() const;
 	Size2 _get_cell_icon_size(const TreeItem::Cell &p_cell) const;
+	Ref<StyleBox> _get_check_style(const TreeItem::Cell &p_cell) const;
+	Ref<Texture2D> _get_check_icon(const TreeItem::Cell &p_cell) const;
+	Size2i _get_check_size() const;
 
 	void _scroll_moved(float p_value);
 	HScrollBar *h_scroll = nullptr;

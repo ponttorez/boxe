@@ -732,6 +732,12 @@
 		<theme_item name="button_pressed" data_type="style" type="StyleBox">
 			[StyleBox] used when a button in the tree is pressed.
 		</theme_item>
+		<theme_item name="checked" data_type="style" type="StyleBox">
+			The style box of checked cells in [constant TreeItem.CELL_MODE_CHECK] mode. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the check.
+		</theme_item>
+		<theme_item name="checked_disabled" data_type="style" type="StyleBox">
+			The style box of checked non-editable cells in [constant TreeItem.CELL_MODE_CHECK] mode. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the check.
+		</theme_item>
 		<theme_item name="cursor" data_type="style" type="StyleBox">
 			[StyleBox] used for the cursor, when the [Tree] is being focused.
 		</theme_item>
@@ -762,6 +768,12 @@
 		<theme_item name="hovered_selected_focus" data_type="style" type="StyleBox">
 			[StyleBox] for the hovered and selected items, used when the [Tree] is being focused.
 		</theme_item>
+		<theme_item name="indeterminate" data_type="style" type="StyleBox">
+			The style box of indeterminate cells in [constant TreeItem.CELL_MODE_CHECK] mode. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the check.
+		</theme_item>
+		<theme_item name="indeterminate_disabled" data_type="style" type="StyleBox">
+			The style box of indeterminate non-editable cells in [constant TreeItem.CELL_MODE_CHECK] mode. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the check.
+		</theme_item>
 		<theme_item name="panel" data_type="style" type="StyleBox">
 			The background style for the [Tree].
 		</theme_item>
@@ -779,6 +791,12 @@
 		</theme_item>
 		<theme_item name="title_button_pressed" data_type="style" type="StyleBox">
 			[StyleBox] used when the title button is being pressed.
+		</theme_item>
+		<theme_item name="unchecked" data_type="style" type="StyleBox">
+			The style box of unchecked cells in [constant TreeItem.CELL_MODE_CHECK] mode. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the check.
+		</theme_item>
+		<theme_item name="unchecked_disabled" data_type="style" type="StyleBox">
+			The style box of unchecked non-editable cells in [constant TreeItem.CELL_MODE_CHECK] mode. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the check.
 		</theme_item>
 	</theme_items>
 </class>

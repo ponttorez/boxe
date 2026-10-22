@@ -34,12 +34,59 @@
 #include "core/input/input.h"
 #include "core/object/class_db.h"
 #include "scene/gui/style_transitions.h"
+#include "scene/resources/style_box.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
+static bool _is_drawn(const Ref<StyleBox> &p_style) {
+	return p_style.is_valid() && !Object::cast_to<StyleBoxEmpty>(p_style.ptr());
+}
+
+// The style box of the grabber for the state, or null when the theme draws it with icons.
+Ref<StyleBox> Slider::_get_grabber_style(bool p_highlighted) const {
+	const Ref<StyleBox> style = !editable ? theme_cache.grabber_disabled_style : (p_highlighted ? theme_cache.grabber_hl_style : theme_cache.grabber_style);
+	if (_is_drawn(style)) {
+		return style;
+	}
+	return _is_drawn(theme_cache.grabber_style) ? theme_cache.grabber_style : Ref<StyleBox>();
+}
+
+Ref<Texture2D> Slider::_get_grabber_icon(bool p_highlighted) const {
+	return !editable ? theme_cache.grabber_disabled_icon : (p_highlighted ? theme_cache.grabber_hl_icon : theme_cache.grabber_icon);
+}
+
+// Grabbers drawn with style boxes keep the same size in every state, so they don't move when the state changes.
+Size2i Slider::_get_grabber_size(bool p_highlighted) const {
+	Size2 style_size;
+	bool styled = false;
+	for (const Ref<StyleBox> &style : { theme_cache.grabber_style, theme_cache.grabber_hl_style, theme_cache.grabber_disabled_style }) {
+		if (_is_drawn(style)) {
+			style_size = style_size.max(style->get_minimum_size());
+			styled = true;
+		}
+	}
+	if (styled) {
+		return Size2i(style_size.ceil());
+	}
+	const Ref<Texture2D> icon = _get_grabber_icon(p_highlighted);
+	return icon.is_valid() ? Size2i(icon->get_size()) : Size2i();
+}
+
+void Slider::_draw_grabber(RID p_ci, const Point2i &p_pos, bool p_highlighted) {
+	const Ref<StyleBox> style = _get_grabber_style(p_highlighted);
+	if (style.is_valid()) {
+		get_transition_style(StyleTransitions::make_key(1), style)->draw(p_ci, Rect2(p_pos, _get_grabber_size(p_highlighted)));
+		return;
+	}
+	const Ref<Texture2D> icon = _get_grabber_icon(p_highlighted);
+	if (icon.is_valid()) {
+		icon->draw(p_ci, p_pos);
+	}
+}
+
 Size2 Slider::get_minimum_size() const {
 	Size2i ss = theme_cache.slider_style->get_minimum_size();
-	Size2i rs = theme_cache.grabber_icon->get_size();
+	Size2i rs = _get_grabber_size(false);
 
 	if (orientation == HORIZONTAL) {
 		return Size2i(ss.width, MAX(ss.height, rs.height));
@@ -60,19 +107,14 @@ void Slider::gui_input(const Ref<InputEvent> &p_event) {
 	if (mb.is_valid()) {
 		if (mb->get_button_index() == MouseButton::LEFT) {
 			if (mb->is_pressed()) {
-				Ref<Texture2D> grabber;
-				if (mouse_inside || has_focus(true)) {
-					grabber = theme_cache.grabber_hl_icon;
-				} else {
-					grabber = theme_cache.grabber_icon;
-				}
+				const Size2i grabber_size = _get_grabber_size(mouse_inside || has_focus(true));
 
 				grab.pos = orientation == VERTICAL ? mb->get_position().y : mb->get_position().x;
 				grab.value_before_dragging = get_as_ratio();
 				emit_signal(SNAME("drag_started"));
 
-				double grab_width = theme_cache.center_grabber ? 0.0 : (double)grabber->get_width();
-				double grab_height = theme_cache.center_grabber ? 0.0 : (double)grabber->get_height();
+				double grab_width = theme_cache.center_grabber ? 0.0 : (double)grabber_size.width;
+				double grab_height = theme_cache.center_grabber ? 0.0 : (double)grabber_size.height;
 				double max = orientation == VERTICAL ? get_size().height - grab_height : get_size().width - grab_width;
 				set_block_signals(true);
 				if (orientation == VERTICAL) {
@@ -112,9 +154,9 @@ void Slider::gui_input(const Ref<InputEvent> &p_event) {
 	if (mm.is_valid()) {
 		if (grab.active) {
 			Size2i size = get_size();
-			Ref<Texture2D> grabber = theme_cache.grabber_hl_icon;
-			double grab_width = theme_cache.center_grabber ? 0.0 : (double)grabber->get_width();
-			double grab_height = theme_cache.center_grabber ? 0.0 : (double)grabber->get_height();
+			const Size2i grabber_size = _get_grabber_size(true);
+			double grab_width = theme_cache.center_grabber ? 0.0 : (double)grabber_size.width;
+			double grab_height = theme_cache.center_grabber ? 0.0 : (double)grabber_size.height;
 			double motion = (orientation == VERTICAL ? mm->get_position().y : mm->get_position().x) - grab.pos;
 			if (orientation == VERTICAL) {
 				motion = -motion;
@@ -281,16 +323,7 @@ void Slider::_notification(int p_what) {
 			Ref<Texture2D> tick = theme_cache.tick_icon;
 
 			bool highlighted = editable && (mouse_inside || has_focus(true));
-			Ref<Texture2D> grabber;
-			if (editable) {
-				if (highlighted) {
-					grabber = theme_cache.grabber_hl_icon;
-				} else {
-					grabber = theme_cache.grabber_icon;
-				}
-			} else {
-				grabber = theme_cache.grabber_disabled_icon;
-			}
+			const Size2i grabber_size = _get_grabber_size(highlighted);
 
 			Ref<StyleBox> grabber_area;
 			if (highlighted) {
@@ -302,13 +335,13 @@ void Slider::_notification(int p_what) {
 
 			if (orientation == VERTICAL) {
 				int widget_width = style->get_minimum_size().width;
-				double areasize = size.height - (theme_cache.center_grabber ? 0 : grabber->get_height());
-				int grabber_shift = theme_cache.center_grabber ? grabber->get_height() / 2 : 0;
+				double areasize = size.height - (theme_cache.center_grabber ? 0 : grabber_size.height);
+				int grabber_shift = theme_cache.center_grabber ? grabber_size.height / 2 : 0;
 				style->draw(ci, Rect2i(Point2i(size.width / 2 - widget_width / 2, 0), Size2i(widget_width, size.height)));
-				grabber_area->draw(ci, Rect2i(Point2i((size.width - widget_width) / 2, Math::round(size.height - areasize * ratio - grabber->get_height() / 2 + grabber_shift)), Size2i(widget_width, Math::round(areasize * ratio + grabber->get_height() / 2 - grabber_shift))));
+				grabber_area->draw(ci, Rect2i(Point2i((size.width - widget_width) / 2, Math::round(size.height - areasize * ratio - grabber_size.height / 2 + grabber_shift)), Size2i(widget_width, Math::round(areasize * ratio + grabber_size.height / 2 - grabber_shift))));
 
 				if (ticks > 1) {
-					int grabber_offset = (grabber->get_height() / 2 - tick->get_height() / 2);
+					int grabber_offset = (grabber_size.height / 2 - tick->get_height() / 2);
 					for (int i = 0; i < ticks; i++) {
 						if (!ticks_on_borders && (i == 0 || i + 1 == ticks)) {
 							continue;
@@ -329,15 +362,15 @@ void Slider::_notification(int p_what) {
 						}
 					}
 				}
-				grabber->draw(ci, Point2i(size.width / 2 - grabber->get_width() / 2 + theme_cache.grabber_offset, size.height - ratio * areasize - grabber->get_height() + grabber_shift));
+				_draw_grabber(ci, Point2i(size.width / 2 - grabber_size.width / 2 + theme_cache.grabber_offset, size.height - ratio * areasize - grabber_size.height + grabber_shift), highlighted);
 			} else {
 				int widget_height = style->get_minimum_size().height;
-				double areasize = size.width - (theme_cache.center_grabber ? 0 : grabber->get_size().width);
-				int grabber_shift = theme_cache.center_grabber ? -grabber->get_width() / 2 : 0;
+				double areasize = size.width - (theme_cache.center_grabber ? 0 : grabber_size.width);
+				int grabber_shift = theme_cache.center_grabber ? -grabber_size.width / 2 : 0;
 				bool rtl = is_layout_rtl();
 
 				style->draw(ci, Rect2i(Point2i(0, (size.height - widget_height) / 2), Size2i(size.width, widget_height)));
-				int p = areasize * (rtl ? 1 - ratio : ratio) + grabber->get_width() / 2 + grabber_shift;
+				int p = areasize * (rtl ? 1 - ratio : ratio) + grabber_size.width / 2 + grabber_shift;
 				if (rtl) {
 					grabber_area->draw(ci, Rect2i(Point2i(p, (size.height - widget_height) / 2), Size2i(size.width - p, widget_height)));
 				} else {
@@ -345,7 +378,7 @@ void Slider::_notification(int p_what) {
 				}
 
 				if (ticks > 1) {
-					int grabber_offset = (grabber->get_width() / 2 - tick->get_width() / 2);
+					int grabber_offset = (grabber_size.width / 2 - tick->get_width() / 2);
 					for (int i = 0; i < ticks; i++) {
 						if ((!ticks_on_borders) && ((i == 0) || ((i + 1) == ticks))) {
 							continue;
@@ -366,7 +399,7 @@ void Slider::_notification(int p_what) {
 						}
 					}
 				}
-				grabber->draw(ci, Point2i((rtl ? 1 - ratio : ratio) * areasize + grabber_shift, size.height / 2 - grabber->get_height() / 2 + theme_cache.grabber_offset));
+				_draw_grabber(ci, Point2i((rtl ? 1 - ratio : ratio) * areasize + grabber_shift, size.height / 2 - grabber_size.height / 2 + theme_cache.grabber_offset), highlighted);
 			}
 		} break;
 	}
@@ -482,6 +515,9 @@ void Slider::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Slider, slider_style, "slider");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Slider, grabber_area_style, "grabber_area");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Slider, grabber_area_hl_style, "grabber_area_highlight");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Slider, grabber_style, "grabber");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Slider, grabber_hl_style, "grabber_highlight");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Slider, grabber_disabled_style, "grabber_disabled");
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_ICON, Slider, grabber_icon, "grabber");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_ICON, Slider, grabber_hl_icon, "grabber_highlight");

@@ -154,6 +154,10 @@ class PopupMenu : public Popup {
 	int _get_item_height(int p_idx) const;
 	int _get_items_total_height() const;
 	Size2 _get_item_icon_size(int p_idx) const;
+	Ref<StyleBox> _get_check_style(bool p_radio, bool p_checked, bool p_disabled) const;
+	Ref<Texture2D> _get_check_icon(bool p_radio, bool p_checked, bool p_disabled) const;
+	Size2 _get_check_size(bool p_radio, bool p_checked, bool p_disabled) const;
+	Size2 _get_check_max_size() const;
 
 	void _shape_item(int p_idx) const;
 
@@ -222,6 +226,16 @@ class PopupMenu : public Popup {
 		Ref<Texture2D> radio_checked_disabled;
 		Ref<Texture2D> radio_unchecked;
 		Ref<Texture2D> radio_unchecked_disabled;
+
+		// Drawn instead of the check icons when they aren't empty, and animated with the style transitions.
+		Ref<StyleBox> checked_style;
+		Ref<StyleBox> checked_disabled_style;
+		Ref<StyleBox> unchecked_style;
+		Ref<StyleBox> unchecked_disabled_style;
+		Ref<StyleBox> radio_checked_style;
+		Ref<StyleBox> radio_checked_disabled_style;
+		Ref<StyleBox> radio_unchecked_style;
+		Ref<StyleBox> radio_unchecked_disabled_style;
 
 		Ref<Texture2D> search;
 		Ref<Texture2D> submenu;

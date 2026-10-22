@@ -647,10 +647,16 @@ void ColorPicker::_reset_sliders_theme() {
 	style_box_flat->set_content_margin(SIDE_TOP, 16 * theme_cache.base_scale);
 	style_box_flat->set_bg_color(Color(0.2, 0.23, 0.31).lerp(Color(0, 0, 0, 1), 0.3).clamp());
 
+	// The color bars are drawn over the sliders, so the grabbers stay arrows under them even when the theme draws grabbers with style boxes.
+	Ref<StyleBoxEmpty> style_box_empty(memnew(StyleBoxEmpty));
+
 	for (int i = 0; i < MODE_SLIDER_COUNT; i++) {
 		sliders[i]->begin_bulk_theme_override();
 		sliders[i]->add_theme_icon_override(SNAME("grabber"), theme_cache.bar_arrow);
 		sliders[i]->add_theme_icon_override(SNAME("grabber_highlight"), theme_cache.bar_arrow);
+		sliders[i]->add_theme_style_override(SNAME("grabber"), style_box_empty);
+		sliders[i]->add_theme_style_override(SNAME("grabber_highlight"), style_box_empty);
+		sliders[i]->add_theme_style_override(SNAME("grabber_disabled"), style_box_empty);
 		sliders[i]->add_theme_constant_override(SNAME("grabber_offset"), 8 * theme_cache.base_scale);
 		if (!colorize_sliders) {
 			sliders[i]->add_theme_style_override(SNAME("slider"), style_box_flat);
@@ -661,6 +667,9 @@ void ColorPicker::_reset_sliders_theme() {
 	alpha_slider->begin_bulk_theme_override();
 	alpha_slider->add_theme_icon_override(SNAME("grabber"), theme_cache.bar_arrow);
 	alpha_slider->add_theme_icon_override(SNAME("grabber_highlight"), theme_cache.bar_arrow);
+	alpha_slider->add_theme_style_override(SNAME("grabber"), style_box_empty);
+	alpha_slider->add_theme_style_override(SNAME("grabber_highlight"), style_box_empty);
+	alpha_slider->add_theme_style_override(SNAME("grabber_disabled"), style_box_empty);
 	alpha_slider->add_theme_constant_override(SNAME("grabber_offset"), 8 * theme_cache.base_scale);
 	if (!colorize_sliders) {
 		alpha_slider->add_theme_style_override(SNAME("slider"), style_box_flat);

@@ -309,6 +309,10 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_constant("check_v_offset", "CheckBox", 0);
 	theme->set_constant("outline_size", "CheckBox", 0);
 
+	for (const char *name : { "checked", "unchecked", "radio_checked", "radio_unchecked", "checked_disabled", "unchecked_disabled", "radio_checked_disabled", "radio_unchecked_disabled" }) {
+		theme->set_stylebox(name, "CheckBox", memnew(StyleBoxEmpty));
+	}
+
 	theme->set_color("checkbox_checked_color", "CheckBox", Color(1, 1, 1));
 	theme->set_color("checkbox_unchecked_color", "CheckBox", Color(1, 1, 1));
 
@@ -348,6 +352,10 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_constant("h_separation", "CheckButton", Math::round(4 * scale));
 	theme->set_constant("check_v_offset", "CheckButton", 0);
 	theme->set_constant("outline_size", "CheckButton", 0);
+
+	for (const char *name : { "checked", "unchecked", "checked_disabled", "unchecked_disabled", "checked_mirrored", "unchecked_mirrored", "checked_disabled_mirrored", "unchecked_disabled_mirrored" }) {
+		theme->set_stylebox(name, "CheckButton", memnew(StyleBoxEmpty));
+	}
 
 	theme->set_color("button_checked_color", "CheckButton", Color(1, 1, 1));
 	theme->set_color("button_unchecked_color", "CheckButton", Color(1, 1, 1));
@@ -589,6 +597,9 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_icon("grabber", "HSlider", icons["slider_grabber"]);
 	theme->set_icon("grabber_highlight", "HSlider", icons["slider_grabber_hl"]);
 	theme->set_icon("grabber_disabled", "HSlider", icons["slider_grabber_disabled"]);
+	for (const char *name : { "grabber", "grabber_highlight", "grabber_disabled" }) {
+		theme->set_stylebox(name, "HSlider", memnew(StyleBoxEmpty));
+	}
 	theme->set_icon("tick", "HSlider", icons["hslider_tick"]);
 
 	theme->set_constant("center_grabber", "HSlider", 0);
@@ -604,6 +615,9 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_icon("grabber", "VSlider", icons["slider_grabber"]);
 	theme->set_icon("grabber_highlight", "VSlider", icons["slider_grabber_hl"]);
 	theme->set_icon("grabber_disabled", "VSlider", icons["slider_grabber_disabled"]);
+	for (const char *name : { "grabber", "grabber_highlight", "grabber_disabled" }) {
+		theme->set_stylebox(name, "VSlider", memnew(StyleBoxEmpty));
+	}
 	theme->set_icon("tick", "VSlider", icons["vslider_tick"]);
 
 	theme->set_constant("center_grabber", "VSlider", 0);
@@ -776,6 +790,9 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_icon("radio_checked_disabled", "PopupMenu", icons["radio_checked_disabled"]);
 	theme->set_icon("radio_unchecked", "PopupMenu", icons["radio_unchecked"]);
 	theme->set_icon("radio_unchecked_disabled", "PopupMenu", icons["radio_unchecked_disabled"]);
+	for (const char *name : { "checked", "checked_disabled", "unchecked", "unchecked_disabled", "radio_checked", "radio_checked_disabled", "radio_unchecked", "radio_unchecked_disabled" }) {
+		theme->set_stylebox(name, "PopupMenu", memnew(StyleBoxEmpty));
+	}
 	theme->set_icon("submenu", "PopupMenu", icons["popup_menu_arrow_right"]);
 	theme->set_icon("submenu_mirrored", "PopupMenu", icons["popup_menu_arrow_left"]);
 	theme->set_icon("search", "PopupMenu", icons["search"]);
@@ -903,6 +920,9 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_icon("unchecked_disabled", "Tree", icons["unchecked_disabled"]);
 	theme->set_icon("indeterminate", "Tree", icons["indeterminate"]);
 	theme->set_icon("indeterminate_disabled", "Tree", icons["indeterminate_disabled"]);
+	for (const char *name : { "checked", "unchecked", "checked_disabled", "unchecked_disabled", "indeterminate", "indeterminate_disabled" }) {
+		theme->set_stylebox(name, "Tree", memnew(StyleBoxEmpty));
+	}
 	theme->set_icon("updown", "Tree", icons["updown"]);
 	theme->set_icon("select_arrow", "Tree", icons["option_button_arrow"]);
 	theme->set_icon("arrow", "Tree", icons["arrow_down"]);

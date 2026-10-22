@@ -47,5 +47,29 @@
 		<theme_item name="unchecked_mirrored" data_type="icon" type="Texture2D">
 			The icon to display when the [CheckButton] is unchecked (for right-to-left layouts).
 		</theme_item>
+		<theme_item name="checked" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is checked. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the switch.
+		</theme_item>
+		<theme_item name="checked_disabled" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is checked and disabled. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the switch.
+		</theme_item>
+		<theme_item name="checked_disabled_mirrored" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is checked and disabled, in right-to-left layouts. Used in right-to-left layouts when it isn't a [StyleBoxEmpty], instead of the style box without [code]_mirrored[/code].
+		</theme_item>
+		<theme_item name="checked_mirrored" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is checked, in right-to-left layouts. Used in right-to-left layouts when it isn't a [StyleBoxEmpty], instead of the style box without [code]_mirrored[/code].
+		</theme_item>
+		<theme_item name="unchecked" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is unchecked. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the switch.
+		</theme_item>
+		<theme_item name="unchecked_disabled" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is unchecked and disabled. When this style box isn't a [StyleBoxEmpty], it's drawn instead of the icon of the same name, and changes between the states with the style transitions. Its minimum size is the size of the switch.
+		</theme_item>
+		<theme_item name="unchecked_disabled_mirrored" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is unchecked and disabled, in right-to-left layouts. Used in right-to-left layouts when it isn't a [StyleBoxEmpty], instead of the style box without [code]_mirrored[/code].
+		</theme_item>
+		<theme_item name="unchecked_mirrored" data_type="style" type="StyleBox">
+			The style box of the switch when the [CheckButton] is unchecked, in right-to-left layouts. Used in right-to-left layouts when it isn't a [StyleBoxEmpty], instead of the style box without [code]_mirrored[/code].
+		</theme_item>
 	</theme_items>
 </class>
