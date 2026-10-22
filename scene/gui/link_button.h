@@ -47,6 +47,9 @@ public:
 private:
 	String text;
 	String xl_text;
+	Dictionary text_arguments;
+
+	void _update_translated_text();
 	Ref<TextLine> text_buf;
 	bool bbcode_enabled = false;
 	Ref<BBCodeText> bbcode;
@@ -96,6 +99,10 @@ public:
 
 	void set_text(const String &p_text);
 	String get_text() const;
+
+	void set_text_arguments(const Dictionary &p_arguments);
+	Dictionary get_text_arguments() const;
+	void set_text_argument(const String &p_name, const Variant &p_value);
 	void set_bbcode_enabled(bool p_enabled);
 	bool is_bbcode_enabled() const;
 	void set_uri(const String &p_uri);

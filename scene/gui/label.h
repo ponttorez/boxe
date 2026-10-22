@@ -42,6 +42,7 @@ private:
 	VerticalAlignment vertical_alignment = VERTICAL_ALIGNMENT_TOP;
 	String text;
 	String xl_text;
+	Dictionary text_arguments;
 	TextServer::AutowrapMode autowrap_mode = TextServer::AUTOWRAP_OFF;
 	BitField<TextServer::LineBreakFlag> autowrap_flags_trim = TextServer::BREAK_TRIM_START_EDGE_SPACES | TextServer::BREAK_TRIM_END_EDGE_SPACES;
 	BitField<TextServer::JustificationFlag> jst_flags = TextServer::JUSTIFICATION_WORD_BOUND | TextServer::JUSTIFICATION_KASHIDA | TextServer::JUSTIFICATION_SKIP_LAST_LINE | TextServer::JUSTIFICATION_DO_NOT_SKIP_SINGLE_LINE;
@@ -53,6 +54,8 @@ private:
 	bool bbcode_enabled = false;
 	mutable Ref<BBCodeText> bbcode;
 	TextEffectLayers effect_layers;
+
+	void _update_translated_text();
 
 	struct Paragraph {
 		bool lines_dirty = true;
@@ -141,6 +144,10 @@ public:
 
 	void set_text(const String &p_string);
 	String get_text() const;
+
+	void set_text_arguments(const Dictionary &p_arguments);
+	Dictionary get_text_arguments() const;
+	void set_text_argument(const String &p_name, const Variant &p_value);
 
 	void set_bbcode_enabled(bool p_enabled);
 	bool is_bbcode_enabled() const;

@@ -41,6 +41,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "core/object/class_db.h"
 #include "core/os/os.h"
 #include "core/string/string_builder.h"
+#include "core/string/translation_server.h"
 #include "scene/2d/canvas_group.h"
 #include "scene/gui/container.h"
 #include "scene/gui/scroll_container.h"
@@ -3736,6 +3737,23 @@ void Control::set_self_modulate(const Color &p_self_modulate) {
 
 void Control::set_redraw_on_self_modulate(bool p_enabled) {
 	data.redraw_on_self_modulate = p_enabled;
+}
+
+String Control::format_text_arguments(const String &p_translated, const Dictionary &p_arguments, const String &p_message) const {
+	if (p_arguments.is_empty()) {
+		return p_translated;
+	}
+	TranslationServer *ts = TranslationServer::get_singleton();
+	const Ref<TranslationDomain> domain = ts->get_or_add_domain(get_translation_domain());
+	String locale = domain->get_locale_override();
+	if (locale.is_empty()) {
+		locale = ts->get_locale();
+	}
+	// The text may come from the translation of the fallback locale.
+	if (can_auto_translate()) {
+		locale = domain->get_message_locale(p_message, _get_translation_context_with_override(StringName()));
+	}
+	return ts->format_arguments(p_translated, p_arguments, locale);
 }
 
 void Control::set_composite_enabled(bool p_enabled) {

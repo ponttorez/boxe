@@ -39,6 +39,16 @@
 		<link title="2D Dodge The Creeps Demo">https://godotengine.org/asset-library/asset/2712</link>
 		<link title="Operating System Testing Demo">https://godotengine.org/asset-library/asset/2789</link>
 	</tutorials>
+	<methods>
+		<method name="set_text_argument">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="value" type="Variant" />
+			<description>
+				Sets the [param value] of the argument [param name] in [member text_arguments] and updates the text.
+			</description>
+		</method>
+	</methods>
 	<members>
 		<member name="alignment" type="int" setter="set_text_alignment" getter="get_text_alignment" enum="HorizontalAlignment" default="1">
 			Text alignment policy for the button's text.
@@ -73,6 +83,16 @@
 		</member>
 		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
 			The button's text that will be displayed inside the button's area.
+		</member>
+		<member name="text_arguments" type="Dictionary" setter="set_text_arguments" getter="get_text_arguments" default="{}">
+			Arguments formatted in the translated [member text]. [code]{name}[/code] is replaced with the value of the [code]name[/code] argument, and [code]{name|form|form...}[/code] with the plural form for the number in the argument, chosen by the plural rules of the locale of the translated text. Untranslated texts use the rules of the [member ProjectSettings.internationalization/locale/fallback] locale. Write [code]{{[/code] and [code]}}[/code] for literal braces. Arguments that aren't set are left in the text. See [method TranslationServer.format_arguments].
+			The text isn't formatted when there are no arguments, so braces are shown as is.
+			[codeblock]
+			# With "You have {count} {count|apple|apples}." as the English text and "У тебя {count} {count|яблоко|яблока|яблок}." as the Russian text of the key.
+			$Button.text = "apples"
+			$Button.text_arguments = { "count": 3 }
+			[/codeblock]
+			[b]Note:[/b] Changing the returned dictionary doesn't update the text, use [method set_text_argument] or set the whole dictionary.
 		</member>
 		<member name="text_direction" type="int" setter="set_text_direction" getter="get_text_direction" enum="Control.TextDirection" default="0">
 			Base text writing direction.

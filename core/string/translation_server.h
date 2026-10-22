@@ -30,8 +30,11 @@
 
 #pragma once
 
+#include "core/os/mutex.h"
 #include "core/string/translation.h"
 #include "core/string/translation_domain.h"
+
+class PluralRules;
 
 class TranslationServer : public Object {
 	GDCLASS(TranslationServer, Object);
@@ -41,6 +44,10 @@ class TranslationServer : public Object {
 
 	static constexpr const char *SELECTED_LOCALE_PATH = "user://locale.cfg";
 	bool remember_selected_locale = false;
+
+	mutable Mutex plural_rules_mutex;
+	mutable HashMap<String, PluralRules *> plural_rules_cache;
+	int _get_plural_form(const String &p_locale, int p_n) const;
 	String _load_selected_locale() const;
 	void _save_selected_locale() const;
 
@@ -147,6 +154,7 @@ public:
 
 	StringName translate(const StringName &p_message, const StringName &p_context = "") const;
 	StringName translate_plural(const StringName &p_message, const StringName &p_message_plural, int p_n, const StringName &p_context = "") const;
+	String format_arguments(const String &p_text, const Dictionary &p_arguments, const String &p_locale = "") const;
 
 	StringName pseudolocalize(const StringName &p_message) const;
 
@@ -179,4 +187,5 @@ public:
 #endif // TOOLS_ENABLED
 
 	TranslationServer();
+	~TranslationServer();
 };

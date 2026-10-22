@@ -368,6 +368,46 @@ StringName TranslationDomain::translate(const StringName &p_message, const Strin
 	return pseudolocalization.enabled ? pseudolocalize(res) : res;
 }
 
+// The locale of the translation that get_message_from_translations() takes the message from, e.g. pt_BR for pt_PT.
+String TranslationDomain::_find_message_locale(const String &p_locale, const StringName &p_message, const StringName &p_context) const {
+	String res;
+	int best_score = 0;
+
+	for (const Ref<Translation> &E : translations) {
+		const int score = TranslationServer::get_singleton()->compare_locales(p_locale, E->get_locale());
+		if (score > 0 && score >= best_score) {
+			if (!E->get_message(p_message, p_context)) {
+				continue;
+			}
+			res = E->get_locale();
+			best_score = score;
+			if (score == 10) {
+				break; // Exact match, skip the rest.
+			}
+		}
+	}
+
+	return res;
+}
+
+String TranslationDomain::get_message_locale(const StringName &p_message, const StringName &p_context) const {
+	const String &locale = locale_override.is_empty() ? TranslationServer::get_singleton()->get_locale() : locale_override;
+	if (!enabled) {
+		return locale;
+	}
+	const String found = _find_message_locale(locale, p_message, p_context);
+	if (!found.is_empty()) {
+		return found;
+	}
+	// Untranslated messages are taken as written in the fallback locale.
+	const String &fallback = TranslationServer::get_singleton()->get_fallback_locale();
+	if (fallback.length() < 2) {
+		return locale;
+	}
+	const String found_fallback = _find_message_locale(fallback, p_message, p_context);
+	return found_fallback.is_empty() ? fallback : found_fallback;
+}
+
 StringName TranslationDomain::translate_plural(const StringName &p_message, const StringName &p_message_plural, int p_n, const StringName &p_context) const {
 	if (!enabled) {
 		return p_n == 1 ? p_message : p_message_plural;

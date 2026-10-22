@@ -7162,6 +7162,24 @@ void RichTextLabel::set_text(const String &p_bbcode) {
 	}
 }
 
+void RichTextLabel::set_text_arguments(const Dictionary &p_arguments) {
+	text_arguments = p_arguments;
+	if (!stack_externally_modified) {
+		_apply_translation();
+	}
+}
+
+Dictionary RichTextLabel::get_text_arguments() const {
+	return text_arguments;
+}
+
+void RichTextLabel::set_text_argument(const String &p_name, const Variant &p_value) {
+	text_arguments[p_name] = p_value;
+	if (!stack_externally_modified) {
+		_apply_translation();
+	}
+}
+
 void RichTextLabel::_apply_translation() {
 	if (text.is_empty()) {
 		return;
@@ -7169,7 +7187,7 @@ void RichTextLabel::_apply_translation() {
 
 	internal_stack_editing = true;
 
-	String xl_text = atr(text);
+	String xl_text = format_text_arguments(atr(text), text_arguments, text);
 	if (use_bbcode) {
 		parse_bbcode(xl_text);
 	} else { // Raw text.
@@ -7490,7 +7508,7 @@ void RichTextLabel::install_effect(const Variant effect) {
 void RichTextLabel::reload_effects() {
 	if (!stack_externally_modified && use_bbcode) {
 		internal_stack_editing = true;
-		parse_bbcode(atr(text));
+		parse_bbcode(format_text_arguments(atr(text), text_arguments, text));
 		internal_stack_editing = false;
 	}
 }
@@ -7592,6 +7610,9 @@ void RichTextLabel::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_parsed_text"), &RichTextLabel::get_parsed_text);
 	ClassDB::bind_method(D_METHOD("add_text", "text"), &RichTextLabel::add_text);
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &RichTextLabel::set_text);
+	ClassDB::bind_method(D_METHOD("set_text_arguments", "arguments"), &RichTextLabel::set_text_arguments);
+	ClassDB::bind_method(D_METHOD("get_text_arguments"), &RichTextLabel::get_text_arguments);
+	ClassDB::bind_method(D_METHOD("set_text_argument", "name", "value"), &RichTextLabel::set_text_argument);
 	ClassDB::bind_method(D_METHOD("add_spacer", "weight"), &RichTextLabel::add_spacer, DEFVAL(1.0));
 	ClassDB::bind_method(D_METHOD("add_hr", "width", "height", "color", "alignment", "width_in_percent", "height_in_percent"), &RichTextLabel::add_hr, DEFVAL(90), DEFVAL(2), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(HORIZONTAL_ALIGNMENT_CENTER), DEFVAL(true), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("add_image", "image", "width", "height", "color", "inline_align", "region", "key", "pad", "tooltip", "width_unit", "height_unit", "alt_text"), &RichTextLabel::add_image, DEFVAL(0), DEFVAL(0), DEFVAL(Color(1.0, 1.0, 1.0)), DEFVAL(INLINE_ALIGNMENT_CENTER), DEFVAL(Rect2()), DEFVAL(Variant()), DEFVAL(false), DEFVAL(String()), DEFVAL(IMAGE_UNIT_PIXEL), DEFVAL(IMAGE_UNIT_PIXEL), DEFVAL(String()));
@@ -7774,6 +7795,7 @@ void RichTextLabel::_bind_methods() {
 	// Note: set "bbcode_enabled" first, to avoid unnecessary "text" resets.
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_use_bbcode", "is_using_bbcode");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text", PROPERTY_HINT_MULTILINE_TEXT), "set_text", "get_text");
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "text_arguments", PROPERTY_HINT_DICTIONARY_TYPE, "String;Variant"), "set_text_arguments", "get_text_arguments");
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "fit_content"), "set_fit_content", "is_fit_content_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scroll_active"), "set_scroll_active", "is_scroll_active");

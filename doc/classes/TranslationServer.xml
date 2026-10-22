@@ -41,6 +41,20 @@
 				Returns the [Translation] instances in the main translation domain that match [param locale] (see [method compare_locales]). If [param exact] is [code]true[/code], only instances whose locale exactly equals [param locale] will be returned.
 			</description>
 		</method>
+		<method name="format_arguments" qualifiers="const">
+			<return type="String" />
+			<param index="0" name="text" type="String" />
+			<param index="1" name="arguments" type="Dictionary" />
+			<param index="2" name="locale" type="String" default="&quot;&quot;" />
+			<description>
+				Returns the [param text] with its arguments replaced by the values in [param arguments]. [code]{name}[/code] is replaced with the value of the [code]name[/code] argument, and [code]{name|form|form...}[/code] with one of the forms, chosen by the plural rules of the [param locale] for the number in the argument. A text with fewer forms than the locale uses the last one. Write [code]{{[/code] and [code]}}[/code] for literal braces. Arguments that aren't in [param arguments] are left in the text.
+				If [param locale] is empty, the current locale is used. Text controls such as [Label] format their translated text with their [code]text_arguments[/code].
+				[codeblock]
+				var text = TranslationServer.format_arguments("{name} has {count} {count|apple|apples}.", { "name": "Godot", "count": 3 })
+				print(text) # Prints "Godot has 3 apples."
+				[/codeblock]
+			</description>
+		</method>
 		<method name="format_number" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="number" type="String" />

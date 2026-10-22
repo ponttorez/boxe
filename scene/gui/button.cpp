@@ -185,7 +185,7 @@ void Button::_notification(int p_what) {
 		} break;
 
 		case NOTIFICATION_TRANSLATION_CHANGED: {
-			xl_text = _get_translated_text(text);
+			xl_text = format_text_arguments(_get_translated_text(text), text_arguments, text);
 			_shape();
 
 			update_minimum_size();
@@ -676,7 +676,7 @@ TextServer::OverrunBehavior Button::get_text_overrun_behavior() const {
 }
 
 void Button::set_text(const String &p_text) {
-	const String translated_text = _get_translated_text(p_text);
+	const String translated_text = format_text_arguments(_get_translated_text(p_text), text_arguments, p_text);
 	if (text == p_text && xl_text == translated_text) {
 		return;
 	}
@@ -692,6 +692,30 @@ void Button::set_text(const String &p_text) {
 
 String Button::get_text() const {
 	return text;
+}
+
+void Button::_update_translated_text() {
+	xl_text = format_text_arguments(_get_translated_text(text), text_arguments, text);
+	_shape();
+
+	update_configuration_warnings();
+	queue_accessibility_update();
+	queue_redraw();
+	update_minimum_size();
+}
+
+void Button::set_text_arguments(const Dictionary &p_arguments) {
+	text_arguments = p_arguments;
+	_update_translated_text();
+}
+
+Dictionary Button::get_text_arguments() const {
+	return text_arguments;
+}
+
+void Button::set_text_argument(const String &p_name, const Variant &p_value) {
+	text_arguments[p_name] = p_value;
+	_update_translated_text();
 }
 
 void Button::set_bbcode_enabled(bool p_enabled) {
@@ -890,6 +914,9 @@ VerticalAlignment Button::get_vertical_icon_alignment() const {
 void Button::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &Button::set_text);
 	ClassDB::bind_method(D_METHOD("get_text"), &Button::get_text);
+	ClassDB::bind_method(D_METHOD("set_text_arguments", "arguments"), &Button::set_text_arguments);
+	ClassDB::bind_method(D_METHOD("get_text_arguments"), &Button::get_text_arguments);
+	ClassDB::bind_method(D_METHOD("set_text_argument", "name", "value"), &Button::set_text_argument);
 	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &Button::set_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &Button::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("set_text_overrun_behavior", "overrun_behavior"), &Button::set_text_overrun_behavior);
@@ -918,6 +945,7 @@ void Button::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_expand_icon"), &Button::is_expand_icon);
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text", PROPERTY_HINT_MULTILINE_TEXT), "set_text", "get_text");
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "text_arguments", PROPERTY_HINT_DICTIONARY_TYPE, "String;Variant"), "set_text_arguments", "get_text_arguments");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "icon", PROPERTY_HINT_RESOURCE_TYPE, Texture2D::get_class_static()), "set_button_icon", "get_button_icon");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flat"), "set_flat", "is_flat");

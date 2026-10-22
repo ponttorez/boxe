@@ -39,6 +39,7 @@
 #include "core/os/main_loop.h"
 #include "core/os/os.h"
 #include "core/string/locales.h"
+#include "core/string/plural_rules.h"
 #include "core/variant/typed_array.h"
 
 void TranslationServer::init_locale_info() {
@@ -754,6 +755,7 @@ void TranslationServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("translate", "message", "context"), &TranslationServer::translate, DEFVAL(StringName()));
 	ClassDB::bind_method(D_METHOD("translate_plural", "message", "plural_message", "n", "context"), &TranslationServer::translate_plural, DEFVAL(StringName()));
+	ClassDB::bind_method(D_METHOD("format_arguments", "text", "arguments", "locale"), &TranslationServer::format_arguments, DEFVAL(String()));
 
 	ClassDB::bind_method(D_METHOD("add_translation", "translation"), &TranslationServer::add_translation);
 	ClassDB::bind_method(D_METHOD("remove_translation", "translation"), &TranslationServer::remove_translation);
@@ -803,6 +805,64 @@ void TranslationServer::load_project_translations(Ref<TranslationDomain> p_domai
 	}
 }
 
+int TranslationServer::_get_plural_form(const String &p_locale, int p_n) const {
+	MutexLock lock(plural_rules_mutex);
+	PluralRules **cached = plural_rules_cache.getptr(p_locale);
+	PluralRules *rules = cached ? *cached : nullptr;
+	if (!cached) {
+		rules = PluralRules::parse(get_plural_rules(p_locale));
+		if (!rules) {
+			rules = PluralRules::parse("nplurals=2; plural=(n != 1);");
+		}
+		plural_rules_cache[p_locale] = rules;
+	}
+	return rules ? rules->evaluate(p_n) : (p_n == 1 ? 0 : 1);
+}
+
+// Replaces "{name}" with an argument, and "{name|form|form...}" with the plural form for the number in the argument.
+String TranslationServer::format_arguments(const String &p_text, const Dictionary &p_arguments, const String &p_locale) const {
+	const String format_locale = p_locale.is_empty() ? get_locale() : standardize_locale(p_locale);
+	String result;
+	const int length = p_text.length();
+	int from = 0;
+	for (int i = 0; i < length; i++) {
+		const char32_t c = p_text[i];
+		if ((c == '{' || c == '}') && i + 1 < length && p_text[i + 1] == c) {
+			// Escaped brace.
+			result += p_text.substr(from, i + 1 - from);
+			i++;
+			from = i + 1;
+			continue;
+		}
+		if (c != '{') {
+			continue;
+		}
+		const int end = p_text.find_char('}', i + 1);
+		if (end < 0) {
+			break;
+		}
+		const Vector<String> parts = p_text.substr(i + 1, end - i - 1).split("|");
+		const String name = parts[0].strip_edges();
+		if (!p_arguments.has(name)) {
+			// Kept, so missing arguments are seen.
+			continue;
+		}
+		result += p_text.substr(from, i - from);
+		const Variant value = p_arguments[name];
+		if (parts.size() == 1) {
+			result += value.stringify();
+		} else {
+			const int n = Math::abs(value.get_type() == Variant::STRING || value.get_type() == Variant::STRING_NAME ? String(value).to_int() : int(value));
+			const int form = CLAMP(_get_plural_form(format_locale, n), 0, parts.size() - 2);
+			result += parts[form + 1];
+		}
+		i = end;
+		from = end + 1;
+	}
+	result += p_text.substr(from);
+	return result;
+}
+
 TranslationServer::TranslationServer() {
 	singleton = this;
 
@@ -815,4 +875,12 @@ TranslationServer::TranslationServer() {
 #endif // TOOLS_ENABLED
 
 	init_locale_info();
+}
+
+TranslationServer::~TranslationServer() {
+	for (KeyValue<String, PluralRules *> &E : plural_rules_cache) {
+		if (E.value) {
+			memdelete(E.value);
+		}
+	}
 }
