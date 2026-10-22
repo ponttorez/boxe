@@ -76,11 +76,20 @@
 		<theme_item name="tick" data_type="icon" type="Texture2D">
 			The texture for the ticks, visible when [member Slider.tick_count] is greater than 0.
 		</theme_item>
+		<theme_item name="grabber" data_type="style" type="StyleBox">
+			The style box of the grabber. If one of the grabber style boxes isn't a [StyleBoxEmpty], the grabber is drawn with them instead of the icons, and changes between the states with the style transitions. It then has the largest minimum size of these style boxes in every state, and a [StyleBoxEmpty] draws nothing.
+		</theme_item>
 		<theme_item name="grabber_area" data_type="style" type="StyleBox">
 			The background of the area to the left or bottom of the grabber.
 		</theme_item>
 		<theme_item name="grabber_area_highlight" data_type="style" type="StyleBox">
 			The background of the area to the left or bottom of the grabber that displays when it's being hovered or focused.
+		</theme_item>
+		<theme_item name="grabber_disabled" data_type="style" type="StyleBox">
+			The style box of the grabber when the slider isn't editable, see [theme_item grabber]. If it's a [StyleBoxEmpty], [theme_item grabber] is used instead.
+		</theme_item>
+		<theme_item name="grabber_highlight" data_type="style" type="StyleBox">
+			The style box of the grabber when it's hovered or focused, see [theme_item grabber]. If it's a [StyleBoxEmpty], [theme_item grabber] is used instead.
 		</theme_item>
 		<theme_item name="slider" data_type="style" type="StyleBox">
 			The background for the whole slider. Affects the height or width of the [theme_item grabber_area].

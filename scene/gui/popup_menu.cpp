@@ -274,7 +274,7 @@ Size2 PopupMenu::_get_contents_minimum_size() const {
 
 	body_max_w = theme_cache.item_start_padding + body_max_w + accel_max_w + theme_cache.item_end_padding;
 
-	const int check_w = MAX(theme_cache.checked->get_width(), theme_cache.radio_checked->get_width());
+	const int check_w = _get_check_max_size().width;
 	if (gutter_compact) {
 		body_max_w += MAX(icon_max_w, check_w) + theme_cache.h_separation;
 	} else {
@@ -305,13 +305,70 @@ Size2 PopupMenu::_get_contents_minimum_size() const {
 	return minsize;
 }
 
+// The checks are drawn with style boxes instead of icons when the theme has any.
+bool PopupMenu::_is_check_styled() const {
+	for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_style, theme_cache.unchecked_disabled_style, theme_cache.radio_checked_style, theme_cache.radio_checked_disabled_style, theme_cache.radio_unchecked_style, theme_cache.radio_unchecked_disabled_style }) {
+		if (!StyleTransitions::draws_nothing(style)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// The style box of a check. A StyleBoxEmpty draws nothing, except for disabled items, which use the style boxes of enabled ones then.
+Ref<StyleBox> PopupMenu::_get_check_style(bool p_radio, bool p_checked, bool p_disabled) const {
+	if (p_disabled) {
+		const Ref<StyleBox> disabled_style = p_radio ? (p_checked ? theme_cache.radio_checked_disabled_style : theme_cache.radio_unchecked_disabled_style) : (p_checked ? theme_cache.checked_disabled_style : theme_cache.unchecked_disabled_style);
+		if (!StyleTransitions::draws_nothing(disabled_style)) {
+			return disabled_style;
+		}
+	}
+	return p_radio ? (p_checked ? theme_cache.radio_checked_style : theme_cache.radio_unchecked_style) : (p_checked ? theme_cache.checked_style : theme_cache.unchecked_style);
+}
+
+Ref<Texture2D> PopupMenu::_get_check_icon(bool p_radio, bool p_checked, bool p_disabled) const {
+	if (p_radio) {
+		return p_checked ? (p_disabled ? theme_cache.radio_checked_disabled : theme_cache.radio_checked) : (p_disabled ? theme_cache.radio_unchecked_disabled : theme_cache.radio_unchecked);
+	}
+	return p_checked ? (p_disabled ? theme_cache.checked_disabled : theme_cache.checked) : (p_disabled ? theme_cache.unchecked_disabled : theme_cache.unchecked);
+}
+
+// Checks drawn with style boxes have the same size in every state, so they don't jump when they change.
+Size2 PopupMenu::_get_check_size(bool p_radio, bool p_checked, bool p_disabled) const {
+	if (_is_check_styled()) {
+		return _get_check_max_size();
+	}
+	const Ref<Texture2D> icon = _get_check_icon(p_radio, p_checked, p_disabled);
+	return icon.is_valid() ? icon->get_size() : Size2();
+}
+
+// The size of the gutter of the checks, for all the kinds of checks.
+Size2 PopupMenu::_get_check_max_size() const {
+	Size2 check_size;
+	if (_is_check_styled()) {
+		for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_style, theme_cache.unchecked_disabled_style, theme_cache.radio_checked_style, theme_cache.radio_checked_disabled_style, theme_cache.radio_unchecked_style, theme_cache.radio_unchecked_disabled_style }) {
+			if (style.is_valid()) {
+				check_size = check_size.max(style->get_minimum_size());
+			}
+		}
+		return check_size;
+	}
+	for (int i = 0; i < 8; i++) {
+		const Ref<Texture2D> icon = _get_check_icon(i & 1, i & 2, i & 4);
+		if (icon.is_valid()) {
+			check_size = check_size.max(icon->get_size());
+		}
+	}
+	return check_size;
+}
+
 int PopupMenu::_get_item_height(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, items.size(), 0);
 
 	Size2 icon_size = _get_item_icon_size(p_idx);
 	int icon_height = icon_size.height;
 	if (items[p_idx].checkable_type && !items[p_idx].separator) {
-		icon_height = MAX(icon_height, MAX(theme_cache.checked->get_height(), theme_cache.radio_checked->get_height()));
+		icon_height = MAX(icon_height, _get_check_max_size().height);
 	}
 
 	int text_height = items[p_idx].text_buf->get_size().height;
@@ -886,9 +943,6 @@ void PopupMenu::_draw_items() {
 
 	// Space between the item content and the sides of popup menu.
 	bool rtl = control->is_layout_rtl();
-	// In Item::checkable_type enum order (less the non-checkable member), with disabled repeated at the end.
-	Ref<Texture2D> check[] = { theme_cache.checked, theme_cache.radio_checked, theme_cache.checked_disabled, theme_cache.radio_checked_disabled };
-	Ref<Texture2D> uncheck[] = { theme_cache.unchecked, theme_cache.radio_unchecked, theme_cache.unchecked_disabled, theme_cache.radio_unchecked_disabled };
 	Ref<Texture2D> submenu;
 	if (rtl) {
 		submenu = theme_cache.submenu_mirrored;
@@ -918,10 +972,7 @@ void PopupMenu::_draw_items() {
 		}
 	}
 	if (has_check_gutter) {
-		for (int i = 0; i < 4; i++) {
-			check_max_w = MAX(check_max_w, check[i]->get_width());
-			check_max_w = MAX(check_max_w, uncheck[i]->get_width());
-		}
+		check_max_w = _get_check_max_size().width;
 	}
 
 	Point2 ofs;
@@ -989,12 +1040,19 @@ void PopupMenu::_draw_items() {
 
 		// Checkboxes
 		if (items[i].checkable_type && !items[i].separator) {
-			int disabled = int(items[i].disabled) * 2;
-			Texture2D *icon = (items[i].checked ? check[items[i].checkable_type - 1 + disabled] : uncheck[items[i].checkable_type - 1 + disabled]).ptr();
+			const bool radio = items[i].checkable_type == Item::CHECKABLE_TYPE_RADIO_BUTTON;
+			const Size2 check_size = _get_check_size(radio, items[i].checked, items[i].disabled);
+			Point2 check_pos = item_ofs + Point2(0, Math::floor((h - check_size.height) / 2.0));
 			if (rtl) {
-				icon->draw(ci, Size2(control->get_size().width - item_ofs.x - icon->get_width(), item_ofs.y) + Point2(0, Math::floor((h - icon->get_height()) / 2.0)), icon_color);
+				check_pos.x = control->get_size().width - item_ofs.x - check_size.width;
+			}
+			if (_is_check_styled()) {
+				const Ref<StyleBox> check_style = control->get_transition_style(StyleTransitions::Key(StyleTransitions::PART_ITEM_CHECK, i), _get_check_style(radio, items[i].checked, items[i].disabled));
+				if (check_style.is_valid()) {
+					check_style->draw(ci, Rect2(check_pos, check_size));
+				}
 			} else {
-				icon->draw(ci, item_ofs + Point2(0, Math::floor((h - icon->get_height()) / 2.0)), icon_color);
+				_get_check_icon(radio, items[i].checked, items[i].disabled)->draw(ci, check_pos, icon_color);
 			}
 		}
 
@@ -3573,6 +3631,15 @@ void PopupMenu::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, PopupMenu, radio_checked_disabled);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, PopupMenu, radio_unchecked);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, PopupMenu, radio_unchecked_disabled);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, checked_style, "checked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, checked_disabled_style, "checked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, unchecked_style, "unchecked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, unchecked_disabled_style, "unchecked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, radio_checked_style, "radio_checked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, radio_checked_disabled_style, "radio_checked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, radio_unchecked_style, "radio_unchecked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, PopupMenu, radio_unchecked_disabled_style, "radio_unchecked_disabled");
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, PopupMenu, search);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, PopupMenu, submenu);

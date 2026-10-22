@@ -30,10 +30,56 @@
 
 #include "check_button.h"
 
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
+// The switch is drawn with style boxes instead of icons when the theme has any.
+bool CheckButton::_is_switch_styled() const {
+	for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.unchecked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_disabled_style, theme_cache.checked_mirrored_style, theme_cache.unchecked_mirrored_style, theme_cache.checked_disabled_mirrored_style, theme_cache.unchecked_disabled_mirrored_style }) {
+		if (!StyleTransitions::draws_nothing(style)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// The style box of the switch for the state. A StyleBoxEmpty draws nothing, except in the disabled and mirrored states,
+// which use the style boxes of the enabled and not mirrored ones then. Right-to-left layouts use the mirrored style boxes.
+Ref<StyleBox> CheckButton::_get_switch_style(bool p_pressed) const {
+	if (is_layout_rtl()) {
+		if (is_disabled()) {
+			const Ref<StyleBox> style = p_pressed ? theme_cache.checked_disabled_mirrored_style : theme_cache.unchecked_disabled_mirrored_style;
+			if (!StyleTransitions::draws_nothing(style)) {
+				return style;
+			}
+		}
+		const Ref<StyleBox> style = p_pressed ? theme_cache.checked_mirrored_style : theme_cache.unchecked_mirrored_style;
+		if (!StyleTransitions::draws_nothing(style)) {
+			return style;
+		}
+	}
+	if (is_disabled()) {
+		const Ref<StyleBox> style = p_pressed ? theme_cache.checked_disabled_style : theme_cache.unchecked_disabled_style;
+		if (!StyleTransitions::draws_nothing(style)) {
+			return style;
+		}
+	}
+	return p_pressed ? theme_cache.checked_style : theme_cache.unchecked_style;
+}
+
 Size2 CheckButton::get_icon_size() const {
+	if (_is_switch_styled()) {
+		// The largest style box in any state, so the switch doesn't change its size or move the text.
+		Size2 style_size;
+		for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.unchecked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_disabled_style, theme_cache.checked_mirrored_style, theme_cache.unchecked_mirrored_style, theme_cache.checked_disabled_mirrored_style, theme_cache.unchecked_disabled_mirrored_style }) {
+			if (style.is_valid()) {
+				style_size = style_size.max(style->get_minimum_size());
+			}
+		}
+		return style_size;
+	}
+
 	Ref<Texture2D> on_tex;
 	Ref<Texture2D> off_tex;
 
@@ -140,7 +186,12 @@ void CheckButton::_notification(int p_what) {
 			}
 			ofs.y = (get_size().height - tex_size.height) / 2 + theme_cache.check_v_offset;
 
-			if (is_pressed()) {
+			if (_is_switch_styled()) {
+				const Ref<StyleBox> style = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_CHECK), _get_switch_style(is_pressed()));
+				if (style.is_valid()) {
+					style->draw(ci, Rect2(ofs, tex_size));
+				}
+			} else if (is_pressed()) {
 				on_tex->draw_rect(ci, Rect2(ofs, _fit_icon_size(on_tex->get_size())), false, theme_cache.button_checked_color);
 			} else {
 				off_tex->draw_rect(ci, Rect2(ofs, _fit_icon_size(off_tex->get_size())), false, theme_cache.button_unchecked_color);
@@ -162,6 +213,15 @@ void CheckButton::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, CheckButton, unchecked_mirrored);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, CheckButton, checked_disabled_mirrored);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, CheckButton, unchecked_disabled_mirrored);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, checked_style, "checked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, unchecked_style, "unchecked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, checked_disabled_style, "checked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, unchecked_disabled_style, "unchecked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, checked_mirrored_style, "checked_mirrored");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, unchecked_mirrored_style, "unchecked_mirrored");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, checked_disabled_mirrored_style, "checked_disabled_mirrored");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckButton, unchecked_disabled_mirrored_style, "unchecked_disabled_mirrored");
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, CheckButton, button_checked_color);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, CheckButton, button_unchecked_color);

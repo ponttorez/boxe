@@ -65,6 +65,8 @@ public:
 		PART_CELL_BUTTON_COLOR,
 		PART_BUTTON,
 		PART_HEADER,
+		PART_CHECK,
+		PART_ITEM_CHECK,
 		// Parts animated by scripts, see Control.get_transition_style().
 		PART_SCRIPT,
 	};
@@ -142,6 +144,9 @@ public:
 	Color get_color(const Key &p_key, const Color &p_target, const Ref<StyleBox> &p_timing);
 
 	void clear();
+
+	// Whether the style box shows nothing: it's null or a StyleBoxEmpty. A StyleBoxEmpty fades like a missing style box, but keeps its content margins.
+	static bool draws_nothing(const Ref<StyleBox> &p_style_box);
 
 	// Moves all transitions forward in time without waiting for frames, e.g. in tests.
 	static void skip_time(double p_seconds);

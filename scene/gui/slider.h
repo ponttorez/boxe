@@ -68,6 +68,9 @@ private:
 		Ref<StyleBox> slider_style;
 		Ref<StyleBox> grabber_area_style;
 		Ref<StyleBox> grabber_area_hl_style;
+		Ref<StyleBox> grabber_style;
+		Ref<StyleBox> grabber_hl_style;
+		Ref<StyleBox> grabber_disabled_style;
 
 		Ref<Texture2D> grabber_icon;
 		Ref<Texture2D> grabber_hl_icon;
@@ -78,6 +81,12 @@ private:
 		int grabber_offset = 0;
 		int tick_offset = 0;
 	} theme_cache;
+
+	bool _is_grabber_styled() const;
+	Ref<StyleBox> _get_grabber_style(bool p_highlighted) const;
+	Ref<Texture2D> _get_grabber_icon(bool p_highlighted) const;
+	Size2i _get_grabber_size(bool p_highlighted) const;
+	void _draw_grabber(RID p_ci, const Point2i &p_pos, bool p_highlighted);
 
 protected:
 	bool ticks_on_borders = false;

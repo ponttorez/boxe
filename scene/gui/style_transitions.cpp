@@ -35,8 +35,7 @@
 #include "scene/main/canvas_item.h"
 #include "scene/main/scene_tree.h"
 
-// A StyleBoxEmpty draws nothing, so it fades like a missing style box, but keeps its content margins.
-static bool _draws_nothing(const Ref<StyleBox> &p_style_box) {
+bool StyleTransitions::draws_nothing(const Ref<StyleBox> &p_style_box) {
 	return p_style_box.is_null() || Object::cast_to<StyleBoxEmpty>(p_style_box.ptr());
 }
 
@@ -173,14 +172,14 @@ Ref<StyleBox> StyleTransitions::get_style(const Key &p_key, const Ref<StyleBox> 
 		track->target = p_target;
 
 		// The transition into a state is timed by its style box, and fading out by the style box that disappears.
-		const Ref<StyleBox> timing = _draws_nothing(p_target) ? previous : p_target;
-		if (!_is_enabled() || timing.is_null() || timing->get_transition_duration() <= 0.0 || (_draws_nothing(current) && _draws_nothing(p_target))) {
+		const Ref<StyleBox> timing = draws_nothing(p_target) ? previous : p_target;
+		if (!_is_enabled() || timing.is_null() || timing->get_transition_duration() <= 0.0 || (draws_nothing(current) && draws_nothing(p_target))) {
 			return p_target;
 		}
 
 		Ref<StyleBox> from;
 		Ref<StyleBox> to;
-		if (_draws_nothing(current)) {
+		if (draws_nothing(current)) {
 			from = p_target->duplicate_for_transition();
 			if (!from->make_transparent()) {
 				return p_target;
@@ -191,7 +190,7 @@ Ref<StyleBox> StyleTransitions::get_style(const Key &p_key, const Ref<StyleBox> 
 			to = p_target;
 		} else {
 			from = current->duplicate_for_transition();
-			if (!_draws_nothing(p_target)) {
+			if (!draws_nothing(p_target)) {
 				to = p_target;
 			} else {
 				to = current->duplicate_for_transition();
@@ -273,7 +272,7 @@ Color StyleTransitions::get_color(const Key &p_key, const Color &p_target, const
 		track->timing.unref();
 
 		// Timed like the style box of the state, which fades out with the style box that disappears when it draws nothing.
-		const Ref<StyleBox> timing = _draws_nothing(p_timing) ? track->target_timing : p_timing;
+		const Ref<StyleBox> timing = draws_nothing(p_timing) ? track->target_timing : p_timing;
 		track->target_timing = p_timing;
 		if (!_is_enabled() || timing.is_null() || timing->get_transition_duration() <= 0.0) {
 			return p_target;

@@ -49,9 +49,22 @@ class CheckBox : public Button {
 		Ref<Texture2D> radio_checked_disabled;
 		Ref<Texture2D> radio_unchecked_disabled;
 
+		// Drawn instead of the icons when any of them isn't empty, and animated with the style transitions.
+		Ref<StyleBox> checked_style;
+		Ref<StyleBox> unchecked_style;
+		Ref<StyleBox> radio_checked_style;
+		Ref<StyleBox> radio_unchecked_style;
+		Ref<StyleBox> checked_disabled_style;
+		Ref<StyleBox> unchecked_disabled_style;
+		Ref<StyleBox> radio_checked_disabled_style;
+		Ref<StyleBox> radio_unchecked_disabled_style;
+
 		Color checkbox_checked_color;
 		Color checkbox_unchecked_color;
 	} theme_cache;
+
+	bool _is_check_styled() const;
+	Ref<StyleBox> _get_check_style(bool p_pressed) const;
 
 protected:
 	Size2 get_icon_size() const;

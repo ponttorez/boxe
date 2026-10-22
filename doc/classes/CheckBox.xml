@@ -48,5 +48,29 @@
 		<theme_item name="unchecked_disabled" data_type="icon" type="Texture2D">
 			The check icon to display when the [CheckBox] is unchecked and is disabled.
 		</theme_item>
+		<theme_item name="checked" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is checked. If one of the check style boxes isn't a [StyleBoxEmpty], the check is drawn with them instead of the icons, and changes between the states with the style transitions. It then has the largest minimum size of these style boxes in every state, and a [StyleBoxEmpty] draws nothing. [theme_item checkbox_checked_color] and [theme_item checkbox_unchecked_color] don't tint them, set the colors in the style boxes instead.
+		</theme_item>
+		<theme_item name="checked_disabled" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is checked and disabled, see [theme_item checked]. If it's a [StyleBoxEmpty], [theme_item checked] is used instead.
+		</theme_item>
+		<theme_item name="radio_checked" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is configured as a radio button and checked. If one of the check style boxes isn't a [StyleBoxEmpty], the check is drawn with them instead of the icons, and changes between the states with the style transitions. It then has the largest minimum size of these style boxes in every state, and a [StyleBoxEmpty] draws nothing. [theme_item checkbox_checked_color] and [theme_item checkbox_unchecked_color] don't tint them, set the colors in the style boxes instead.
+		</theme_item>
+		<theme_item name="radio_checked_disabled" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is configured as a radio button, checked and disabled, see [theme_item radio_checked]. If it's a [StyleBoxEmpty], [theme_item radio_checked] is used instead.
+		</theme_item>
+		<theme_item name="radio_unchecked" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is configured as a radio button and unchecked. If one of the check style boxes isn't a [StyleBoxEmpty], the check is drawn with them instead of the icons, and changes between the states with the style transitions. It then has the largest minimum size of these style boxes in every state, and a [StyleBoxEmpty] draws nothing. [theme_item checkbox_checked_color] and [theme_item checkbox_unchecked_color] don't tint them, set the colors in the style boxes instead.
+		</theme_item>
+		<theme_item name="radio_unchecked_disabled" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is configured as a radio button, unchecked and disabled, see [theme_item radio_unchecked]. If it's a [StyleBoxEmpty], [theme_item radio_unchecked] is used instead.
+		</theme_item>
+		<theme_item name="unchecked" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is unchecked. If one of the check style boxes isn't a [StyleBoxEmpty], the check is drawn with them instead of the icons, and changes between the states with the style transitions. It then has the largest minimum size of these style boxes in every state, and a [StyleBoxEmpty] draws nothing. [theme_item checkbox_checked_color] and [theme_item checkbox_unchecked_color] don't tint them, set the colors in the style boxes instead.
+		</theme_item>
+		<theme_item name="unchecked_disabled" data_type="style" type="StyleBox">
+			The style box of the check when the [CheckBox] is unchecked and disabled, see [theme_item unchecked]. If it's a [StyleBoxEmpty], [theme_item unchecked] is used instead.
+		</theme_item>
 	</theme_items>
 </class>

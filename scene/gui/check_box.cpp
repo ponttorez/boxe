@@ -30,10 +30,43 @@
 
 #include "check_box.h"
 
+#include "scene/gui/style_transitions.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 
+// The check is drawn with style boxes instead of icons when the theme has any.
+bool CheckBox::_is_check_styled() const {
+	for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.unchecked_style, theme_cache.radio_checked_style, theme_cache.radio_unchecked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_disabled_style, theme_cache.radio_checked_disabled_style, theme_cache.radio_unchecked_disabled_style }) {
+		if (!StyleTransitions::draws_nothing(style)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// The style box of the check for the state. A StyleBoxEmpty draws nothing, except in the disabled states, which use the style boxes of the enabled ones then.
+Ref<StyleBox> CheckBox::_get_check_style(bool p_pressed) const {
+	if (is_disabled()) {
+		const Ref<StyleBox> disabled_style = is_radio() ? (p_pressed ? theme_cache.radio_checked_disabled_style : theme_cache.radio_unchecked_disabled_style) : (p_pressed ? theme_cache.checked_disabled_style : theme_cache.unchecked_disabled_style);
+		if (!StyleTransitions::draws_nothing(disabled_style)) {
+			return disabled_style;
+		}
+	}
+	return is_radio() ? (p_pressed ? theme_cache.radio_checked_style : theme_cache.radio_unchecked_style) : (p_pressed ? theme_cache.checked_style : theme_cache.unchecked_style);
+}
+
 Size2 CheckBox::get_icon_size() const {
+	if (_is_check_styled()) {
+		// The largest style box in any state, so the check doesn't change its size or move the text.
+		Size2 style_size;
+		for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.unchecked_style, theme_cache.radio_checked_style, theme_cache.radio_unchecked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_disabled_style, theme_cache.radio_checked_disabled_style, theme_cache.radio_unchecked_disabled_style }) {
+			if (style.is_valid()) {
+				style_size = style_size.max(style->get_minimum_size());
+			}
+		}
+		return style_size;
+	}
+
 	Size2 tex_size = Size2(0, 0);
 	if (theme_cache.checked.is_valid()) {
 		tex_size = theme_cache.checked->get_size();
@@ -137,7 +170,12 @@ void CheckBox::_notification(int p_what) {
 			}
 			ofs.y = int((get_size().height - get_icon_size().height) / 2) + theme_cache.check_v_offset;
 
-			if (is_pressed()) {
+			if (_is_check_styled()) {
+				const Ref<StyleBox> style = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_CHECK), _get_check_style(is_pressed()));
+				if (style.is_valid()) {
+					style->draw(ci, Rect2(ofs, get_icon_size()));
+				}
+			} else if (is_pressed()) {
 				on_tex->draw_rect(ci, Rect2(ofs, _fit_icon_size(on_tex->get_size())), false, theme_cache.checkbox_checked_color);
 			} else {
 				off_tex->draw_rect(ci, Rect2(ofs, _fit_icon_size(off_tex->get_size())), false, theme_cache.checkbox_unchecked_color);
@@ -163,6 +201,15 @@ void CheckBox::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, CheckBox, unchecked_disabled);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, CheckBox, radio_checked_disabled);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, CheckBox, radio_unchecked_disabled);
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, checked_style, "checked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, unchecked_style, "unchecked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, radio_checked_style, "radio_checked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, radio_unchecked_style, "radio_unchecked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, checked_disabled_style, "checked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, unchecked_disabled_style, "unchecked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, radio_checked_disabled_style, "radio_checked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, CheckBox, radio_unchecked_disabled_style, "radio_unchecked_disabled");
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, CheckBox, checkbox_checked_color);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, CheckBox, checkbox_unchecked_color);

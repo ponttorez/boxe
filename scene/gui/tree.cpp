@@ -1761,7 +1761,7 @@ Size2 TreeItem::get_minimum_size(int p_column) {
 
 		// Icon.
 		if (cell.mode == CELL_MODE_CHECK) {
-			Size2i check_size = parent_tree->theme_cache.checked->get_size();
+			Size2i check_size = parent_tree->_get_check_size();
 			size.width += check_size.width + parent_tree->theme_cache.h_separation;
 			content_height = MAX(content_height, check_size.height);
 		} else if (cell.mode == CELL_MODE_RANGE) {
@@ -2064,6 +2064,48 @@ Size2 Tree::_get_cell_icon_size(const TreeItem::Cell &p_cell) const {
 	}
 
 	return icon_size;
+}
+
+// The checks are drawn with style boxes instead of icons when the theme has any.
+bool Tree::_is_check_styled() const {
+	for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.unchecked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_disabled_style, theme_cache.indeterminate_style, theme_cache.indeterminate_disabled_style }) {
+		if (!StyleTransitions::draws_nothing(style)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// The style box of the check of the cell. A StyleBoxEmpty draws nothing, except for cells that aren't editable, which use the style boxes of editable ones then.
+Ref<StyleBox> Tree::_get_check_style(const TreeItem::Cell &p_cell) const {
+	if (!p_cell.editable) {
+		const Ref<StyleBox> disabled_style = p_cell.indeterminate ? theme_cache.indeterminate_disabled_style : (p_cell.checked ? theme_cache.checked_disabled_style : theme_cache.unchecked_disabled_style);
+		if (!StyleTransitions::draws_nothing(disabled_style)) {
+			return disabled_style;
+		}
+	}
+	return p_cell.indeterminate ? theme_cache.indeterminate_style : (p_cell.checked ? theme_cache.checked_style : theme_cache.unchecked_style);
+}
+
+Ref<Texture2D> Tree::_get_check_icon(const TreeItem::Cell &p_cell) const {
+	if (p_cell.editable) {
+		return p_cell.indeterminate ? theme_cache.indeterminate : (p_cell.checked ? theme_cache.checked : theme_cache.unchecked);
+	}
+	return p_cell.indeterminate ? theme_cache.indeterminate_disabled : (p_cell.checked ? theme_cache.checked_disabled : theme_cache.unchecked_disabled);
+}
+
+// Checks drawn with style boxes have the same size in every state, so they don't jump when they change.
+Size2i Tree::_get_check_size() const {
+	if (!_is_check_styled()) {
+		return theme_cache.checked->get_size();
+	}
+	Size2 style_size;
+	for (const Ref<StyleBox> &style : { theme_cache.checked_style, theme_cache.unchecked_style, theme_cache.checked_disabled_style, theme_cache.unchecked_disabled_style, theme_cache.indeterminate_style, theme_cache.indeterminate_disabled_style }) {
+		if (style.is_valid()) {
+			style_size = style_size.max(style->get_minimum_size());
+		}
+	}
+	return Size2i(style_size.ceil());
 }
 
 int Tree::compute_item_height(TreeItem *p_item) const {
@@ -2554,28 +2596,20 @@ int Tree::draw_item(const Point2i &p_pos, const Point2 &p_draw_ofs, const Size2 
 					draw_item_rect(p_item->cells[i], item_rect, cell_color, icon_col, outline_size, font_outline_color);
 				} break;
 				case TreeItem::CELL_MODE_CHECK: {
+					const Size2i check_size = _get_check_size();
 					Point2i check_ofs = item_rect.position;
-					check_ofs.y += Math::floor((real_t)(item_rect.size.y - theme_cache.checked->get_height()) / 2);
+					check_ofs.y += Math::floor((real_t)(item_rect.size.y - check_size.height) / 2);
 
-					if (p_item->cells[i].editable) {
-						if (p_item->cells[i].indeterminate) {
-							theme_cache.indeterminate->draw(ci, check_ofs);
-						} else if (p_item->cells[i].checked) {
-							theme_cache.checked->draw(ci, check_ofs);
-						} else {
-							theme_cache.unchecked->draw(ci, check_ofs);
+					if (_is_check_styled()) {
+						const Ref<StyleBox> check_style = get_transition_style(StyleTransitions::Key(StyleTransitions::PART_CHECK, item_key, i), _get_check_style(p_item->cells[i]));
+						if (check_style.is_valid()) {
+							check_style->draw(ci, Rect2(check_ofs, check_size));
 						}
 					} else {
-						if (p_item->cells[i].indeterminate) {
-							theme_cache.indeterminate_disabled->draw(ci, check_ofs);
-						} else if (p_item->cells[i].checked) {
-							theme_cache.checked_disabled->draw(ci, check_ofs);
-						} else {
-							theme_cache.unchecked_disabled->draw(ci, check_ofs);
-						}
+						_get_check_icon(p_item->cells[i])->draw(ci, check_ofs);
 					}
 
-					int check_w = theme_cache.checked->get_width() + theme_cache.check_h_separation;
+					int check_w = check_size.width + theme_cache.check_h_separation;
 
 					text_pos.x += check_w;
 
@@ -3290,7 +3324,7 @@ int Tree::propagate_mouse_event(const Point2i &p_pos, int x_ofs, int y_ofs, int 
 			case TreeItem::CELL_MODE_CHECK: {
 				bring_up_editor = false; // Checkboxes are not edited with editor.
 				if (force_edit_checkbox_only_on_checkbox) {
-					if (x < theme_cache.checked->get_width()) {
+					if (x < _get_check_size().width) {
 						p_item->set_checked(col, !c.checked);
 						item_edited(col, p_item, p_button);
 					}
@@ -7380,6 +7414,12 @@ void Tree::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, Tree, button_hover);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, Tree, button_pressed);
 
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, checked_style, "checked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, unchecked_style, "unchecked");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, checked_disabled_style, "checked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, unchecked_disabled_style, "unchecked_disabled");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, indeterminate_style, "indeterminate");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, indeterminate_disabled_style, "indeterminate_disabled");
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, Tree, checked);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, Tree, unchecked);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_ICON, Tree, checked_disabled);
