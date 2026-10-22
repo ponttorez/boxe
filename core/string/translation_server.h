@@ -39,6 +39,11 @@ class TranslationServer : public Object {
 	String locale = "en";
 	String fallback;
 
+	static constexpr const char *SELECTED_LOCALE_PATH = "user://locale.cfg";
+	bool remember_selected_locale = false;
+	String _load_selected_locale() const;
+	void _save_selected_locale() const;
+
 	Ref<TranslationDomain> main_domain;
 #ifdef TOOLS_ENABLED
 	Ref<TranslationDomain> editor_domain;
