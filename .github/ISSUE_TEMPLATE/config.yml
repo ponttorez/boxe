@@ -1,14 +1,14 @@
 blank_issues_enabled: false
 
 contact_links:
-  - name: Godot proposals
-    url: https://github.com/godotengine/godot-proposals
-    about: Please submit feature proposals on the Godot proposals repository, not here.
+  - name: Godot bug tracker
+    url: https://github.com/godotengine/godot/issues
+    about: Bugs that also happen in stock Godot belong to the Godot bug tracker.
 
-  - name: Godot documentation repository
-    url: https://github.com/godotengine/godot-docs
-    about: Please report issues with documentation on the Godot documentation repository, not here.
+  - name: Godot documentation
+    url: https://docs.godotengine.org
+    about: Everything boxe doesn't change works like in Godot.
 
-  - name: Godot community channels
-    url: https://godotengine.org/community
-    about: Please ask for technical support on one of the other community channels, not here.
+  - name: boxe web demo
+    url: https://ponttorez.github.io/boxe/
+    about: Try the features of boxe in the browser.

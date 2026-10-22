@@ -76,6 +76,7 @@ skip = [
 	"platform/web/package-lock.json",
 ]
 ignore-words-list = [
+	"boxe",
 	"breaked",
 	"cancelled",
 	"checkin",
