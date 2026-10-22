@@ -1,4 +1,3 @@
-// Draws an outline and a soft shadow around a composite, see Control.composite_enabled.
 shader_type canvas_item;
 render_mode unshaded;
 

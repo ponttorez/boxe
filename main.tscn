@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://bsmfmf0v3ms7n"]
 
-[ext_resource type="Texture2D" path="res://localization/flag.tres" id="flag"]
+[ext_resource type="Texture2D" uid="uid://d31tk16focc1b" path="res://localization/flag/flag_localized_texture.tres" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://d11o8nnvn52qj" path="res://common/section_link.gd" id="link"]
 [ext_resource type="Script" uid="uid://ckticxavoaajw" path="res://main.gd" id="main"]
-[ext_resource type="Texture2D" uid="uid://cd76je2btbojg" path="res://theme/icons/speaker.svg" id="speaker"]
-[ext_resource type="PackedScene" path="res://sections/text/text.tscn" id="s_text"]
+[ext_resource type="Texture2D" uid="uid://cd76je2btbojg" path="res://assets/speak/speaker.svg" id="speaker"]
 [ext_resource type="PackedScene" path="res://sections/composites/composites.tscn" id="s_composites"]
+[ext_resource type="PackedScene" path="res://sections/controls/controls.tscn" id="s_controls"]
 [ext_resource type="PackedScene" path="res://sections/input/input.tscn" id="s_input"]
 [ext_resource type="PackedScene" path="res://sections/mobile/mobile.tscn" id="s_mobile"]
-[ext_resource type="PackedScene" path="res://sections/controls/controls.tscn" id="s_controls"]
+[ext_resource type="PackedScene" path="res://sections/text/text.tscn" id="s_text"]
 [ext_resource type="PackedScene" path="res://sections/theme/theme.tscn" id="s_theme"]
 
 [sub_resource type="ButtonGroup" id="nav_group"]
@@ -165,10 +165,10 @@ custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 tooltip_text = "Mute UI sounds"
 theme_type_variation = &"FlatIconButton"
+theme_override_constants/icon_max_width = 20
 toggle_mode = true
 icon = ExtResource("speaker")
 icon_alignment = 1
-theme_override_constants/icon_max_width = 20
 
 [node name="Volume" type="HSlider" parent="SafeArea/Layout/Sidebar/SidebarBox/Footer/VolumeBox" unique_id=407833046]
 unique_name_in_owner = true
@@ -191,7 +191,7 @@ texture_filter = 4
 custom_minimum_size = Vector2(27, 18)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("flag")
+texture = ExtResource("10_4c57u")
 expand_mode = 1
 stretch_mode = 5
 

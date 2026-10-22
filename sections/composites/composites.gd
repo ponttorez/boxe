@@ -1,5 +1,4 @@
 extends VBoxContainer
-## Fades the compared groups and texts with the opacity slider.
 
 @onready var _opacity: HSlider = %Opacity
 @onready var _opacity_value: Label = %OpacityValue

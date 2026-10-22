@@ -1,5 +1,4 @@
 extends VBoxContainer
-## The same controls with the default theme of Godot and with the demo theme of boxe.
 
 const MENU_ITEMS: Array[String] = ["[b]New[/b] game", "Continue  [color=#a1a6ad]autosave 2[/color]", "", "[color=#ff786b]Quit[/color]"]
 
@@ -8,7 +7,6 @@ const MENU_ITEMS: Array[String] = ["[b]New[/b] game", "Continue  [color=#a1a6ad]
 
 
 func _ready() -> void:
-	# The theme of Godot, which has no transitions, layers or sounds.
 	_godot.theme = ThemeDB.get_default_theme()
 	_fill_menu(_godot.get_node(^"Toggles/Menu").get_popup(), false)
 	_fill_menu(_boxe.get_node(^"Toggles/Menu").get_popup(), true)

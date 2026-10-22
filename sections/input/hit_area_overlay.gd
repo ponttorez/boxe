@@ -1,12 +1,10 @@
 extends Control
-## Draws the areas that take input for the controls in the "hit_area" group, like the editor does for the selected control.
 
 const FILL := Color(1.0, 0.8, 0.25, 0.14)
 const OUTLINE := Color(1.0, 0.8, 0.25, 0.9)
 
 
 func _process(_delta: float) -> void:
-	# Drawn over everything, so it follows the controls when the page scrolls.
 	global_position = Vector2.ZERO
 	size = get_viewport_rect().size
 	queue_redraw()

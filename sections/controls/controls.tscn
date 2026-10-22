@@ -1,8 +1,8 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://sections/controls/controls.gd" id="controls_gd"]
-[ext_resource type="Script" path="res://common/responsive_row.gd" id="responsive_row_gd"]
-[ext_resource type="Texture2D" path="res://theme/icons/speaker.svg" id="speaker_svg"]
+[ext_resource type="Script" uid="uid://dvp2mga8tmvna" path="res://sections/controls/controls.gd" id="controls_gd"]
+[ext_resource type="Script" uid="uid://da1eyxexkaoka" path="res://common/responsive_row.gd" id="responsive_row_gd"]
+[ext_resource type="Texture2D" uid="uid://cd76je2btbojg" path="res://assets/speak/speaker.svg" id="speaker_svg"]
 
 [node name="Controls" type="VBoxContainer"]
 size_flags_horizontal = 3
@@ -192,7 +192,7 @@ bbcode_enabled = true
 
 [node name="Play" type="Button" parent="Stages/Boxe/Box/BoxeControls/Buttons"]
 layout_mode = 2
-text = "[img=18]res://theme/icons/speaker.svg[/img] Play [b]sound[/b]"
+text = "[img=18]res://assets/speak/speaker.svg[/img] Play [b]sound[/b]"
 bbcode_enabled = true
 
 [node name="Link" type="LinkButton" parent="Stages/Boxe/Box/BoxeControls/Buttons"]
@@ -294,6 +294,6 @@ mouse_filter = 0
 [node name="Credits" type="Label" parent="."]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = "Fonts: Inter, JetBrains Mono and Vazirmatn (SIL OFL 1.1). BoldPixels Font by Yūki (@YukiPixels), CC BY-SA 4.0."
+text = "Fonts: Rubik (SIL OFL 1.1). BoldPixels Font by Yūki (@YukiPixels), CC BY-SA 4.0."
 autowrap_mode = 3
 auto_translate_mode = 2

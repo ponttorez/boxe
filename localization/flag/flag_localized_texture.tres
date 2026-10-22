@@ -1,0 +1,13 @@
+[gd_resource type="LocalizedTexture2D" format=3 uid="uid://d31tk16focc1b"]
+
+[ext_resource type="Texture2D" uid="uid://dtakbk3g38ybo" path="res://localization/flag/flag_en_texture.svg" id="1_hpm0m"]
+[ext_resource type="Texture2D" uid="uid://vycyhst0qby2" path="res://localization/flag/flag_ar_texture.svg" id="2_3p2w8"]
+[ext_resource type="Texture2D" uid="uid://0vrjtyxveqga" path="res://localization/flag/flag_ru_texture.svg" id="3_wv5h8"]
+
+[resource]
+default_texture = ExtResource("1_hpm0m")
+textures = {
+"ar": ExtResource("2_3p2w8"),
+"en": ExtResource("1_hpm0m"),
+"ru": ExtResource("3_wv5h8")
+}

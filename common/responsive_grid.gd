@@ -1,7 +1,6 @@
 @tool
 class_name ResponsiveGrid
 extends GridContainer
-## A grid with as many columns as fit, so cards wrap on narrow screens.
 
 @export_range(100, 1000, 10, "suffix:px") var min_column_width := 380.0:
 	set(value):

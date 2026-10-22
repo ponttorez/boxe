@@ -1,5 +1,4 @@
 extends VBoxContainer
-## Picks the sound bus of a panel.
 
 @onready var _bus: OptionButton = %Bus
 @onready var _bus_panel: Control = %BusPanel

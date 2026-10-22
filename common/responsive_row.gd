@@ -1,8 +1,6 @@
 @tool
 class_name ResponsiveRow
 extends Container
-## Places its children side by side with equal widths when they fit, and stacks them otherwise.
-## Unlike a BoxContainer, its minimum width is the widest child, so it never makes its parent overflow.
 
 @export_range(0, 64, 1, "suffix:px") var separation := 12:
 	set(value):
@@ -15,7 +13,6 @@ func _notification(what: int) -> void:
 		NOTIFICATION_SORT_CHILDREN:
 			_sort()
 		NOTIFICATION_RESIZED:
-			# The height depends on whether the children fit side by side.
 			update_minimum_size()
 
 

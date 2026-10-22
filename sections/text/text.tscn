@@ -1,8 +1,8 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://sections/text/text.gd" id="text_gd"]
-[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
-[ext_resource type="AudioStream" path="res://sounds/typed.wav" id="typed_wav"]
+[ext_resource type="Script" uid="uid://dxio1jw7w5ar2" path="res://sections/text/text.gd" id="text_gd"]
+[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="AudioStream" uid="uid://db3uot6bfxvck" path="res://audio/typed.wav" id="typed_wav"]
 
 [node name="Text" type="VBoxContainer"]
 size_flags_horizontal = 3

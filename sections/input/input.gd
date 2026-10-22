@@ -1,5 +1,4 @@
 extends VBoxContainer
-## Locks forms with disabled and with interactable, and shows the hit areas of the controls.
 
 const SAVE_TIME := 1.6
 
@@ -10,7 +9,7 @@ const SAVE_TIME := 1.6
 @onready var _show: CheckButton = %Show
 @onready var _overlay: Control = %Overlay
 
-var _saves := {} # Form to the tween of its saving.
+var _saves := {}
 
 
 func _ready() -> void:
@@ -24,7 +23,6 @@ func _ready() -> void:
 
 
 func _on_lock_toggled(locked: bool) -> void:
-	# A form that is saving stays locked.
 	_set_locked(_stock_form, locked or _saves.has(_stock_form))
 	_set_locked(_boxe_form, locked or _saves.has(_boxe_form))
 

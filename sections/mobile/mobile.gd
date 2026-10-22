@@ -1,5 +1,4 @@
 extends VBoxContainer
-## Shows the safe area with phone previews, rotation events and display information.
 
 const MAX_EVENTS := 6
 const ORIENTATIONS := ["undefined", "portrait", "landscape"]

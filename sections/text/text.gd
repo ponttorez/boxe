@@ -1,5 +1,4 @@
 extends VBoxContainer
-## Plays the typewriter, opens links and fills the text arguments of the localized labels.
 
 const CHARACTERS_PER_SECOND := 24.0
 
@@ -38,7 +37,6 @@ func _show_characters(count: int) -> void:
 	if count == _dialogue.visible_characters:
 		return
 	_dialogue.visible_characters = count
-	# The label plays the "typed" sound overridden in the scene, like a line edit does.
 	var character := _dialogue.get_parsed_text()[count - 1]
 	if character != " ":
 		_dialogue.play_theme_sound(&"typed")
@@ -48,7 +46,6 @@ func _on_meta_clicked(meta: Variant) -> void:
 	OS.shell_open(str(meta))
 
 
-## With a name, the text addresses the player by it. The name isn't declined, so it fits any language.
 func _update_name() -> void:
 	var player_name := _name.text.strip_edges()
 	_apples.text = "loc.apples_named" if player_name else "loc.apples"

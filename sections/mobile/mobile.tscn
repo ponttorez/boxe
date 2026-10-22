@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://sections/mobile/mobile.gd" id="mobile_gd"]
 [ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
-[ext_resource type="FontVariation" path="res://fonts/ui_mono.tres" id="ui_mono_tres"]
+[ext_resource type="FontVariation" path="res://fonts/ui_regular.tres" id="ui_mono_tres"]
 [ext_resource type="Script" path="res://sections/mobile/phone_preview.gd" id="phone_preview_gd"]
 
 [node name="Mobile" type="VBoxContainer"]

@@ -1,8 +1,9 @@
 [gd_resource type="FontVariation" format=3]
 
-[ext_resource type="FontFile" path="res://fonts/Inter_Regular.woff2" id="1_q82nx"]
-[ext_resource type="FontFile" path="res://fonts/Vazirmatn_Regular.woff2" id="3_xcb7t"]
+[ext_resource type="FontFile" path="res://fonts/Rubik.ttf" id="1_rubik"]
 
 [resource]
-fallbacks = Array[Font]([ExtResource("3_xcb7t")])
-base_font = ExtResource("1_q82nx")
+base_font = ExtResource("1_rubik")
+variation_opentype = {
+2003265652: 400
+}

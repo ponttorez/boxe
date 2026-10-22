@@ -1,11 +1,9 @@
 extends Control
-## The demo shell: a sidebar with the sections and the language, and the open section.
 
-## Below this width, the sidebar turns into a bar above the content.
 const NARROW_WIDTH := 860.0
 const UI_BUS := &"UI"
-const SPEAKER_ICON := preload("res://theme/icons/speaker.svg")
-const SPEAKER_MUTED_ICON := preload("res://theme/icons/speaker_muted.svg")
+const SPEAKER_ICON := preload("res://assets/speak/speaker.svg")
+const SPEAKER_MUTED_ICON := preload("res://assets/speak/speaker_muted.svg")
 const LANGUAGE_NAMES := {
 	"en": "English",
 	"ru": "Русский",
@@ -44,7 +42,6 @@ func _ready() -> void:
 	open_section(args.get("section", _nav.get_child(0).name))
 
 
-## Options after "--" on the command line, e.g. [code]-- --section=Theme --locale=ru[/code].
 func _get_user_args() -> Dictionary:
 	var args := {}
 	for arg in OS.get_cmdline_user_args():
@@ -53,12 +50,10 @@ func _get_user_args() -> Dictionary:
 	return args
 
 
-## Returns the open section.
 func get_section() -> Control:
 	return _section
 
 
-## Opens the section whose sidebar link has the name [param link_name].
 func open_section(link_name: StringName) -> void:
 	var link: SectionLink = _nav.get_node_or_null(NodePath(link_name))
 	if link:
@@ -123,7 +118,6 @@ func _on_locale_changed() -> void:
 			_language.select(index)
 
 
-## The list opens above the button when it would cover it, as the footer is at the bottom of the window.
 func _place_language_popup() -> void:
 	var popup := _language.get_popup()
 	var button := Rect2i(_language.get_screen_transform() * Rect2(Vector2.ZERO, _language.size))
@@ -135,7 +129,6 @@ func _on_language_selected(index: int) -> void:
 	TranslationServer.set_locale(_language.get_item_metadata(index))
 
 
-## Returns the MarginContainer.SafeArea mode of the container around the demo.
 func get_safe_area() -> int:
 	return _safe_area.safe_area
 
@@ -153,14 +146,12 @@ func _update_layout() -> void:
 	_nav_scroll.size_flags_vertical = Control.SIZE_FILL if narrow else Control.SIZE_EXPAND_FILL
 	_sidebar.custom_minimum_size.x = 0.0 if narrow else 240.0
 	_footer.visible = not narrow
-	# The sound and the language stay reachable next to the title when the footer is hidden.
 	var parent: BoxContainer = _brand if narrow else _footer
 	for control: Control in [_volume_box, _language_box]:
 		if control.get_parent() != parent:
 			control.reparent(parent)
 			parent.move_child(control, -1)
 	_volume.visible = not narrow
-	# The margins are inside the scroll container, so the shadows of the cards aren't cut off.
 	var margin := 16 if narrow else 36
 	for side in ["left", "right"]:
 		_page.add_theme_constant_override("margin_" + side, margin)

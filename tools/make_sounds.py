@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates the UI sounds of the demo theme into demo/sounds.
+"""Generates the UI sounds of the demo theme into demo/audio.
 
 The sounds are synthesized, so they can be tweaked here and regenerated:
     python3 demo/tools/make_sounds.py
@@ -13,7 +13,7 @@ from pathlib import Path
 
 RATE = 44100
 DEMO = Path(__file__).resolve().parent.parent
-OUT = DEMO / "sounds"
+OUT = DEMO / "audio"
 
 
 def tone(freq, length, decay, harmonics=((1, 1.0),), glide=0.0, attack=0.002):
