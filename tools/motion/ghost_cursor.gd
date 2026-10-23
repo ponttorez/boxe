@@ -5,7 +5,10 @@ extends Control
 
 const ARROW := preload("res://tools/capture/cursor.svg")
 
-@export var finger := false
+@export var finger := false:
+	set(value):
+		finger = value
+		queue_redraw()
 @export var ripple_color := Color(0.44, 0.73, 1.0)
 
 var _ripple := 1.0

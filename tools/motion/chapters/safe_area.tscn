@@ -1,0 +1,141 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/motion/chapters/safe_area.gd" id="chapter_gd"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/cross.svg" id="cross_svg"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/check.svg" id="check_svg"]
+[ext_resource type="FontVariation" path="res://fonts/bold_font.tres" id="bold_font"]
+[ext_resource type="PackedScene" path="res://sections/mobile/phone.tscn" id="phone_tscn"]
+
+[node name="SafeArea" type="Control" unique_id=1327754068]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("chapter_gd")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1328997212]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 44
+
+[node name="Box" type="VBoxContainer" parent="Margin" unique_id=675436599]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="Margin/Box" unique_id=644552690]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Margin/Box/Header" unique_id=867812319]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 36
+text = "Content hides under the cutout"
+horizontal_alignment = 1
+
+[node name="Api" type="Label" parent="Margin/Box/Header" unique_id=1316279503]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.73, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "MarginContainer.safe_area"
+horizontal_alignment = 1
+
+[node name="Stages" type="HBoxContainer" parent="Margin/Box" unique_id=586306339]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Godot" type="PanelContainer" parent="Margin/Box/Stages" unique_id=178143792]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Godot" unique_id=1709538058]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=699147659]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=1541406597]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "Godot 4.7"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=121765848]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("cross_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=1092548116]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Phone" parent="Margin/Box/Stages/Godot/Box/Content" unique_id=1524270322 instance=ExtResource("phone_tscn")]
+layout_mode = 2
+zoom = 1.35
+
+[node name="Boxe" type="PanelContainer" parent="Margin/Box/Stages" unique_id=1642545353]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Boxe" unique_id=1360615784]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=189108162]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=253581792]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "boxe 1.0"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=624689473]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("check_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=1458218360]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Phone" parent="Margin/Box/Stages/Boxe/Box/Content" unique_id=1182865051 instance=ExtResource("phone_tscn")]
+layout_mode = 2
+zoom = 1.35

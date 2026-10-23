@@ -14,3 +14,5 @@ git worktree add demo demo
 ```
 
 [`tools/media.py`](tools/media.py) builds the web demo and records the GIFs and screenshots of the README of boxe.
+The video at the top of that README is the [`tools/motion`](tools/motion) scene: a banner, then each problem of stock
+Godot next to its fix, recorded at 1920×1080.

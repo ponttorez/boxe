@@ -1,0 +1,134 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/motion/banner.gd" id="banner_gd"]
+[ext_resource type="Texture2D" path="res://tools/motion/mascot.png" id="mascot_png"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/fork.svg" id="fork_svg"]
+[ext_resource type="FontFile" uid="uid://d3o6vbcc061qo" path="res://fonts/Rubik.ttf" id="rubik_ttf"]
+[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="bold_font"]
+
+[sub_resource type="Gradient" id="Gradient_background"]
+colors = PackedColorArray(0.1, 0.37, 0.72, 1, 0.027, 0.22, 0.52, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_background"]
+gradient = SubResource("Gradient_background")
+width = 640
+height = 360
+fill = 1
+fill_from = Vector2(0.74, 0.46)
+fill_to = Vector2(1.3, 1.15)
+
+[sub_resource type="Gradient" id="Gradient_shadow"]
+colors = PackedColorArray(0, 0.04, 0.16, 0.5, 0, 0.04, 0.16, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_shadow"]
+gradient = SubResource("Gradient_shadow")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="FontVariation" id="FontVariation_black"]
+base_font = ExtResource("rubik_ttf")
+variation_opentype = {
+2003265652: 900
+}
+
+[node name="Banner" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("banner_gd")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_background")
+expand_mode = 1
+
+[node name="Fork" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 90.0
+offset_top = 92.0
+offset_right = 600.0
+offset_bottom = 124.0
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Fork"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("fork_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Fork"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.86, 1, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 25
+text = "forked from godotengine/godot"
+
+[node name="Wordmark" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 76.0
+offset_top = 168.0
+offset_right = 700.0
+offset_bottom = 460.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_black")
+theme_override_font_sizes/font_size = 230
+text = "boxe"
+vertical_alignment = 1
+
+[node name="Tagline" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 90.0
+offset_top = 540.0
+offset_right = 760.0
+offset_bottom = 640.0
+theme_override_colors/font_color = Color(0.8, 0.88, 1, 1)
+theme_override_constants/line_spacing = 2
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 36
+text = "The Godot Engine you love,
+with extra features inside"
+
+[node name="Shadow" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 760.0
+offset_top = 520.0
+offset_right = 1220.0
+offset_bottom = 640.0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_shadow")
+expand_mode = 1
+
+[node name="Mascot" type="TextureRect" parent="."]
+unique_name_in_owner = true
+texture_filter = 4
+layout_mode = 0
+offset_left = 760.0
+offset_top = 110.0
+offset_right = 1220.0
+offset_bottom = 570.0
+rotation = -0.17
+mouse_filter = 2
+texture = ExtResource("mascot_png")
+expand_mode = 1
+stretch_mode = 5

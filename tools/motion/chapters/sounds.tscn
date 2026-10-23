@@ -1,0 +1,214 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/motion/chapters/sounds.gd" id="chapter_gd"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/cross.svg" id="cross_svg"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/check.svg" id="check_svg"]
+[ext_resource type="FontVariation" path="res://fonts/bold_font.tres" id="bold_font"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/speaker.svg" id="speaker_svg"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/speaker_muted.svg" id="speaker_muted_svg"]
+[ext_resource type="Script" path="res://tools/motion/sound_waves.gd" id="waves_gd"]
+
+[node name="Sounds" type="Control" unique_id=1307080978]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("chapter_gd")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=323081345]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 44
+
+[node name="Box" type="VBoxContainer" parent="Margin" unique_id=849576572]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="Margin/Box" unique_id=142387139]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Margin/Box/Header" unique_id=691055996]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 36
+text = "Interfaces stay silent"
+horizontal_alignment = 1
+
+[node name="Api" type="Label" parent="Margin/Box/Header" unique_id=314890345]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.73, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Theme sounds"
+horizontal_alignment = 1
+
+[node name="Stages" type="HBoxContainer" parent="Margin/Box" unique_id=505284561]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Godot" type="PanelContainer" parent="Margin/Box/Stages" unique_id=1226024226]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Godot" unique_id=1303354638]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=1021688986]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=1687813282]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "Godot 4.7"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=304617634]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("cross_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=309301573]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Godot/Box/Content" unique_id=1498150482]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 36
+
+[node name="Speaker" type="HBoxContainer" parent="Margin/Box/Stages/Godot/Box/Content/Box" unique_id=498444758]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+theme_override_constants/separation = 6
+
+[node name="Icon" type="TextureRect" parent="Margin/Box/Stages/Godot/Box/Content/Box/Speaker" unique_id=350992796]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("speaker_muted_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Waves" type="Control" parent="Margin/Box/Stages/Godot/Box/Content/Box/Speaker" unique_id=1347293338]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("waves_gd")
+visible = false
+
+[node name="Row" type="HBoxContainer" parent="Margin/Box/Stages/Godot/Box/Content/Box" unique_id=802538396]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+theme_override_constants/separation = 24
+
+[node name="Press" type="Button" parent="Margin/Box/Stages/Godot/Box/Content/Box/Row" unique_id=1018733022]
+layout_mode = 2
+text = "Press"
+
+[node name="Music" type="CheckButton" parent="Margin/Box/Stages/Godot/Box/Content/Box/Row" unique_id=1869785715]
+layout_mode = 2
+text = "Music"
+
+[node name="Boxe" type="PanelContainer" parent="Margin/Box/Stages" unique_id=472547396]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Boxe" unique_id=1494132189]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=305242639]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=1291272987]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "boxe 1.0"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=906653060]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("check_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=554878260]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Boxe/Box/Content" unique_id=1188338759]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 36
+
+[node name="Speaker" type="HBoxContainer" parent="Margin/Box/Stages/Boxe/Box/Content/Box" unique_id=590943426]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+theme_override_constants/separation = 6
+
+[node name="Icon" type="TextureRect" parent="Margin/Box/Stages/Boxe/Box/Content/Box/Speaker" unique_id=799278556]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("speaker_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Waves" type="Control" parent="Margin/Box/Stages/Boxe/Box/Content/Box/Speaker" unique_id=1944888342]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("waves_gd")
+
+[node name="Row" type="HBoxContainer" parent="Margin/Box/Stages/Boxe/Box/Content/Box" unique_id=148203247]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+theme_override_constants/separation = 24
+
+[node name="Press" type="Button" parent="Margin/Box/Stages/Boxe/Box/Content/Box/Row" unique_id=1325762891]
+layout_mode = 2
+text = "Press"
+
+[node name="Music" type="CheckButton" parent="Margin/Box/Stages/Boxe/Box/Content/Box/Row" unique_id=1512807488]
+layout_mode = 2
+text = "Music"

@@ -1,0 +1,168 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/motion/chapters/transitions.gd" id="chapter_gd"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/cross.svg" id="cross_svg"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/check.svg" id="check_svg"]
+[ext_resource type="FontVariation" path="res://fonts/bold_font.tres" id="bold_font"]
+
+[node name="Transitions" type="Control" unique_id=884274207]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("chapter_gd")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=693048246]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 44
+
+[node name="Box" type="VBoxContainer" parent="Margin" unique_id=418780998]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="Margin/Box" unique_id=644615674]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Margin/Box/Header" unique_id=1041276200]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 36
+text = "Buttons snap between states"
+horizontal_alignment = 1
+
+[node name="Api" type="Label" parent="Margin/Box/Header" unique_id=433432992]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.73, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "StyleBox.transition_duration"
+horizontal_alignment = 1
+
+[node name="Stages" type="HBoxContainer" parent="Margin/Box" unique_id=200448566]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Godot" type="PanelContainer" parent="Margin/Box/Stages" unique_id=1185642813]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Godot" unique_id=254276247]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=1600165780]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=784131720]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "Godot 4.7"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=1298966991]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("cross_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=111417413]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Margin/Box/Stages/Godot/Box/Content" unique_id=444950101]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="Continue" type="Button" parent="Margin/Box/Stages/Godot/Box/Content/Buttons" unique_id=290165244]
+layout_mode = 2
+text = "Continue"
+
+[node name="Settings" type="Button" parent="Margin/Box/Stages/Godot/Box/Content/Buttons" unique_id=669365853]
+layout_mode = 2
+text = "Settings"
+
+[node name="Quit" type="Button" parent="Margin/Box/Stages/Godot/Box/Content/Buttons" unique_id=466491557]
+layout_mode = 2
+text = "Quit"
+
+[node name="Boxe" type="PanelContainer" parent="Margin/Box/Stages" unique_id=916801651]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Boxe" unique_id=1107298977]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=215304139]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=182792631]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "boxe 1.0"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=1057235506]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("check_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=1561088738]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Margin/Box/Stages/Boxe/Box/Content" unique_id=827157347]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="Continue" type="Button" parent="Margin/Box/Stages/Boxe/Box/Content/Buttons" unique_id=1518821162]
+layout_mode = 2
+text = "Continue"
+
+[node name="Settings" type="Button" parent="Margin/Box/Stages/Boxe/Box/Content/Buttons" unique_id=1184507542]
+layout_mode = 2
+text = "Settings"
+
+[node name="Quit" type="Button" parent="Margin/Box/Stages/Boxe/Box/Content/Buttons" unique_id=435181195]
+layout_mode = 2
+text = "Quit"

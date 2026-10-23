@@ -36,20 +36,20 @@ FPS = 30
 
 # Window size, GIF width and the part of the window in the GIF (x, y, width, height) of each scenario.
 # Scenarios without a GIF only save stills. See tools/capture/scenarios.gd.
-CONTENT = (240, 0, 1040, 720)
+CONTENT = (360, 0, 1560, 1080)
 SCENARIOS = {
-    "motion": {"size": (960, 540), "gif_width": 960, "fps": 24},  # Its content is scaled by 1.3, see motion.gd.
-    "overview": {"size": (1280, 720), "gif": False},
-    "transitions": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
-    "layered": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
-    "sounds": {"size": (1280, 720), "gif": False},
-    "interactable": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
-    "hit_areas": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
-    "composites": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
-    "bbcode": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
-    "localization": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
-    "mobile": {"size": (1280, 720), "gif": False},
-    "phone": {"size": (405, 880), "gif": False},
+    "motion": {"size": (1920, 1080), "gif_width": 960, "fps": 20},  # Scaled to the window, see motion.gd.
+    "overview": {"size": (1920, 1080), "gif": False},
+    "transitions": {"size": (1920, 1080), "crop": CONTENT, "gif_width": 860},
+    "layered": {"size": (1920, 1080), "crop": CONTENT, "gif_width": 860},
+    "sounds": {"size": (1920, 1080), "gif": False},
+    "interactable": {"size": (1920, 1080), "crop": CONTENT, "gif_width": 860},
+    "hit_areas": {"size": (1920, 1080), "crop": CONTENT, "gif_width": 860},
+    "composites": {"size": (1920, 1080), "crop": CONTENT, "gif_width": 860},
+    "bbcode": {"size": (1920, 1080), "crop": CONTENT, "gif_width": 860},
+    "localization": {"size": (1920, 1080), "crop": CONTENT, "gif_width": 860},
+    "mobile": {"size": (1920, 1080), "gif": False},
+    "phone": {"size": (608, 1320), "gif": False},
 }
 
 

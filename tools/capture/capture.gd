@@ -62,9 +62,10 @@ func find(path: NodePath) -> Node:
 	return app.get_section().get_node(path)
 
 
-## Scrolls the page so the control is visible.
-func reveal(control: Control) -> void:
-	app.get_node("%Scroll").ensure_control_visible(control)
+## Scrolls the page so the control is at its top.
+func reveal(control: Control, margin := 24.0) -> void:
+	var scroll: ScrollContainer = app.get_node("%Scroll")
+	scroll.scroll_vertical = int(control.global_position.y - scroll.global_position.y + scroll.scroll_vertical - margin)
 	await wait(0.3)
 
 

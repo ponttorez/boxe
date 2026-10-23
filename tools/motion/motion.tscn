@@ -1,57 +1,64 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" uid="uid://biy44kdhfs2ti" path="res://tools/motion/motion.gd" id="motion_gd"]
-[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="ui_bold_tres"]
-[ext_resource type="PackedScene" path="res://tools/motion/vignettes/hover.tscn" id="hover_tscn"]
-[ext_resource type="PackedScene" path="res://tools/motion/vignettes/tap.tscn" id="tap_tscn"]
-[ext_resource type="PackedScene" path="res://tools/motion/vignettes/fade.tscn" id="fade_tscn"]
-[ext_resource type="PackedScene" path="res://tools/motion/vignettes/plurals.tscn" id="plurals_tscn"]
-[ext_resource type="PackedScene" path="res://tools/motion/vignettes/bbcode.tscn" id="bbcode_tscn"]
-[ext_resource type="PackedScene" path="res://tools/motion/vignettes/lock.tscn" id="lock_tscn"]
-[ext_resource type="PackedScene" path="res://tools/motion/vignettes/sound.tscn" id="sound_tscn"]
-[ext_resource type="FontVariation" uid="uid://lcsvmu33k2ce" path="res://fonts/regular_font.tres" id="ui_mono_tres"]
+[ext_resource type="PackedScene" path="res://tools/motion/banner.tscn" id="banner_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/transitions.tscn" id="transitions_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/layered.tscn" id="layered_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/sounds.tscn" id="sounds_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/hit_areas.tscn" id="hit_areas_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/interactable.tscn" id="interactable_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/composites.tscn" id="composites_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/bbcode.tscn" id="bbcode_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/plurals.tscn" id="plurals_tscn"]
+[ext_resource type="PackedScene" path="res://tools/motion/chapters/safe_area.tscn" id="safe_area_tscn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_background"]
+bg_color = Color(0.109804, 0.12549, 0.152941, 1)
 
 [sub_resource type="Gradient" id="Gradient_glow"]
-offsets = PackedFloat32Array(0, 1)
-colors = PackedColorArray(0.28, 0.55, 0.75, 0.22, 0.28, 0.55, 0.75, 0)
+colors = PackedColorArray(0.28, 0.55, 0.75, 0.16, 0.28, 0.55, 0.75, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_glow"]
 gradient = SubResource("Gradient_glow")
-fill = 1
-fill_from = Vector2(0.5, 0.35)
-fill_to = Vector2(1.05, 1.0)
 width = 512
 height = 288
+fill = 1
+fill_from = Vector2(0.5, 0.3)
+fill_to = Vector2(1.05, 1.0)
 
-[node name="Motion" type="Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("motion_gd")
+[node name="Motion" type="Control" unique_id=1324898565]
 auto_translate_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("motion_gd")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="Panel" parent="." unique_id=625712306]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_background")
 
-[node name="Glow" type="TextureRect" parent="."]
+[node name="Glow" type="TextureRect" parent="." unique_id=875146702]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = SubResource("GradientTexture2D_glow")
 expand_mode = 1
 
-[node name="Intro" type="VBoxContainer" parent="."]
+[node name="Chapters" type="Control" parent="." unique_id=548506561]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -59,103 +66,44 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-alignment = 1
-theme_override_constants/separation = 6
+mouse_filter = 2
 
-[node name="Logo" type="TextureRect" parent="Intro"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150.0, 150.0)
-layout_mode = 2
-size_flags_horizontal = 4
-expand_mode = 1
-stretch_mode = 5
-pivot_offset = Vector2(75.0, 75.0)
-
-[node name="Wordmark" type="Label" parent="Intro"]
-layout_mode = 2
-text = "boxe"
-horizontal_alignment = 1
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-theme_override_font_sizes/font_size = 72
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-
-[node name="Tagline" type="Label" parent="Intro"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "Godot UI papercuts, fixed."
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 22
-
-[node name="Vignettes" type="Control" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Hover" parent="Vignettes" instance=ExtResource("hover_tscn")]
-visible = false
-
-[node name="Tap" parent="Vignettes" instance=ExtResource("tap_tscn")]
-visible = false
-
-[node name="Fade" parent="Vignettes" instance=ExtResource("fade_tscn")]
-visible = false
-
-[node name="Plurals" parent="Vignettes" instance=ExtResource("plurals_tscn")]
-visible = false
-
-[node name="Bbcode" parent="Vignettes" instance=ExtResource("bbcode_tscn")]
-visible = false
-
-[node name="Lock" parent="Vignettes" instance=ExtResource("lock_tscn")]
-visible = false
-
-[node name="Sound" parent="Vignettes" instance=ExtResource("sound_tscn")]
-visible = false
-
-[node name="Outro" type="VBoxContainer" parent="."]
-unique_name_in_owner = true
+[node name="Transitions" parent="Chapters" unique_id=214912623 instance=ExtResource("transitions_tscn")]
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-theme_override_constants/separation = 6
 
-[node name="Logo" type="TextureRect" parent="Outro"]
-custom_minimum_size = Vector2(150.0, 150.0)
-layout_mode = 2
-size_flags_horizontal = 4
-expand_mode = 1
-stretch_mode = 5
-pivot_offset = Vector2(75.0, 75.0)
+[node name="Layered" parent="Chapters" unique_id=1929285864 instance=ExtResource("layered_tscn")]
+visible = false
+layout_mode = 1
 
-[node name="Wordmark" type="Label" parent="Outro"]
-layout_mode = 2
-text = "boxe"
-horizontal_alignment = 1
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-theme_override_font_sizes/font_size = 72
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+[node name="Sounds" parent="Chapters" unique_id=1513433892 instance=ExtResource("sounds_tscn")]
+visible = false
+layout_mode = 1
 
-[node name="Link" type="Label" parent="Outro"]
-layout_mode = 2
-text = "github.com/ponttorez/boxe"
-horizontal_alignment = 1
-theme_override_fonts/font = ExtResource("ui_mono_tres")
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.4392, 0.7333, 1, 1)
+[node name="HitAreas" parent="Chapters" unique_id=1831921091 instance=ExtResource("hit_areas_tscn")]
+visible = false
+layout_mode = 1
 
-[node name="Call" type="Label" parent="Outro"]
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "Try the demo in your browser"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 18
+[node name="Interactable" parent="Chapters" unique_id=681219548 instance=ExtResource("interactable_tscn")]
+visible = false
+layout_mode = 1
+
+[node name="Composites" parent="Chapters" unique_id=1213827415 instance=ExtResource("composites_tscn")]
+visible = false
+layout_mode = 1
+
+[node name="Bbcode" parent="Chapters" unique_id=707423752 instance=ExtResource("bbcode_tscn")]
+visible = false
+layout_mode = 1
+
+[node name="Plurals" parent="Chapters" unique_id=1460529145 instance=ExtResource("plurals_tscn")]
+visible = false
+layout_mode = 1
+
+[node name="SafeArea" parent="Chapters" unique_id=1241884488 instance=ExtResource("safe_area_tscn")]
+visible = false
+layout_mode = 1
+
+[node name="Banner" parent="." unique_id=111332673 instance=ExtResource("banner_tscn")]
+unique_name_in_owner = true
+layout_mode = 1

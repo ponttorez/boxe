@@ -1,0 +1,416 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/motion/chapters/composites.gd" id="chapter_gd"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/cross.svg" id="cross_svg"]
+[ext_resource type="Texture2D" path="res://tools/motion/icons/check.svg" id="check_svg"]
+[ext_resource type="FontVariation" path="res://fonts/bold_font.tres" id="bold_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_avatar0"]
+bg_color = Color(0.28, 0.55, 0.75, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.13, 0.15, 0.18, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_avatar1"]
+bg_color = Color(0.37, 0.72, 0.5, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.13, 0.15, 0.18, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_avatar2"]
+bg_color = Color(0.85, 0.7, 0.3, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.13, 0.15, 0.18, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_avatar3"]
+bg_color = Color(0.85, 0.42, 0.42, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.13, 0.15, 0.18, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.47, 0.42, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="Composites" type="Control" unique_id=865706786]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("chapter_gd")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1658622581]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 44
+
+[node name="Box" type="VBoxContainer" parent="Margin" unique_id=1330921241]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="VBoxContainer" parent="Margin/Box" unique_id=1206673936]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Margin/Box/Header" unique_id=819112817]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 36
+text = "Faded groups show their seams"
+horizontal_alignment = 1
+
+[node name="Api" type="Label" parent="Margin/Box/Header" unique_id=1899935948]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.73, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Control.composite_enabled"
+horizontal_alignment = 1
+
+[node name="Stages" type="HBoxContainer" parent="Margin/Box" unique_id=1930622919]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Godot" type="PanelContainer" parent="Margin/Box/Stages" unique_id=584285380]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Godot" unique_id=1689740325]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=232490038]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=1329932021]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "Godot 4.7"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Godot/Box/Badge" unique_id=107084579]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("cross_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Godot/Box" unique_id=509043915]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Avatars" type="Control" parent="Margin/Box/Stages/Godot/Box/Content" unique_id=382527471]
+custom_minimum_size = Vector2(330, 110)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Avatar0" type="Panel" parent="Margin/Box/Stages/Godot/Box/Content/Avatars" unique_id=465647695]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 14.0
+offset_right = 96.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar0")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Godot/Box/Content/Avatars/Avatar0" unique_id=1206835328]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Avatar1" type="Panel" parent="Margin/Box/Stages/Godot/Box/Content/Avatars" unique_id=1641419383]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 14.0
+offset_right = 162.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar1")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Godot/Box/Content/Avatars/Avatar1" unique_id=1142153718]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Avatar2" type="Panel" parent="Margin/Box/Stages/Godot/Box/Content/Avatars" unique_id=1514855066]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 14.0
+offset_right = 228.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar2")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Godot/Box/Content/Avatars/Avatar2" unique_id=566333892]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "C"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Avatar3" type="Panel" parent="Margin/Box/Stages/Godot/Box/Content/Avatars" unique_id=1493265803]
+layout_mode = 0
+offset_left = 198.0
+offset_top = 14.0
+offset_right = 294.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar3")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Godot/Box/Content/Avatars/Avatar3" unique_id=1395665765]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "+4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="New" type="Label" parent="Margin/Box/Stages/Godot/Box/Content/Avatars" unique_id=1364202613]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 0.0
+offset_right = 330.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_badge")
+text = "new"
+horizontal_alignment = 1
+
+[node name="Boxe" type="PanelContainer" parent="Margin/Box/Stages" unique_id=957595477]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Box/Stages/Boxe" unique_id=269145012]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Badge" type="HBoxContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=160003889]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=879557920]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OverlineLabel"
+theme_override_font_sizes/font_size = 22
+text = "boxe 1.0"
+
+[node name="Mark" type="TextureRect" parent="Margin/Box/Stages/Boxe/Box/Badge" unique_id=156633270]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("check_svg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="CenterContainer" parent="Margin/Box/Stages/Boxe/Box" unique_id=1894784998]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Avatars" type="Control" parent="Margin/Box/Stages/Boxe/Box/Content" unique_id=809229144]
+custom_minimum_size = Vector2(330, 110)
+layout_mode = 2
+mouse_filter = 2
+composite_enabled = true
+
+[node name="Avatar0" type="Panel" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars" unique_id=879821272]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 14.0
+offset_right = 96.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar0")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars/Avatar0" unique_id=161595187]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Avatar1" type="Panel" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars" unique_id=1163440677]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 14.0
+offset_right = 162.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar1")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars/Avatar1" unique_id=1927710184]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Avatar2" type="Panel" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars" unique_id=186120823]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 14.0
+offset_right = 228.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar2")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars/Avatar2" unique_id=123534032]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "C"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Avatar3" type="Panel" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars" unique_id=451613393]
+layout_mode = 0
+offset_left = 198.0
+offset_top = 14.0
+offset_right = 294.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_avatar3")
+
+[node name="Letter" type="Label" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars/Avatar3" unique_id=1184081041]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.12, 0.15, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 32
+text = "+4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="New" type="Label" parent="Margin/Box/Stages/Boxe/Box/Content/Avatars" unique_id=809793062]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 0.0
+offset_right = 330.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("bold_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_badge")
+text = "new"
+horizontal_alignment = 1
