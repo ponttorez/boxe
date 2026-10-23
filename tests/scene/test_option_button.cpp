@@ -191,6 +191,23 @@ TEST_CASE("[SceneTree][OptionButton][MenuButton] Popups open below the button, a
 	memdelete(menu_button);
 }
 
+TEST_CASE("[SceneTree][OptionButton][MenuButton] Popups show their items as BBCode with the button") {
+	OptionButton *option_button = memnew(OptionButton);
+	MenuButton *menu_button = memnew(MenuButton);
+	CHECK_FALSE(option_button->get_popup()->is_bbcode_enabled());
+
+	option_button->set_bbcode_enabled(true);
+	menu_button->set_bbcode_enabled(true);
+	CHECK(option_button->get_popup()->is_bbcode_enabled());
+	CHECK(menu_button->get_popup()->is_bbcode_enabled());
+
+	option_button->set_bbcode_enabled(false);
+	CHECK_FALSE(option_button->get_popup()->is_bbcode_enabled());
+
+	memdelete(option_button);
+	memdelete(menu_button);
+}
+
 } // namespace TestOptionButton
 
 #endif // ADVANCED_GUI_DISABLED

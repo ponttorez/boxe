@@ -63,6 +63,9 @@
 		<member name="dialog_autowrap" type="bool" setter="set_autowrap" getter="has_autowrap" default="false">
 			Sets autowrapping for the text in the dialog.
 		</member>
+		<member name="dialog_bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
+			If [code]true[/code], [member dialog_text] is parsed as BBCode, as in [member Label.bbcode_enabled]. Links and hints in the text react to the mouse.
+		</member>
 		<member name="dialog_close_on_escape" type="bool" setter="set_close_on_escape" getter="get_close_on_escape" default="true">
 			If [code]true[/code], the dialog will be hidden when the [code]ui_close_dialog[/code] action is pressed (by default, this action is bound to [kbd]Escape[/kbd], or [kbd]Cmd + W[/kbd] on macOS).
 		</member>

@@ -36,9 +36,9 @@ TEST_FORCE_LINK(test_tab_container)
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/tab_container.h"
-#include "scene/resources/audio_stream_wav.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
+#include "scene/resources/audio_stream_wav.h"
 #include "tests/display_server_mock.h"
 #include "tests/signal_watcher.h"
 
@@ -942,6 +942,14 @@ TEST_CASE("[SceneTree][TabContainer] Sounds of the tab bar") {
 	MessageQueue::get_singleton()->flush();
 	CHECK_FALSE(tab_bar->has_theme_sound_override("hover"));
 
+	memdelete(tab_container);
+}
+
+TEST_CASE("[SceneTree][TabContainer] BBCode titles") {
+	TabContainer *tab_container = memnew(TabContainer);
+	tab_container->set_bbcode_enabled(true);
+	CHECK(tab_container->is_bbcode_enabled());
+	CHECK(tab_container->get_tab_bar()->is_bbcode_enabled());
 	memdelete(tab_container);
 }
 

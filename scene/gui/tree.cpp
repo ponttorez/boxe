@@ -7199,10 +7199,6 @@ String Tree::get_tooltip(const Point2 &p_pos) const {
 	if (it) {
 		const String item_tooltip = it->get_tooltip_text(col);
 		if (enable_auto_tooltip && item_tooltip.is_empty()) {
-			// Tooltips are plain text, so BBCode cells show their text without tags.
-			if (it->cells[col].bbcode.is_valid()) {
-				return it->cells[col].bbcode->get_parsed_text();
-			}
 			return it->get_text(col);
 		}
 		return item_tooltip;
@@ -7229,6 +7225,23 @@ Node::AutoTranslateMode Tree::get_tooltip_auto_translate_mode_at(const Point2 &p
 		return it->get_auto_translate_mode(col);
 	}
 	return Control::get_tooltip_auto_translate_mode_at(p_at);
+}
+
+bool Tree::is_tooltip_bbcode_enabled_at(const Vector2 &p_at) const {
+	Point2 pos = p_at - theme_cache.panel_style->get_offset();
+	pos.y -= _get_title_button_height();
+	if (pos.y < 0) {
+		return Control::is_tooltip_bbcode_enabled_at(p_at);
+	}
+
+	TreeItem *it;
+	int col, index, section;
+	_find_button_at_pos(p_at, it, col, index, section);
+	if (it && index == -1 && enable_auto_tooltip && it->get_tooltip_text(col).is_empty()) {
+		// The text of the cell, shown as BBCode like in the tree.
+		return it->cells[col].bbcode.is_valid();
+	}
+	return Control::is_tooltip_bbcode_enabled_at(p_at);
 }
 
 void Tree::set_cursor_can_exit_tree(bool p_enable) {

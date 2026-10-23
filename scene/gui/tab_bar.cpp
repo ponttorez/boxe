@@ -363,14 +363,19 @@ String TabBar::get_tooltip(const Point2 &p_pos) const {
 	}
 
 	if (tabs[tab_idx].tooltip.is_empty() && tabs[tab_idx].truncated) {
-		// Tooltips are plain text, so BBCode tabs show their text without tags.
-		if (tabs[tab_idx].bbcode.is_valid()) {
-			return tabs[tab_idx].bbcode->get_parsed_text();
-		}
 		return tabs[tab_idx].text;
 	}
 
 	return tabs[tab_idx].tooltip;
+}
+
+bool TabBar::is_tooltip_bbcode_enabled_at(const Vector2 &p_at) const {
+	int tab_idx = get_tab_idx_at_point(p_at);
+	if (tab_idx >= 0 && tabs[tab_idx].tooltip.is_empty()) {
+		// The title of a truncated tab, shown as BBCode like on the tab.
+		return tabs[tab_idx].bbcode.is_valid();
+	}
+	return Control::is_tooltip_bbcode_enabled_at(p_at);
 }
 
 void TabBar::_shape(int p_tab) {

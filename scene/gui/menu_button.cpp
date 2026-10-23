@@ -197,6 +197,10 @@ bool MenuButton::_get(const StringName &p_name, Variant &r_ret) const {
 	return false;
 }
 
+void MenuButton::_bbcode_enabled_changed() {
+	popup->set_bbcode_enabled(is_bbcode_enabled());
+}
+
 void MenuButton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_popup"), &MenuButton::get_popup);
 	ClassDB::bind_method(D_METHOD("show_popup"), &MenuButton::show_popup);

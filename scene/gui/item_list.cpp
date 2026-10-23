@@ -2158,15 +2158,20 @@ String ItemList::get_tooltip(const Point2 &p_pos) const {
 			return items[closest].tooltip;
 		}
 		if (!items[closest].text.is_empty()) {
-			// Tooltips are plain text, so BBCode items show their text without tags.
-			if (items[closest].bbcode.is_valid()) {
-				return items[closest].bbcode->get_parsed_text();
-			}
 			return items[closest].text;
 		}
 	}
 
 	return Control::get_tooltip(p_pos);
+}
+
+bool ItemList::is_tooltip_bbcode_enabled_at(const Vector2 &p_at) const {
+	int closest = get_item_at_position(p_at, true);
+	if (closest != -1 && items[closest].tooltip.is_empty()) {
+		// The text of the item, shown as BBCode like in the list.
+		return items[closest].bbcode.is_valid();
+	}
+	return Control::is_tooltip_bbcode_enabled_at(p_at);
 }
 
 Node::AutoTranslateMode ItemList::get_tooltip_auto_translate_mode_at(const Point2 &p_at) const {

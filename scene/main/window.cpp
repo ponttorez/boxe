@@ -39,6 +39,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "core/os/os.h"
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/control.h"
 #include "scene/gui/theme_sound.h"
 #include "scene/main/scene_tree.h"
@@ -349,6 +350,20 @@ void Window::set_title(const String &p_title) {
 String Window::get_title() const {
 	ERR_READ_THREAD_GUARD_V(String());
 	return title;
+}
+
+void Window::set_title_bbcode_enabled(bool p_enabled) {
+	ERR_MAIN_THREAD_GUARD;
+	if (title_bbcode_enabled == p_enabled) {
+		return;
+	}
+	title_bbcode_enabled = p_enabled;
+	_update_displayed_title();
+}
+
+bool Window::is_title_bbcode_enabled() const {
+	ERR_READ_THREAD_GUARD_V(false);
+	return title_bbcode_enabled;
 }
 
 String Window::get_displayed_title() const {
@@ -3477,6 +3492,17 @@ void Window::_update_displayed_title() {
 	}
 #endif
 
+	// Embedded windows draw the BBCode, the window manager shows the text without the tags.
+	if (title_bbcode_enabled) {
+		if (title_bbcode.is_null()) {
+			title_bbcode.instantiate();
+		}
+		title_bbcode->set_text(displayed_title);
+		displayed_title = title_bbcode->get_parsed_text();
+	} else {
+		title_bbcode.unref();
+	}
+
 	if (embedder) {
 		embedder->_sub_window_update(this);
 	} else if (window_id != DisplayServerEnums::INVALID_WINDOW_ID) {
@@ -3504,6 +3530,8 @@ void Window::_update_displayed_title() {
 void Window::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_title", "title"), &Window::set_title);
 	ClassDB::bind_method(D_METHOD("get_title"), &Window::get_title);
+	ClassDB::bind_method(D_METHOD("set_title_bbcode_enabled", "enabled"), &Window::set_title_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_title_bbcode_enabled"), &Window::is_title_bbcode_enabled);
 
 	ClassDB::bind_method(D_METHOD("set_initial_position", "initial_position"), &Window::set_initial_position);
 	ClassDB::bind_method(D_METHOD("get_initial_position"), &Window::get_initial_position);
@@ -3701,6 +3729,7 @@ void Window::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Windowed,Minimized,Maximized,Fullscreen,Exclusive Fullscreen"), "set_mode", "get_mode");
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "title"), "set_title", "get_title");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "title_bbcode_enabled"), "set_title_bbcode_enabled", "is_title_bbcode_enabled");
 
 	// Keep the enum values in sync with the `WindowInitialPosition` enum.
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "initial_position", PROPERTY_HINT_ENUM, "Absolute,Center of Primary Screen,Center of Main Window Screen,Center of Other Screen,Center of Screen With Mouse Pointer,Center of Screen With Keyboard Focus"), "set_initial_position", "get_initial_position");

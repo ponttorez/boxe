@@ -119,6 +119,8 @@ private:
 	void _update_style_margins(const Ref<StyleBox> &p_stylebox);
 
 protected:
+	// Buttons that open a popup, like OptionButton and MenuButton, show its items as BBCode too.
+	virtual void _bbcode_enabled_changed() {}
 	virtual void _update_theme_item_cache() override;
 
 	void _set_internal_margin(Side p_side, float p_value);

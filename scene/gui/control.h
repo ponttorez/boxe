@@ -357,6 +357,7 @@ private:
 		String tooltip;
 		StringName translation_context;
 		AutoTranslateMode tooltip_auto_translate_mode = AUTO_TRANSLATE_MODE_INHERIT;
+		bool tooltip_bbcode_enabled = false;
 
 	} data;
 
@@ -499,6 +500,7 @@ protected:
 	GDVIRTUAL0RC(Vector2, _get_minimum_size)
 	GDVIRTUAL1RC(String, _get_tooltip, Vector2)
 	GDVIRTUAL1RC(AutoTranslateMode, _get_tooltip_auto_translate_mode_at, Vector2)
+	GDVIRTUAL1RC(bool, _is_tooltip_bbcode_enabled_at, Vector2)
 
 	GDVIRTUAL1R(Variant, _get_drag_data, Vector2)
 	GDVIRTUAL2RC(bool, _can_drop_data, Vector2, Variant)
@@ -915,6 +917,10 @@ public:
 	void set_tooltip_auto_translate_mode(AutoTranslateMode p_mode);
 	AutoTranslateMode get_tooltip_auto_translate_mode() const;
 	virtual AutoTranslateMode get_tooltip_auto_translate_mode_at(const Vector2 &p_at) const;
+	void set_tooltip_bbcode_enabled(bool p_enabled);
+	bool is_tooltip_bbcode_enabled() const;
+	// Whether the default tooltip shows the tooltip at p_at as BBCode.
+	virtual bool is_tooltip_bbcode_enabled_at(const Vector2 &p_at) const;
 
 	// Extra properties.
 

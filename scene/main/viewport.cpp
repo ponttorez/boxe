@@ -41,6 +41,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "core/object/class_db.h"
 #include "core/templates/pair.h"
 #include "core/templates/sort_array.h"
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/popup.h"
@@ -409,7 +410,21 @@ void Viewport::_sub_window_update(Window *p_window) {
 		int close_v_ofs = p_window->theme_cache.close_v_offset;
 
 		const real_t title_space = r.size.width - panel->get_minimum_size().x - close_h_ofs;
-		if (title_space > 0) {
+		if (title_space > 0 && p_window->title_bbcode.is_valid()) {
+			const Ref<BBCodeText> &title_bbcode = p_window->title_bbcode;
+			title_bbcode->update_theme_fonts(p_window, title_font.is_valid() ? title_font : p_window->get_theme_default_font(), font_size > 0 ? font_size : p_window->get_theme_default_font_size());
+			title_bbcode->set_width(title_space);
+			title_bbcode->set_text_overrun_behavior(TextServer::OVERRUN_TRIM_ELLIPSIS);
+			title_bbcode->set_direction(p_window->is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR, p_window->is_layout_rtl());
+			const Size2 title_size = title_bbcode->get_size();
+			BBCodeText::DrawStyle draw_style;
+			draw_style.font_color = title_color;
+			draw_style.hr_color = title_color;
+			draw_style.outline_size = p_window->theme_cache.title_outline_size;
+			draw_style.outline_color = p_window->theme_cache.title_outline_modulate;
+			const Point2 title_pos = Point2((r.size.width - title_size.x) / 2, (-title_height - title_size.y) / 2);
+			title_bbcode->draw_at(sw.canvas_item, r.position + title_pos.floor(), draw_style);
+		} else if (title_space > 0) {
 			TextLine title_text = TextLine(p_window->get_displayed_title(), title_font, font_size);
 			title_text.set_width(title_space);
 			title_text.set_direction(p_window->is_layout_rtl() ? TextServer::DIRECTION_RTL : TextServer::DIRECTION_LTR);
@@ -1709,8 +1724,10 @@ void Viewport::_gui_show_tooltip_at(const Point2i &p_pos) {
 	if (!base_tooltip) {
 		gui.tooltip_label = memnew(Label);
 		gui.tooltip_label->set_theme_type_variation(SNAME("TooltipLabel"));
+		const Vector2 tooltip_at = tooltip_owner->get_global_transform_with_canvas().affine_inverse().xform(gui.last_mouse_pos);
+		gui.tooltip_label->set_bbcode_enabled(tooltip_owner->is_tooltip_bbcode_enabled_at(tooltip_at));
 		gui.tooltip_label->set_text(gui.tooltip_text);
-		gui.tooltip_label->set_auto_translate_mode(tooltip_owner->get_tooltip_auto_translate_mode_at(tooltip_owner->get_global_transform_with_canvas().affine_inverse().xform(gui.last_mouse_pos)));
+		gui.tooltip_label->set_auto_translate_mode(tooltip_owner->get_tooltip_auto_translate_mode_at(tooltip_at));
 		base_tooltip = gui.tooltip_label;
 		panel->connect(SceneStringName(mouse_entered), callable_mp(this, &Viewport::_gui_cancel_tooltip));
 	}

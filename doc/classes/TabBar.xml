@@ -243,7 +243,7 @@
 	</methods>
 	<members>
 		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
-			If [code]true[/code], the tab titles are parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] and [code][hint][/code] tags are only drawn.
+			If [code]true[/code], the tab titles are parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] and [code][hint][/code] tags are only drawn. Truncated tabs without a tooltip show their title as BBCode in the tooltip too.
 		</member>
 		<member name="clip_tabs" type="bool" setter="set_clip_tabs" getter="get_clip_tabs" default="true">
 			If [code]true[/code], tabs overflowing this node's width will be hidden, displaying two navigation buttons instead. Otherwise, this node's minimum size is updated so that all tabs are visible.

@@ -34,6 +34,7 @@
 #include "scene/resources/theme.h"
 #include "servers/display/display_server_enums.h"
 
+class BBCodeText;
 class Font;
 class StyleBox;
 class ThemeOwner;
@@ -119,7 +120,9 @@ private:
 	bool initialized = false;
 
 	String title;
-	String displayed_title;
+	String displayed_title; // Without the BBCode tags, for the window manager and accessibility.
+	bool title_bbcode_enabled = false;
+	Ref<BBCodeText> title_bbcode; // The title drawn by the embedder.
 	mutable int current_screen = 0;
 	mutable Point2i position;
 	mutable Size2i size = Size2i(DEFAULT_WINDOW_SIZE, DEFAULT_WINDOW_SIZE);
@@ -332,6 +335,9 @@ public:
 
 	void set_title(const String &p_title);
 	String get_title() const;
+
+	void set_title_bbcode_enabled(bool p_enabled);
+	bool is_title_bbcode_enabled() const;
 	String get_displayed_title() const;
 
 	void set_initial_position(WindowInitialPosition p_initial_position);

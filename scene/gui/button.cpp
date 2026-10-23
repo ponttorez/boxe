@@ -729,6 +729,7 @@ void Button::set_bbcode_enabled(bool p_enabled) {
 		bbcode = Ref<BBCodeText>();
 	}
 	_shape();
+	_bbcode_enabled_changed();
 
 	update_configuration_warnings();
 	queue_accessibility_update();

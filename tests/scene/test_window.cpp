@@ -34,6 +34,7 @@ TEST_FORCE_LINK(test_window)
 
 #include "core/input/input_map.h" // IWYU pragma: keep // Used by `SEND_GUI_MOUSE_MOTION_EVENT` macro.
 #include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 #include "tests/display_server_mock.h"
@@ -122,6 +123,28 @@ TEST_CASE("[SceneTree][Window] Appearing windows take input where they're drawn"
 	CHECK(control->mouse_over);
 
 	memdelete(window);
+}
+
+TEST_CASE("[SceneTree][Window] BBCode titles and dialog texts") {
+	AcceptDialog *dialog = memnew(AcceptDialog);
+	dialog->set_title("[b]Bold[/b] title");
+	CHECK(dialog->get_displayed_title() == "[b]Bold[/b] title");
+
+	dialog->set_title_bbcode_enabled(true);
+	CHECK_MESSAGE(dialog->get_displayed_title() == "Bold title", "The window manager and accessibility get the title without tags.");
+	CHECK(dialog->get_title() == "[b]Bold[/b] title");
+
+	dialog->set_bbcode_enabled(true);
+	CHECK(dialog->get_label()->is_bbcode_enabled());
+	memdelete(dialog);
+}
+
+TEST_CASE("[SceneTree][Control] Tooltips can show BBCode") {
+	Control *control = memnew(Control);
+	CHECK_FALSE(control->is_tooltip_bbcode_enabled_at(Vector2()));
+	control->set_tooltip_bbcode_enabled(true);
+	CHECK(control->is_tooltip_bbcode_enabled_at(Vector2()));
+	memdelete(control);
 }
 
 } // namespace TestWindow

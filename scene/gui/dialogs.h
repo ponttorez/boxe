@@ -122,6 +122,9 @@ public:
 	void set_autowrap(bool p_autowrap);
 	bool has_autowrap();
 
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
+
 	void set_ok_button_text(String p_ok_button_text);
 	String get_ok_button_text() const;
 
