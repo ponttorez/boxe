@@ -786,6 +786,9 @@
 		<theme_item name="custom_button_pressed" data_type="style" type="StyleBox">
 			[StyleBox] for a [constant TreeItem.CELL_MODE_CUSTOM] mode button cell when it's pressed.
 		</theme_item>
+		<theme_item name="editor_panel" data_type="style" type="StyleBox">
+			The background of the popup that edits a text or range cell, drawn behind its [LineEdit] and slider. The popup is larger than the cell by the margins of this style, so the editor stays over the cell.
+		</theme_item>
 		<theme_item name="focus" data_type="style" type="StyleBox">
 			The focused style for the [Tree], drawn on top of everything.
 		</theme_item>

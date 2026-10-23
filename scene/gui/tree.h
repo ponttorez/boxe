@@ -39,6 +39,7 @@ class VBoxContainer;
 class HScrollBar;
 class HSlider;
 class LineEdit;
+class PanelContainer;
 class Popup;
 class PopupMenu;
 class TextEdit;
@@ -570,6 +571,7 @@ private:
 	RID content_ci; // Separate canvas item for drawing tree rows.
 	RID drop_indicator_ci;
 
+	PanelContainer *popup_editor_panel = nullptr;
 	VBoxContainer *popup_editor_vb = nullptr;
 	Popup *popup_editor = nullptr;
 	LineEdit *line_editor = nullptr;
@@ -606,6 +608,7 @@ private:
 	void value_editor_changed(double p_value);
 	void _update_popup_menu(const TreeItem::Cell &p_cell);
 	void _update_value_editor(const TreeItem::Cell &p_cell);
+	void _set_popup_editor_rect(const Point2 &p_position, const Size2 &p_size, float p_scale);
 
 	void popup_select(int p_option);
 
@@ -633,6 +636,7 @@ private:
 
 		Ref<StyleBox> panel_style;
 		Ref<StyleBox> focus_style;
+		Ref<StyleBox> editor_panel_style;
 
 		Ref<Font> font;
 		Ref<Font> tb_font;

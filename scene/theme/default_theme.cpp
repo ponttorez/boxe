@@ -899,6 +899,7 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 
 	theme->set_stylebox(SceneStringName(panel), "Tree", make_flat_stylebox(style_normal_color, 4, 4, 4, 5));
 	theme->set_stylebox("focus", "Tree", focus);
+	theme->set_stylebox("editor_panel", "Tree", make_empty_stylebox(0, 0, 0, 0));
 	theme->set_stylebox("hovered", "Tree", make_flat_stylebox(Color(1, 1, 1, 0.07)));
 	theme->set_stylebox("hovered_dimmed", "Tree", make_flat_stylebox(Color(1, 1, 1, 0.03)));
 	theme->set_stylebox("hovered_selected", "Tree", make_flat_stylebox(style_hover_selected_color));
