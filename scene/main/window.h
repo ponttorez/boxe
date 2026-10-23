@@ -238,6 +238,14 @@ private:
 
 		Ref<Texture2D> close;
 		Ref<Texture2D> close_pressed;
+		Ref<StyleBox> close_normal_style;
+		Ref<StyleBox> close_hover_style;
+		Ref<StyleBox> close_pressed_style;
+		Color close_color;
+		Color close_hover_color;
+		Color close_pressed_color;
+		Ref<AudioStream> close_hover_sound;
+		Ref<AudioStream> close_pressed_sound;
 		int close_h_offset = 0;
 		int close_v_offset = 0;
 

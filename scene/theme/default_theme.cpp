@@ -713,9 +713,15 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_constant("appear_duration", "Window", 0);
 	theme->set_constant("appear_offset", "Window", 0);
 	theme->set_stylebox("popup_shadow", "Window", memnew(StyleBoxEmpty));
+	for (const char *name : { "close_normal", "close_hover", "close_pressed" }) {
+		theme->set_stylebox(name, "Window", memnew(StyleBoxEmpty));
+	}
 
 	theme->set_icon("close", "Window", icons["close"]);
 	theme->set_icon("close_pressed", "Window", icons["close_hl"]);
+	theme->set_color("close_color", "Window", Color(1, 1, 1));
+	theme->set_color("close_hover_color", "Window", Color(1, 1, 1));
+	theme->set_color("close_pressed_color", "Window", Color(1, 1, 1));
 	theme->set_constant("close_h_offset", "Window", 18 * scale);
 	theme->set_constant("close_v_offset", "Window", 24 * scale);
 

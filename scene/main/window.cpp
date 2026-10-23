@@ -3842,6 +3842,14 @@ void Window::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_duration);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_offset);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, Window, popup_shadow);
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Window, close_normal_style, "close_normal");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Window, close_hover_style, "close_hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Window, close_pressed_style, "close_pressed");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_COLOR, Window, close_color, "close_color");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_COLOR, Window, close_hover_color, "close_hover_color");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_COLOR, Window, close_pressed_color, "close_pressed_color");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Window, close_hover_sound, "close_hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Window, close_pressed_sound, "close_pressed");
 }
 
 Window::Window() {

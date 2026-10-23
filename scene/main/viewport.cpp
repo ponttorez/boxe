@@ -44,7 +44,9 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/popup.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/gui/subviewport_container.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
@@ -424,7 +426,22 @@ void Viewport::_sub_window_update(Window *p_window) {
 
 		bool pressed = gui.subwindow_focused == sw.window && gui.subwindow_drag == SUB_WINDOW_DRAG_CLOSE && gui.subwindow_drag_close_inside;
 		Ref<Texture2D> close_icon = pressed ? p_window->theme_cache.close_pressed : p_window->theme_cache.close;
-		close_icon->draw(sw.canvas_item, r.position + Vector2(r.size.width - close_h_ofs, -close_v_ofs));
+		const Point2 close_pos = r.position + Vector2(r.size.width - close_h_ofs, -close_v_ofs);
+
+		// The background of the close button, which changes with the style transitions.
+		const bool hovered = gui.subwindow_close_hovered == p_window;
+		Ref<StyleBox> close_style = pressed ? p_window->theme_cache.close_pressed_style : (hovered ? p_window->theme_cache.close_hover_style : p_window->theme_cache.close_normal_style);
+		const Ref<StyleBox> close_timing = close_style;
+		if (Object::cast_to<StyleBoxEmpty>(close_style.ptr())) {
+			close_style = Ref<StyleBox>();
+		}
+		const uint32_t close_index = uint32_t(uint64_t(p_window->get_instance_id()));
+		close_style = subwindow_transitions->get_style(StyleTransitions::make_key(0, close_index), close_style);
+		if (close_style.is_valid()) {
+			close_style->draw(sw.canvas_item, Rect2(close_pos - close_style->get_offset(), close_icon->get_size() + close_style->get_minimum_size()));
+		}
+		const Color close_color = pressed ? p_window->theme_cache.close_pressed_color : (hovered ? p_window->theme_cache.close_hover_color : p_window->theme_cache.close_color);
+		close_icon->draw(sw.canvas_item, close_pos, subwindow_transitions->get_color(StyleTransitions::make_key(1, close_index), close_color, close_timing));
 
 		TextServer::set_current_drawn_item_oversampling(0.0);
 	}
@@ -522,6 +539,9 @@ void Viewport::_sub_window_remove(Window *p_window) {
 	if (gui.subwindow_over == sw.window) {
 		sw.window->_mouse_leave_viewport();
 		gui.subwindow_over = nullptr;
+	}
+	if (gui.subwindow_close_hovered == sw.window) {
+		gui.subwindow_close_hovered = nullptr;
 	}
 	RS::get_singleton()->free_rid(sw.canvas_item);
 	gui.sub_windows.remove_at(index);
@@ -2993,7 +3013,60 @@ Viewport::SubWindowResize Viewport::_sub_window_get_resize_margin(Window *p_subw
 	return SUB_WINDOW_RESIZE_DISABLED;
 }
 
+Rect2 Viewport::_sub_window_get_close_rect(const Window *p_window) const {
+	const Rect2i r = Rect2i(_sub_window_get_drawn_position(p_window), p_window->get_size());
+	const Point2 position = r.position + Vector2(r.size.width - p_window->theme_cache.close_h_offset, -p_window->theme_cache.close_v_offset);
+	return Rect2(position, p_window->theme_cache.close->get_size());
+}
+
+// The close button under the mouse is hovered, unless another window covers it.
+void Viewport::_sub_window_update_close_hover(const Point2 &p_point) {
+	Window *hovered = nullptr;
+	for (int i = gui.sub_windows.size() - 1; i >= 0; i--) {
+		Window *window = gui.sub_windows[i].window;
+		if (window->get_flag(Window::FLAG_BORDERLESS)) {
+			if (Rect2(_sub_window_get_drawn_position(window), window->get_size()).has_point(p_point)) {
+				break;
+			}
+			continue;
+		}
+		if (_sub_window_get_close_rect(window).has_point(p_point)) {
+			hovered = window;
+			break;
+		}
+		Rect2 r = Rect2(_sub_window_get_drawn_position(window), window->get_size());
+		r.position.y -= window->theme_cache.title_height;
+		r.size.y += window->theme_cache.title_height;
+		if (r.has_point(p_point)) {
+			break;
+		}
+	}
+	if (hovered == gui.subwindow_close_hovered) {
+		return;
+	}
+	Window *previous = gui.subwindow_close_hovered;
+	gui.subwindow_close_hovered = hovered;
+	if (previous) {
+		_sub_window_update(previous);
+	}
+	if (hovered) {
+		_sub_window_update(hovered);
+		ThemeSound::play(hovered->theme_cache.close_hover_sound, hovered);
+	}
+}
+
+void Viewport::_sub_windows_redraw() {
+	for (const SubWindow &sw : gui.sub_windows) {
+		_sub_window_update(sw.window);
+	}
+}
+
 bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
+	const Ref<InputEventMouseMotion> motion = p_event;
+	if (motion.is_valid()) {
+		_sub_window_update_close_hover(motion->get_position());
+	}
+
 	if (gui.subwindow_drag != SUB_WINDOW_DRAG_DISABLED) {
 		ERR_FAIL_NULL_V(gui.currently_dragged_subwindow, false);
 
@@ -3002,6 +3075,7 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 			if (gui.subwindow_drag == SUB_WINDOW_DRAG_CLOSE) {
 				if (gui.subwindow_drag_close_rect.has_point(mb->get_position())) {
 					// Close window.
+					ThemeSound::play(gui.currently_dragged_subwindow->theme_cache.close_pressed_sound, gui.currently_dragged_subwindow);
 					gui.currently_dragged_subwindow->_event_callback(DisplayServerEnums::WINDOW_EVENT_CLOSE_REQUEST);
 				}
 			}
@@ -5601,6 +5675,7 @@ void Viewport::_validate_property(PropertyInfo &p_property) const {
 }
 
 Viewport::Viewport() {
+	subwindow_transitions = memnew(StyleTransitions(this, callable_mp(this, &Viewport::_sub_windows_redraw)));
 	world_2d.instantiate();
 	world_2d->register_viewport(this);
 
@@ -5656,6 +5731,7 @@ Viewport::Viewport() {
 }
 
 Viewport::~Viewport() {
+	memdelete(subwindow_transitions);
 	// Erase itself from viewport textures.
 	for (ViewportTexture *E : viewport_textures) {
 		E->vp = nullptr;

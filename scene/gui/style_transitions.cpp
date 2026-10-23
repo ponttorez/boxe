@@ -87,9 +87,8 @@ void StyleTransitions::_queue_redraw() {
 	}
 
 	SceneTree *tree = owner->get_tree();
-	const Callable callable = callable_mp(owner, &CanvasItem::queue_redraw);
-	if (!tree->is_connected(SNAME("process_frame"), callable)) {
-		tree->connect(SNAME("process_frame"), callable, Object::CONNECT_ONE_SHOT);
+	if (!tree->is_connected(SNAME("process_frame"), redraw)) {
+		tree->connect(SNAME("process_frame"), redraw, Object::CONNECT_ONE_SHOT);
 	}
 }
 
@@ -294,4 +293,10 @@ void StyleTransitions::clear() {
 
 StyleTransitions::StyleTransitions(CanvasItem *p_owner) {
 	owner = p_owner;
+	redraw = callable_mp(p_owner, &CanvasItem::queue_redraw);
+}
+
+StyleTransitions::StyleTransitions(Node *p_owner, const Callable &p_redraw) {
+	owner = p_owner;
+	redraw = p_redraw;
 }

@@ -34,6 +34,7 @@
 #include "scene/resources/style_box.h"
 
 class CanvasItem;
+class Node;
 
 // Animates the state changes of theme style boxes and colors, using the transition settings of the target style box.
 // Each animated part of a control uses its own key, e.g. the background of a button or the background of a tab.
@@ -67,7 +68,8 @@ class StyleTransitions {
 		uint64_t last_used_frame = 0;
 	};
 
-	CanvasItem *owner = nullptr;
+	Node *owner = nullptr;
+	Callable redraw; // Called each frame while a transition plays.
 	HashMap<uint64_t, StyleTrack> styles;
 	HashMap<uint64_t, ColorTrack> colors;
 	uint64_t pruned_frame = UINT64_MAX;
@@ -95,4 +97,5 @@ public:
 	void clear();
 
 	StyleTransitions(CanvasItem *p_owner);
+	StyleTransitions(Node *p_owner, const Callable &p_redraw);
 };
