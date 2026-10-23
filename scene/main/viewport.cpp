@@ -44,6 +44,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/popup.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/gui/subviewport_container.h"
 #include "scene/gui/theme_sound.h"
 #include "scene/main/canvas_layer.h"
@@ -329,7 +330,9 @@ void Viewport::_sub_window_register(Window *p_window) {
 		ERR_FAIL_COND(gui.sub_windows[i].window == p_window);
 	}
 
-	if (gui.sub_windows.is_empty()) {
+	// A window shown again while it fades out is drawn as usual.
+	_sub_window_drop_closing(p_window->get_instance_id());
+	if (subwindow_canvas.is_null()) {
 		subwindow_canvas = RS::get_singleton()->canvas_create();
 		RS::get_singleton()->viewport_attach_canvas(viewport, subwindow_canvas);
 		RS::get_singleton()->viewport_set_canvas_stacking(viewport, subwindow_canvas, SUBWINDOW_CANVAS_LAYER, 0);
@@ -355,6 +358,98 @@ void Viewport::_sub_window_register(Window *p_window) {
 	}
 
 	RenderingServer::get_singleton()->viewport_set_parent_viewport(p_window->viewport, viewport);
+}
+
+// Where an embedded window is drawn, and takes input: it's moved while it appears.
+Point2i Viewport::_sub_window_get_drawn_position(const Window *p_window) {
+	return p_window->get_position() + Point2i(p_window->appear_draw_offset.round());
+}
+
+void Viewport::_sub_window_set_appearance(Window *p_window, float p_alpha, const Vector2 &p_offset) {
+	const int index = _sub_window_find(p_window);
+	if (index == -1) {
+		return;
+	}
+	const SubWindow &sw = gui.sub_windows[index];
+	RS::get_singleton()->canvas_item_set_modulate(sw.canvas_item, Color(1, 1, 1, p_alpha));
+	RS::get_singleton()->canvas_item_set_transform(sw.canvas_item, Transform2D(0, p_offset));
+}
+
+bool Viewport::_sub_window_start_closing(Window *p_window, RID p_canvas_item) {
+	// The last frame of a window that's being freed can't be drawn, as its viewport is freed with it.
+	if (p_window->theme_cache.appear_duration <= 0 || !is_inside_tree() || !p_window->is_inside_tree() || p_window->is_queued_for_deletion()) {
+		return false;
+	}
+	ClosingSubWindow closing;
+	closing.canvas_item = p_canvas_item;
+	closing.window = p_window->get_instance_id();
+	closing.start_time = StyleTransitions::get_time();
+	closing.duration = p_window->theme_cache.appear_duration / 1000.0;
+	// It slides back to where it came from.
+	closing.offset = Vector2(0, p_window->appear_direction * p_window->theme_cache.appear_offset);
+	closing_sub_windows.push_back(closing);
+	p_window->appear_closing = true;
+	// Dropped before the window is freed.
+	p_window->connect(SceneStringName(tree_exiting), callable_mp(this, &Viewport::_sub_window_drop_closing).bind(closing.window), CONNECT_ONE_SHOT);
+	_sub_window_update_closing();
+	return true;
+}
+
+void Viewport::_sub_window_update_closing() {
+	const double time = StyleTransitions::get_time();
+	for (uint32_t i = 0; i < closing_sub_windows.size();) {
+		const ClosingSubWindow &closing = closing_sub_windows[i];
+		const double t = closing.duration > 0.0 ? MIN((time - closing.start_time) / closing.duration, 1.0) : 1.0;
+		if (t >= 1.0) {
+			_sub_window_drop_closing(closing.window);
+			continue;
+		}
+		const float eased = 1.0 - Math::pow(1.0 - t, 3.0);
+		RS::get_singleton()->canvas_item_set_modulate(closing.canvas_item, Color(1, 1, 1, 1.0 - eased));
+		RS::get_singleton()->canvas_item_set_transform(closing.canvas_item, Transform2D(0, closing.offset * eased));
+		i++;
+	}
+	if (!closing_sub_windows.is_empty() && is_inside_tree()) {
+		const Callable update = callable_mp(this, &Viewport::_sub_window_update_closing);
+		if (!get_tree()->is_connected(SNAME("process_frame"), update)) {
+			get_tree()->connect(SNAME("process_frame"), update, CONNECT_ONE_SHOT);
+		}
+	}
+}
+
+void Viewport::_sub_window_drop_closing(ObjectID p_window) {
+	for (uint32_t i = 0; i < closing_sub_windows.size(); i++) {
+		if (closing_sub_windows[i].window != p_window) {
+			continue;
+		}
+		RS::get_singleton()->free_rid(closing_sub_windows[i].canvas_item);
+		closing_sub_windows.remove_at(i);
+		Window *window = ObjectDB::get_instance<Window>(p_window);
+		const Callable drop = callable_mp(this, &Viewport::_sub_window_drop_closing).bind(p_window);
+		if (window && window->is_connected(SceneStringName(tree_exiting), drop)) {
+			window->disconnect(SceneStringName(tree_exiting), drop);
+		}
+		if (window) {
+			// The texture of a hidden window is freed once its last frame isn't drawn anymore.
+			window->appear_closing = false;
+			window->_update_viewport_size();
+		}
+		break;
+	}
+	_sub_window_free_canvas_if_unused();
+}
+
+void Viewport::_sub_window_drop_all_closing() {
+	while (!closing_sub_windows.is_empty()) {
+		_sub_window_drop_closing(closing_sub_windows[0].window);
+	}
+}
+
+void Viewport::_sub_window_free_canvas_if_unused() {
+	if (subwindow_canvas.is_valid() && gui.sub_windows.is_empty() && closing_sub_windows.is_empty()) {
+		RS::get_singleton()->free_rid(subwindow_canvas);
+		subwindow_canvas = RID();
+	}
 }
 
 void Viewport::_sub_window_update(Window *p_window) {
@@ -493,7 +588,7 @@ void Viewport::_sub_window_grab_focus(Window *p_window) {
 	_sub_window_update(p_window);
 }
 
-void Viewport::_sub_window_remove(Window *p_window) {
+void Viewport::_sub_window_remove(Window *p_window, bool p_fade_out) {
 	int index = _sub_window_find(p_window);
 	ERR_FAIL_COND(index == -1);
 
@@ -504,13 +599,11 @@ void Viewport::_sub_window_remove(Window *p_window) {
 		sw.window->_mouse_leave_viewport();
 		gui.subwindow_over = nullptr;
 	}
-	RS::get_singleton()->free_rid(sw.canvas_item);
-	gui.sub_windows.remove_at(index);
-
-	if (gui.sub_windows.is_empty()) {
-		RS::get_singleton()->free_rid(subwindow_canvas);
-		subwindow_canvas = RID();
+	if (!p_fade_out || !_sub_window_start_closing(p_window, sw.canvas_item)) {
+		RS::get_singleton()->free_rid(sw.canvas_item);
 	}
+	gui.sub_windows.remove_at(index);
+	_sub_window_free_canvas_if_unused();
 
 	if (gui.currently_dragged_subwindow == p_window) {
 		gui.subwindow_drag = SUB_WINDOW_DRAG_DISABLED;
@@ -668,6 +761,7 @@ void Viewport::_notification(int p_what) {
 
 		case NOTIFICATION_EXIT_TREE: {
 			_gui_cancel_tooltip();
+			_sub_window_drop_all_closing();
 
 			RenderingServer::get_singleton()->viewport_set_scenario(viewport, RID());
 			RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
@@ -2893,7 +2987,7 @@ Viewport::SubWindowResize Viewport::_sub_window_get_resize_margin(Window *p_subw
 		return SUB_WINDOW_RESIZE_DISABLED;
 	}
 
-	Rect2i r = Rect2i(p_subwindow->get_position(), p_subwindow->get_size());
+	Rect2i r = Rect2i(_sub_window_get_drawn_position(p_subwindow), p_subwindow->get_size());
 
 	int title_height = p_subwindow->theme_cache.title_height;
 
@@ -3086,7 +3180,7 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 
 			// Clicked inside window?
 
-			Rect2i r = Rect2i(sw.window->get_position(), sw.window->get_size());
+			Rect2i r = Rect2i(_sub_window_get_drawn_position(sw.window), sw.window->get_size());
 
 			if (!sw.window->get_flag(Window::FLAG_BORDERLESS)) {
 				// Check top bar.
@@ -3132,7 +3226,7 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 							_sub_window_grab_focus(sw.window);
 						}
 
-						gui.subwindow_resize_from_rect = r;
+						gui.subwindow_resize_from_rect = Rect2i(sw.window->get_position(), sw.window->get_size());
 						gui.subwindow_drag_from = mb->get_position();
 						gui.subwindow_drag = SUB_WINDOW_DRAG_RESIZE;
 						click_on_window = sw.window;
@@ -3201,10 +3295,10 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 				if (!sw.window->get_flag(Window::FLAG_NO_FOCUS) || sw.window->get_flag(Window::FLAG_MOUSE_PASSTHROUGH)) {
 					continue;
 				}
-				Rect2i r = Rect2i(sw.window->get_position(), sw.window->get_size());
+				Rect2i r = Rect2i(_sub_window_get_drawn_position(sw.window), sw.window->get_size());
 				if (r.has_point(me->get_position())) {
 					Transform2D window_ofs;
-					window_ofs.set_origin(-sw.window->get_position());
+					window_ofs.set_origin(-_sub_window_get_drawn_position(sw.window));
 					Ref<InputEvent> ev = p_event->xformed_by(window_ofs);
 					sw.window->_window_input(ev);
 					return true;
@@ -3215,7 +3309,7 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 	}
 
 	Transform2D window_ofs;
-	window_ofs.set_origin(-gui.subwindow_focused->get_position());
+	window_ofs.set_origin(-_sub_window_get_drawn_position(gui.subwindow_focused));
 
 	Ref<InputEvent> ev = p_event->xformed_by(window_ofs);
 
@@ -3299,7 +3393,7 @@ void Viewport::_update_mouse_over(Vector2 p_pos) {
 	if (is_embedding_subwindows()) {
 		for (int i = gui.sub_windows.size() - 1; i >= 0; i--) {
 			Window *sw = gui.sub_windows[i].window;
-			Rect2 swrect = Rect2(sw->get_position(), sw->get_size());
+			Rect2 swrect = Rect2(_sub_window_get_drawn_position(sw), sw->get_size());
 			Rect2 swrect_border = swrect;
 
 			if (!sw->get_flag(Window::FLAG_BORDERLESS)) {
@@ -3325,7 +3419,7 @@ void Viewport::_update_mouse_over(Vector2 p_pos) {
 						gui.subwindow_over = sw;
 					}
 					if (!sw->is_input_disabled()) {
-						sw->_update_mouse_over(sw->get_final_transform().affine_inverse().xform(p_pos - sw->get_position()));
+						sw->_update_mouse_over(sw->get_final_transform().affine_inverse().xform(p_pos - _sub_window_get_drawn_position(sw)));
 					}
 				} else {
 					if (gui.subwindow_over) {

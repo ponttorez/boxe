@@ -148,6 +148,8 @@ public:
 	// Whether the style box shows nothing: it's null or a StyleBoxEmpty. A StyleBoxEmpty fades like a missing style box, but keeps its content margins.
 	static bool draws_nothing(const Ref<StyleBox> &p_style_box);
 
+	// The time of transitions in seconds, also used by other animations of the GUI, such as appearing windows.
+	static double get_time() { return _get_time(); }
 	// Moves all transitions forward in time without waiting for frames, e.g. in tests.
 	static void skip_time(double p_seconds);
 

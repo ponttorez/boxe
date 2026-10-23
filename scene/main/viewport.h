@@ -501,8 +501,25 @@ private:
 	void _sub_window_update_order();
 	void _sub_window_register(Window *p_window);
 	void _sub_window_update(Window *p_window);
+	void _sub_window_set_appearance(Window *p_window, float p_alpha, const Vector2 &p_offset);
+	static Point2i _sub_window_get_drawn_position(const Window *p_window);
 	void _sub_window_grab_focus(Window *p_window);
-	void _sub_window_remove(Window *p_window);
+	void _sub_window_remove(Window *p_window, bool p_fade_out = false);
+
+	// Hidden embedded windows, drawn with their last frame while they fade out.
+	struct ClosingSubWindow {
+		RID canvas_item;
+		ObjectID window;
+		double start_time = 0.0;
+		double duration = 0.0;
+		Vector2 offset; // Where the window slides to as it fades out.
+	};
+	LocalVector<ClosingSubWindow> closing_sub_windows;
+	bool _sub_window_start_closing(Window *p_window, RID p_canvas_item);
+	void _sub_window_update_closing();
+	void _sub_window_drop_closing(ObjectID p_window);
+	void _sub_window_drop_all_closing();
+	void _sub_window_free_canvas_if_unused();
 	int _sub_window_find(Window *p_window) const;
 	bool _sub_windows_forward_input(const Ref<InputEvent> &p_event);
 	SubWindowResize _sub_window_get_resize_margin(Window *p_subwindow, const Point2 &p_point);

@@ -40,6 +40,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "core/object/class_db.h"
 #include "core/os/os.h"
 #include "scene/gui/control.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/gui/theme_sound.h"
 #include "scene/main/scene_tree.h"
 #include "scene/theme/theme_db.h"
@@ -1068,6 +1069,7 @@ void Window::set_visible(bool p_visible) {
 				}
 			}
 			embedder->_sub_window_register(this);
+			_start_appear();
 			RS::get_singleton()->viewport_set_update_mode(get_viewport_rid(), RSE::VIEWPORT_UPDATE_WHEN_PARENT_VISIBLE);
 
 			// Make sure the sub-window shares the HDR output settings of the embedder.
@@ -1077,7 +1079,8 @@ void Window::set_visible(bool p_visible) {
 				_update_viewport_for_hdr_output();
 			}
 		} else {
-			embedder->_sub_window_remove(this);
+			// Hidden windows fade out with their last frame.
+			embedder->_sub_window_remove(this, true);
 			embedder = nullptr;
 			RS::get_singleton()->viewport_set_update_mode(get_viewport_rid(), RSE::VIEWPORT_UPDATE_DISABLED);
 		}
@@ -1119,6 +1122,35 @@ void Window::set_visible(bool p_visible) {
 	//update transient exclusive
 	if (transient_parent) {
 		_set_transient_exclusive_child(true);
+	}
+}
+
+// Embedded windows fade in and slide into place when they're shown, by the appear theme constants.
+void Window::_start_appear() {
+	if (theme_cache.appear_duration <= 0 || !embedder || !is_inside_tree()) {
+		return;
+	}
+	// Like the style transitions, by the unscaled process step of each frame, so the speed is the same in Movie Maker mode.
+	appear_start_time = StyleTransitions::get_time();
+	// Windows usually open below where they're opened from, like menus below their button, and slide down into place.
+	// Menus near the bottom of the screen open above their button instead, they rise from below.
+	appear_direction = embedder->get_mouse_position().y > get_position().y + get_size().y * 0.5 ? 1.0 : -1.0;
+	_update_appear();
+}
+
+void Window::_update_appear() {
+	if (!embedder || !visible) {
+		appear_draw_offset = Vector2();
+		return;
+	}
+	// When the theme turns the animation off midway, the window is shown in place at once.
+	const double t = theme_cache.appear_duration > 0 ? MIN((StyleTransitions::get_time() - appear_start_time) / (theme_cache.appear_duration / 1000.0), 1.0) : 1.0;
+	const float eased = 1.0 - Math::pow(1.0 - t, 3.0);
+	appear_draw_offset = t < 1.0 ? Vector2(0, appear_direction * (1.0f - eased) * theme_cache.appear_offset) : Vector2();
+	embedder->_sub_window_set_appearance(this, eased, appear_draw_offset);
+	const Callable update = callable_mp(this, &Window::_update_appear);
+	if (t < 1.0 && !get_tree()->is_connected(SNAME("process_frame"), update)) {
+		get_tree()->connect(SNAME("process_frame"), update, CONNECT_ONE_SHOT);
 	}
 }
 
@@ -1451,7 +1483,7 @@ void Window::_update_viewport_size() {
 		}
 	}
 
-	bool allocate = is_inside_tree() && visible && (window_id != DisplayServerEnums::INVALID_WINDOW_ID || embedder != nullptr);
+	bool allocate = is_inside_tree() && ((visible && (window_id != DisplayServerEnums::INVALID_WINDOW_ID || embedder != nullptr)) || appear_closing);
 	_set_size(final_size, 1, final_size_override, allocate);
 
 	if (window_id != DisplayServerEnums::INVALID_WINDOW_ID) {
@@ -3813,6 +3845,8 @@ void Window::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, close_v_offset);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, resize_margin);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_duration);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_offset);
 }
 
 Window::Window() {

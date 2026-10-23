@@ -34,6 +34,7 @@ TEST_FORCE_LINK(test_window)
 
 #include "core/input/input_map.h" // IWYU pragma: keep // Used by `SEND_GUI_MOUSE_MOTION_EVENT` macro.
 #include "scene/gui/control.h"
+#include "scene/gui/style_transitions.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 #include "tests/display_server_mock.h"
@@ -91,6 +92,79 @@ TEST_CASE("[SceneTree][Window]") {
 		memdelete(c);
 		memdelete(w);
 	}
+}
+
+TEST_CASE("[SceneTree][Window] Appearing windows rise from below when they're above the mouse") {
+	Window *root = SceneTree::get_singleton()->get_root();
+	Window *window = memnew(Window);
+	window->set_visible(false);
+	window->set_flag(Window::FLAG_BORDERLESS, true);
+	NotificationControlWindow *control = memnew(NotificationControlWindow);
+	control->set_size(Size2(100, 100));
+	window->add_child(control);
+	root->add_child(window);
+	window->add_theme_constant_override("appear_duration", 100000);
+	window->add_theme_constant_override("appear_offset", 100);
+	window->set_position(Point2i(100, 200));
+	window->set_size(Size2i(100, 100));
+
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 500), MouseButtonMask::NONE, Key::NONE);
+	window->show();
+	// At the start of the animation, the window is drawn 100 px below its position.
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 350), MouseButtonMask::NONE, Key::NONE);
+	CHECK(control->mouse_over);
+
+	// The animation ends after its duration.
+	StyleTransitions::skip_time(100.0);
+	SceneTree::get_singleton()->emit_signal(SNAME("process_frame"));
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 250), MouseButtonMask::NONE, Key::NONE);
+	CHECK(control->mouse_over);
+
+	SUBCASE("Hidden windows fade out, and can be shown again or freed while they do") {
+		window->hide();
+		SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 250), MouseButtonMask::NONE, Key::NONE);
+		CHECK_FALSE_MESSAGE(control->mouse_over, "A window fading out takes no input.");
+		window->show();
+		CHECK(window->is_visible());
+		window->hide();
+	}
+
+	memdelete(window);
+	StyleTransitions::skip_time(100.0);
+	SceneTree::get_singleton()->emit_signal(SNAME("process_frame"));
+}
+
+TEST_CASE("[SceneTree][Window] Appearing windows take input where they're drawn") {
+	Window *root = SceneTree::get_singleton()->get_root();
+	Window *window = memnew(Window);
+	window->set_visible(false);
+	window->set_flag(Window::FLAG_BORDERLESS, true);
+	NotificationControlWindow *control = memnew(NotificationControlWindow);
+	control->set_size(Size2(100, 100));
+	window->add_child(control);
+	root->add_child(window);
+	window->add_theme_constant_override("appear_duration", 100000);
+	window->add_theme_constant_override("appear_offset", 100);
+	window->set_position(Point2i(100, 200));
+	window->set_size(Size2i(100, 100));
+	// Opened below the mouse, so it slides down into place.
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(10, 10), MouseButtonMask::NONE, Key::NONE);
+	window->show();
+	CHECK(window->get_position() == Point2i(100, 200));
+
+	// At the start of the animation, the window is drawn 100 px above its position.
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 150), MouseButtonMask::NONE, Key::NONE);
+	CHECK(control->mouse_over);
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 250), MouseButtonMask::NONE, Key::NONE);
+	CHECK_FALSE(control->mouse_over);
+
+	// Turning the animation off midway puts the window in place at the next frame.
+	window->add_theme_constant_override("appear_duration", 0);
+	SceneTree::get_singleton()->emit_signal(SNAME("process_frame"));
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 250), MouseButtonMask::NONE, Key::NONE);
+	CHECK(control->mouse_over);
+
+	memdelete(window);
 }
 
 } // namespace TestWindow

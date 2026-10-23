@@ -241,7 +241,18 @@ private:
 		int close_v_offset = 0;
 
 		int resize_margin = 0;
+
+		int appear_duration = 0;
+		int appear_offset = 0;
 	} theme_cache;
+
+	double appear_start_time = 0.0;
+	// Windows opening above where they're opened from rise from below.
+	float appear_direction = -1.0;
+	Vector2 appear_draw_offset; // Where the window is drawn while it appears, relative to its position.
+	bool appear_closing = false; // Hidden, but its last frame is drawn while it closes, so its viewport keeps its texture.
+	void _start_appear();
+	void _update_appear();
 
 	void _settings_changed();
 
