@@ -179,7 +179,7 @@ void BaseButton::_notification(int p_what) {
 		case NOTIFICATION_MOUSE_ENTER: {
 			status.hovering = true;
 			if (!status.disabled) {
-				ThemeSound::play(theme_cache.sound_hover, this);
+				ThemeSound::play(theme_cache.sound_hover, this, ThemeSound::PRIORITY_HOVER);
 			}
 			queue_accessibility_update();
 			queue_redraw();

@@ -110,7 +110,7 @@ void MenuBar::gui_input(const Ref<InputEvent> &p_event) {
 		}
 		if (selected_menu != old_sel) {
 			if (focused_menu >= 0 && !menu_cache[focused_menu].disabled) {
-				ThemeSound::play(theme_cache.sound_hover, this);
+				ThemeSound::play(theme_cache.sound_hover, this, ThemeSound::PRIORITY_HOVER);
 			}
 			queue_redraw();
 		}

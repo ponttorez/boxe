@@ -2264,7 +2264,7 @@ void TextEdit::gui_input(const Ref<InputEvent> &p_gui_input) {
 		uint32_t version;
 		~TypedSoundGuard() {
 			if (text_edit->get_version() != version) {
-				ThemeSound::play(text_edit->theme_cache.sound_typed, text_edit);
+				ThemeSound::play(text_edit->theme_cache.sound_typed, text_edit, ThemeSound::PRIORITY_FEEDBACK);
 			}
 		}
 	} typed_sound_guard{ this, get_version() };

@@ -3574,7 +3574,7 @@ void LineEdit::_bind_methods() {
 }
 
 void LineEdit::_play_typed_sound() {
-	ThemeSound::play(theme_cache.sound_typed, this);
+	ThemeSound::play(theme_cache.sound_typed, this, ThemeSound::PRIORITY_FEEDBACK);
 }
 
 void LineEdit::_play_submitted_sound() {

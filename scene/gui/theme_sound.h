@@ -36,7 +36,16 @@ class Node;
 
 namespace ThemeSound {
 
+// One user action plays one sound: of the sounds started in the same frame, the one with the highest priority plays.
+// Pressing a check in a Tree plays its toggle sound, not the selection sound, and a button that opens a popup plays
+// its press sound, not the opened sound of the popup.
+enum Priority {
+	PRIORITY_HOVER,
+	PRIORITY_FEEDBACK, // What follows an action, like a selection, a value change or a popup that opens or closes.
+	PRIORITY_ACTION, // What the user did, like a press, a toggle or a submit.
+};
+
 // Plays a theme sound on the sound bus of p_context, see Node::get_sound_bus_in_tree().
-void play(const Ref<AudioStream> &p_sound, const Node *p_context);
+void play(const Ref<AudioStream> &p_sound, const Node *p_context, Priority p_priority = PRIORITY_ACTION);
 
 } // namespace ThemeSound

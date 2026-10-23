@@ -1095,7 +1095,7 @@ void Window::set_visible(bool p_visible) {
 		}
 	} else {
 		if (popup_sound_played) {
-			ThemeSound::play(theme_cache.closed_sound, this);
+			ThemeSound::play(theme_cache.closed_sound, this, ThemeSound::PRIORITY_FEEDBACK);
 			popup_sound_played = false;
 		}
 		if (get_tree() && get_tree()->is_accessibility_supported()) {
@@ -2348,7 +2348,7 @@ void Window::_popup_base(const Rect2i &p_screen_rect) {
 	notification(NOTIFICATION_POST_POPUP);
 
 	if (popup_sounds && visible) {
-		ThemeSound::play(theme_cache.opened_sound, this);
+		ThemeSound::play(theme_cache.opened_sound, this, ThemeSound::PRIORITY_FEEDBACK);
 		popup_sound_played = true;
 	}
 }

@@ -31,13 +31,36 @@
 #include "theme_sound.h"
 
 #include "core/config/engine.h"
+#include "core/object/object.h"
+#include "core/object/object_id.h"
 #include "scene/main/node.h"
 #include "servers/audio/audio_server.h"
 
-void ThemeSound::play(const Ref<AudioStream> &p_sound, const Node *p_context) {
+namespace {
+
+// The sound started in the current frame.
+uint64_t last_frame = UINT64_MAX;
+ThemeSound::Priority last_priority = ThemeSound::PRIORITY_HOVER;
+ObjectID last_playback;
+
+} // namespace
+
+void ThemeSound::play(const Ref<AudioStream> &p_sound, const Node *p_context, Priority p_priority) {
 	// The edited scene doesn't play theme sounds.
 	if (p_sound.is_null() || p_context == nullptr || Engine::get_singleton()->is_editor_hint() || !AudioServer::get_singleton()) {
 		return;
+	}
+
+	const uint64_t frame = Engine::get_singleton()->get_process_frames();
+	if (frame == last_frame) {
+		if (p_priority <= last_priority) {
+			return;
+		}
+		// A sound of a higher priority replaces the one already started for the same action.
+		AudioStreamPlayback *previous = ObjectDB::get_instance<AudioStreamPlayback>(last_playback);
+		if (previous) {
+			AudioServer::get_singleton()->stop_playback_stream(Ref<AudioStreamPlayback>(previous));
+		}
 	}
 
 	Ref<AudioStreamPlayback> playback = p_sound->instantiate_playback();
@@ -53,4 +76,8 @@ void ThemeSound::play(const Ref<AudioStream> &p_sound, const Node *p_context) {
 	}
 	volume_vector.write[0] = AudioFrame(1, 1);
 	AudioServer::get_singleton()->start_playback_stream(playback, p_context->get_sound_bus_in_tree(), volume_vector);
+
+	last_frame = frame;
+	last_priority = p_priority;
+	last_playback = playback->get_instance_id();
 }

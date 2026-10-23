@@ -3056,7 +3056,7 @@ void Viewport::_sub_window_update_close_hover(const Point2 &p_point) {
 	}
 	if (hovered) {
 		_sub_window_update(hovered);
-		ThemeSound::play(hovered->theme_cache.close_hover_sound, hovered);
+		ThemeSound::play(hovered->theme_cache.close_hover_sound, hovered, ThemeSound::PRIORITY_HOVER);
 	}
 }
 

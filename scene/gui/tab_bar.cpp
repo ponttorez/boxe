@@ -1288,7 +1288,7 @@ void TabBar::_update_hover() {
 
 		if (hover != -1) {
 			if (!tabs[hover].disabled) {
-				ThemeSound::play(theme_cache.sound_hover, this);
+				ThemeSound::play(theme_cache.sound_hover, this, ThemeSound::PRIORITY_HOVER);
 			}
 			emit_signal(SNAME("tab_hovered"), hover);
 		}

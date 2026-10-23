@@ -4434,7 +4434,7 @@ void Tree::_play_hover_sound(TreeItem *p_old_item, int p_old_column, int p_old_b
 	const int new_button = _get_enabled_button(cache.hover_item, cache.hover_column, cache.hover_button_index_in_column);
 
 	if (cache.hover_item != p_old_item || (per_cell && cache.hover_column != p_old_column) || new_button != old_button || (new_button != -1 && cache.hover_column != p_old_column)) {
-		ThemeSound::play(theme_cache.sound_hover, this);
+		ThemeSound::play(theme_cache.sound_hover, this, ThemeSound::PRIORITY_HOVER);
 	}
 }
 
@@ -7598,7 +7598,7 @@ void Tree::_play_selected_sound() {
 		return;
 	}
 	selected_sound_frame = frame;
-	ThemeSound::play(theme_cache.sound_selected, this);
+	ThemeSound::play(theme_cache.sound_selected, this, ThemeSound::PRIORITY_FEEDBACK);
 }
 
 void Tree::_play_multi_selected_sound(Object *p_item, int p_column, bool p_selected) {

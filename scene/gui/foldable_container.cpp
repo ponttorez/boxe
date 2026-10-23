@@ -255,7 +255,7 @@ void FoldableContainer::gui_input(const Ref<InputEvent> &p_event) {
 		if (_get_title_rect().has_point(m->get_position())) {
 			if (!is_hovering) {
 				is_hovering = true;
-				ThemeSound::play(theme_cache.sound_hover, this);
+				ThemeSound::play(theme_cache.sound_hover, this, ThemeSound::PRIORITY_HOVER);
 				queue_redraw();
 			}
 		} else if (is_hovering) {

@@ -356,7 +356,7 @@ void SpinBox::gui_input(const Ref<InputEvent> &p_event) {
 
 		if (old_up_hovered != state_cache.up_button_hovered || old_down_hovered != state_cache.down_button_hovered) {
 			if ((state_cache.up_button_hovered && !state_cache.up_button_disabled) || (state_cache.down_button_hovered && !state_cache.down_button_disabled)) {
-				ThemeSound::play(theme_cache.sound_button_hover, this);
+				ThemeSound::play(theme_cache.sound_button_hover, this, ThemeSound::PRIORITY_HOVER);
 			}
 			queue_redraw();
 		}

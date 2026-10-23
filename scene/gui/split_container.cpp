@@ -47,7 +47,7 @@ void SplitContainerMultiDragger::_notification(int p_what) {
 			if (!dragging && !Input::get_singleton()->is_mouse_button_pressed(MouseButton::LEFT)) {
 				split_container->show_grabber_icon(dragger_index);
 				if (split_container->dragging_enabled && !split_container->collapsed) {
-					ThemeSound::play(split_container->theme_cache.sound_grabber_hover, split_container);
+					ThemeSound::play(split_container->theme_cache.sound_grabber_hover, split_container, ThemeSound::PRIORITY_HOVER);
 				}
 			}
 		} break;
@@ -369,7 +369,7 @@ void SplitContainerDragger::_notification(int p_what) {
 			mouse_inside = true;
 			SplitContainer *sc = Object::cast_to<SplitContainer>(get_parent());
 			if (sc->dragging_enabled && !sc->collapsed && !dragging && !Input::get_singleton()->is_mouse_button_pressed(MouseButton::LEFT)) {
-				ThemeSound::play(sc->theme_cache.sound_grabber_hover, sc);
+				ThemeSound::play(sc->theme_cache.sound_grabber_hover, sc, ThemeSound::PRIORITY_HOVER);
 			}
 			if (sc->theme_cache.autohide) {
 				queue_redraw();

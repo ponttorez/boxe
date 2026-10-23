@@ -856,7 +856,7 @@ void ItemList::gui_input(const Ref<InputEvent> &p_event) {
 			prev_hovered = hovered;
 			hovered = closest;
 			if (hovered != -1 && !items[hovered].disabled) {
-				ThemeSound::play(theme_cache.sound_hover, this);
+				ThemeSound::play(theme_cache.sound_hover, this, ThemeSound::PRIORITY_HOVER);
 			}
 			queue_accessibility_update();
 			queue_redraw();
@@ -2612,12 +2612,12 @@ void ItemList::_bind_methods() {
 }
 
 void ItemList::_play_selected_sound() {
-	ThemeSound::play(theme_cache.sound_selected, this);
+	ThemeSound::play(theme_cache.sound_selected, this, ThemeSound::PRIORITY_FEEDBACK);
 }
 
 void ItemList::_play_multi_selected_sound(int p_index, bool p_selected) {
 	if (p_selected) {
-		ThemeSound::play(theme_cache.sound_selected, this);
+		ThemeSound::play(theme_cache.sound_selected, this, ThemeSound::PRIORITY_FEEDBACK);
 	}
 }
 

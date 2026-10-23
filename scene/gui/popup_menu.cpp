@@ -3169,7 +3169,7 @@ void PopupMenu::_about_to_close() {
 }
 
 void PopupMenu::_play_hover_sound() {
-	ThemeSound::play(theme_cache.sound_hover, this);
+	ThemeSound::play(theme_cache.sound_hover, this, ThemeSound::PRIORITY_HOVER);
 }
 
 void PopupMenu::activate_item(int p_idx) {

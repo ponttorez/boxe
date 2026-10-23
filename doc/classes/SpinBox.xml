@@ -143,7 +143,7 @@
 			Sound played when the mouse enters the up or down button.
 		</theme_item>
 		<theme_item name="button_pressed" data_type="sound" type="AudioStream">
-			Sound played when the up or down button is clicked. The [theme_item Range.value_changed] sound also plays when the value changes.
+			Sound played when the up or down button is clicked.
 		</theme_item>
 		<theme_item name="down_background" data_type="style" type="StyleBox">
 			Background style of the down button.

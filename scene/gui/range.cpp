@@ -400,7 +400,7 @@ void Range::_play_value_sound(double p_previous_value) {
 		return;
 	}
 	last_value_sound_usec = now;
-	ThemeSound::play(theme_cache.sound_value_changed, this);
+	ThemeSound::play(theme_cache.sound_value_changed, this, ThemeSound::PRIORITY_FEEDBACK);
 }
 
 void Range::_bind_methods() {
