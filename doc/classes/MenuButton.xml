@@ -78,4 +78,9 @@
 			</description>
 		</signal>
 	</signals>
+	<theme_items>
+		<theme_item name="popup_separation" data_type="constant" type="int" default="0">
+			The distance between the button and its popup.
+		</theme_item>
+	</theme_items>
 </class>

@@ -62,6 +62,7 @@ class OptionButton : public Button {
 		Ref<Texture2D> arrow_icon;
 		int arrow_margin = 0;
 		int modulate_arrow = 0;
+		int popup_separation = 0;
 	} theme_cache;
 
 	static inline PropertyListHelper base_property_helper;

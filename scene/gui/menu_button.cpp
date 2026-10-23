@@ -33,6 +33,7 @@
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "scene/main/window.h"
+#include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
 #include "servers/display/display_server.h"
 #include "servers/rendering/rendering_server.h"
@@ -85,7 +86,7 @@ void MenuButton::show_popup() {
 
 	emit_signal(SNAME("about_to_popup"));
 	Rect2 rect = get_screen_rect();
-	rect.position.y += rect.size.height;
+	rect.position.y += rect.size.height + theme_cache.popup_separation * get_screen_transform().get_scale().y;
 	if (get_viewport()->is_embedding_subwindows() && popup->get_force_native()) {
 		Transform2D xform = get_viewport()->get_popup_base_transform_native();
 		rect = xform.xform(rect);
@@ -210,6 +211,8 @@ void MenuButton::_bind_methods() {
 	ADD_ARRAY_COUNT("Items", "item_count", "set_item_count", "get_item_count", "popup/item_");
 
 	ADD_SIGNAL(MethodInfo("about_to_popup"));
+
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, MenuButton, popup_separation);
 
 	ADD_CLASS_DEPENDENCY("PopupMenu");
 

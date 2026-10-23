@@ -59,6 +59,9 @@
 		</signal>
 	</signals>
 	<theme_items>
+		<theme_item name="popup_separation" data_type="constant" type="int" default="0">
+			The distance between the button and the color picker popup.
+		</theme_item>
 		<theme_item name="bg" data_type="icon" type="Texture2D">
 			The background of the color preview rect on the button.
 		</theme_item>

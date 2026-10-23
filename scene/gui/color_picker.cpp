@@ -2429,7 +2429,7 @@ void ColorPickerButton::pressed() {
 	}
 
 	float h_offset = (get_size().x - minsize.x) / 2;
-	float v_offset = show_above ? -minsize.y : get_size().y;
+	float v_offset = show_above ? -minsize.y - theme_cache.popup_separation : get_size().y + theme_cache.popup_separation;
 	popup->set_position(get_screen_position() + Vector2(h_offset, v_offset));
 	popup->popup();
 	if (!picker->is_hex_visible() && picker->get_picker_shape() != ColorPicker::SHAPE_NONE) {
@@ -2584,6 +2584,7 @@ void ColorPickerButton::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, ColorPickerButton, normal_style, "normal");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_ICON, ColorPickerButton, background_icon, "bg");
 	BIND_THEME_ITEM_EXT(Theme::DATA_TYPE_ICON, ColorPickerButton, overbright_indicator, "overbright_indicator", "ColorPicker");
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, ColorPickerButton, popup_separation);
 }
 
 ColorPickerButton::ColorPickerButton(const String &p_text) :

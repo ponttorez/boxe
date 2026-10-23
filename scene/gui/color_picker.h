@@ -526,6 +526,8 @@ class ColorPickerButton : public Button {
 		Ref<Texture2D> background_icon;
 
 		Ref<Texture2D> overbright_indicator;
+
+		int popup_separation = 0;
 	} theme_cache;
 
 	void _about_to_popup();

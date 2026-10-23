@@ -140,7 +140,7 @@ void MenuBar::_open_popup(int p_index, bool p_focus_item) {
 	active_menu = p_index;
 
 	pm->set_size(Size2(screen_size.x, 0));
-	screen_pos.y += screen_size.y;
+	screen_pos.y += screen_size.y + theme_cache.popup_separation * canvas_scale.y;
 	if (is_layout_rtl()) {
 		screen_pos.x += screen_size.x - pm->get_size().width;
 	}
@@ -860,6 +860,7 @@ void MenuBar::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, MenuBar, font_focus_color);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, MenuBar, h_separation);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, MenuBar, popup_separation);
 	BBCodeText::bind_theme_fonts(get_class_static());
 
 	ADD_CLASS_DEPENDENCY("PopupMenu");

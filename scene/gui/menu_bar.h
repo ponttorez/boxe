@@ -99,6 +99,7 @@ class MenuBar : public Control {
 		Color font_focus_color;
 
 		int h_separation = 0;
+		int popup_separation = 0;
 	} theme_cache;
 
 	int _get_index_at_point(const Point2 &p_point) const;

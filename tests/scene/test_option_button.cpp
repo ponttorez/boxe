@@ -34,7 +34,10 @@ TEST_FORCE_LINK(test_option_button)
 
 #ifndef ADVANCED_GUI_DISABLED
 
+#include "scene/gui/menu_button.h"
 #include "scene/gui/option_button.h"
+#include "scene/main/scene_tree.h"
+#include "scene/main/window.h"
 
 namespace TestOptionButton {
 
@@ -155,6 +158,37 @@ TEST_CASE("[SceneTree][OptionButton] Many items") {
 	}
 
 	memdelete(test_opt);
+}
+
+TEST_CASE("[SceneTree][OptionButton][MenuButton] Popups open below the button, apart by popup_separation") {
+	OptionButton *option_button = memnew(OptionButton);
+	MenuButton *menu_button = memnew(MenuButton);
+	Window *root = SceneTree::get_singleton()->get_root();
+	root->add_child(option_button);
+	root->add_child(menu_button);
+	option_button->add_item("Item");
+	menu_button->get_popup()->add_item("Item");
+	option_button->set_position(Point2(10, 20));
+	option_button->set_size(Size2(100, 30));
+	menu_button->set_position(Point2(200, 20));
+	menu_button->set_size(Size2(100, 30));
+
+	option_button->show_popup();
+	menu_button->show_popup();
+	CHECK(option_button->get_popup()->get_position().y == 50);
+	CHECK(menu_button->get_popup()->get_position().y == 50);
+	option_button->get_popup()->hide();
+	menu_button->get_popup()->hide();
+
+	option_button->add_theme_constant_override("popup_separation", 6);
+	menu_button->add_theme_constant_override("popup_separation", 6);
+	option_button->show_popup();
+	menu_button->show_popup();
+	CHECK(option_button->get_popup()->get_position().y == 56);
+	CHECK(menu_button->get_popup()->get_position().y == 56);
+
+	memdelete(option_button);
+	memdelete(menu_button);
 }
 
 } // namespace TestOptionButton
