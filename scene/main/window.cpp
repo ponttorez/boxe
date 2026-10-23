@@ -3841,6 +3841,7 @@ void Window::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, resize_margin);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_duration);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_offset);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, Window, popup_shadow);
 }
 
 Window::Window() {

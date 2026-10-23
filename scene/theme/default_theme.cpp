@@ -712,6 +712,7 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_constant("resize_margin", "Window", Math::round(4 * scale));
 	theme->set_constant("appear_duration", "Window", 0);
 	theme->set_constant("appear_offset", "Window", 0);
+	theme->set_stylebox("popup_shadow", "Window", memnew(StyleBoxEmpty));
 
 	theme->set_icon("close", "Window", icons["close"]);
 	theme->set_icon("close_pressed", "Window", icons["close_hl"]);

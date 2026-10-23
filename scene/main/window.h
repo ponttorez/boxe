@@ -227,6 +227,7 @@ private:
 	struct ThemeCache {
 		Ref<StyleBox> embedded_border;
 		Ref<StyleBox> embedded_unfocused_border;
+		Ref<StyleBox> popup_shadow;
 
 		Ref<Font> title_font;
 		int title_font_size = 0;
