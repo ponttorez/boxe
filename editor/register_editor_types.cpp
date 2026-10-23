@@ -136,6 +136,7 @@
 #include "editor/shader/shader_editor_plugin.h"
 #include "editor/shader/shader_file_editor_plugin.h"
 #include "editor/translations/editor_translation_parser.h"
+#include "editor/translations/translation_document.h"
 #include "editor/version_control/editor_vcs_interface.h"
 #include "servers/rendering/rendering_server.h"
 
@@ -170,6 +171,7 @@ void register_editor_types() {
 	GDREGISTER_ABSTRACT_CLASS(EditorFileSystem);
 	GDREGISTER_CLASS(EditorFileSystemDirectory);
 	GDREGISTER_CLASS(EditorVCSInterface);
+	GDREGISTER_INTERNAL_CLASS(TranslationDocument);
 	GDREGISTER_ABSTRACT_CLASS(ScriptEditor);
 	GDREGISTER_ABSTRACT_CLASS(ScriptEditorBase);
 	GDREGISTER_CLASS(EditorSyntaxHighlighter);
