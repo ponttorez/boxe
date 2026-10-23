@@ -127,6 +127,23 @@ void TranslationTemplateGenerator::generate(const String &p_file) {
 	}
 }
 
+Vector<Vector<String>> TranslationTemplateGenerator::get_messages() const {
+	const Vector<String> files = GLOBAL_GET("internationalization/locale/translations_pot_files");
+	const bool add_builtin = GLOBAL_GET("internationalization/locale/translation_add_builtin_strings_to_pot");
+
+	Vector<Vector<String>> ret;
+	for (const KeyValue<Translation::MessageKey, MessageData> &E : parse(files, add_builtin)) {
+		Vector<String> comments;
+		for (const String &comment : E.value.comments) {
+			if (!comment.is_empty()) {
+				comments.push_back(comment);
+			}
+		}
+		ret.push_back({ E.key.msgid, E.key.msgctxt, E.value.plural, String("\n").join(comments) });
+	}
+	return ret;
+}
+
 static void _write_pot_field(Ref<FileAccess> p_file, const String &p_name, const String &p_value) {
 	p_file->store_string(p_name + " ");
 

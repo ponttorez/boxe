@@ -53,6 +53,8 @@ public:
 	static TranslationTemplateGenerator *get_singleton();
 
 	void generate(const String &p_file);
+	// The messages of the template of the project, each one as its key, context, plural key and comment.
+	Vector<Vector<String>> get_messages() const;
 
 	~TranslationTemplateGenerator();
 };
