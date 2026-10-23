@@ -255,6 +255,7 @@ void FoldableContainer::gui_input(const Ref<InputEvent> &p_event) {
 		if (_get_title_rect().has_point(m->get_position())) {
 			if (!is_hovering) {
 				is_hovering = true;
+				ThemeSound::play(theme_cache.sound_hover, this);
 				queue_redraw();
 			}
 		} else if (is_hovering) {
@@ -688,6 +689,7 @@ void FoldableContainer::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, FoldableContainer, composite_text_effects);
 	BBCodeText::bind_theme_fonts(get_class_static());
 
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_hover, "hover");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_toggled_on, "toggled_on");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, FoldableContainer, sound_toggled_off, "toggled_off");
 }

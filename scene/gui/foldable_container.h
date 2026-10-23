@@ -91,6 +91,7 @@ private:
 
 		int h_separation = 0;
 
+		Ref<AudioStream> sound_hover;
 		Ref<AudioStream> sound_toggled_on;
 		Ref<AudioStream> sound_toggled_off;
 	} theme_cache;

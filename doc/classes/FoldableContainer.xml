@@ -138,6 +138,9 @@
 		<theme_item name="folded_arrow_mirrored" data_type="icon" type="Texture2D">
 			The title's icon used when collapsed (for right-to-left layouts).
 		</theme_item>
+		<theme_item name="hover" data_type="sound" type="AudioStream">
+			Sound played when the mouse enters the title.
+		</theme_item>
 		<theme_item name="toggled_off" data_type="sound" type="AudioStream">
 			Sound played when the user folds the container.
 		</theme_item>
