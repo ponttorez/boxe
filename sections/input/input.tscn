@@ -9,31 +9,11 @@ size_flags_horizontal = 3
 script = ExtResource("input_gd")
 theme_override_constants/separation = 24
 
-[node name="Header" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Overline" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "CONTROL"
-
-[node name="Title" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"TitleLabel"
-text = "Input"
-
-[node name="Subtitle" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "Control.interactable = false blocks input for a control and its children but keeps their look, unlike disabled. raycast_padding moves each edge of the area that takes mouse and touch input, without changing the size or the drawing of the control."
-autowrap_mode = 3
-
 [node name="Cards" type="GridContainer" parent="."]
 layout_mode = 2
 script = ExtResource("responsive_grid_gd")
 min_column_width = 380.0
-max_columns = 1
+max_columns = 2
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 
@@ -58,7 +38,7 @@ text = "Lock a form"
 [node name="Caption" type="Label" parent="Cards/Lock/Box/Header"]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = "Lock the form with the switch, or press Save to lock it while it saves. interactable = false keeps the look of the form and consumes the presses, so it doesn't flash gray. Cancel stays outside of the locked part."
+text = "Control.interactable = false blocks input for a control and its children but keeps their look, unlike disabled. Lock the whole form with the switch, or press Save to lock the fields while it saves: Cancel stays outside of that locked part."
 autowrap_mode = 3
 
 [node name="Lock" type="CheckButton" parent="Cards/Lock/Box"]
@@ -78,6 +58,7 @@ layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 theme_override_constants/separation = 12
+unique_name_in_owner = true
 
 [node name="Form" type="VBoxContainer" parent="Cards/Lock/Box/Stage/Content"]
 unique_name_in_owner = true
@@ -98,23 +79,19 @@ layout_mode = 2
 theme_type_variation = &"AccentButton"
 text = "Save"
 
-[node name="Progress" type="ProgressBar" parent="Cards/Lock/Box/Stage/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-show_percentage = false
-
 [node name="Cancel" type="Button" parent="Cards/Lock/Box/Stage/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Cancel"
 disabled = true
 
-[node name="Status" type="Label" parent="Cards/Lock/Box"]
+[node name="Status" type="Label" parent="Cards/Lock/Box/Stage/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = ""
 autowrap_mode = 3
+horizontal_alignment = 1
 
 [node name="HitAreas" type="PanelContainer" parent="Cards"]
 layout_mode = 2
@@ -137,7 +114,7 @@ text = "Larger and smaller areas"
 [node name="Caption" type="Label" parent="Cards/HitAreas/Box/Header"]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = "A padding of -12 px on each side makes the 22 px close button easy to hit with a finger, and a padding of 14 px keeps the soft edges of the tile from reacting."
+text = "raycast_padding moves each edge of the area that takes mouse and touch input, without changing the size or the drawing of the control. A padding of -12 px makes the 22 px close button easy to hit with a finger, and a padding of 14 px keeps the soft edges of the tile from reacting."
 autowrap_mode = 3
 
 [node name="Show" type="CheckButton" parent="Cards/HitAreas/Box"]

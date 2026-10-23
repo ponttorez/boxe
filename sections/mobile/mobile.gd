@@ -5,12 +5,11 @@ const ORIENTATIONS := ["undefined", "portrait", "landscape"]
 
 var _events: PackedStringArray
 
-@onready var _mode: OptionButton = %Mode
 @onready var _previews: Control = %Previews
 @onready var _safe_rect: Label = %SafeRect.get_node(^"Value")
 @onready var _screen_size: Label = %ScreenSize.get_node(^"Value")
 @onready var _note: Label = %Note
-@onready var _event_log: Label = %Events
+@onready var _event_log: Label = %Log
 @onready var _refresh_rate: Label = %RefreshRate.get_node(^"Value")
 @onready var _fps: Label = %Fps.get_node(^"Value")
 @onready var _version: Label = %Version.get_node(^"Value")
@@ -19,10 +18,9 @@ var _events: PackedStringArray
 
 func _ready() -> void:
 	var app := get_tree().get_first_node_in_group(&"app")
-	_mode.select(app.get_safe_area())
-	_mode.item_selected.connect(app.set_safe_area)
-	_mode.item_selected.connect(_highlight_preview)
-	_highlight_preview(_mode.selected)
+	for preview: Control in _previews.get_children():
+		preview.gui_input.connect(_on_preview_input.bind(app, preview.get_index()))
+	_highlight_preview(app.get_safe_area())
 	_note.visible = not OS.has_feature("mobile")
 
 	DisplayServer.safe_area_changed.connect(_on_safe_area_changed)
@@ -37,6 +35,13 @@ func _ready() -> void:
 	timer.autostart = true
 	timer.timeout.connect(_update_display)
 	add_child(timer)
+
+
+func _on_preview_input(event: InputEvent, app: Node, mode: int) -> void:
+	var mb := event as InputEventMouseButton
+	if mb and mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
+		app.set_safe_area(mode)
+		_highlight_preview(mode)
 
 
 func _highlight_preview(mode: int) -> void:

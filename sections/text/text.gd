@@ -9,7 +9,6 @@ const CHARACTERS_PER_SECOND := 24.0
 @onready var _count: HSlider = %Count
 @onready var _count_value: Label = %CountValue
 @onready var _apples: Label = %Apples
-@onready var _days: Label = %Days
 
 var _typewriter: Tween
 
@@ -56,4 +55,3 @@ func _update_count() -> void:
 	var count := int(_count.value)
 	_count_value.text = str(count)
 	_apples.set_text_argument("count", count)
-	_days.set_text_argument("days", count)

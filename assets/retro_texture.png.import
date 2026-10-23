@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtg52xfog22rf"
-path="res://.godot/imported/language.svg-68e677d3fac402c1d909f6457464939e.ctex"
+uid="uid://due6ddo4u5d0c"
+path="res://.godot/imported/retro_texture.png-3d4b5cb03b5aa6c2c58f9ab5ee408436.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/language.svg"
-dest_files=["res://.godot/imported/language.svg-68e677d3fac402c1d909f6457464939e.ctex"]
+source_file="res://assets/retro_texture.png"
+dest_files=["res://.godot/imported/retro_texture.png-3d4b5cb03b5aa6c2c58f9ab5ee408436.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=4.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

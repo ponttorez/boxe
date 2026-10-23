@@ -6,26 +6,6 @@
 size_flags_horizontal = 3
 theme_override_constants/separation = 24
 
-[node name="Header" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Overline" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "ABOUT"
-
-[node name="Title" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"TitleLabel"
-text = "Credits"
-
-[node name="Subtitle" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "boxe is a fork of Godot Engine for smooth, tactile and localized interfaces. This demo shows its features, and is a regular Godot project to open in the editor of boxe."
-autowrap_mode = 3
-
 [node name="Cards" type="GridContainer" parent="."]
 layout_mode = 2
 script = ExtResource("responsive_grid_gd")
@@ -55,7 +35,7 @@ text = "Source code"
 [node name="Caption" type="Label" parent="Cards/Repository/Box/Header"]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = "boxe and this demo are open source under the MIT license, like Godot Engine."
+text = "boxe is a fork of Godot Engine for smooth, tactile and localized interfaces. This demo is a regular Godot project to open in the editor of boxe. Both are open source under the MIT license, like Godot Engine."
 autowrap_mode = 3
 
 [node name="Link1" type="LinkButton" parent="Cards/Repository/Box"]
@@ -63,6 +43,13 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "github.com/ponttorez/boxe"
 uri = "https://github.com/ponttorez/boxe"
+auto_translate_mode = 2
+
+[node name="Link2" type="LinkButton" parent="Cards/Repository/Box"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Godot Engine (MIT)"
+uri = "https://github.com/godotengine/godot"
 auto_translate_mode = 2
 
 [node name="Fonts" type="PanelContainer" parent="Cards"]
@@ -96,9 +83,33 @@ text = "Rubik (SIL OFL 1.1)"
 uri = "https://github.com/googlefonts/rubik"
 auto_translate_mode = 2
 
-[node name="Link2" type="LinkButton" parent="Cards/Fonts/Box"]
+[node name="Icons" type="PanelContainer" parent="Cards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Icons"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="VBoxContainer" parent="Cards/Icons/Box"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Cards/Icons/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Icons"
+
+[node name="Caption" type="Label" parent="Cards/Icons/Box/Header"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "The icons of the demo and their license."
+autowrap_mode = 3
+
+[node name="Link1" type="LinkButton" parent="Cards/Icons/Box"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "BoldPixels Font by Yūki (@YukiPixels) (CC BY-SA 4.0)"
-uri = "https://yukipixels.itch.io/boldpixels"
+text = "Lucide (ISC)"
+uri = "https://github.com/lucide-icons/lucide"
 auto_translate_mode = 2

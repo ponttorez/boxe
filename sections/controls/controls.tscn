@@ -1,126 +1,171 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://sections/controls/controls.gd" id="controls_gd"]
-[ext_resource type="Script" path="res://common/responsive_row.gd" id="responsive_row_gd"]
-[ext_resource type="Theme" path="res://themes/pixel_theme.tres" id="pixel_theme"]
+[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_normal"]
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_pixel"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_radio"]
 
 [node name="Controls" type="VBoxContainer"]
 size_flags_horizontal = 3
 script = ExtResource("controls_gd")
 theme_override_constants/separation = 24
 
-[node name="Header" type="VBoxContainer" parent="."]
+[node name="Library" type="GridContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 6
+script = ExtResource("responsive_grid_gd")
+min_column_width = 300.0
+max_columns = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
 
-[node name="Overline" type="Label" parent="Header"]
+[node name="Button" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/Button"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/Button/Box"]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "LIBRARY"
+text = "Button"
 
-[node name="Title" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"TitleLabel"
-text = "Controls"
-
-[node name="Subtitle" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "Every control in two themes, a regular one and a pixel art one. States blend, styles are layered, controls play sounds, and every text takes BBCode."
-autowrap_mode = 3
-
-[node name="Stages" type="Container" parent="."]
-layout_mode = 2
-script = ExtResource("responsive_row_gd")
-
-[node name="Normal" type="PanelContainer" parent="Stages"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Stages/Normal"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Badge" type="Label" parent="Stages/Normal/Box"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"AccentBadgeLabel"
-text = "Normal"
-
-[node name="NormalControls" type="VBoxContainer" parent="Stages/Normal/Box"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Buttons" type="HFlowContainer" parent="Stages/Normal/Box/NormalControls"]
+[node name="Row" type="HFlowContainer" parent="Library/Button/Box"]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
-[node name="Save" type="Button" parent="Stages/Normal/Box/NormalControls/Buttons"]
+[node name="Save" type="Button" parent="Library/Button/Box/Row"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "[b]Save[/b]  [color=#a1a6ad]Ctrl+S[/color]"
 bbcode_enabled = true
 
-[node name="Play" type="Button" parent="Stages/Normal/Box/NormalControls/Buttons"]
+[node name="Play" type="Button" parent="Library/Button/Box/Row"]
 layout_mode = 2
-text = "[img=18]res://assets/icons/sound.svg[/img] Play [b]sound[/b]"
+text = "[img=18]res://assets/sound_icon.svg[/img] Play [b]sound[/b]"
 bbcode_enabled = true
 
-[node name="Follow" type="Button" parent="Stages/Normal/Box/NormalControls/Buttons"]
+[node name="Follow" type="Button" parent="Library/Button/Box/Row"]
 layout_mode = 2
 toggle_mode = true
 text = "Follow"
 
-[node name="Locked" type="Button" parent="Stages/Normal/Box/NormalControls/Buttons"]
+[node name="Locked" type="Button" parent="Library/Button/Box/Row"]
 layout_mode = 2
 disabled = true
 text = "Locked"
 
-[node name="Link" type="LinkButton" parent="Stages/Normal/Box/NormalControls/Buttons"]
+[node name="CheckBox" type="PanelContainer" parent="Library"]
 layout_mode = 2
-size_flags_vertical = 4
-text = "Read the [i]docs[/i]"
-uri = "https://github.com/ponttorez/boxe"
-bbcode_enabled = true
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
 
-[node name="Toggles" type="HFlowContainer" parent="Stages/Normal/Box/NormalControls"]
+[node name="Box" type="VBoxContainer" parent="Library/CheckBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/CheckBox/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "CheckBox"
+
+[node name="Row" type="HFlowContainer" parent="Library/CheckBox/Box"]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
-[node name="CheckBox" type="CheckBox" parent="Stages/Normal/Box/NormalControls/Toggles"]
+[node name="Remember" type="CheckBox" parent="Library/CheckBox/Box/Row"]
 layout_mode = 2
 text = "[b]Remember[/b] me"
 bbcode_enabled = true
 
-[node name="CheckButton" type="CheckButton" parent="Stages/Normal/Box/NormalControls/Toggles"]
-layout_mode = 2
-text = "Switch"
-
-[node name="Day" type="CheckBox" parent="Stages/Normal/Box/NormalControls/Toggles"]
+[node name="Day" type="CheckBox" parent="Library/CheckBox/Box/Row"]
 layout_mode = 2
 button_pressed = true
-button_group = SubResource("ButtonGroup_normal")
+button_group = SubResource("ButtonGroup_radio")
 text = "Day"
 
-[node name="Night" type="CheckBox" parent="Stages/Normal/Box/NormalControls/Toggles"]
+[node name="Night" type="CheckBox" parent="Library/CheckBox/Box/Row"]
 layout_mode = 2
-button_group = SubResource("ButtonGroup_normal")
+button_group = SubResource("ButtonGroup_radio")
 text = "Night"
 
-[node name="Pickers" type="HFlowContainer" parent="Stages/Normal/Box/NormalControls"]
+[node name="CheckButton" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/CheckButton"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/CheckButton/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "CheckButton"
+
+[node name="Row" type="HFlowContainer" parent="Library/CheckButton/Box"]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
-[node name="Option" type="OptionButton" parent="Stages/Normal/Box/NormalControls/Pickers"]
+[node name="Notifications" type="CheckButton" parent="Library/CheckButton/Box/Row"]
 layout_mode = 2
+button_pressed = true
+text = "Notifications"
+
+[node name="Disabled" type="CheckButton" parent="Library/CheckButton/Box/Row"]
+layout_mode = 2
+disabled = true
+text = "Locked"
+
+[node name="LinkButton" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/LinkButton"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/LinkButton/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "LinkButton"
+
+[node name="Link" type="LinkButton" parent="Library/LinkButton/Box"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Read the [i]docs[/i]"
+uri = "https://github.com/ponttorez/boxe"
+bbcode_enabled = true
+
+[node name="OptionButton" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/OptionButton"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/OptionButton/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "OptionButton"
+
+[node name="Option" type="OptionButton" parent="Library/OptionButton/Box"]
+layout_mode = 2
+size_flags_horizontal = 0
 selected = 0
 item_count = 3
 popup/item_0/text = "Small"
@@ -130,212 +175,201 @@ popup/item_1/id = 1
 popup/item_2/text = "Large"
 popup/item_2/id = 2
 
-[node name="Menu" type="MenuButton" parent="Stages/Normal/Box/NormalControls/Pickers"]
-layout_mode = 2
-text = "Open menu"
-flat = false
-
-[node name="Fields" type="HBoxContainer" parent="Stages/Normal/Box/NormalControls"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="LineEdit" type="LineEdit" parent="Stages/Normal/Box/NormalControls/Fields"]
+[node name="MenuButton" type="PanelContainer" parent="Library"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Type, then press Enter"
-
-[node name="SpinBox" type="SpinBox" parent="Stages/Normal/Box/NormalControls/Fields"]
-layout_mode = 2
-value = 3.0
-
-[node name="TextEdit" type="TextEdit" parent="Stages/Normal/Box/NormalControls"]
-custom_minimum_size = Vector2(0, 88)
-layout_mode = 2
-placeholder_text = "A few lines of text"
-wrap_mode = 1
-
-[node name="Slider" type="HSlider" parent="Stages/Normal/Box/NormalControls"]
-layout_mode = 2
-max_value = 10.0
-value = 4.0
-tick_count = 11
-ticks_on_borders = true
-
-[node name="Progress" type="ProgressBar" parent="Stages/Normal/Box/NormalControls"]
-layout_mode = 2
-value = 60.0
-
-[node name="Tabs" type="TabBar" parent="Stages/Normal/Box/NormalControls"]
-layout_mode = 2
-bbcode_enabled = true
-current_tab = 0
-tab_count = 3
-tab_0/title = "[b]All[/b]"
-tab_1/title = "Unread [color=#ff786b]3[/color]"
-tab_2/title = "[i]Drafts[/i]"
-
-[node name="List" type="ItemList" parent="Stages/Normal/Box/NormalControls"]
-layout_mode = 2
-bbcode_enabled = true
-auto_height = true
-item_count = 3
-item_0/text = "[b]Mira[/b]  [color=#a1a6ad]online[/color]"
-item_1/text = "[b]Tom[/b]  [color=#a1a6ad]away[/color]"
-item_2/text = "[b]Ada[/b]  [color=#5ed58b]in game[/color]"
-
-[node name="Tree" type="Tree" parent="Stages/Normal/Box/NormalControls"]
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-bbcode_enabled = true
-hide_root = true
-
-[node name="Foldable" type="FoldableContainer" parent="Stages/Normal/Box/NormalControls"]
-layout_mode = 2
-title = "[b]Details[/b]  [color=#a1a6ad](3)[/color]"
-title_bbcode_enabled = true
-folded = true
-
-[node name="Text" type="Label" parent="Stages/Normal/Box/NormalControls/Foldable"]
-layout_mode = 2
-text = "Folded content."
-
-[node name="Rich" type="Label" parent="Stages/Normal/Box/NormalControls"]
-layout_mode = 2
-text = "[b]Bold[/b], [i]italic[/i], [color=#fc7f7f]colored[/color], [code]code[/code], a [url=https://github.com/ponttorez/boxe]link[/url] and a [hint=Tooltips come from hint tags.]hint[/hint]."
-bbcode_enabled = true
-autowrap_mode = 3
-mouse_filter = 0
-
-[node name="Pixel" type="PanelContainer" parent="Stages"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("pixel_theme")
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Stages/Pixel"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Badge" type="Label" parent="Stages/Pixel/Box"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"AccentBadgeLabel"
-text = "Pixel"
-
-[node name="PixelControls" type="VBoxContainer" parent="Stages/Pixel/Box"]
-unique_name_in_owner = true
+[node name="Box" type="VBoxContainer" parent="Library/MenuButton"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Buttons" type="HFlowContainer" parent="Stages/Pixel/Box/PixelControls"]
+[node name="Class" type="Label" parent="Library/MenuButton/Box"]
+auto_translate_mode = 2
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
+theme_type_variation = &"OverlineLabel"
+text = "MenuButton"
 
-[node name="Save" type="Button" parent="Stages/Pixel/Box/PixelControls/Buttons"]
+[node name="Menu" type="MenuButton" parent="Library/MenuButton/Box"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "[b]Save[/b]  [color=#a1a6ad]Ctrl+S[/color]"
-bbcode_enabled = true
-
-[node name="Play" type="Button" parent="Stages/Pixel/Box/PixelControls/Buttons"]
-layout_mode = 2
-text = "[img=18]res://assets/icons/sound.svg[/img] Play [b]sound[/b]"
-bbcode_enabled = true
-
-[node name="Follow" type="Button" parent="Stages/Pixel/Box/PixelControls/Buttons"]
-layout_mode = 2
-toggle_mode = true
-text = "Follow"
-
-[node name="Locked" type="Button" parent="Stages/Pixel/Box/PixelControls/Buttons"]
-layout_mode = 2
-disabled = true
-text = "Locked"
-
-[node name="Link" type="LinkButton" parent="Stages/Pixel/Box/PixelControls/Buttons"]
-layout_mode = 2
-size_flags_vertical = 4
-text = "Read the [i]docs[/i]"
-uri = "https://github.com/ponttorez/boxe"
-bbcode_enabled = true
-
-[node name="Toggles" type="HFlowContainer" parent="Stages/Pixel/Box/PixelControls"]
-layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
-
-[node name="CheckBox" type="CheckBox" parent="Stages/Pixel/Box/PixelControls/Toggles"]
-layout_mode = 2
-text = "[b]Remember[/b] me"
-bbcode_enabled = true
-
-[node name="CheckButton" type="CheckButton" parent="Stages/Pixel/Box/PixelControls/Toggles"]
-layout_mode = 2
-text = "Switch"
-
-[node name="Day" type="CheckBox" parent="Stages/Pixel/Box/PixelControls/Toggles"]
-layout_mode = 2
-button_pressed = true
-button_group = SubResource("ButtonGroup_pixel")
-text = "Day"
-
-[node name="Night" type="CheckBox" parent="Stages/Pixel/Box/PixelControls/Toggles"]
-layout_mode = 2
-button_group = SubResource("ButtonGroup_pixel")
-text = "Night"
-
-[node name="Pickers" type="HFlowContainer" parent="Stages/Pixel/Box/PixelControls"]
-layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
-
-[node name="Option" type="OptionButton" parent="Stages/Pixel/Box/PixelControls/Pickers"]
-layout_mode = 2
-selected = 0
-item_count = 3
-popup/item_0/text = "Small"
-popup/item_0/id = 0
-popup/item_1/text = "Medium"
-popup/item_1/id = 1
-popup/item_2/text = "Large"
-popup/item_2/id = 2
-
-[node name="Menu" type="MenuButton" parent="Stages/Pixel/Box/PixelControls/Pickers"]
-layout_mode = 2
+size_flags_horizontal = 0
 text = "Open menu"
 flat = false
 
-[node name="Fields" type="HBoxContainer" parent="Stages/Pixel/Box/PixelControls"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="LineEdit" type="LineEdit" parent="Stages/Pixel/Box/PixelControls/Fields"]
+[node name="MenuBar" type="PanelContainer" parent="Library"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/MenuBar"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/MenuBar/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "MenuBar"
+
+[node name="MenuBar" type="MenuBar" parent="Library/MenuBar/Box"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="File" type="PopupMenu" parent="Library/MenuBar/Box/MenuBar"]
+item_count = 3
+item_0/text = "New"
+item_0/id = 0
+item_1/text = "Open"
+item_1/id = 1
+item_2/text = "Save"
+item_2/id = 2
+
+[node name="Edit" type="PopupMenu" parent="Library/MenuBar/Box/MenuBar"]
+item_count = 2
+item_0/text = "Undo"
+item_0/id = 0
+item_1/text = "Redo"
+item_1/id = 1
+
+[node name="ColorPickerButton" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/ColorPickerButton"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/ColorPickerButton/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "ColorPickerButton"
+
+[node name="Color" type="ColorPickerButton" parent="Library/ColorPickerButton/Box"]
+custom_minimum_size = Vector2(72, 36)
+layout_mode = 2
+size_flags_horizontal = 0
+color = Color(0.4392157, 0.73333335, 1, 1)
+
+[node name="AcceptDialog" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/AcceptDialog"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/AcceptDialog/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "AcceptDialog"
+
+[node name="OpenDialog" type="Button" parent="Library/AcceptDialog/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Open dialog"
+
+[node name="LineEdit" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/LineEdit"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/LineEdit/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "LineEdit"
+
+[node name="LineEdit" type="LineEdit" parent="Library/LineEdit/Box"]
+layout_mode = 2
 placeholder_text = "Type, then press Enter"
 
-[node name="SpinBox" type="SpinBox" parent="Stages/Pixel/Box/PixelControls/Fields"]
+[node name="SpinBox" type="PanelContainer" parent="Library"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/SpinBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/SpinBox/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "SpinBox"
+
+[node name="SpinBox" type="SpinBox" parent="Library/SpinBox/Box"]
+layout_mode = 2
+size_flags_horizontal = 0
 value = 3.0
 
-[node name="TextEdit" type="TextEdit" parent="Stages/Pixel/Box/PixelControls"]
-custom_minimum_size = Vector2(0, 88)
+[node name="HSlider" type="PanelContainer" parent="Library"]
 layout_mode = 2
-placeholder_text = "A few lines of text"
-wrap_mode = 1
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
 
-[node name="Slider" type="HSlider" parent="Stages/Pixel/Box/PixelControls"]
+[node name="Box" type="VBoxContainer" parent="Library/HSlider"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/HSlider/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "HSlider"
+
+[node name="HSlider" type="HSlider" parent="Library/HSlider/Box"]
 layout_mode = 2
 max_value = 10.0
 value = 4.0
 tick_count = 11
 ticks_on_borders = true
 
-[node name="Progress" type="ProgressBar" parent="Stages/Pixel/Box/PixelControls"]
+[node name="ProgressBar" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/ProgressBar"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/ProgressBar/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "ProgressBar"
+
+[node name="Progress" type="ProgressBar" parent="Library/ProgressBar/Box"]
 layout_mode = 2
 value = 60.0
 
-[node name="Tabs" type="TabBar" parent="Stages/Pixel/Box/PixelControls"]
+[node name="TabBar" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/TabBar"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/TabBar/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "TabBar"
+
+[node name="Tabs" type="TabBar" parent="Library/TabBar/Box"]
 layout_mode = 2
 bbcode_enabled = true
 current_tab = 0
@@ -344,7 +378,62 @@ tab_0/title = "[b]All[/b]"
 tab_1/title = "Unread [color=#ff786b]3[/color]"
 tab_2/title = "[i]Drafts[/i]"
 
-[node name="List" type="ItemList" parent="Stages/Pixel/Box/PixelControls"]
+[node name="HSeparator" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/HSeparator"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/HSeparator/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "HSeparator"
+
+[node name="Separator" type="HSeparator" parent="Library/HSeparator/Box"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="TextEdit" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/TextEdit"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/TextEdit/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "TextEdit"
+
+[node name="TextEdit" type="TextEdit" parent="Library/TextEdit/Box"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+placeholder_text = "A few lines of text"
+wrap_mode = 1
+
+[node name="ItemList" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/ItemList"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/ItemList/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "ItemList"
+
+[node name="List" type="ItemList" parent="Library/ItemList/Box"]
 layout_mode = 2
 bbcode_enabled = true
 auto_height = true
@@ -353,25 +442,210 @@ item_0/text = "[b]Mira[/b]  [color=#a1a6ad]online[/color]"
 item_1/text = "[b]Tom[/b]  [color=#a1a6ad]away[/color]"
 item_2/text = "[b]Ada[/b]  [color=#5ed58b]in game[/color]"
 
-[node name="Tree" type="Tree" parent="Stages/Pixel/Box/PixelControls"]
-custom_minimum_size = Vector2(0, 120)
+[node name="HSplitContainer" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/HSplitContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/HSplitContainer/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "HSplitContainer"
+
+[node name="Split" type="HSplitContainer" parent="Library/HSplitContainer/Box"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+
+[node name="Left" type="PanelContainer" parent="Library/HSplitContainer/Box/Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Text" type="Label" parent="Library/HSplitContainer/Box/Split/Left"]
+layout_mode = 2
+text = "Drag the split"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Right" type="PanelContainer" parent="Library/HSplitContainer/Box/Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Text" type="Label" parent="Library/HSplitContainer/Box/Split/Right"]
+layout_mode = 2
+text = "between panels"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="VSlider" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/VSlider"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/VSlider/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "VSlider"
+
+[node name="VSlider" type="VSlider" parent="Library/VSlider/Box"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 10.0
+value = 6.0
+
+[node name="ScrollContainer" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/ScrollContainer/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "ScrollContainer"
+
+[node name="Scroll" type="ScrollContainer" parent="Library/ScrollContainer/Box"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Text" type="Label" parent="Library/ScrollContainer/Box/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "A scroll container shows its scroll bars when the content doesn't fit. This text is long enough to scroll: it goes on for a few more lines, so the vertical scroll bar has something to move. Drag it, or use the mouse wheel over the text."
+autowrap_mode = 3
+
+[node name="VirtualJoystick" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/VirtualJoystick"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/VirtualJoystick/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "VirtualJoystick"
+
+[node name="Joystick" type="VirtualJoystick" parent="Library/VirtualJoystick/Box"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TabContainer" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/TabContainer/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "TabContainer"
+
+[node name="TabContainer" type="TabContainer" parent="Library/TabContainer/Box"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+current_tab = 0
+
+[node name="General" type="MarginContainer" parent="Library/TabContainer/Box/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+metadata/_tab_index = 0
+
+[node name="Text" type="Label" parent="Library/TabContainer/Box/TabContainer/General"]
+layout_mode = 2
+text = "Tabs with their own pages."
+autowrap_mode = 3
+
+[node name="Audio" type="MarginContainer" parent="Library/TabContainer/Box/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+metadata/_tab_index = 1
+
+[node name="Text" type="Label" parent="Library/TabContainer/Box/TabContainer/Audio"]
+layout_mode = 2
+text = "Another page."
+autowrap_mode = 3
+
+[node name="Tree" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/Tree"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/Tree/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "Tree"
+
+[node name="Tree" type="Tree" parent="Library/Tree/Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
 bbcode_enabled = true
 hide_root = true
 
-[node name="Foldable" type="FoldableContainer" parent="Stages/Pixel/Box/PixelControls"]
+[node name="FoldableContainer" type="PanelContainer" parent="Library"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/FoldableContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Class" type="Label" parent="Library/FoldableContainer/Box"]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "FoldableContainer"
+
+[node name="Foldable" type="FoldableContainer" parent="Library/FoldableContainer/Box"]
 layout_mode = 2
 title = "[b]Details[/b]  [color=#a1a6ad](3)[/color]"
 title_bbcode_enabled = true
 folded = true
 
-[node name="Text" type="Label" parent="Stages/Pixel/Box/PixelControls/Foldable"]
+[node name="Text" type="Label" parent="Library/FoldableContainer/Box/Foldable"]
 layout_mode = 2
 text = "Folded content."
 
-[node name="Rich" type="Label" parent="Stages/Pixel/Box/PixelControls"]
-layout_mode = 2
-text = "[b]Bold[/b], [i]italic[/i], [color=#fc7f7f]colored[/color], [code]code[/code], a [url=https://github.com/ponttorez/boxe]link[/url] and a [hint=Tooltips come from hint tags.]hint[/hint]."
-bbcode_enabled = true
-autowrap_mode = 3
-mouse_filter = 0
+[node name="Dialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
+title = "Dialog"
+dialog_text = "Windows and dialogs use the theme too."

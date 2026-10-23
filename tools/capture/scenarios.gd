@@ -23,11 +23,10 @@ func overview() -> void:
 	await c.open_app("Controls")
 	await c.begin()
 	await cursor.move_to(Vector2(640, 300), 0.0)
-	for side in ["Normal", "Pixel"]:
-		await cursor.move_to_control(c.find("%%%sControls" % side).get_node(^"Buttons/Save"), 0.6)
-		await c.wait(0.5)
-		await cursor.click(0.25)
-		await c.wait(0.5)
+	await cursor.move_to_control(c.find("%Save"), 0.6)
+	await c.wait(0.5)
+	await cursor.click(0.25)
+	await c.wait(0.5)
 	await c.still("overview")
 	await c.wait(1.0)
 
@@ -35,14 +34,16 @@ func overview() -> void:
 func transitions() -> void:
 	await c.open_app("Theme")
 	await c.still("transitions")
-	c.focus([c.find("Cards/Easing")])
+	c.focus([c.find("Cards/Side/Easing")])
 	await c.begin()
 	await cursor.move_to(Vector2(640, 300), 0.0)
-	# Sweep over the easing buttons, row by row.
-	var buttons: Array[Node] = c.find("Cards/Easing/Box/Buttons").get_children()
-	for button: Control in buttons:
-		await cursor.move_to_control(button, 0.28)
-	await cursor.move_to(cursor.cursor_position + Vector2(0, 90), 0.3)
+	# Flip all the switches, then flip them back midway.
+	await cursor.move_to_control(c.find("%All"), 0.5)
+	await cursor.click()
+	await c.wait(1.2)
+	await cursor.click()
+	await c.wait(0.3)
+	await cursor.click()
 	await c.wait(1.2)
 
 

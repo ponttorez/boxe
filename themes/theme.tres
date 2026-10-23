@@ -1,21 +1,21 @@
 [gd_resource type="Theme" format=3 uid="uid://bobwh24qndkq7"]
 
-[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="1_baqhu"]
-[ext_resource type="AudioStream" uid="uid://5jn3hayvgaui" path="res://audio/denied.wav" id="2_q1cl6"]
-[ext_resource type="AudioStream" uid="uid://dol35g2ald74c" path="res://audio/hover.wav" id="3_6e26w"]
-[ext_resource type="AudioStream" uid="uid://i67s0dqbnxtj" path="res://audio/pressed.wav" id="4_aq8ex"]
-[ext_resource type="AudioStream" uid="uid://bg20savbp6shh" path="res://audio/toggled_off.wav" id="5_872ig"]
-[ext_resource type="AudioStream" uid="uid://ntsfcj2vievd" path="res://audio/toggled_on.wav" id="6_dsr3u"]
-[ext_resource type="FontVariation" path="res://fonts/bold_italic_font.tres" id="7_jpyrk"]
-[ext_resource type="FontVariation" path="res://fonts/italic_font.tres" id="8_8sxp6"]
-[ext_resource type="FontVariation" uid="uid://lcsvmu33k2ce" path="res://fonts/regular_font.tres" id="9_h3t2r"]
-[ext_resource type="AudioStream" uid="uid://c72nbx1eu71ex" path="res://audio/closed.wav" id="24_be8td"]
-[ext_resource type="AudioStream" uid="uid://b7peb8xgbe5bg" path="res://audio/opened.wav" id="25_yglq4"]
-[ext_resource type="AudioStream" uid="uid://dbg5ri0mkwojd" path="res://audio/activated.wav" id="26_gvx4d"]
-[ext_resource type="AudioStream" uid="uid://o1u0730wxipe" path="res://audio/selected.wav" id="27_fekdb"]
-[ext_resource type="AudioStream" uid="uid://m61dd46178a4" path="res://audio/submitted.wav" id="28_8uabv"]
-[ext_resource type="AudioStream" uid="uid://db3uot6bfxvck" path="res://audio/typed.wav" id="29_vexjo"]
-[ext_resource type="AudioStream" uid="uid://bnsu6orengjkl" path="res://audio/value_changed.wav" id="31_a23it"]
+[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="1_id4dl"]
+[ext_resource type="AudioStream" uid="uid://5jn3hayvgaui" path="res://audio/denied.wav" id="2_w3cml"]
+[ext_resource type="AudioStream" uid="uid://dol35g2ald74c" path="res://audio/hover.wav" id="3_oi4s6"]
+[ext_resource type="AudioStream" uid="uid://i67s0dqbnxtj" path="res://audio/pressed.wav" id="4_imp4c"]
+[ext_resource type="AudioStream" uid="uid://bg20savbp6shh" path="res://audio/toggled_off.wav" id="5_g773b"]
+[ext_resource type="AudioStream" uid="uid://ntsfcj2vievd" path="res://audio/toggled_on.wav" id="6_d81ev"]
+[ext_resource type="FontVariation" uid="uid://dtpwsa2bqa4jw" path="res://fonts/bold_italic_font.tres" id="7_72bos"]
+[ext_resource type="FontVariation" uid="uid://bkrfof1qoykql" path="res://fonts/italic_font.tres" id="8_xeclr"]
+[ext_resource type="FontVariation" uid="uid://lcsvmu33k2ce" path="res://fonts/regular_font.tres" id="9_53ewu"]
+[ext_resource type="AudioStream" uid="uid://c72nbx1eu71ex" path="res://audio/closed.wav" id="10_uv8us"]
+[ext_resource type="AudioStream" uid="uid://b7peb8xgbe5bg" path="res://audio/opened.wav" id="11_7xeo8"]
+[ext_resource type="AudioStream" uid="uid://dbg5ri0mkwojd" path="res://audio/activated.wav" id="12_m8t8o"]
+[ext_resource type="AudioStream" uid="uid://o1u0730wxipe" path="res://audio/selected.wav" id="13_b82be"]
+[ext_resource type="AudioStream" uid="uid://m61dd46178a4" path="res://audio/submitted.wav" id="14_xmws8"]
+[ext_resource type="AudioStream" uid="uid://db3uot6bfxvck" path="res://audio/typed.wav" id="15_phn4g"]
+[ext_resource type="AudioStream" uid="uid://bnsu6orengjkl" path="res://audio/value_changed.wav" id="16_qhfi3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_em8py"]
 content_margin_left = 9.0
@@ -136,6 +136,13 @@ corner_radius_top_right = 10.0
 corner_radius_bottom_right = 10.0
 corner_radius_bottom_left = 10.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_dialog"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.16470589, 0.1882353, 0.22352941, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rkch"]
 content_margin_left = 9.0
 content_margin_top = 3.0
@@ -150,12 +157,12 @@ corner_radius_bottom_left = 6
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_740g6"]
 random_pitch = 1.08
 streams_count = 1
-stream_0/stream = ExtResource("3_6e26w")
+stream_0/stream = ExtResource("3_oi4s6")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ej8kn"]
 random_pitch = 1.05
 streams_count = 1
-stream_0/stream = ExtResource("4_aq8ex")
+stream_0/stream = ExtResource("4_imp4c")
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_hu2t7"]
 mode = 2
@@ -1172,6 +1179,9 @@ content_margin_bottom = 12.0
 bg_color = Color(1, 1, 1, 0.02)
 corner_radius_bottom_right = 9
 corner_radius_bottom_left = 9
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+expand_margin_top = 17.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_dt54l"]
 color = Color(1, 1, 1, 0.08)
@@ -1301,9 +1311,35 @@ grow_begin = 0.0
 grow_end = 0.0
 thickness = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber"]
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 9.0
+content_margin_bottom = 9.0
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
+bg_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+corner_detail = 12
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 3
+shadow_offset = Vector2(0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5n52"]
 content_margin_top = 3.0
 content_margin_bottom = 3.0
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
@@ -1313,16 +1349,65 @@ corner_radius_bottom_left = 3
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grljb"]
 content_margin_top = 3.0
 content_margin_bottom = 3.0
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
 bg_color = Color(0.3529412, 0.62352943, 0.83137256, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber_disabled"]
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 9.0
+content_margin_bottom = 9.0
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
+bg_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+corner_detail = 12
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 3
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber_highlight"]
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 9.0
+content_margin_bottom = 9.0
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.4392157, 0.73333335, 1, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+corner_detail = 12
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 3
+shadow_offset = Vector2(0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmcoc"]
 content_margin_top = 3.0
 content_margin_bottom = 3.0
-bg_color = Color(1, 1, 1, 0.08)
+bg_color = Color(1, 1, 1, 0.12)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -1423,7 +1508,7 @@ corner_radius_bottom_left = 10.0
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_l2yjw"]
 random_pitch = 1.08
 streams_count = 1
-stream_0/stream = ExtResource("3_6e26w")
+stream_0/stream = ExtResource("3_oi4s6")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_80l0f"]
 
@@ -1563,7 +1648,7 @@ corner_radius_bottom_left = 7.0
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_nf425"]
 random_pitch = 1.25
 streams_count = 1
-stream_0/stream = ExtResource("29_vexjo")
+stream_0/stream = ExtResource("15_phn4g")
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_85sbh"]
 mode = 2
@@ -1685,27 +1770,6 @@ corner_radius_top_right = 9.0
 corner_radius_bottom_right = 9.0
 corner_radius_bottom_left = 9.0
 
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_kn53k"]
-color = Color(0.2784314, 0.54901963, 0.7490196, 0.24)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_cwebh"]
-mode = 1
-color = Color(0.2784314, 0.54901963, 0.7490196, 0.6)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_e1x13"]
-content_margin_left = 14.0
-content_margin_top = 9.0
-content_margin_right = 14.0
-content_margin_bottom = 9.0
-transition_duration = 0.15
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_kn53k"), SubResource("StyleBoxLayer_cwebh")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
-
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_i17au"]
 color = Color(0, 0, 0, 0)
 
@@ -1748,6 +1812,27 @@ corner_radius_top_right = 9.0
 corner_radius_bottom_right = 9.0
 corner_radius_bottom_left = 9.0
 
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_kn53k"]
+color = Color(0.2784314, 0.54901963, 0.7490196, 0.24)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_cwebh"]
+mode = 1
+color = Color(0.2784314, 0.54901963, 0.7490196, 0.6)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_e1x13"]
+content_margin_left = 14.0
+content_margin_top = 9.0
+content_margin_right = 14.0
+content_margin_bottom = 9.0
+transition_duration = 0.15
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_kn53k"), SubResource("StyleBoxLayer_cwebh")])
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2rtm"]
 bg_color = Color(0.10980392, 0.1254902, 0.15294118, 1)
 
@@ -1778,7 +1863,7 @@ corner_radius_bottom_left = 14.0
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3rsaa"]
 random_pitch = 1.08
 streams_count = 1
-stream_0/stream = ExtResource("3_6e26w")
+stream_0/stream = ExtResource("3_oi4s6")
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_egoq3"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.25)
@@ -1830,24 +1915,37 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pikql"]
-content_margin_left = 14.0
-content_margin_top = 20.0
-content_margin_right = 14.0
-content_margin_bottom = 16.0
-bg_color = Color(0.12941177, 0.14901961, 0.18039216, 1)
-border_width_right = 1
-border_color = Color(1, 1, 1, 0.04)
-
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7j1dp"]
 random_pitch = 1.04
 streams_count = 1
-stream_0/stream = ExtResource("31_a23it")
+stream_0/stream = ExtResource("16_qhfi3")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8ujhf"]
 random_pitch = 1.04
 streams_count = 1
-stream_0/stream = ExtResource("31_a23it")
+stream_0/stream = ExtResource("16_qhfi3")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_hover"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.06)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_pressed"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.12)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ppwld"]
 mode = 2
@@ -2072,7 +2170,7 @@ content_offset = Vector2(0, 1)
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_omo58"]
 random_pitch = 1.08
 streams_count = 1
-stream_0/stream = ExtResource("3_6e26w")
+stream_0/stream = ExtResource("3_oi4s6")
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_yt4ax"]
 color = Color(0, 0, 0, 0)
@@ -2293,11 +2391,12 @@ corner_radius_bottom_right = 8.0
 corner_radius_bottom_left = 8.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j2oyd"]
+content_margin_bottom = 8.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_xn5on"]
 random_pitch = 1.25
 streams_count = 1
-stream_0/stream = ExtResource("29_vexjo")
+stream_0/stream = ExtResource("15_phn4g")
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_gx6st"]
 mode = 2
@@ -2377,113 +2476,6 @@ corner_radius_top_right = 9.0
 corner_radius_bottom_right = 9.0
 corner_radius_bottom_left = 9.0
 
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_123we"]
-mode = 2
-color = Color(0, 0, 0, 0)
-blur = 4.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_wf1ua"]
-color = Color(0.14901961, 0.16862746, 0.2, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_sepie"]
-mode = 1
-color = Color(0.21176471, 0.23921569, 0.2901961, 1)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_nvb6y"]
-content_margin_left = 18.0
-content_margin_top = 16.0
-content_margin_right = 18.0
-content_margin_bottom = 16.0
-transition_duration = 0.2
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_123we"), SubResource("StyleBoxLayer_wf1ua"), SubResource("StyleBoxLayer_sepie")])
-corner_radius_top_left = 14.0
-corner_radius_top_right = 14.0
-corner_radius_bottom_right = 14.0
-corner_radius_bottom_left = 14.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_rpme1"]
-mode = 2
-color = Color(0, 0, 0, 0.32)
-blur = 12.0
-offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_bhul4"]
-color = Color(0.1764706, 0.2, 0.23921569, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_bxx41"]
-mode = 1
-color = Color(0.2784314, 0.54901963, 0.7490196, 0.55)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_es8o8"]
-content_margin_left = 18.0
-content_margin_top = 16.0
-content_margin_right = 18.0
-content_margin_bottom = 16.0
-transition_duration = 0.22
-transition_type = 10
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_rpme1"), SubResource("StyleBoxLayer_bhul4"), SubResource("StyleBoxLayer_bxx41")])
-corner_radius_top_left = 14.0
-corner_radius_top_right = 14.0
-corner_radius_bottom_right = 14.0
-corner_radius_bottom_left = 14.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_gejly"]
-mode = 2
-color = Color(0, 0, 0, 0.2)
-blur = 6.0
-offset = Vector2(0, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_csk6o"]
-color = Color(0.14901961, 0.16862746, 0.2, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_cr0vf"]
-mode = 1
-color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_sonkt"]
-content_margin_left = 18.0
-content_margin_top = 16.0
-content_margin_right = 18.0
-content_margin_bottom = 16.0
-transition_duration = 0.08
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_gejly"), SubResource("StyleBoxLayer_csk6o"), SubResource("StyleBoxLayer_cr0vf")])
-corner_radius_top_left = 14.0
-corner_radius_top_right = 14.0
-corner_radius_bottom_right = 14.0
-corner_radius_bottom_left = 14.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ea5ht"]
-mode = 2
-color = Color(0, 0, 0, 0.22)
-blur = 6.0
-offset = Vector2(0, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_4n6uq"]
-color = Color(0.14901961, 0.16862746, 0.2, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_n5k2o"]
-mode = 1
-color = Color(0.21176471, 0.23921569, 0.2901961, 1)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_36dux"]
-content_margin_left = 18.0
-content_margin_top = 16.0
-content_margin_right = 18.0
-content_margin_bottom = 16.0
-transition_duration = 0.35
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_ea5ht"), SubResource("StyleBoxLayer_4n6uq"), SubResource("StyleBoxLayer_n5k2o")])
-corner_radius_top_left = 14.0
-corner_radius_top_right = 14.0
-corner_radius_bottom_right = 14.0
-corner_radius_bottom_left = 14.0
-
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_nckht"]
 mode = 2
 color = Color(0, 0, 0, 0)
@@ -2508,10 +2500,19 @@ corner_radius_top_right = 8.0
 corner_radius_bottom_right = 8.0
 corner_radius_bottom_left = 8.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pikql"]
+content_margin_left = 14.0
+content_margin_top = 16.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
+bg_color = Color(0.12941177, 0.14901961, 0.18039216, 1)
+border_width_right = 1
+border_color = Color(1, 1, 1, 0.04)
+
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ve5fq"]
 random_pitch = 1.08
 streams_count = 1
-stream_0/stream = ExtResource("3_6e26w")
+stream_0/stream = ExtResource("3_oi4s6")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hujgx"]
 
@@ -2598,10 +2599,10 @@ mode = 1
 color = Color(1, 1, 1, 0.06)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_07hya"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_f0xc3"), SubResource("StyleBoxLayer_aubyw"), SubResource("StyleBoxLayer_cm6t4")])
 corner_radius_top_left = 10.0
 corner_radius_top_right = 10.0
@@ -2649,6 +2650,27 @@ corner_radius_top_left = 7.0
 corner_radius_top_right = 7.0
 corner_radius_bottom_right = 7.0
 corner_radius_bottom_left = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_title_hover"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 0.07)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_title"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 0.03)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_title_pressed"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 0.11)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4708"]
 content_margin_left = 5.0
@@ -2700,12 +2722,130 @@ expand_margin_right = -1.5
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_yqv8c"]
 color = Color(1, 1, 1, 0.06)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 2
 vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vslider_grabber_area"]
+content_margin_left = 3.0
+content_margin_right = 3.0
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
+bg_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vslider_grabber_area_highlight"]
+content_margin_left = 3.0
+content_margin_right = 3.0
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
+bg_color = Color(0.3529412, 0.62352943, 0.83137256, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vslider_slider"]
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 0.12)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_tip"]
+bg_color = Color(0.8784314, 0.8784314, 0.8784314, 0.85)
+corner_radius_top_left = 999
+corner_radius_top_right = 999
+corner_radius_bottom_right = 999
+corner_radius_bottom_left = 999
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_tip_pressed"]
+bg_color = Color(0.4392157, 0.73333335, 1, 1)
+corner_radius_top_left = 999
+corner_radius_top_right = 999
+corner_radius_bottom_right = 999
+corner_radius_bottom_left = 999
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_window"]
+bg_color = Color(0.16470589, 0.1882353, 0.22352941, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 8.0
+expand_margin_top = 36.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 12
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_ring"]
+color = Color(1, 1, 1, 0.14)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_fill"]
+color = Color(0.16549, 0.18036, 0.20653, 1)
+corner_radius_adjust = -2.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 2.0
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_ring_pressed"]
+color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_fill_pressed"]
+color = Color(0.19185, 0.20603, 0.23154, 1)
+corner_radius_adjust = -2.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 2.0
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_joystick"]
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_joy_ring"), SubResource("StyleBoxLayer_joy_fill")])
+corner_radius_top_left = 999.0
+corner_radius_top_right = 999.0
+corner_radius_bottom_right = 999.0
+corner_radius_bottom_left = 999.0
+corner_detail = 24
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_joystick_pressed"]
+transition_duration = 0.12
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_joy_ring_pressed"), SubResource("StyleBoxLayer_joy_fill_pressed")])
+corner_radius_top_left = 999.0
+corner_radius_top_right = 999.0
+corner_radius_bottom_right = 999.0
+corner_radius_bottom_left = 999.0
+corner_detail = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup_shadow"]
+draw_center = false
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 12
+shadow_offset = Vector2(0, 4)
 
 [resource]
 resource_name = "boxe Demo"
-default_font = ExtResource("9_h3t2r")
-default_font_size = 15
+default_font = ExtResource("9_53ewu")
+default_font_size = 16
 AccentBadgeLabel/base_type = &"BadgeLabel"
 AccentBadgeLabel/colors/font_color = Color(0.65882355, 0.8352941, 1, 1)
 AccentBadgeLabel/styles/normal = SubResource("StyleBoxFlat_em8py")
@@ -2721,16 +2861,17 @@ AccentButton/styles/hover = SubResource("StyleBoxLayered_lf1rv")
 AccentButton/styles/hover_pressed = SubResource("StyleBoxLayered_x1k7g")
 AccentButton/styles/normal = SubResource("StyleBoxLayered_7v728")
 AccentButton/styles/pressed = SubResource("StyleBoxLayered_x1k7g")
+AcceptDialog/styles/panel = SubResource("StyleBoxFlat_lib_dialog")
 BadgeLabel/base_type = &"Label"
 BadgeLabel/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 BadgeLabel/font_sizes/font_size = 12
-BadgeLabel/fonts/font = ExtResource("1_baqhu")
+BadgeLabel/fonts/font = ExtResource("1_id4dl")
 BadgeLabel/styles/normal = SubResource("StyleBoxFlat_1rkch")
-BaseButton/sounds/denied = ExtResource("2_q1cl6")
+BaseButton/sounds/denied = ExtResource("2_w3cml")
 BaseButton/sounds/hover = SubResource("AudioStreamRandomizer_740g6")
 BaseButton/sounds/pressed = SubResource("AudioStreamRandomizer_ej8kn")
-BaseButton/sounds/toggled_off = ExtResource("5_872ig")
-BaseButton/sounds/toggled_on = ExtResource("6_dsr3u")
+BaseButton/sounds/toggled_off = ExtResource("5_g773b")
+BaseButton/sounds/toggled_on = ExtResource("6_d81ev")
 BodyLabel/base_type = &"Label"
 BodyLabel/colors/font_color = Color(0.78431374, 0.8, 0.81960785, 1)
 BodyLabel/font_sizes/font_size = 15
@@ -2740,14 +2881,17 @@ Button/colors/font_focus_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_pressed_color = Color(0.7490196, 0.8784314, 1, 1)
 Button/colors/font_pressed_color = Color(0.7490196, 0.8784314, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.3)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
 Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(0.7490196, 0.8784314, 1, 1)
 Button/colors/icon_normal_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 Button/colors/icon_pressed_color = Color(0.7490196, 0.8784314, 1, 1)
 Button/constants/h_separation = 8
-Button/fonts/bold_font = ExtResource("1_baqhu")
-Button/fonts/bold_italics_font = ExtResource("7_jpyrk")
-Button/fonts/italics_font = ExtResource("8_8sxp6")
-Button/fonts/mono_font = ExtResource("9_h3t2r")
+Button/fonts/bold_font = ExtResource("1_id4dl")
+Button/fonts/bold_italics_font = ExtResource("7_72bos")
+Button/fonts/italics_font = ExtResource("8_xeclr")
+Button/fonts/mono_font = ExtResource("9_53ewu")
 Button/styles/disabled = SubResource("StyleBoxLayered_c1od2")
 Button/styles/focus = SubResource("StyleBoxFlat_wc7sq")
 Button/styles/hover = SubResource("StyleBoxLayered_gjyn5")
@@ -2762,10 +2906,10 @@ Card/styles/panel = SubResource("StyleBoxLayered_g6lbo")
 CheckBox/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 CheckBox/colors/font_pressed_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 CheckBox/constants/h_separation = 8
-CheckBox/fonts/bold_font = ExtResource("1_baqhu")
-CheckBox/fonts/bold_italics_font = ExtResource("7_jpyrk")
-CheckBox/fonts/italics_font = ExtResource("8_8sxp6")
-CheckBox/fonts/mono_font = ExtResource("9_h3t2r")
+CheckBox/fonts/bold_font = ExtResource("1_id4dl")
+CheckBox/fonts/bold_italics_font = ExtResource("7_72bos")
+CheckBox/fonts/italics_font = ExtResource("8_xeclr")
+CheckBox/fonts/mono_font = ExtResource("9_53ewu")
 CheckBox/styles/checked = SubResource("StyleBoxLayered_check_checked")
 CheckBox/styles/checked_disabled = SubResource("StyleBoxLayered_check_checked_disabled")
 CheckBox/styles/disabled = SubResource("StyleBoxLayered_o16x0")
@@ -2782,10 +2926,10 @@ CheckBox/styles/unchecked_disabled = SubResource("StyleBoxLayered_check_unchecke
 CheckButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 CheckButton/colors/font_pressed_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 CheckButton/constants/h_separation = 8
-CheckButton/fonts/bold_font = ExtResource("1_baqhu")
-CheckButton/fonts/bold_italics_font = ExtResource("7_jpyrk")
-CheckButton/fonts/italics_font = ExtResource("8_8sxp6")
-CheckButton/fonts/mono_font = ExtResource("9_h3t2r")
+CheckButton/fonts/bold_font = ExtResource("1_id4dl")
+CheckButton/fonts/bold_italics_font = ExtResource("7_72bos")
+CheckButton/fonts/italics_font = ExtResource("8_xeclr")
+CheckButton/fonts/mono_font = ExtResource("9_53ewu")
 CheckButton/styles/checked = SubResource("StyleBoxLayered_toggle_checked")
 CheckButton/styles/checked_disabled = SubResource("StyleBoxLayered_toggle_checked_disabled")
 CheckButton/styles/checked_disabled_mirrored = SubResource("StyleBoxLayered_toggle_checked_disabled_mirrored")
@@ -2799,27 +2943,30 @@ CheckButton/styles/unchecked = SubResource("StyleBoxLayered_toggle_unchecked")
 CheckButton/styles/unchecked_disabled = SubResource("StyleBoxLayered_toggle_unchecked_disabled")
 CheckButton/styles/unchecked_disabled_mirrored = SubResource("StyleBoxLayered_toggle_unchecked_disabled_mirrored")
 CheckButton/styles/unchecked_mirrored = SubResource("StyleBoxLayered_toggle_unchecked_mirrored")
-Control/fonts/bold_font = ExtResource("1_baqhu")
-Control/fonts/bold_italics_font = ExtResource("7_jpyrk")
-Control/fonts/italics_font = ExtResource("8_8sxp6")
-Control/fonts/mono_font = ExtResource("9_h3t2r")
-Control/sounds/denied = ExtResource("2_q1cl6")
-DisplayLabel/base_type = &"Label"
-DisplayLabel/colors/font_color = Color(1, 1, 1, 1)
-DisplayLabel/font_sizes/font_size = 40
-DisplayLabel/fonts/font = ExtResource("1_baqhu")
+ColorPicker/styles/sample_focus = SubResource("StyleBoxFlat_wc7sq")
+ColorPickerButton/constants/color_corner_radius = 5
+ColorPickerButton/constants/popup_separation = 6
+Control/fonts/bold_font = ExtResource("1_id4dl")
+Control/fonts/bold_italics_font = ExtResource("7_72bos")
+Control/fonts/italics_font = ExtResource("8_xeclr")
+Control/fonts/mono_font = ExtResource("9_53ewu")
+Control/sounds/denied = ExtResource("2_w3cml")
 FlatIconButton/base_type = &"Button"
 FlatIconButton/styles/disabled = SubResource("StyleBoxLayered_8dcby")
 FlatIconButton/styles/hover = SubResource("StyleBoxLayered_vtter")
 FlatIconButton/styles/hover_pressed = SubResource("StyleBoxLayered_5qx8i")
 FlatIconButton/styles/normal = SubResource("StyleBoxLayered_fc41o")
 FlatIconButton/styles/pressed = SubResource("StyleBoxLayered_r7go5")
-FoldableContainer/fonts/bold_font = ExtResource("1_baqhu")
-FoldableContainer/fonts/bold_italics_font = ExtResource("7_jpyrk")
-FoldableContainer/fonts/italics_font = ExtResource("8_8sxp6")
-FoldableContainer/fonts/mono_font = ExtResource("9_h3t2r")
-FoldableContainer/sounds/toggled_off = ExtResource("24_be8td")
-FoldableContainer/sounds/toggled_on = ExtResource("25_yglq4")
+FoldableContainer/colors/collapsed_font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
+FoldableContainer/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
+FoldableContainer/colors/hover_font_color = Color(1, 1, 1, 1)
+FoldableContainer/fonts/bold_font = ExtResource("1_id4dl")
+FoldableContainer/fonts/bold_italics_font = ExtResource("7_72bos")
+FoldableContainer/fonts/italics_font = ExtResource("8_xeclr")
+FoldableContainer/fonts/mono_font = ExtResource("9_53ewu")
+FoldableContainer/sounds/toggled_off = ExtResource("10_uv8us")
+FoldableContainer/sounds/toggled_on = ExtResource("11_7xeo8")
+FoldableContainer/styles/focus = SubResource("StyleBoxFlat_wc7sq")
 FoldableContainer/styles/panel = SubResource("StyleBoxFlat_wi2ey")
 FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxLayered_q4l0c")
 FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxLayered_2v372")
@@ -2837,13 +2984,16 @@ HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_lfvqu")
 HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_lfvqu")
 HSeparator/constants/separation = 12
 HSeparator/styles/separator = SubResource("StyleBoxLine_kprvm")
+HSlider/styles/grabber = SubResource("StyleBoxFlat_grabber")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_o5n52")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_grljb")
+HSlider/styles/grabber_disabled = SubResource("StyleBoxFlat_grabber_disabled")
+HSlider/styles/grabber_highlight = SubResource("StyleBoxFlat_grabber_highlight")
 HSlider/styles/slider = SubResource("StyleBoxFlat_pmcoc")
 HeaderLabel/base_type = &"Label"
 HeaderLabel/colors/font_color = Color(1, 1, 1, 1)
 HeaderLabel/font_sizes/font_size = 18
-HeaderLabel/fonts/font = ExtResource("1_baqhu")
+HeaderLabel/fonts/font = ExtResource("1_id4dl")
 IconButton/base_type = &"Button"
 IconButton/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 IconButton/colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2861,13 +3011,13 @@ ItemList/colors/font_hovered_color = Color(1, 1, 1, 1)
 ItemList/colors/font_selected_color = Color(1, 1, 1, 1)
 ItemList/colors/guide_color = Color(0, 0, 0, 0)
 ItemList/constants/v_separation = 4
-ItemList/fonts/bold_font = ExtResource("1_baqhu")
-ItemList/fonts/bold_italics_font = ExtResource("7_jpyrk")
-ItemList/fonts/italics_font = ExtResource("8_8sxp6")
-ItemList/fonts/mono_font = ExtResource("9_h3t2r")
-ItemList/sounds/activated = ExtResource("26_gvx4d")
+ItemList/fonts/bold_font = ExtResource("1_id4dl")
+ItemList/fonts/bold_italics_font = ExtResource("7_72bos")
+ItemList/fonts/italics_font = ExtResource("8_xeclr")
+ItemList/fonts/mono_font = ExtResource("9_53ewu")
+ItemList/sounds/activated = ExtResource("12_m8t8o")
 ItemList/sounds/hover = SubResource("AudioStreamRandomizer_l2yjw")
-ItemList/sounds/selected = ExtResource("27_fekdb")
+ItemList/sounds/selected = ExtResource("13_b82be")
 ItemList/styles/cursor = SubResource("StyleBoxEmpty_80l0f")
 ItemList/styles/cursor_unfocused = SubResource("StyleBoxEmpty_i4nj5")
 ItemList/styles/focus = SubResource("StyleBoxEmpty_aunn7")
@@ -2878,15 +3028,16 @@ ItemList/styles/panel = SubResource("StyleBoxLayered_i6sw3")
 ItemList/styles/selected = SubResource("StyleBoxLayered_rvbjb")
 ItemList/styles/selected_focus = SubResource("StyleBoxLayered_uqa4b")
 Label/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
-Label/fonts/bold_font = ExtResource("1_baqhu")
-Label/fonts/bold_italics_font = ExtResource("7_jpyrk")
-Label/fonts/italics_font = ExtResource("8_8sxp6")
-Label/fonts/mono_font = ExtResource("9_h3t2r")
+Label/fonts/bold_font = ExtResource("1_id4dl")
+Label/fonts/bold_italics_font = ExtResource("7_72bos")
+Label/fonts/italics_font = ExtResource("8_xeclr")
+Label/fonts/mono_font = ExtResource("9_53ewu")
 LineEdit/colors/caret_color = Color(0.4392157, 0.73333335, 1, 1)
 LineEdit/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 LineEdit/colors/font_placeholder_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
+LineEdit/colors/font_uneditable_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 LineEdit/colors/selection_color = Color(0.2784314, 0.54901963, 0.7490196, 0.4)
-LineEdit/sounds/submitted = ExtResource("28_8uabv")
+LineEdit/sounds/submitted = ExtResource("14_xmws8")
 LineEdit/sounds/typed = SubResource("AudioStreamRandomizer_nf425")
 LineEdit/styles/focus = SubResource("StyleBoxLayered_em2eo")
 LineEdit/styles/normal = SubResource("StyleBoxLayered_orya8")
@@ -2894,18 +3045,31 @@ LineEdit/styles/read_only = SubResource("StyleBoxLayered_470oh")
 LinkButton/colors/font_color = Color(0.4392157, 0.73333335, 1, 1)
 LinkButton/colors/font_hover_color = Color(0.65882355, 0.8352941, 1, 1)
 LinkButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-LinkButton/fonts/bold_font = ExtResource("1_baqhu")
-LinkButton/fonts/bold_italics_font = ExtResource("7_jpyrk")
-LinkButton/fonts/italics_font = ExtResource("8_8sxp6")
-LinkButton/fonts/mono_font = ExtResource("9_h3t2r")
-MenuBar/fonts/bold_font = ExtResource("1_baqhu")
-MenuBar/fonts/bold_italics_font = ExtResource("7_jpyrk")
-MenuBar/fonts/italics_font = ExtResource("8_8sxp6")
-MenuBar/fonts/mono_font = ExtResource("9_h3t2r")
-MenuButton/fonts/bold_font = ExtResource("1_baqhu")
-MenuButton/fonts/bold_italics_font = ExtResource("7_jpyrk")
-MenuButton/fonts/italics_font = ExtResource("8_8sxp6")
-MenuButton/fonts/mono_font = ExtResource("9_h3t2r")
+LinkButton/fonts/bold_font = ExtResource("1_id4dl")
+LinkButton/fonts/bold_italics_font = ExtResource("7_72bos")
+LinkButton/fonts/italics_font = ExtResource("8_xeclr")
+LinkButton/fonts/mono_font = ExtResource("9_53ewu")
+LinkButton/styles/focus = SubResource("StyleBoxFlat_wc7sq")
+MenuBar/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
+MenuBar/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
+MenuBar/colors/font_focus_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
+MenuBar/colors/font_hover_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
+MenuBar/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+MenuBar/colors/font_pressed_color = Color(1, 1, 1, 1)
+MenuBar/constants/popup_separation = 6
+MenuBar/fonts/bold_font = ExtResource("1_id4dl")
+MenuBar/fonts/bold_italics_font = ExtResource("7_72bos")
+MenuBar/fonts/italics_font = ExtResource("8_xeclr")
+MenuBar/fonts/mono_font = ExtResource("9_53ewu")
+MenuBar/styles/disabled = SubResource("StyleBoxLayered_iuyow")
+MenuBar/styles/hover = SubResource("StyleBoxLayered_3qitw")
+MenuBar/styles/normal = SubResource("StyleBoxLayered_dft0a")
+MenuBar/styles/pressed = SubResource("StyleBoxLayered_3qued")
+MenuButton/constants/popup_separation = 6
+MenuButton/fonts/bold_font = ExtResource("1_id4dl")
+MenuButton/fonts/bold_italics_font = ExtResource("7_72bos")
+MenuButton/fonts/italics_font = ExtResource("8_xeclr")
+MenuButton/fonts/mono_font = ExtResource("9_53ewu")
 NavButton/base_type = &"Button"
 NavButton/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 NavButton/colors/font_focus_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
@@ -2919,10 +3083,11 @@ NavButton/styles/hover_pressed = SubResource("StyleBoxLayered_e1x13")
 NavButton/styles/normal = SubResource("StyleBoxLayered_dft0a")
 NavButton/styles/pressed = SubResource("StyleBoxLayered_3qued")
 OptionButton/constants/arrow_margin = 14
-OptionButton/fonts/bold_font = ExtResource("1_baqhu")
-OptionButton/fonts/bold_italics_font = ExtResource("7_jpyrk")
-OptionButton/fonts/italics_font = ExtResource("8_8sxp6")
-OptionButton/fonts/mono_font = ExtResource("9_h3t2r")
+OptionButton/constants/popup_separation = 6
+OptionButton/fonts/bold_font = ExtResource("1_id4dl")
+OptionButton/fonts/bold_italics_font = ExtResource("7_72bos")
+OptionButton/fonts/italics_font = ExtResource("8_xeclr")
+OptionButton/fonts/mono_font = ExtResource("9_53ewu")
 OptionButton/styles/disabled_mirrored = SubResource("StyleBoxLayered_c1od2")
 OptionButton/styles/hover_mirrored = SubResource("StyleBoxLayered_gjyn5")
 OptionButton/styles/normal_mirrored = SubResource("StyleBoxLayered_fkre0")
@@ -2930,30 +3095,36 @@ OptionButton/styles/pressed_mirrored = SubResource("StyleBoxLayered_fyv8m")
 OverlineLabel/base_type = &"Label"
 OverlineLabel/colors/font_color = Color(0.4392157, 0.73333335, 1, 1)
 OverlineLabel/font_sizes/font_size = 12
-OverlineLabel/fonts/font = ExtResource("1_baqhu")
+OverlineLabel/fonts/font = ExtResource("1_id4dl")
 Panel/styles/panel = SubResource("StyleBoxFlat_s2rtm")
 PanelContainer/styles/panel = SubResource("StyleBoxLayered_n2tx4")
+PopupMenu/colors/font_accelerator_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 PopupMenu/colors/font_color = Color(0.78431374, 0.8, 0.81960785, 1)
+PopupMenu/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 PopupMenu/colors/font_hover_color = Color(1, 1, 1, 1)
+PopupMenu/colors/font_separator_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 PopupMenu/constants/item_end_padding = 10
 PopupMenu/constants/item_start_padding = 10
 PopupMenu/constants/v_separation = 8
-PopupMenu/fonts/bold_font = ExtResource("1_baqhu")
-PopupMenu/fonts/bold_italics_font = ExtResource("7_jpyrk")
-PopupMenu/fonts/italics_font = ExtResource("8_8sxp6")
-PopupMenu/fonts/mono_font = ExtResource("9_h3t2r")
-PopupMenu/sounds/closed = ExtResource("24_be8td")
+PopupMenu/fonts/bold_font = ExtResource("1_id4dl")
+PopupMenu/fonts/bold_italics_font = ExtResource("7_72bos")
+PopupMenu/fonts/italics_font = ExtResource("8_xeclr")
+PopupMenu/fonts/mono_font = ExtResource("9_53ewu")
+PopupMenu/sounds/closed = ExtResource("10_uv8us")
 PopupMenu/sounds/hover = SubResource("AudioStreamRandomizer_3rsaa")
-PopupMenu/sounds/opened = ExtResource("25_yglq4")
-PopupMenu/sounds/selected = ExtResource("27_fekdb")
+PopupMenu/sounds/opened = ExtResource("11_7xeo8")
+PopupMenu/sounds/selected = ExtResource("13_b82be")
 PopupMenu/styles/checked = SubResource("StyleBoxLayered_check_checked")
 PopupMenu/styles/checked_disabled = SubResource("StyleBoxLayered_check_checked_disabled")
 PopupMenu/styles/hover = SubResource("StyleBoxLayered_44fka")
+PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxLine_kprvm")
+PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_kprvm")
 PopupMenu/styles/panel = SubResource("StyleBoxLayered_utxad")
 PopupMenu/styles/radio_checked = SubResource("StyleBoxLayered_check_radio_checked")
 PopupMenu/styles/radio_checked_disabled = SubResource("StyleBoxLayered_check_radio_checked_disabled")
 PopupMenu/styles/radio_unchecked = SubResource("StyleBoxLayered_check_radio_unchecked")
 PopupMenu/styles/radio_unchecked_disabled = SubResource("StyleBoxLayered_check_radio_unchecked_disabled")
+PopupMenu/styles/separator = SubResource("StyleBoxLine_kprvm")
 PopupMenu/styles/unchecked = SubResource("StyleBoxLayered_check_unchecked")
 PopupMenu/styles/unchecked_disabled = SubResource("StyleBoxLayered_check_unchecked_disabled")
 PopupPanel/styles/panel = SubResource("StyleBoxLayered_utxad")
@@ -2962,22 +3133,25 @@ ProgressBar/styles/background = SubResource("StyleBoxFlat_u8yt5")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_o5n52")
 RichTextLabel/colors/default_color = Color(0.78431374, 0.8, 0.81960785, 1)
 RichTextLabel/constants/line_separation = 3
-RichTextLabel/fonts/bold_font = ExtResource("1_baqhu")
-RichTextLabel/fonts/bold_italics_font = ExtResource("7_jpyrk")
-RichTextLabel/fonts/italics_font = ExtResource("8_8sxp6")
-RichTextLabel/fonts/mono_font = ExtResource("9_h3t2r")
-RichTextLabel/fonts/normal_font = ExtResource("9_h3t2r")
-Sidebar/base_type = &"PanelContainer"
-Sidebar/styles/panel = SubResource("StyleBoxFlat_pikql")
+RichTextLabel/fonts/bold_font = ExtResource("1_id4dl")
+RichTextLabel/fonts/bold_italics_font = ExtResource("7_72bos")
+RichTextLabel/fonts/italics_font = ExtResource("8_xeclr")
+RichTextLabel/fonts/mono_font = ExtResource("9_53ewu")
+RichTextLabel/fonts/normal_font = ExtResource("9_53ewu")
 Slider/sounds/value_changed = SubResource("AudioStreamRandomizer_7j1dp")
 SpinBox/colors/caret_color = Color(0.4392157, 0.73333335, 1, 1)
 SpinBox/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 SpinBox/colors/font_placeholder_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
+SpinBox/colors/font_uneditable_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 SpinBox/colors/selection_color = Color(0.2784314, 0.54901963, 0.7490196, 0.4)
 SpinBox/sounds/value_changed = SubResource("AudioStreamRandomizer_8ujhf")
+SpinBox/styles/down_background_hovered = SubResource("StyleBoxFlat_lib_hover")
+SpinBox/styles/down_background_pressed = SubResource("StyleBoxFlat_lib_pressed")
 SpinBox/styles/focus = SubResource("StyleBoxLayered_f5t1i")
 SpinBox/styles/normal = SubResource("StyleBoxLayered_j6b3v")
 SpinBox/styles/read_only = SubResource("StyleBoxLayered_nh6ji")
+SpinBox/styles/up_background_hovered = SubResource("StyleBoxFlat_lib_hover")
+SpinBox/styles/up_background_pressed = SubResource("StyleBoxFlat_lib_pressed")
 Stage/base_type = &"PanelContainer"
 Stage/styles/panel = SubResource("StyleBoxFlat_8fk77")
 StockButton/base_type = &"Button"
@@ -2986,24 +3160,29 @@ StockButton/styles/hover = SubResource("StyleBoxLayered_mdp5m")
 StockButton/styles/hover_pressed = SubResource("StyleBoxLayered_giw1e")
 StockButton/styles/normal = SubResource("StyleBoxLayered_0orma")
 StockButton/styles/pressed = SubResource("StyleBoxLayered_wxx8p")
+TabBar/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 TabBar/colors/font_hovered_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 TabBar/colors/font_selected_color = Color(1, 1, 1, 1)
 TabBar/colors/font_unselected_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 TabBar/constants/tab_separation = 4
-TabBar/fonts/bold_font = ExtResource("1_baqhu")
-TabBar/fonts/bold_italics_font = ExtResource("7_jpyrk")
-TabBar/fonts/italics_font = ExtResource("8_8sxp6")
-TabBar/fonts/mono_font = ExtResource("9_h3t2r")
+TabBar/fonts/bold_font = ExtResource("1_id4dl")
+TabBar/fonts/bold_italics_font = ExtResource("7_72bos")
+TabBar/fonts/italics_font = ExtResource("8_xeclr")
+TabBar/fonts/mono_font = ExtResource("9_53ewu")
 TabBar/sounds/hover = SubResource("AudioStreamRandomizer_omo58")
-TabBar/sounds/selected = ExtResource("27_fekdb")
+TabBar/sounds/selected = ExtResource("13_b82be")
+TabBar/styles/button_highlight = SubResource("StyleBoxFlat_lib_hover")
+TabBar/styles/button_pressed = SubResource("StyleBoxFlat_lib_pressed")
 TabBar/styles/tab_disabled = SubResource("StyleBoxLayered_7weut")
 TabBar/styles/tab_focus = SubResource("StyleBoxFlat_apgv1")
 TabBar/styles/tab_hovered = SubResource("StyleBoxLayered_ny0yi")
 TabBar/styles/tab_selected = SubResource("StyleBoxLayered_j3evm")
 TabBar/styles/tab_unselected = SubResource("StyleBoxLayered_b47rl")
+TabContainer/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 TabContainer/colors/font_hovered_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
 TabContainer/colors/font_unselected_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
+TabContainer/constants/side_margin = 0
 TabContainer/constants/tab_separation = 4
 TabContainer/styles/panel = SubResource("StyleBoxLayered_qbrp3")
 TabContainer/styles/tab_disabled = SubResource("StyleBoxLayered_ue2yq")
@@ -3015,57 +3194,79 @@ TabContainer/styles/tabbar_background = SubResource("StyleBoxEmpty_j2oyd")
 TextEdit/colors/caret_color = Color(0.4392157, 0.73333335, 1, 1)
 TextEdit/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 TextEdit/colors/font_placeholder_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
+TextEdit/colors/font_readonly_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 TextEdit/colors/selection_color = Color(0.2784314, 0.54901963, 0.7490196, 0.4)
 TextEdit/sounds/typed = SubResource("AudioStreamRandomizer_xn5on")
 TextEdit/styles/focus = SubResource("StyleBoxLayered_vkxtv")
 TextEdit/styles/normal = SubResource("StyleBoxLayered_5q7rx")
 TextEdit/styles/read_only = SubResource("StyleBoxLayered_pcsrr")
-TileButton/base_type = &"Button"
-TileButton/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
-TileButton/colors/font_hover_color = Color(1, 1, 1, 1)
-TileButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-TileButton/constants/align_to_largest_stylebox = 0
-TileButton/styles/disabled = SubResource("StyleBoxLayered_nvb6y")
-TileButton/styles/hover = SubResource("StyleBoxLayered_es8o8")
-TileButton/styles/hover_pressed = SubResource("StyleBoxLayered_sonkt")
-TileButton/styles/normal = SubResource("StyleBoxLayered_36dux")
-TileButton/styles/pressed = SubResource("StyleBoxLayered_sonkt")
-TitleLabel/base_type = &"Label"
-TitleLabel/colors/font_color = Color(1, 1, 1, 1)
-TitleLabel/font_sizes/font_size = 28
-TitleLabel/fonts/font = ExtResource("1_baqhu")
 TooltipLabel/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 TooltipPanel/styles/panel = SubResource("StyleBoxLayered_mkcqj")
+Topbar/base_type = &"PanelContainer"
+Topbar/styles/panel = SubResource("StyleBoxFlat_pikql")
 Tree/colors/font_color = Color(0.78431374, 0.8, 0.81960785, 1)
+Tree/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 Tree/colors/font_hovered_color = Color(1, 1, 1, 1)
 Tree/colors/font_selected_color = Color(1, 1, 1, 1)
 Tree/colors/guide_color = Color(0, 0, 0, 0)
-Tree/constants/item_margin = 14
+Tree/colors/relationship_line_color = Color(1, 1, 1, 0.1)
+Tree/colors/title_button_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
+Tree/constants/item_margin = 16
 Tree/constants/v_separation = 4
-Tree/fonts/bold_font = ExtResource("1_baqhu")
-Tree/fonts/bold_italics_font = ExtResource("7_jpyrk")
-Tree/fonts/italics_font = ExtResource("8_8sxp6")
-Tree/fonts/mono_font = ExtResource("9_h3t2r")
-Tree/fonts/title_font = ExtResource("1_baqhu")
-Tree/sounds/activated = ExtResource("26_gvx4d")
+Tree/fonts/bold_font = ExtResource("1_id4dl")
+Tree/fonts/bold_italics_font = ExtResource("7_72bos")
+Tree/fonts/italics_font = ExtResource("8_xeclr")
+Tree/fonts/mono_font = ExtResource("9_53ewu")
+Tree/fonts/title_font = ExtResource("1_id4dl")
+Tree/sounds/activated = ExtResource("12_m8t8o")
 Tree/sounds/hover = SubResource("AudioStreamRandomizer_ve5fq")
-Tree/sounds/selected = ExtResource("27_fekdb")
-Tree/sounds/toggled_off = ExtResource("5_872ig")
-Tree/sounds/toggled_on = ExtResource("6_dsr3u")
+Tree/sounds/selected = ExtResource("13_b82be")
+Tree/sounds/toggled_off = ExtResource("5_g773b")
+Tree/sounds/toggled_on = ExtResource("6_d81ev")
+Tree/styles/button_hover = SubResource("StyleBoxFlat_lib_hover")
 Tree/styles/button_pressed = SubResource("StyleBoxEmpty_hujgx")
+Tree/styles/checked = SubResource("StyleBoxLayered_check_checked")
+Tree/styles/checked_disabled = SubResource("StyleBoxLayered_check_checked_disabled")
 Tree/styles/cursor = SubResource("StyleBoxEmpty_ld4xs")
 Tree/styles/cursor_unfocused = SubResource("StyleBoxEmpty_hfq7w")
+Tree/styles/custom_button = SubResource("StyleBoxLayered_fkre0")
+Tree/styles/custom_button_hover = SubResource("StyleBoxLayered_gjyn5")
+Tree/styles/custom_button_pressed = SubResource("StyleBoxLayered_fyv8m")
 Tree/styles/focus = SubResource("StyleBoxEmpty_7lrfm")
 Tree/styles/hovered = SubResource("StyleBoxLayered_erfe1")
+Tree/styles/hovered_dimmed = SubResource("StyleBoxLayered_erfe1")
 Tree/styles/hovered_selected = SubResource("StyleBoxLayered_kxd4j")
 Tree/styles/hovered_selected_focus = SubResource("StyleBoxLayered_jorr1")
 Tree/styles/panel = SubResource("StyleBoxLayered_07hya")
 Tree/styles/selected = SubResource("StyleBoxLayered_ouhe2")
 Tree/styles/selected_focus = SubResource("StyleBoxLayered_vtdmp")
+Tree/styles/title_button_hover = SubResource("StyleBoxFlat_lib_title_hover")
+Tree/styles/title_button_normal = SubResource("StyleBoxFlat_lib_title")
+Tree/styles/title_button_pressed = SubResource("StyleBoxFlat_lib_title_pressed")
+Tree/styles/unchecked = SubResource("StyleBoxLayered_check_unchecked")
+Tree/styles/unchecked_disabled = SubResource("StyleBoxLayered_check_unchecked_disabled")
 VBoxContainer/constants/separation = 10
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_s4708")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_jymir")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_kuqxe")
 VScrollBar/styles/scroll = SubResource("StyleBoxEmpty_lfvqu")
 VScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_lfvqu")
+VSeparator/constants/separation = 2
 VSeparator/styles/separator = SubResource("StyleBoxLine_yqv8c")
+VSlider/styles/grabber = SubResource("StyleBoxFlat_grabber")
+VSlider/styles/grabber_area = SubResource("StyleBoxFlat_vslider_grabber_area")
+VSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_vslider_grabber_area_highlight")
+VSlider/styles/grabber_disabled = SubResource("StyleBoxFlat_grabber_disabled")
+VSlider/styles/grabber_highlight = SubResource("StyleBoxFlat_grabber_highlight")
+VSlider/styles/slider = SubResource("StyleBoxFlat_vslider_slider")
+VirtualJoystick/styles/normal_joystick = SubResource("StyleBoxLayered_joystick")
+VirtualJoystick/styles/normal_tip = SubResource("StyleBoxFlat_lib_tip")
+VirtualJoystick/styles/pressed_joystick = SubResource("StyleBoxLayered_joystick_pressed")
+VirtualJoystick/styles/pressed_tip = SubResource("StyleBoxFlat_lib_tip_pressed")
+Window/colors/title_color = Color(1, 1, 1, 1)
+Window/constants/appear_duration = 160
+Window/constants/appear_offset = 6
+Window/constants/resize_margin = 10
+Window/styles/embedded_border = SubResource("StyleBoxFlat_lib_window")
+Window/styles/embedded_unfocused_border = SubResource("StyleBoxFlat_lib_window")
+Window/styles/popup_shadow = SubResource("StyleBoxFlat_popup_shadow")

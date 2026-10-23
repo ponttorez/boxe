@@ -59,26 +59,6 @@ size_flags_horizontal = 3
 script = ExtResource("composites_gd")
 theme_override_constants/separation = 24
 
-[node name="Header" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Overline" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "CONTROL"
-
-[node name="Title" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"TitleLabel"
-text = "Composites"
-
-[node name="Subtitle" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "composite_enabled draws a control and its children as one image, like a CanvasGroup. Fading a group no longer shows the overlapping parts, and one material can apply to the whole group."
-autowrap_mode = 3
-
 [node name="OpacityRow" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -107,6 +87,13 @@ theme_type_variation = &"BadgeLabel"
 text = "50%"
 horizontal_alignment = 1
 auto_translate_mode = 2
+
+[node name="Composite" type="CheckButton" parent="OpacityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "Composite"
+button_pressed = true
 
 [node name="Cards" type="GridContainer" parent="."]
 layout_mode = 2
@@ -137,15 +124,8 @@ text = "Fade a group"
 [node name="Caption" type="Label" parent="Cards/Group/Box/Header"]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = "Overlapping children show through each other when their parent fades. A composite fades as one image, and its material applies to the whole group: here a shader draws one outline and shadow around it."
+text = "composite_enabled draws a control and its children as one image, like a CanvasGroup. When a group fades, its overlapping children no longer show through each other, and its material applies to the whole group: here a shader draws one outline and shadow around it."
 autowrap_mode = 3
-
-[node name="GroupComposite" type="CheckButton" parent="Cards/Group/Box"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Composite"
-button_pressed = true
 
 [node name="Stage" type="PanelContainer" parent="Cards/Group/Box"]
 layout_mode = 2
@@ -295,13 +275,6 @@ layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "LabelSettings.composite_effects draws the outline and the shadow as layers of one image. When the label fades, glyph outlines don't add up where they overlap, and the shadow doesn't show through the outline."
 autowrap_mode = 3
-
-[node name="TextComposite" type="CheckButton" parent="Cards/Text/Box"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Composite effects"
-button_pressed = true
 
 [node name="Stage" type="PanelContainer" parent="Cards/Text/Box"]
 layout_mode = 2

@@ -9,26 +9,6 @@ size_flags_horizontal = 3
 script = ExtResource("text_gd")
 theme_override_constants/separation = 24
 
-[node name="Header" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Overline" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "TEXT"
-
-[node name="Title" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"TitleLabel"
-text = "Text"
-
-[node name="Subtitle" type="Label" parent="Header"]
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "Labels, buttons, tabs, lists and menus take BBCode, and labels keep their features: ellipsis, visible characters, autowrap and label settings. The Localization dock edits the CSV and PO translations of the project in their files, and texts format arguments with plural forms."
-autowrap_mode = 3
-
 [node name="Cards" type="GridContainer" parent="."]
 layout_mode = 2
 script = ExtResource("responsive_grid_gd")
@@ -58,7 +38,7 @@ text = "Label"
 [node name="Caption" type="Label" parent="Cards/Label/Box/Header"]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = "Formatting, links and hints in a plain Label."
+text = "Labels, buttons, tabs, lists and menus take BBCode. A plain Label keeps autowrap, ellipsis and label settings, and shows formatting, links and hints."
 autowrap_mode = 3
 
 [node name="Rich" type="Label" parent="Cards/Label/Box"]
@@ -91,7 +71,7 @@ text = "Arguments and plurals"
 [node name="Caption" type="Label" parent="Cards/Arguments/Box/Header"]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = "text_arguments fills {name} placeholders and picks the plural form of each number by the rules of the language. Type a name and move the slider."
+text = "text_arguments fills {name} placeholders and picks the plural form of each number by the rules of the language. Type a name and move the slider. The Localization dock edits these translations in the editor."
 autowrap_mode = 3
 
 [node name="Name" type="LineEdit" parent="Cards/Arguments/Box"]
@@ -128,15 +108,6 @@ text = "loc.apples"
 text_arguments = {
 "count": 1,
 "name": ""
-}
-
-[node name="Days" type="Label" parent="Cards/Arguments/Box"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"BodyLabel"
-text = "loc.days_left"
-text_arguments = {
-"days": 1
 }
 
 [node name="Typewriter" type="PanelContainer" parent="Cards"]
@@ -227,7 +198,7 @@ text_overrun_behavior = 3
 clip_text = true
 
 [node name="Shorter" type="Label" parent="Cards/Ellipsis/Box/Stage/Box"]
-custom_minimum_size = Vector2(200.0, 0.0)
+custom_minimum_size = Vector2(170.0, 0.0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"BodyLabel"

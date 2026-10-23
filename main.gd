@@ -2,8 +2,8 @@ extends Control
 
 const NARROW_WIDTH := 860.0
 const UI_BUS := &"UI"
-const SOUND_ICON := preload("res://assets/icons/sound.svg")
-const SOUND_MUTED_ICON := preload("res://assets/icons/sound_muted.svg")
+const SOUND_ICON := preload("res://assets/sound_icon.svg")
+const SOUND_MUTED_ICON := preload("res://assets/sound_muted_icon.svg")
 const LANGUAGE_NAMES := {
 	"en": "English",
 	"ru": "Русский",
@@ -11,6 +11,7 @@ const LANGUAGE_NAMES := {
 }
 
 var _section: Control
+var _section_link: SectionLink
 var _links: Array[SectionLink] = []
 
 @onready var _safe_area: MarginContainer = %SafeArea
@@ -61,6 +62,12 @@ func open_section(link_name: StringName) -> void:
 
 
 func _show_section(link: SectionLink) -> void:
+	if link == _section_link:
+		return
+	_section_link = link
+	for other in _links:
+		other.mouse_filter = Control.MOUSE_FILTER_IGNORE if other == link else Control.MOUSE_FILTER_STOP
+		other.focus_mode = Control.FOCUS_NONE if other == link else Control.FOCUS_ALL
 	if _section:
 		_section.queue_free()
 	_section = link.section.instantiate()
@@ -79,15 +86,24 @@ func _setup_volume() -> void:
 	_volume.value_changed.connect(_on_volume_changed)
 	_mute.button_pressed = AudioServer.is_bus_mute(bus)
 	_mute.toggled.connect(_on_mute_toggled)
-	_sound.pressed.connect(_show_sound_popup)
+	_sound.pressed.connect(_on_sound_pressed)
+	_sound_popup.about_to_popup.connect(_sound.set_pressed.bind(true))
+	_sound_popup.about_to_popup.connect(_center_popup.bind(_sound_popup, _sound))
+	_sound_popup.popup_hide.connect(_sound.set_pressed.bind(false))
 	_update_sound_icons()
 
 
-func _show_sound_popup() -> void:
-	var button := Rect2(_sound.get_screen_transform() * Rect2(Vector2.ZERO, _sound.size))
-	_sound_popup.reset_size()
-	var popup_size := _sound_popup.get_contents_minimum_size()
-	_sound_popup.popup(Rect2i(Vector2i(int(button.get_center().x - popup_size.x * 0.5), int(button.end.y + 4)), Vector2i(popup_size)))
+func _on_sound_pressed() -> void:
+	if _sound_popup.visible:
+		_sound_popup.hide()
+		return
+	_sound_popup.popup()
+
+
+func _center_popup(popup: Window, button: Control) -> void:
+	var rect := button.get_screen_transform() * Rect2(Vector2.ZERO, button.size)
+	popup.reset_size()
+	popup.position = Vector2i(roundi(rect.get_center().x - popup.size.x * 0.5), roundi(rect.end.y) + _language.get_theme_constant(&"popup_separation"))
 
 
 func _on_volume_changed(value: float) -> void:
@@ -112,6 +128,7 @@ func _setup_languages() -> void:
 		popup.set_item_metadata(popup.item_count - 1, locale)
 	popup.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	popup.id_pressed.connect(_on_language_pressed)
+	popup.about_to_popup.connect(_center_popup.bind(popup, _language))
 	TranslationServer.locale_changed.connect(_update_languages)
 	_update_languages()
 
