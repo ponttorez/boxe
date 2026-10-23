@@ -356,6 +356,21 @@ void Viewport::_sub_window_register(Window *p_window) {
 	RenderingServer::get_singleton()->viewport_set_parent_viewport(p_window->viewport, viewport);
 }
 
+// Where an embedded window is drawn, and takes input: it's moved while it appears.
+Point2i Viewport::_sub_window_get_drawn_position(const Window *p_window) {
+	return p_window->get_position() + Point2i(p_window->appear_draw_offset.round());
+}
+
+void Viewport::_sub_window_set_appearance(Window *p_window, float p_alpha, const Vector2 &p_offset) {
+	const int index = _sub_window_find(p_window);
+	if (index == -1) {
+		return;
+	}
+	const SubWindow &sw = gui.sub_windows[index];
+	RS::get_singleton()->canvas_item_set_modulate(sw.canvas_item, Color(1, 1, 1, p_alpha));
+	RS::get_singleton()->canvas_item_set_transform(sw.canvas_item, Transform2D(0, p_offset));
+}
+
 void Viewport::_sub_window_update(Window *p_window) {
 	int index = _sub_window_find(p_window);
 
@@ -2914,7 +2929,7 @@ Viewport::SubWindowResize Viewport::_sub_window_get_resize_margin(Window *p_subw
 		return SUB_WINDOW_RESIZE_DISABLED;
 	}
 
-	Rect2i r = Rect2i(p_subwindow->get_position(), p_subwindow->get_size());
+	Rect2i r = Rect2i(_sub_window_get_drawn_position(p_subwindow), p_subwindow->get_size());
 
 	int title_height = p_subwindow->theme_cache.title_height;
 
@@ -3107,7 +3122,7 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 
 			// Clicked inside window?
 
-			Rect2i r = Rect2i(sw.window->get_position(), sw.window->get_size());
+			Rect2i r = Rect2i(_sub_window_get_drawn_position(sw.window), sw.window->get_size());
 
 			if (!sw.window->get_flag(Window::FLAG_BORDERLESS)) {
 				// Check top bar.
@@ -3153,7 +3168,7 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 							_sub_window_grab_focus(sw.window);
 						}
 
-						gui.subwindow_resize_from_rect = r;
+						gui.subwindow_resize_from_rect = Rect2i(sw.window->get_position(), sw.window->get_size());
 						gui.subwindow_drag_from = mb->get_position();
 						gui.subwindow_drag = SUB_WINDOW_DRAG_RESIZE;
 						click_on_window = sw.window;
@@ -3222,10 +3237,10 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 				if (!sw.window->get_flag(Window::FLAG_NO_FOCUS) || sw.window->get_flag(Window::FLAG_MOUSE_PASSTHROUGH)) {
 					continue;
 				}
-				Rect2i r = Rect2i(sw.window->get_position(), sw.window->get_size());
+				Rect2i r = Rect2i(_sub_window_get_drawn_position(sw.window), sw.window->get_size());
 				if (r.has_point(me->get_position())) {
 					Transform2D window_ofs;
-					window_ofs.set_origin(-sw.window->get_position());
+					window_ofs.set_origin(-_sub_window_get_drawn_position(sw.window));
 					Ref<InputEvent> ev = p_event->xformed_by(window_ofs);
 					sw.window->_window_input(ev);
 					return true;
@@ -3236,7 +3251,7 @@ bool Viewport::_sub_windows_forward_input(const Ref<InputEvent> &p_event) {
 	}
 
 	Transform2D window_ofs;
-	window_ofs.set_origin(-gui.subwindow_focused->get_position());
+	window_ofs.set_origin(-_sub_window_get_drawn_position(gui.subwindow_focused));
 
 	Ref<InputEvent> ev = p_event->xformed_by(window_ofs);
 
@@ -3320,7 +3335,7 @@ void Viewport::_update_mouse_over(Vector2 p_pos) {
 	if (is_embedding_subwindows()) {
 		for (int i = gui.sub_windows.size() - 1; i >= 0; i--) {
 			Window *sw = gui.sub_windows[i].window;
-			Rect2 swrect = Rect2(sw->get_position(), sw->get_size());
+			Rect2 swrect = Rect2(_sub_window_get_drawn_position(sw), sw->get_size());
 			Rect2 swrect_border = swrect;
 
 			if (!sw->get_flag(Window::FLAG_BORDERLESS)) {
@@ -3346,7 +3361,7 @@ void Viewport::_update_mouse_over(Vector2 p_pos) {
 						gui.subwindow_over = sw;
 					}
 					if (!sw->is_input_disabled()) {
-						sw->_update_mouse_over(sw->get_final_transform().affine_inverse().xform(p_pos - sw->get_position()));
+						sw->_update_mouse_over(sw->get_final_transform().affine_inverse().xform(p_pos - _sub_window_get_drawn_position(sw)));
 					}
 				} else {
 					if (gui.subwindow_over) {

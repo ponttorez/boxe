@@ -1068,6 +1068,7 @@ void Window::set_visible(bool p_visible) {
 				}
 			}
 			embedder->_sub_window_register(this);
+			_start_appear();
 			RS::get_singleton()->viewport_set_update_mode(get_viewport_rid(), RSE::VIEWPORT_UPDATE_WHEN_PARENT_VISIBLE);
 
 			// Make sure the sub-window shares the HDR output settings of the embedder.
@@ -1119,6 +1120,31 @@ void Window::set_visible(bool p_visible) {
 	//update transient exclusive
 	if (transient_parent) {
 		_set_transient_exclusive_child(true);
+	}
+}
+
+// Embedded windows fade in and slide into place when they're shown, by the appear theme constants.
+void Window::_start_appear() {
+	if (theme_cache.appear_duration <= 0 || !embedder || !is_inside_tree()) {
+		return;
+	}
+	appear_start_usec = OS::get_singleton()->get_ticks_usec();
+	_update_appear();
+}
+
+void Window::_update_appear() {
+	if (!embedder || !visible) {
+		appear_draw_offset = Vector2();
+		return;
+	}
+	// When the theme turns the animation off midway, the window is shown in place at once.
+	const double t = theme_cache.appear_duration > 0 ? MIN(double(OS::get_singleton()->get_ticks_usec() - appear_start_usec) / (theme_cache.appear_duration * 1000.0), 1.0) : 1.0;
+	const float eased = 1.0 - Math::pow(1.0 - t, 3.0);
+	appear_draw_offset = t < 1.0 ? Vector2(0, -(1.0f - eased) * theme_cache.appear_offset) : Vector2();
+	embedder->_sub_window_set_appearance(this, eased, appear_draw_offset);
+	const Callable update = callable_mp(this, &Window::_update_appear);
+	if (t < 1.0 && !get_tree()->is_connected(SNAME("process_frame"), update)) {
+		get_tree()->connect(SNAME("process_frame"), update, CONNECT_ONE_SHOT);
 	}
 }
 
@@ -3813,6 +3839,8 @@ void Window::_bind_methods() {
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, close_v_offset);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, resize_margin);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_duration);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, Window, appear_offset);
 }
 
 Window::Window() {

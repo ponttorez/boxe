@@ -498,6 +498,8 @@ private:
 	void _sub_window_update_order();
 	void _sub_window_register(Window *p_window);
 	void _sub_window_update(Window *p_window);
+	void _sub_window_set_appearance(Window *p_window, float p_alpha, const Vector2 &p_offset);
+	static Point2i _sub_window_get_drawn_position(const Window *p_window);
 	void _sub_window_grab_focus(Window *p_window);
 	void _sub_window_remove(Window *p_window);
 	int _sub_window_find(Window *p_window) const;

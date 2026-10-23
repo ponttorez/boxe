@@ -241,7 +241,15 @@ private:
 		int close_v_offset = 0;
 
 		int resize_margin = 0;
+
+		int appear_duration = 0;
+		int appear_offset = 0;
 	} theme_cache;
+
+	uint64_t appear_start_usec = 0;
+	Vector2 appear_draw_offset; // Where the window is drawn while it appears, relative to its position.
+	void _start_appear();
+	void _update_appear();
 
 	void _settings_changed();
 

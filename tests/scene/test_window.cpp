@@ -93,4 +93,35 @@ TEST_CASE("[SceneTree][Window]") {
 	}
 }
 
+TEST_CASE("[SceneTree][Window] Appearing windows take input where they're drawn") {
+	Window *root = SceneTree::get_singleton()->get_root();
+	Window *window = memnew(Window);
+	window->set_visible(false);
+	window->set_flag(Window::FLAG_BORDERLESS, true);
+	NotificationControlWindow *control = memnew(NotificationControlWindow);
+	control->set_size(Size2(100, 100));
+	window->add_child(control);
+	root->add_child(window);
+	window->add_theme_constant_override("appear_duration", 100000);
+	window->add_theme_constant_override("appear_offset", 100);
+	window->set_position(Point2i(100, 200));
+	window->set_size(Size2i(100, 100));
+	window->show();
+	CHECK(window->get_position() == Point2i(100, 200));
+
+	// At the start of the animation, the window is drawn 100 px above its position.
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 150), MouseButtonMask::NONE, Key::NONE);
+	CHECK(control->mouse_over);
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 250), MouseButtonMask::NONE, Key::NONE);
+	CHECK_FALSE(control->mouse_over);
+
+	// Turning the animation off midway puts the window in place at the next frame.
+	window->add_theme_constant_override("appear_duration", 0);
+	SceneTree::get_singleton()->emit_signal(SNAME("process_frame"));
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 250), MouseButtonMask::NONE, Key::NONE);
+	CHECK(control->mouse_over);
+
+	memdelete(window);
+}
+
 } // namespace TestWindow
