@@ -528,7 +528,10 @@ class ColorPickerButton : public Button {
 		Ref<Texture2D> overbright_indicator;
 
 		int popup_separation = 0;
+		int color_corner_radius = 0;
 	} theme_cache;
+
+	Ref<CanvasTexture> checker_texture;
 
 	void _about_to_popup();
 	void _color_changed(const Color &p_color);

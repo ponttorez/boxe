@@ -1195,6 +1195,7 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_constant("h_separation", "ColorPickerButton", Math::round(4 * scale));
 	theme->set_constant("outline_size", "ColorPickerButton", 0);
 	theme->set_constant("popup_separation", "ColorPickerButton", 0);
+	theme->set_constant("color_corner_radius", "ColorPickerButton", 0);
 
 	// ColorPresetButton
 

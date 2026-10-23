@@ -2465,8 +2465,40 @@ void ColorPickerButton::_notification(int p_what) {
 
 		case NOTIFICATION_DRAW: {
 			const Rect2 r = Rect2(theme_cache.normal_style->get_offset(), get_size() - theme_cache.normal_style->get_minimum_size());
-			draw_texture_rect(theme_cache.background_icon, r, true);
-			draw_rect(r, color);
+			const float corner_radius = MIN(theme_cache.color_corner_radius, MIN(r.size.width, r.size.height) * 0.5f);
+			if (corner_radius > 0) {
+				// The checkerboard is drawn as a rounded polygon that repeats the background icon, under a rounded flat style box of the color.
+				if (color.a < 1 && theme_cache.background_icon.is_valid()) {
+					if (checker_texture.is_null()) {
+						checker_texture.instantiate();
+						checker_texture->set_texture_repeat(CanvasItem::TEXTURE_REPEAT_ENABLED);
+					}
+					checker_texture->set_diffuse_texture(theme_cache.background_icon);
+					const int corner_points = 8;
+					const Size2 tile_size = theme_cache.background_icon->get_size();
+					Vector<Point2> points;
+					Vector<Point2> uvs;
+					const Point2 centers[4] = { r.position + Vector2(r.size.width - corner_radius, corner_radius), r.position + Vector2(r.size.width - corner_radius, r.size.height - corner_radius), r.position + Vector2(corner_radius, r.size.height - corner_radius), r.position + Vector2(corner_radius, corner_radius) };
+					for (int corner = 0; corner < 4; corner++) {
+						for (int i = 0; i <= corner_points; i++) {
+							const float angle = Math::PI * 0.5f * (corner - 1 + float(i) / corner_points);
+							const Point2 point = centers[corner] + Vector2(Math::cos(angle), Math::sin(angle)) * corner_radius;
+							points.push_back(point);
+							uvs.push_back((point - r.position) / tile_size);
+						}
+					}
+					draw_polygon(points, { Color(1, 1, 1) }, uvs, checker_texture);
+				}
+				Ref<StyleBoxFlat> color_style;
+				color_style.instantiate();
+				color_style->set_bg_color(color);
+				color_style->set_corner_radius_all(corner_radius);
+				color_style->set_corner_detail(8);
+				draw_style_box(color_style, r);
+			} else {
+				draw_texture_rect(theme_cache.background_icon, r, true);
+				draw_rect(r, color);
+			}
 
 			if (color.r > 1 || color.g > 1 || color.b > 1) {
 				// Draw an indicator to denote that the color is "overbright" and can't be displayed accurately in the preview
@@ -2585,6 +2617,7 @@ void ColorPickerButton::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_ICON, ColorPickerButton, background_icon, "bg");
 	BIND_THEME_ITEM_EXT(Theme::DATA_TYPE_ICON, ColorPickerButton, overbright_indicator, "overbright_indicator", "ColorPicker");
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, ColorPickerButton, popup_separation);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, ColorPickerButton, color_corner_radius);
 }
 
 ColorPickerButton::ColorPickerButton(const String &p_text) :

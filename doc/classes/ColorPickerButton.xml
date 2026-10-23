@@ -59,6 +59,9 @@
 		</signal>
 	</signals>
 	<theme_items>
+		<theme_item name="color_corner_radius" data_type="constant" type="int" default="0">
+			The corner radius of the color shown in the button. With 0, the color is a rectangle.
+		</theme_item>
 		<theme_item name="popup_separation" data_type="constant" type="int" default="0">
 			The distance between the button and the color picker popup.
 		</theme_item>
