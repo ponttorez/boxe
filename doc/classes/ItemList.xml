@@ -399,7 +399,7 @@
 			If [code]true[/code], the control will automatically resize the width to fit its content.
 		</member>
 		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
-			If [code]true[/code], the item texts are parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] and [code][hint][/code] tags are only drawn.
+			If [code]true[/code], the item texts are parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] and [code][hint][/code] tags are only drawn. Items without a tooltip show their text as BBCode in the tooltip too.
 		</member>
 		<member name="clip_contents" type="bool" setter="set_clip_contents" getter="is_clipping_contents" overrides="Control" default="true" />
 		<member name="fixed_column_width" type="int" setter="set_fixed_column_width" getter="get_fixed_column_width" default="0">

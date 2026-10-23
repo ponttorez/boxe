@@ -206,6 +206,17 @@ bool AcceptDialog::has_autowrap() {
 	return message_label->get_autowrap_mode() != TextServer::AUTOWRAP_OFF;
 }
 
+void AcceptDialog::set_bbcode_enabled(bool p_enabled) {
+	message_label->set_bbcode_enabled(p_enabled);
+	// Links and hints in the text react to the mouse.
+	message_label->set_mouse_filter(p_enabled ? Control::MOUSE_FILTER_PASS : Control::MOUSE_FILTER_IGNORE);
+	_update_child_rects();
+}
+
+bool AcceptDialog::is_bbcode_enabled() const {
+	return message_label->is_bbcode_enabled();
+}
+
 void AcceptDialog::set_ok_button_text(String p_ok_button_text) {
 	ok_text = p_ok_button_text;
 	_update_ok_text();
@@ -427,6 +438,8 @@ void AcceptDialog::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &AcceptDialog::set_text);
 	ClassDB::bind_method(D_METHOD("get_text"), &AcceptDialog::get_text);
 	ClassDB::bind_method(D_METHOD("set_autowrap", "autowrap"), &AcceptDialog::set_autowrap);
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &AcceptDialog::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &AcceptDialog::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("has_autowrap"), &AcceptDialog::has_autowrap);
 	ClassDB::bind_method(D_METHOD("set_ok_button_text", "text"), &AcceptDialog::set_ok_button_text);
 	ClassDB::bind_method(D_METHOD("get_ok_button_text"), &AcceptDialog::get_ok_button_text);
@@ -442,6 +455,7 @@ void AcceptDialog::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dialog_hide_on_ok"), "set_hide_on_ok", "get_hide_on_ok");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dialog_close_on_escape"), "set_close_on_escape", "get_close_on_escape");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dialog_autowrap"), "set_autowrap", "has_autowrap");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dialog_bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, AcceptDialog, panel_style, "panel");
 	BIND_THEME_ITEM(Theme::DATA_TYPE_CONSTANT, AcceptDialog, buttons_separation);

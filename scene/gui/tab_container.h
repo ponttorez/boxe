@@ -190,6 +190,9 @@ public:
 	void set_clip_tabs(bool p_clip_tabs);
 	bool get_clip_tabs() const;
 
+	void set_bbcode_enabled(bool p_enabled);
+	bool is_bbcode_enabled() const;
+
 	void set_tabs_visible(bool p_visible);
 	bool are_tabs_visible() const;
 

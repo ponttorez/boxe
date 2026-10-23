@@ -60,7 +60,7 @@
 			Autowrap space trimming flags. See [constant TextServer.BREAK_TRIM_START_EDGE_SPACES] and [constant TextServer.BREAK_TRIM_END_EDGE_SPACES] for more info.
 		</member>
 		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
-			If [code]true[/code], [member text] is parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] tags are only drawn, [code][hint][/code] tags show tooltips.
+			If [code]true[/code], [member text] is parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] tags are only drawn, [code][hint][/code] tags show tooltips. An [OptionButton] or a [MenuButton] also parses the items of its popup as BBCode.
 		</member>
 		<member name="clip_text" type="bool" setter="set_clip_text" getter="get_clip_text" default="false">
 			If [code]true[/code], text that is too large to fit the button is clipped horizontally. If [code]false[/code], the button will always be wide enough to hold the text. The text is not vertically clipped, and the button's height is not affected by this property.

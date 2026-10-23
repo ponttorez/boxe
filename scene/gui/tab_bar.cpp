@@ -363,14 +363,19 @@ String TabBar::get_tooltip(const Point2 &p_pos) const {
 	}
 
 	if (tabs[tab_idx].tooltip.is_empty() && tabs[tab_idx].truncated) {
-		// Tooltips are plain text, so BBCode tabs show their text without tags.
-		if (tabs[tab_idx].bbcode.is_valid()) {
-			return tabs[tab_idx].bbcode->get_parsed_text();
-		}
 		return tabs[tab_idx].text;
 	}
 
 	return tabs[tab_idx].tooltip;
+}
+
+bool TabBar::is_tooltip_bbcode_enabled_at(const Vector2 &p_at) const {
+	int tab_idx = get_tab_idx_at_point(p_at);
+	if (tab_idx >= 0 && tabs[tab_idx].tooltip.is_empty()) {
+		// The title of a truncated tab, shown as BBCode like on the tab.
+		return tabs[tab_idx].bbcode.is_valid();
+	}
+	return Control::is_tooltip_bbcode_enabled_at(p_at);
 }
 
 void TabBar::_shape(int p_tab) {
@@ -527,7 +532,7 @@ void TabBar::_notification(int p_what) {
 					AccessibilityServer::get_singleton()->update_set_list_item_selected(item.accessibility_item_element, i == current);
 					AccessibilityServer::get_singleton()->update_set_flag(item.accessibility_item_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_DISABLED, item.disabled);
 					AccessibilityServer::get_singleton()->update_set_flag(item.accessibility_item_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_HIDDEN, item.hidden);
-					AccessibilityServer::get_singleton()->update_set_tooltip(item.accessibility_item_element, item.tooltip);
+					AccessibilityServer::get_singleton()->update_set_tooltip(item.accessibility_item_element, _get_accessibility_tooltip(item.tooltip));
 
 					AccessibilityServer::get_singleton()->update_set_bounds(item.accessibility_item_element, Rect2(Point2(item.ofs_cache, 0), Size2(item.size_cache, get_size().height)));
 

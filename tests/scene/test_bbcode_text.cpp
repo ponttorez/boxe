@@ -32,6 +32,7 @@
 
 TEST_FORCE_LINK(test_bbcode_text)
 
+#include "scene/gui/bbcode_text.h"
 #include "scene/gui/button.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/label.h"
@@ -65,7 +66,7 @@ TEST_CASE("[SceneTree][Label] BBCode hints of hidden characters") {
 	memdelete(label);
 }
 
-TEST_CASE("[SceneTree][ItemList] Automatic tooltips of BBCode items have no tags") {
+TEST_CASE("[SceneTree][ItemList] Automatic tooltips of BBCode items show BBCode") {
 	ItemList *item_list = memnew(ItemList);
 	SceneTree::get_singleton()->get_root()->add_child(item_list);
 	item_list->set_size(Size2(200, 100));
@@ -73,7 +74,12 @@ TEST_CASE("[SceneTree][ItemList] Automatic tooltips of BBCode items have no tags
 	item_list->add_item("[b]Bold[/b] text");
 	item_list->force_update_list_size();
 
-	CHECK(item_list->get_tooltip(item_list->get_item_rect(0).get_center()) == "Bold text");
+	const Vector2 center = item_list->get_item_rect(0).get_center();
+	CHECK(item_list->get_tooltip(center) == "[b]Bold[/b] text");
+	CHECK(item_list->is_tooltip_bbcode_enabled_at(center));
+
+	item_list->set_item_tooltip(0, "Plain [tooltip]");
+	CHECK_FALSE(item_list->is_tooltip_bbcode_enabled_at(center));
 
 	memdelete(item_list);
 }
@@ -203,6 +209,12 @@ TEST_CASE("[SceneTree][LinkButton] BBCode hints of trimmed text in RTL layouts")
 	CHECK(link->get_tooltip(Point2(-10, 8)).is_empty());
 
 	memdelete(link);
+}
+
+TEST_CASE("[BBCodeText] Text without tags") {
+	CHECK(BBCodeText::strip_tags("[b]Save[/b] [color=red]now[/color]") == "Save now");
+	CHECK(BBCodeText::strip_tags("Plain") == "Plain");
+	CHECK(BBCodeText::strip_tags("").is_empty());
 }
 
 } // namespace TestBBCodeText

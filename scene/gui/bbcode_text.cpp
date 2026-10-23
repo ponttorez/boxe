@@ -1685,6 +1685,13 @@ String BBCodeText::get_parsed_text() const {
 	return parsed_text;
 }
 
+String BBCodeText::strip_tags(const String &p_bbcode) {
+	Ref<BBCodeText> bbcode;
+	bbcode.instantiate();
+	bbcode->set_text(p_bbcode);
+	return bbcode->get_parsed_text();
+}
+
 void BBCodeText::set_fonts(const Ref<Font> &p_normal, const Ref<Font> &p_bold, const Ref<Font> &p_italics, const Ref<Font> &p_bold_italics, const Ref<Font> &p_mono, int p_size) {
 	const Ref<Font> fonts[FONT_KIND_MAX] = { p_normal, p_bold, p_italics, p_bold_italics, p_mono };
 	bool changed = p_size != font_size;

@@ -346,6 +346,7 @@ public:
 
 	virtual String get_tooltip(const Point2 &p_pos) const override;
 	virtual AutoTranslateMode get_tooltip_auto_translate_mode_at(const Point2 &p_at) const override;
+	virtual bool is_tooltip_bbcode_enabled_at(const Vector2 &p_at) const override;
 	int get_item_at_position(const Point2 &p_pos, bool p_exact = false) const;
 	bool is_pos_at_end_of_items(const Point2 &p_pos) const;
 

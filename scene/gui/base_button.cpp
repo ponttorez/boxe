@@ -168,7 +168,7 @@ void BaseButton::_notification(int p_what) {
 			}
 			if (shortcut_in_tooltip && shortcut.is_valid() && shortcut->has_valid_event()) {
 				String text = atr(shortcut->get_name()) + " (" + shortcut->get_as_text() + ")";
-				String tooltip = get_tooltip_text();
+				String tooltip = _get_accessibility_tooltip(get_tooltip_text());
 				if (!tooltip.is_empty() && shortcut->get_name().nocasecmp_to(tooltip) != 0) {
 					text += "\n" + atr(tooltip);
 				}

@@ -77,6 +77,7 @@ class OptionButton : public Button {
 	virtual void pressed() override;
 
 protected:
+	virtual void _bbcode_enabled_changed() override;
 	Size2 get_minimum_size() const override;
 	virtual void _queue_update_size_cache() override;
 	virtual String _get_translated_text(const String &p_text) const override;

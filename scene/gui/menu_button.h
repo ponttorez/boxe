@@ -47,6 +47,7 @@ class MenuButton : public Button {
 	void _popup_visibility_changed(bool p_visible);
 
 protected:
+	virtual void _bbcode_enabled_changed() override;
 	void _notification(int p_what);
 	virtual void _interactable_changed() override;
 	bool _set(const StringName &p_name, const Variant &p_value);

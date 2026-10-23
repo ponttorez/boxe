@@ -5043,7 +5043,7 @@ void Tree::_accessibility_update_item(Point2 &r_ofs, TreeItem *p_item, int &r_ro
 				AccessibilityServer::get_singleton()->update_set_text_align(cell.accessibility_cell_element, cell.text_alignment);
 				AccessibilityServer::get_singleton()->update_set_flag(cell.accessibility_cell_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_HIDDEN, !(p_item->visible && !p_item->parent_visible_in_tree));
 				AccessibilityServer::get_singleton()->update_set_flag(cell.accessibility_cell_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_READONLY, !cell.editable);
-				AccessibilityServer::get_singleton()->update_set_tooltip(cell.accessibility_cell_element, cell.tooltip);
+				AccessibilityServer::get_singleton()->update_set_tooltip(cell.accessibility_cell_element, _get_accessibility_tooltip(cell.tooltip));
 				switch (cell.mode) {
 					case TreeItem::CELL_MODE_STRING: {
 						AccessibilityServer::get_singleton()->update_add_action(cell.accessibility_cell_element, AccessibilityServerEnums::AccessibilityAction::ACTION_SET_VALUE, callable_mp(this, &Tree::_accessibility_action_set_text_value).bind(p_item, i));
@@ -5085,9 +5085,9 @@ void Tree::_accessibility_update_item(Point2 &r_ofs, TreeItem *p_item, int &r_ro
 
 					AccessibilityServer::get_singleton()->update_add_action(cell.buttons[j].accessibility_button_element, AccessibilityServerEnums::AccessibilityAction::ACTION_CLICK, callable_mp(this, &Tree::_accessibility_action_button_press).bind(p_item, i, j));
 					AccessibilityServer::get_singleton()->update_set_flag(cell.buttons[j].accessibility_button_element, AccessibilityServerEnums::AccessibilityFlags::FLAG_DISABLED, cell.buttons[j].disabled);
-					AccessibilityServer::get_singleton()->update_set_tooltip(cell.buttons[j].accessibility_button_element, cell.buttons[j].tooltip);
+					AccessibilityServer::get_singleton()->update_set_tooltip(cell.buttons[j].accessibility_button_element, _get_accessibility_tooltip(cell.buttons[j].tooltip));
 					if (cell.buttons[j].description.is_empty()) {
-						AccessibilityServer::get_singleton()->update_set_name(cell.buttons[j].accessibility_button_element, cell.buttons[j].tooltip);
+						AccessibilityServer::get_singleton()->update_set_name(cell.buttons[j].accessibility_button_element, _get_accessibility_tooltip(cell.buttons[j].tooltip));
 					} else {
 						AccessibilityServer::get_singleton()->update_set_name(cell.buttons[j].accessibility_button_element, cell.buttons[j].description);
 					}
@@ -7213,10 +7213,6 @@ String Tree::get_tooltip(const Point2 &p_pos) const {
 	if (it) {
 		const String item_tooltip = it->get_tooltip_text(col);
 		if (enable_auto_tooltip && item_tooltip.is_empty()) {
-			// Tooltips are plain text, so BBCode cells show their text without tags.
-			if (it->cells[col].bbcode.is_valid()) {
-				return it->cells[col].bbcode->get_parsed_text();
-			}
 			return it->get_text(col);
 		}
 		return item_tooltip;
@@ -7243,6 +7239,23 @@ Node::AutoTranslateMode Tree::get_tooltip_auto_translate_mode_at(const Point2 &p
 		return it->get_auto_translate_mode(col);
 	}
 	return Control::get_tooltip_auto_translate_mode_at(p_at);
+}
+
+bool Tree::is_tooltip_bbcode_enabled_at(const Vector2 &p_at) const {
+	Point2 pos = p_at - theme_cache.panel_style->get_offset();
+	pos.y -= _get_title_button_height();
+	if (pos.y < 0) {
+		return Control::is_tooltip_bbcode_enabled_at(p_at);
+	}
+
+	TreeItem *it;
+	int col, index, section;
+	_find_button_at_pos(p_at, it, col, index, section);
+	if (it && index == -1 && enable_auto_tooltip && it->get_tooltip_text(col).is_empty()) {
+		// The text of the cell, shown as BBCode like in the tree.
+		return it->cells[col].bbcode.is_valid();
+	}
+	return Control::is_tooltip_bbcode_enabled_at(p_at);
 }
 
 void Tree::set_cursor_can_exit_tree(bool p_enable) {

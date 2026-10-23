@@ -828,6 +828,16 @@ bool TabContainer::get_clip_tabs() const {
 	return tab_bar->get_clip_tabs();
 }
 
+void TabContainer::set_bbcode_enabled(bool p_enabled) {
+	tab_bar->set_bbcode_enabled(p_enabled);
+	_update_margins();
+	queue_redraw();
+}
+
+bool TabContainer::is_bbcode_enabled() const {
+	return tab_bar->is_bbcode_enabled();
+}
+
 void TabContainer::set_tabs_visible(bool p_visible) {
 	if (p_visible == tabs_visible) {
 		return;
@@ -1209,6 +1219,8 @@ void TabContainer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_tabs_position", "tabs_position"), &TabContainer::set_tabs_position);
 	ClassDB::bind_method(D_METHOD("get_tabs_position"), &TabContainer::get_tabs_position);
 	ClassDB::bind_method(D_METHOD("set_clip_tabs", "clip_tabs"), &TabContainer::set_clip_tabs);
+	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &TabContainer::set_bbcode_enabled);
+	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &TabContainer::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("get_clip_tabs"), &TabContainer::get_clip_tabs);
 	ClassDB::bind_method(D_METHOD("set_tabs_visible", "visible"), &TabContainer::set_tabs_visible);
 	ClassDB::bind_method(D_METHOD("are_tabs_visible"), &TabContainer::are_tabs_visible);
@@ -1263,6 +1275,7 @@ void TabContainer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_tab", PROPERTY_HINT_RANGE, "-1,4096,1"), "set_current_tab", "get_current_tab");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "tabs_position", PROPERTY_HINT_ENUM, "Top,Bottom"), "set_tabs_position", "get_tabs_position");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "clip_tabs"), "set_clip_tabs", "get_clip_tabs");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "tabs_visible"), "set_tabs_visible", "are_tabs_visible");
 #ifndef DISABLE_DEPRECATED
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "all_tabs_in_front", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "set_all_tabs_in_front", "is_all_tabs_in_front");

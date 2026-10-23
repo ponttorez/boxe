@@ -162,7 +162,7 @@ String Button::_get_accessibility_name() const {
 	} else if (!displayed_text.is_empty() && !ac_name.is_empty() && ac_name != displayed_text) {
 		return ac_name + ": " + displayed_text;
 	} else if (displayed_text.is_empty() && ac_name.is_empty() && !get_tooltip_text().is_empty()) {
-		return get_tooltip_text(); // Fall back to tooltip.
+		return _get_accessibility_tooltip(get_tooltip_text()); // Fall back to tooltip.
 	} else {
 		return ac_name;
 	}
@@ -727,6 +727,7 @@ void Button::set_bbcode_enabled(bool p_enabled) {
 	// The arguments are escaped with BBCode.
 	xl_text = format_text_arguments(_get_translated_text(text), text_arguments, text, bbcode_enabled);
 	_shape();
+	_bbcode_enabled_changed();
 
 	update_configuration_warnings();
 	queue_accessibility_update();

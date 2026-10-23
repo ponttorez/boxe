@@ -201,6 +201,13 @@
 				[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
 			</description>
 		</method>
+		<method name="_is_tooltip_bbcode_enabled_at" qualifiers="virtual const">
+			<return type="bool" />
+			<param index="0" name="at_position" type="Vector2" />
+			<description>
+				Virtual method to be implemented by the user. Returns whether the default tooltip shows the tooltip at [param at_position] as BBCode, see [member tooltip_bbcode_enabled].
+			</description>
+		</method>
 		<method name="_make_custom_tooltip" qualifiers="virtual const">
 			<return type="Object" />
 			<param index="0" name="for_text" type="String" />
@@ -1378,6 +1385,9 @@
 		<member name="tooltip_auto_translate_mode" type="int" setter="set_tooltip_auto_translate_mode" getter="get_tooltip_auto_translate_mode" enum="Node.AutoTranslateMode" default="0">
 			Defines if tooltip text should automatically change to its translated version depending on the current locale. Uses the same auto translate mode as this control when set to [constant Node.AUTO_TRANSLATE_MODE_INHERIT].
 			[b]Note:[/b] Tooltips customized using [method _make_custom_tooltip] do not use this auto translate mode automatically.
+		</member>
+		<member name="tooltip_bbcode_enabled" type="bool" setter="set_tooltip_bbcode_enabled" getter="is_tooltip_bbcode_enabled" default="false">
+			If [code]true[/code], the default tooltip parses [member tooltip_text] as BBCode, as in [member Label.bbcode_enabled]. [Tree], [ItemList] and [TabBar] show their own automatic tooltips as BBCode when their texts are. Assistive technologies get the tooltips without the tags.
 		</member>
 		<member name="tooltip_text" type="String" setter="set_tooltip_text" getter="get_tooltip_text" default="&quot;&quot;">
 			The default tooltip text. The tooltip appears when the user's mouse cursor stays idle over this control for a few moments, provided that the [member mouse_filter] property is not [constant MOUSE_FILTER_IGNORE]. The time required for the tooltip to appear can be changed with the [member ProjectSettings.gui/timers/tooltip_delay_sec] setting.

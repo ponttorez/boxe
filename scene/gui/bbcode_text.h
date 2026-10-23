@@ -424,6 +424,9 @@ public:
 	void set_uppercase(bool p_uppercase);
 	void set_tab_stops(const PackedFloat32Array &p_tab_stops);
 	void set_direction(TextServer::Direction p_direction, bool p_layout_rtl);
+	// Returns the text of BBCode without its tags, e.g. for assistive technologies.
+	static String strip_tags(const String &p_bbcode);
+
 	// Sets the direction from the text direction of a control, which follows the layout when it's inherited.
 	void set_text_direction(Control::TextDirection p_direction, bool p_layout_rtl);
 	void set_language(const String &p_language);

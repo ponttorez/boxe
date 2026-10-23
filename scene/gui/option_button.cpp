@@ -607,6 +607,10 @@ void OptionButton::_validate_property(PropertyInfo &p_property) const {
 	}
 }
 
+void OptionButton::_bbcode_enabled_changed() {
+	popup->set_bbcode_enabled(is_bbcode_enabled());
+}
+
 void OptionButton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_item", "label", "id"), &OptionButton::add_item, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("add_icon_item", "texture", "label", "id"), &OptionButton::add_icon_item, DEFVAL(-1));
