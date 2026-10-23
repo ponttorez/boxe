@@ -41,6 +41,7 @@
 #include "core/os/os.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/line_edit.h"
+#include "scene/gui/panel_container.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"
 #include "scene/gui/slider.h"
@@ -3640,6 +3641,15 @@ void Tree::_update_popup_menu(const TreeItem::Cell &p_cell) {
 	}
 }
 
+// Places the editor popup over p_size at p_position, with the margins of the editor_panel style around it.
+void Tree::_set_popup_editor_rect(const Point2 &p_position, const Size2 &p_size, float p_scale) {
+	const Ref<StyleBox> &style = theme_cache.editor_panel_style;
+	const Point2 offset = Point2(style->get_margin(SIDE_LEFT), style->get_margin(SIDE_TOP)) * p_scale;
+	const Size2 margins = style->get_minimum_size();
+	popup_editor->set_position(p_position - offset);
+	popup_editor->set_size((p_size + margins) * p_scale);
+}
+
 void Tree::_update_value_editor(const TreeItem::Cell &p_cell) {
 	if (value_editor == nullptr) {
 		value_editor = memnew(HSlider);
@@ -4662,8 +4672,7 @@ bool Tree::edit_selected(bool p_force_edit) {
 
 		text_editor->hide();
 
-		popup_editor->set_position(popup_rect.position);
-		popup_editor->set_size(popup_rect.size * popup_scale);
+		_set_popup_editor_rect(popup_rect.position, popup_rect.size, popup_scale);
 		if (!popup_editor->is_embedded()) {
 			popup_editor->set_content_scale_factor(popup_scale);
 		}
@@ -4687,8 +4696,7 @@ bool Tree::edit_selected(bool p_force_edit) {
 		const String &col_title_ml = columns[col].title;
 		text_editor->set_accessibility_name(col_title_ml.is_empty() ? c.text : col_title_ml);
 
-		popup_editor->set_position(get_screen_position() + rect.position);
-		popup_editor->set_size(rect.size * popup_scale);
+		_set_popup_editor_rect(get_screen_position() + rect.position, rect.size, popup_scale);
 		if (!popup_editor->is_embedded()) {
 			popup_editor->set_content_scale_factor(popup_scale);
 		}
@@ -5632,7 +5640,11 @@ void Tree::_notification(int p_what) {
 			}
 		} break;
 
-		case NOTIFICATION_THEME_CHANGED:
+		case NOTIFICATION_THEME_CHANGED: {
+			popup_editor_panel->add_theme_style_override(SceneStringName(panel), theme_cache.editor_panel_style);
+			_update_all();
+		} break;
+
 		case NOTIFICATION_LAYOUT_DIRECTION_CHANGED:
 		case NOTIFICATION_TRANSLATION_CHANGED: {
 			_update_all();
@@ -5643,8 +5655,7 @@ void Tree::_notification(int p_what) {
 			if (popup_edited_item != nullptr && popup_editor->is_visible()) {
 				Rect2 rect = _get_item_focus_rect(popup_edited_item);
 
-				popup_editor->set_position(get_screen_position() + rect.position);
-				popup_editor->set_size(rect.size);
+				_set_popup_editor_rect(get_screen_position() + rect.position, rect.size, 1.0);
 				popup_editor->child_controls_changed();
 			}
 		} break;
@@ -7467,6 +7478,7 @@ void Tree::_bind_methods() {
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_BOTTOM);
 
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, panel_style, "panel");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, editor_panel_style, "editor_panel");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, Tree, focus_style, "focus");
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_FONT, Tree, font);
@@ -7631,12 +7643,17 @@ Tree::Tree() {
 	rs->canvas_item_set_use_parent_material(drop_indicator_ci, true);
 
 	popup_editor = memnew(Popup);
+	popup_editor->set_flag(Window::FLAG_TRANSPARENT, true);
 	add_child(popup_editor, false, INTERNAL_MODE_FRONT);
+
+	// The editors are drawn on the editor_panel style, which is larger by its margins.
+	popup_editor_panel = memnew(PanelContainer);
+	popup_editor_panel->set_anchors_and_offsets_preset(PRESET_FULL_RECT);
+	popup_editor->add_child(popup_editor_panel);
 
 	popup_editor_vb = memnew(VBoxContainer);
 	popup_editor_vb->add_theme_constant_override("separation", 0);
-	popup_editor_vb->set_anchors_and_offsets_preset(PRESET_FULL_RECT);
-	popup_editor->add_child(popup_editor_vb);
+	popup_editor_panel->add_child(popup_editor_vb);
 
 	line_editor = memnew(LineEdit);
 	line_editor->set_theme_type_variation("TreeLineEdit");
