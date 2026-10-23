@@ -136,8 +136,20 @@
 		<theme_item name="font_size" data_type="font_size" type="int">
 			Font size of the [LinkButton]'s text.
 		</theme_item>
+		<theme_item name="disabled" data_type="style" type="StyleBox">
+			The style box drawn behind the text when the [LinkButton] is disabled. See [theme_item normal].
+		</theme_item>
 		<theme_item name="focus" data_type="style" type="StyleBox">
 			[StyleBox] used when the [LinkButton] is focused. The [theme_item focus] [StyleBox] is displayed [i]over[/i] the base [StyleBox], so a partially transparent [StyleBox] should be used to ensure the base [StyleBox] remains visible. A [StyleBox] that represents an outline or an underline works well for this purpose. To disable the focus visual effect, assign a [StyleBoxEmpty] resource. Note that disabling the focus visual effect will harm keyboard/controller navigation usability, so this is not recommended for accessibility reasons.
+		</theme_item>
+		<theme_item name="hover" data_type="style" type="StyleBox">
+			The style box drawn behind the text when the mouse is over the [LinkButton]. See [theme_item normal].
+		</theme_item>
+		<theme_item name="normal" data_type="style" type="StyleBox">
+			The style box drawn behind the text in the normal state. Its margins are around the text, and the font color changes between the states with the style transitions of the style box of the new state, so a [StyleBoxEmpty] with a [member StyleBox.transition_duration] only animates the colors.
+		</theme_item>
+		<theme_item name="pressed" data_type="style" type="StyleBox">
+			The style box drawn behind the text when the [LinkButton] is pressed. See [theme_item normal].
 		</theme_item>
 	</theme_items>
 </class>

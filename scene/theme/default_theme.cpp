@@ -197,6 +197,9 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	// LinkButton
 
 	theme->set_stylebox("focus", "LinkButton", focus);
+	for (const char *name : { "normal", "hover", "pressed", "disabled" }) {
+		theme->set_stylebox(name, "LinkButton", memnew(StyleBoxEmpty));
+	}
 
 	theme->set_font(SceneStringName(font), "LinkButton", Ref<Font>());
 	theme->set_font_size(SceneStringName(font_size), "LinkButton", -1);

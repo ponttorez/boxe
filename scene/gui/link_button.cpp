@@ -242,7 +242,7 @@ Size2 LinkButton::get_minimum_size() const {
 		minsize.width = 0;
 	}
 
-	return minsize;
+	return minsize + theme_cache.normal->get_minimum_size();
 }
 
 Control::CursorShape LinkButton::get_cursor_shape(const Point2 &p_pos) const {
@@ -362,6 +362,28 @@ void LinkButton::_notification(int p_what) {
 				} break;
 			}
 
+			// The style box of the state is drawn behind the text, and times the change of the font color.
+			Ref<StyleBox> state_style;
+			switch (get_draw_mode()) {
+				case DRAW_NORMAL:
+					state_style = theme_cache.normal;
+					break;
+				case DRAW_HOVER:
+					state_style = theme_cache.hover;
+					break;
+				case DRAW_PRESSED:
+				case DRAW_HOVER_PRESSED:
+					state_style = theme_cache.pressed;
+					break;
+				case DRAW_DISABLED:
+					state_style = theme_cache.disabled;
+					break;
+			}
+			get_transition_style(StyleTransitions::make_key(0), state_style)->draw(ci, Rect2(Point2(), size));
+			color = get_transition_color(StyleTransitions::make_key(1), color, state_style);
+			const Point2 ofs = theme_cache.normal->get_offset();
+			size -= theme_cache.normal->get_minimum_size();
+
 			const Ref<StyleBox> focus_style = get_transition_style(StyleTransitions::make_key(50), has_focus(true) ? theme_cache.focus : Ref<StyleBox>());
 			if (focus_style.is_valid()) {
 				focus_style->draw(ci, Rect2(Point2(), size));
@@ -380,10 +402,10 @@ void LinkButton::_notification(int p_what) {
 				draw_style.outline_color = font_outline_color;
 				draw_style.self_modulate = get_self_modulate();
 				bbcode->set_composite_effects(theme_cache.composite_text_effects != 0);
-				bbcode->draw_at(ci, Vector2(is_layout_rtl() ? size.width - width : 0, 0), draw_style, &bbcode_rect);
+				bbcode->draw_at(ci, ofs + Vector2(is_layout_rtl() ? size.width - width : 0, 0), draw_style, &bbcode_rect);
 				if (do_underline && theme_cache.font.is_valid()) {
 					const Ref<Font> &font = theme_cache.font;
-					int y = font->get_ascent(theme_cache.font_size) + theme_cache.underline_spacing + font->get_underline_position(theme_cache.font_size);
+					int y = ofs.y + font->get_ascent(theme_cache.font_size) + theme_cache.underline_spacing + font->get_underline_position(theme_cache.font_size);
 					int underline_thickness = MAX(1, font->get_underline_thickness(theme_cache.font_size));
 					draw_line(Vector2(bbcode_rect.position.x, y), Vector2(bbcode_rect.position.x + width, y), color, underline_thickness);
 				}
@@ -396,25 +418,25 @@ void LinkButton::_notification(int p_what) {
 			int width = text_buf->get_line_width();
 			if (is_layout_rtl()) {
 				if (outline_size > 0 && font_outline_color.a > 0) {
-					text_buf->draw_outline(get_canvas_item(), Vector2(size.width - width, 0), outline_size, font_outline_color);
+					text_buf->draw_outline(get_canvas_item(), ofs + Vector2(size.width - width, 0), outline_size, font_outline_color);
 				}
-				text_buf->draw(get_canvas_item(), Vector2(size.width - width, 0), color);
+				text_buf->draw(get_canvas_item(), ofs + Vector2(size.width - width, 0), color);
 			} else {
 				if (outline_size > 0 && font_outline_color.a > 0) {
-					text_buf->draw_outline(get_canvas_item(), Vector2(0, 0), outline_size, font_outline_color);
+					text_buf->draw_outline(get_canvas_item(), ofs, outline_size, font_outline_color);
 				}
-				text_buf->draw(get_canvas_item(), Vector2(0, 0), color);
+				text_buf->draw(get_canvas_item(), ofs, color);
 			}
 
 			if (do_underline) {
 				int underline_spacing = theme_cache.underline_spacing + text_buf->get_line_underline_position();
-				int y = text_buf->get_line_ascent() + underline_spacing;
+				int y = ofs.y + text_buf->get_line_ascent() + underline_spacing;
 				int underline_thickness = MAX(1, text_buf->get_line_underline_thickness());
 
 				if (is_layout_rtl()) {
-					draw_line(Vector2(size.width - width, y), Vector2(size.width, y), color, underline_thickness);
+					draw_line(Vector2(ofs.x + size.width - width, y), Vector2(ofs.x + size.width, y), color, underline_thickness);
 				} else {
-					draw_line(Vector2(0, y), Vector2(width, y), color, underline_thickness);
+					draw_line(Vector2(ofs.x, y), Vector2(ofs.x + width, y), color, underline_thickness);
 				}
 			}
 		} break;
@@ -467,6 +489,10 @@ void LinkButton::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "structured_text_bidi_override_options"), "set_structured_text_bidi_override_options", "get_structured_text_bidi_override_options");
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, LinkButton, focus);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, LinkButton, normal);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, LinkButton, hover);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, LinkButton, pressed);
+	BIND_THEME_ITEM(Theme::DATA_TYPE_STYLEBOX, LinkButton, disabled);
 
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LinkButton, font_color);
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, LinkButton, font_focus_color);

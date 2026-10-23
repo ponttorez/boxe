@@ -34,6 +34,7 @@ TEST_FORCE_LINK(test_check_buttons)
 
 #include "scene/gui/check_box.h"
 #include "scene/gui/check_button.h"
+#include "scene/gui/link_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/tree.h"
@@ -138,6 +139,17 @@ TEST_CASE("[SceneTree][Slider] The grabber is drawn with style boxes when the th
 	CHECK(slider->get_value() == doctest::Approx(0));
 
 	memdelete(slider);
+}
+
+TEST_CASE("[SceneTree][LinkButton] The text is laid out inside the style box of the normal state") {
+	LinkButton *link = memnew(LinkButton);
+	SceneTree::get_singleton()->get_root()->add_child(link);
+	link->set_text("Link");
+	const Size2 text_size = link->get_combined_minimum_size();
+	link->add_theme_style_override(SNAME("normal"), make_style(Size2(20, 10)));
+	CHECK(link->get_combined_minimum_size() == text_size + Size2(20, 10));
+
+	memdelete(link);
 }
 
 } // namespace TestCheckButtons

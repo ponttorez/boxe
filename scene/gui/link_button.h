@@ -66,6 +66,10 @@ private:
 
 	struct ThemeCache {
 		Ref<StyleBox> focus;
+		Ref<StyleBox> normal;
+		Ref<StyleBox> hover;
+		Ref<StyleBox> pressed;
+		Ref<StyleBox> disabled;
 
 		Color font_color;
 		Color font_focus_color;
