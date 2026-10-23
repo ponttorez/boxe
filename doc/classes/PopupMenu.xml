@@ -868,14 +868,8 @@
 		<theme_item name="unchecked_disabled" data_type="icon" type="Texture2D">
 			[Texture2D] icon for the unchecked checkbox items when they are disabled.
 		</theme_item>
-		<theme_item name="closed" data_type="sound" type="AudioStream">
-			Sound played when the menu is hidden.
-		</theme_item>
 		<theme_item name="hover" data_type="sound" type="AudioStream">
 			Sound played when the user focuses another item.
-		</theme_item>
-		<theme_item name="opened" data_type="sound" type="AudioStream">
-			Sound played when the menu is shown.
 		</theme_item>
 		<theme_item name="selected" data_type="sound" type="AudioStream">
 			Sound played when the user activates an item.

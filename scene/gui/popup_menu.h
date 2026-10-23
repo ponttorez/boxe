@@ -212,8 +212,6 @@ class PopupMenu : public Popup {
 		Ref<StyleBox> panel_style;
 		Ref<StyleBox> hover_style;
 
-		Ref<AudioStream> sound_opened;
-		Ref<AudioStream> sound_closed;
 		Ref<AudioStream> sound_hover;
 		Ref<AudioStream> sound_selected;
 

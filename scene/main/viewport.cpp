@@ -1719,6 +1719,7 @@ void Viewport::_gui_show_tooltip_at(const Point2i &p_pos) {
 
 	panel->set_flag(Window::FLAG_NO_FOCUS, true);
 	panel->set_flag(Window::FLAG_POPUP, false);
+	panel->set_popup_sounds_enabled(false);
 	panel->set_flag(Window::FLAG_MOUSE_PASSTHROUGH, true);
 	panel->set_wrap_controls(true);
 	panel->set_default_canvas_item_texture_filter(get_default_canvas_item_texture_filter());

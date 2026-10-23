@@ -1094,6 +1094,10 @@ void Window::set_visible(bool p_visible) {
 			}
 		}
 	} else {
+		if (popup_sound_played) {
+			ThemeSound::play(theme_cache.closed_sound, this);
+			popup_sound_played = false;
+		}
 		if (get_tree() && get_tree()->is_accessibility_supported()) {
 			_accessibility_notify_exit(this);
 			if (!embedder_vp) {
@@ -2342,6 +2346,11 @@ void Window::_popup_base(const Rect2i &p_screen_rect) {
 
 	_post_popup();
 	notification(NOTIFICATION_POST_POPUP);
+
+	if (popup_sounds && visible) {
+		ThemeSound::play(theme_cache.opened_sound, this);
+		popup_sound_played = true;
+	}
 }
 
 bool Window::_try_parent_dialog(Node *p_from_node) {
@@ -3850,6 +3859,8 @@ void Window::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_COLOR, Window, close_pressed_color, "close_pressed_color");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Window, close_hover_sound, "close_hover");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Window, close_pressed_sound, "close_pressed");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Window, opened_sound, "opened");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, Window, closed_sound, "closed");
 }
 
 Window::Window() {

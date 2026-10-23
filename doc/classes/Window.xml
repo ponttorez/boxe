@@ -1178,6 +1178,12 @@
 		<theme_item name="close_pressed" data_type="sound" type="AudioStream">
 			Sound played when the close button of an embedded window is pressed to close it.
 		</theme_item>
+		<theme_item name="closed" data_type="sound" type="AudioStream">
+			Sound played when a window opened with [method popup], [method popup_centered] and similar methods hides, like a popup menu, a [PopupPanel] or a dialog. Tooltips don't play it.
+		</theme_item>
+		<theme_item name="opened" data_type="sound" type="AudioStream">
+			Sound played when a window is opened with [method popup], [method popup_centered] and similar methods, like a popup menu, a [PopupPanel] or a dialog. Tooltips don't play it.
+		</theme_item>
 		<theme_item name="close_hover" data_type="style" type="StyleBox">
 			The background of the close button of embedded windows when the mouse is over it. See [theme_item close_normal].
 		</theme_item>

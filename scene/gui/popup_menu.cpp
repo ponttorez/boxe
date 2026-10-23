@@ -1666,7 +1666,6 @@ void PopupMenu::_notification(int p_what) {
 		} break;
 
 		case NOTIFICATION_POST_POPUP: {
-			ThemeSound::play(theme_cache.sound_opened, this);
 			popup_time_msec = OS::get_singleton()->get_ticks_msec();
 			initial_button_mask = Input::get_singleton()->get_mouse_button_mask();
 			during_grabbed_click = (bool)initial_button_mask;
@@ -1770,7 +1769,6 @@ void PopupMenu::_notification(int p_what) {
 
 		case NOTIFICATION_VISIBILITY_CHANGED: {
 			if (!is_visible()) {
-				ThemeSound::play(theme_cache.sound_closed, this);
 				this_submenu_index = -1;
 
 				if (!search_bar->get_text().is_empty()) {
@@ -3712,8 +3710,6 @@ void PopupMenu::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_CONSTANT, PopupMenu, font_separator_outline_size, "separator_outline_size");
 	BIND_THEME_ITEM(Theme::DATA_TYPE_COLOR, PopupMenu, font_separator_outline_color);
 
-	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, PopupMenu, sound_opened, "opened");
-	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, PopupMenu, sound_closed, "closed");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, PopupMenu, sound_hover, "hover");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, PopupMenu, sound_selected, "selected");
 

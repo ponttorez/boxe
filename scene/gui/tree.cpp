@@ -7644,6 +7644,7 @@ Tree::Tree() {
 
 	popup_editor = memnew(Popup);
 	popup_editor->set_flag(Window::FLAG_TRANSPARENT, true);
+	popup_editor->set_popup_sounds_enabled(false); // An editor over the cell, not a popup of its own.
 	add_child(popup_editor, false, INTERNAL_MODE_FRONT);
 
 	// The editors are drawn on the editor_panel style, which is larger by its margins.

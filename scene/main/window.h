@@ -129,6 +129,8 @@ private:
 	mutable Mode mode = MODE_WINDOWED;
 	mutable bool flags[FLAG_MAX] = {};
 	bool visible = true;
+	bool popup_sounds = true;
+	bool popup_sound_played = false; // Plays the closed sound when a window opened with popup() hides.
 	bool focused = false;
 	WindowInitialPosition initial_position = WINDOW_INITIAL_POSITION_ABSOLUTE;
 	bool force_native = false;
@@ -246,6 +248,8 @@ private:
 		Color close_pressed_color;
 		Ref<AudioStream> close_hover_sound;
 		Ref<AudioStream> close_pressed_sound;
+		Ref<AudioStream> opened_sound;
+		Ref<AudioStream> closed_sound;
 		int close_h_offset = 0;
 		int close_v_offset = 0;
 
@@ -444,6 +448,8 @@ public:
 	Viewport *get_parent_viewport() const;
 
 	void popup(const Rect2i &p_screen_rect = Rect2i());
+	// Windows opened with popup(), such as popups and dialogs, play the opened and closed theme sounds, unless disabled here, like for tooltips.
+	void set_popup_sounds_enabled(bool p_enabled) { popup_sounds = p_enabled; }
 	void popup_on_parent(const Rect2i &p_parent_rect);
 	void popup_centered(const Size2i &p_minsize = Size2i());
 	void popup_centered_ratio(float p_ratio = 0.8);
