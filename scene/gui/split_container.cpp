@@ -36,6 +36,7 @@
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "scene/gui/texture_rect.h"
+#include "scene/gui/theme_sound.h"
 #include "scene/main/viewport.h"
 #include "scene/theme/theme_db.h"
 #include "servers/display/accessibility_server.h"
@@ -45,6 +46,9 @@ void SplitContainerMultiDragger::_notification(int p_what) {
 		case NOTIFICATION_MOUSE_ENTER: {
 			if (!dragging && !Input::get_singleton()->is_mouse_button_pressed(MouseButton::LEFT)) {
 				split_container->show_grabber_icon(dragger_index);
+				if (split_container->dragging_enabled && !split_container->collapsed) {
+					ThemeSound::play(split_container->theme_cache.sound_grabber_hover, split_container);
+				}
 			}
 		} break;
 
@@ -76,6 +80,7 @@ void SplitContainerMultiDragger::gui_input(const Ref<InputEvent> &p_event) {
 			dragging = true;
 			split_container->show_grabber_icon(dragger_index);
 			split_container->emit_signal(SNAME("drag_started"));
+			ThemeSound::play(split_container->theme_cache.sound_drag_started, split_container);
 			const int axis = split_container->vertical ? 1 : 0;
 			start_drag_split_offset = split_container->get_split_offset(dragger_index);
 			drag_from = (int)get_transform().xform(mb->get_position())[axis];
@@ -139,6 +144,7 @@ void SplitContainerMultiDragger::stop_dragging() {
 	split_container->show_grabber_icon(-1);
 	update_position();
 	split_container->emit_signal(SNAME("drag_ended"));
+	ThemeSound::play(split_container->theme_cache.sound_drag_ended, split_container);
 }
 
 SplitContainerMultiDragger::SplitContainerMultiDragger() {
@@ -176,6 +182,7 @@ void SplitContainerDragger::gui_input(const Ref<InputEvent> &p_event) {
 				sc->_update_dragger_positions(0);
 				dragging = true;
 				sc->emit_signal(SNAME("drag_started"));
+				ThemeSound::play(sc->theme_cache.sound_drag_started, sc);
 				start_drag_split_offset = sc->get_split_offset(dragger_index);
 				if (sc->vertical) {
 					drag_from = (int)get_transform().xform(mb->get_position()).y;
@@ -314,6 +321,7 @@ void SplitContainerDragger::stop_dragging() {
 	queue_redraw();
 	SplitContainer *sc = Object::cast_to<SplitContainer>(get_parent());
 	sc->emit_signal(SNAME("drag_ended"));
+	ThemeSound::play(sc->theme_cache.sound_drag_ended, sc);
 	for (Node *child : iterate_children()) {
 		SplitContainerMultiDragger *dragger = Object::cast_to<SplitContainerMultiDragger>(child);
 		if (dragger) {
@@ -360,6 +368,9 @@ void SplitContainerDragger::_notification(int p_what) {
 		case NOTIFICATION_MOUSE_ENTER: {
 			mouse_inside = true;
 			SplitContainer *sc = Object::cast_to<SplitContainer>(get_parent());
+			if (sc->dragging_enabled && !sc->collapsed && !dragging && !Input::get_singleton()->is_mouse_button_pressed(MouseButton::LEFT)) {
+				ThemeSound::play(sc->theme_cache.sound_grabber_hover, sc);
+			}
 			if (sc->theme_cache.autohide) {
 				queue_redraw();
 			}
@@ -1800,6 +1811,10 @@ void SplitContainer::_bind_methods() {
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_ICON, SplitContainer, grabber_icon_h, "h_grabber");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_ICON, SplitContainer, grabber_icon_v, "v_grabber");
 	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_STYLEBOX, SplitContainer, split_bar_background, "split_bar_background");
+
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, SplitContainer, sound_grabber_hover, "grabber_hover");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, SplitContainer, sound_drag_started, "drag_started");
+	BIND_THEME_ITEM_CUSTOM(Theme::DATA_TYPE_SOUND, SplitContainer, sound_drag_ended, "drag_ended");
 
 #ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("get_drag_area_control"), &SplitContainer::get_drag_area_control);

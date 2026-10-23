@@ -151,6 +151,15 @@
 		<theme_item name="v_touch_dragger" data_type="icon" type="Texture2D">
 			The icon used for the drag handle when [member touch_dragger_enabled] is [code]true[/code] and [member vertical] is [code]true[/code].
 		</theme_item>
+		<theme_item name="drag_ended" data_type="sound" type="AudioStream">
+			Sound played when a dragger is released.
+		</theme_item>
+		<theme_item name="drag_started" data_type="sound" type="AudioStream">
+			Sound played when a dragger starts to be dragged.
+		</theme_item>
+		<theme_item name="grabber_hover" data_type="sound" type="AudioStream">
+			Sound played when the mouse enters a dragger.
+		</theme_item>
 		<theme_item name="split_bar_background" data_type="style" type="StyleBox">
 			Determines the background of the split bar if its thickness is greater than zero.
 		</theme_item>
