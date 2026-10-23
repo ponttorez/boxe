@@ -3,7 +3,7 @@
 
     python3 demo/tools/media.py web                  # export the demo to demo/build/web
     python3 demo/tools/media.py web --templates      # also rebuild the web export template first (needs Emscripten)
-    python3 demo/tools/media.py media                # record every scenario into demo/build/media
+    python3 demo/tools/media.py media                # record every scenario into demo/build/pages/media
     python3 demo/tools/media.py media motion layered # record some scenarios
     python3 demo/tools/media.py editor               # take the screenshots of the editor
     python3 demo/tools/media.py publish              # copy the web build and the media to the pages branch
@@ -28,7 +28,8 @@ DEMO = Path(__file__).resolve().parent.parent
 ROOT = DEMO.parent
 BUILD = DEMO / "build"
 WEB = BUILD / "web"
-MEDIA = BUILD / "media"
+PAGES = BUILD / "pages"  # A worktree of the pages branch, which GitHub Pages serves.
+MEDIA = PAGES / "media"
 GODOT = Path(os.environ.get("GODOT", ROOT / "bin" / "godot.linuxbsd.editor.x86_64"))
 WEB_TEMPLATE = ROOT / "bin" / "godot.web.template_release.wasm32.nothreads.zip"
 FPS = 30
@@ -188,22 +189,26 @@ def take_editor_shots():
         godot("--path", project, "--editor", "--resolution", "1600x900", env=environment, timeout=300)
 
 
+def ensure_pages():
+    """Checks out the pages branch into PAGES, where the media are recorded."""
+    if PAGES.exists():
+        return
+    branches = subprocess.run(["git", "branch", "--list", "pages"], cwd=ROOT, capture_output=True, text=True).stdout
+    if branches.strip():
+        run(["git", "worktree", "add", PAGES, "pages"], cwd=ROOT)
+    else:
+        run(["git", "worktree", "add", "--orphan", "-b", "pages", PAGES], cwd=ROOT)
+
+
 def publish(push=False):
-    """Copies the web build and the media into the pages branch, which GitHub Pages serves."""
+    """Copies the web build next to the media in the pages branch, and commits them."""
     if not (WEB / "index.html").exists() or not MEDIA.exists():
         sys.exit("Run the web and media commands first.")
-    worktree = BUILD / "pages"
-    if not worktree.exists():
-        branches = subprocess.run(["git", "branch", "--list", "pages"], cwd=ROOT, capture_output=True, text=True).stdout
-        if branches.strip():
-            run(["git", "worktree", "add", worktree, "pages"], cwd=ROOT)
-        else:
-            run(["git", "worktree", "add", "--orphan", "-b", "pages", worktree], cwd=ROOT)
+    worktree = PAGES
     for item in worktree.iterdir():
-        if item.name != ".git":
+        if item.name not in (".git", "media"):
             shutil.rmtree(item) if item.is_dir() else item.unlink()
     shutil.copytree(WEB, worktree, dirs_exist_ok=True)
-    shutil.copytree(MEDIA, worktree / "media")
     (worktree / ".nojekyll").touch()
     run(["git", "add", "--all"], cwd=worktree)
     if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=worktree).returncode:
@@ -223,6 +228,8 @@ def main():
     args = parser.parse_args()
     if args.command in ("web", "all"):
         export_web(args.templates)
+    if args.command in ("media", "editor", "all"):
+        ensure_pages()
     if args.command in ("media", "all"):
         record_media(args.scenarios)
     if args.command in ("editor", "all"):

@@ -20,7 +20,7 @@ func motion() -> void:
 
 
 func overview() -> void:
-	await c.open_app("Controls")
+	await c.open_app("Library")
 	await c.begin()
 	await cursor.move_to(Vector2(640, 300), 0.0)
 	await cursor.move_to_control(c.find("%Save"), 0.6)
@@ -32,9 +32,10 @@ func overview() -> void:
 
 
 func transitions() -> void:
-	await c.open_app("Theme")
+	await c.open_app("Other")
+	await c.reveal(c.find("Behavior/Easing"))
 	await c.still("transitions")
-	c.focus([c.find("Cards/Side/Easing")])
+	c.focus([c.find("Behavior/Easing")])
 	await c.begin()
 	await cursor.move_to(Vector2(640, 300), 0.0)
 	# Flip all the switches, then flip them back midway.
@@ -64,13 +65,14 @@ func layered() -> void:
 
 
 func sounds() -> void:
-	await c.open_app("Theme")
+	await c.open_app("Other")
+	await c.reveal(c.find("Behavior/Sounds"))
 	await c.still("sounds")
 
 
 func interactable() -> void:
-	await c.open_app("Input")
-	c.focus([c.find("Cards/Lock")])
+	await c.open_app("Other")
+	c.focus([c.find("Input/Lock")])
 	await c.begin()
 	await cursor.move_to(Vector2(500, 300), 0.0)
 	await cursor.move_to_control(c.find("%Lock"), 0.6, Vector2(0.9, 0.5))
@@ -92,17 +94,17 @@ func interactable() -> void:
 
 
 func hit_areas() -> void:
-	await c.open_app("Input")
+	await c.open_app("Other")
 	await c.still("hit_areas")
-	c.focus([c.find("Cards/HitAreas")])
+	c.focus([c.find("Input/HitAreas")])
 	await c.begin()
 	await cursor.move_to(Vector2(500, 450), 0.0)
 	# Tap 9 px next to the close button, inside its hit area.
-	var close: Control = c.find("Cards/HitAreas/Box/Stage/Content/Margin/Row/Close")
+	var close: Control = c.find("Input/HitAreas/Box/Stage/Content/Margin/Row/Close")
 	await cursor.move_to_control(close, 0.7, Vector2(1.4, 1.2))
 	await cursor.click()
 	await c.wait(0.8)
-	var tile: Control = c.find("Cards/HitAreas/Box/Stage/Content/Margin/Row/Tile")
+	var tile: Control = c.find("Input/HitAreas/Box/Stage/Content/Margin/Row/Tile")
 	await cursor.move_to_control(tile, 0.7, Vector2(0.04, 0.5))
 	await c.wait(0.6)
 	await cursor.move_to_control(tile, 0.6, Vector2(0.5, 0.5))
@@ -110,9 +112,10 @@ func hit_areas() -> void:
 
 
 func composites() -> void:
-	await c.open_app("Composites")
+	await c.open_app("Other")
+	await c.reveal(c.find("OpacityRow"))
 	await c.still("composites")
-	c.focus([c.find("OpacityRow"), c.find("Cards/Group"), c.find("Cards/Text")])
+	c.focus([c.find("OpacityRow"), c.find("Composites/Group"), c.find("Composites/Text")])
 	await c.begin()
 	var slider: HSlider = c.find("%Opacity")
 	var rect := slider.get_global_rect()
@@ -167,6 +170,6 @@ func mobile() -> void:
 
 
 func phone() -> void:
-	await c.open_app("Controls")
+	await c.open_app("Library")
 	await c.wait(1.0)
 	await c.still("phone")

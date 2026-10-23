@@ -4,15 +4,15 @@ loc.apples,{count|...} lists the plural forms of the language.,You have {count} 
 loc.apples_named,"{name} is the name typed by the player, written as it is.","{name}, you have {count} {count|apple|apples}.","{name}, у тебя {count} {count|яблоко|яблока|яблок}.",
 Theme,,Theme,Тема,
 Layered styles,,Layered styles,Слоистые стили,
-Composites,,Composites,Композиты,
+Other,,Other,Другое,
 Mobile,,Mobile,Мобильные,
 Language,,Language,Язык,
-Easing,,Easing,Сглаживание,
+Easing,,Easing,Плавность,
 Small,,Small,Маленький,
 Medium,,Medium,Средний,
 Large,,Large,Большой,
 "Depth, glass, glows, pixel art, skew and rings, without textures. Each layer has its own offset, margins and color, and every layer blends during transitions. Hover a style to read how it is made.",,"Depth, glass, glows, pixel art, skew and rings, without textures. Each layer has its own offset, margins and color, and every layer blends during transitions. Hover a style to read how it is made.","Объём, стекло, свечение, пиксель-арт, наклон и кольца без текстур. У каждого слоя свои смещение, отступы и цвет, и каждый слой плавно меняется при переходах. Наведи на стиль, чтобы узнать, как он сделан.",
-Raised,,Raised,Объёмная,
+Raised,,Raised,Объём,
 "Shadow, depth, face and rim. The face moves down when pressed.",,"Shadow, depth, face and rim. The face moves down when pressed.","Тень, торец, лицевая сторона и кромка. При нажатии лицевая сторона опускается.",
 Glass,,Glass,Стекло,
 A translucent fill with a blended rim.,,A translucent fill with a blended rim.,Полупрозрачная заливка с мягкой кромкой.,
@@ -30,7 +30,7 @@ Volume,,Volume,Громкость,
 Mute UI sounds,,Mute UI sounds,Выключить звуки интерфейса,
 Theme sound,,Theme sound,Звук темы,
 Custom sound,,Custom sound,Свой звук,
-Lock a form,,Lock a form,Заблокируй форму,
+Lock a form,,Lock a form,Блокировка формы,
 Subscribe,,Subscribe,Подписаться,
 Save,,Save,Сохранить,
 Canceled.,,Canceled.,Отменено.,
@@ -39,7 +39,7 @@ Press Save to lock the fields while the form saves.,,Press Save to lock the fiel
 Saving…,,Saving…,Сохраняем…,
 Saved. The form takes input again.,,Saved. The form takes input again.,Сохранено. Форма снова принимает ввод.,
 Show hit areas,,Show hit areas,Показать области нажатия,
-Larger and smaller areas,,Larger and smaller areas,Большие и маленькие области,
+Larger and smaller areas,,Larger and smaller areas,Увеличенные и уменьшенные области,
 Tile,,Tile,Плитка,
 Opacity,,Opacity,Непрозрачность,
 Fade a group,,Fade a group,Затухание группы,
@@ -81,17 +81,10 @@ Safe area,,Safe area,Безопасная зона,
 None,,None,None,
 Inside,,Inside,Inside,
 Outside,,Outside,Outside,
-Screen,,Screen,Экран,
 The safe area is used on Android and iOS.,,The safe area is used on Android and iOS.,Безопасная зона учитывается на Android и iOS.,
 Waiting for rotations…,,Waiting for rotations…,Ждём поворотов…,
-Display,,Display,Экран,
-Refresh rate,,Refresh rate,Частота обновления,
-Frames per second,,Frames per second,Кадров в секунду,
-Version,,Version,Версия,
-Version code,,Version code,Version code,
-Controls,,Controls,Контролы,
+Display,,Display,Дисплей,
 Text,,Text,Текст,
-Input,,Input,Ввод,
 [img=27]res://assets/sound_icon.svg[/img] Play [b]sound[/b],,[img=27]res://assets/sound_icon.svg[/img] Play [b]sound[/b],[img=27]res://assets/sound_icon.svg[/img] Воспроизвести [b]звук[/b],
 Sound,,Sound,Звук,
 Composite,,Composite,Композит,
@@ -101,7 +94,7 @@ Day,,Day,День,
 Night,,Night,Ночь,
 A few lines of text,,A few lines of text,Несколько строк текста,
 Lock the form,,Lock the form,Заблокировать форму,
-Credits,,Credits,Благодарности,
+About,,About,О проекте,
 Source code,,Source code,Исходный код,
 Fonts,,Fonts,Шрифты,
 The fonts of the demo and their licenses.,,The fonts of the demo and their licenses.,Шрифты демо и их лицензии.,
@@ -130,7 +123,7 @@ Autosave,,Autosave,Автосохранение,
 Notifications,,Notifications,Уведомления,
 Icons,,Icons,Иконки,
 The icons of the demo and their license.,,The icons of the demo and their license.,Иконки демо и их лицензия.,
-"composite_enabled draws a control and its children as one image, like a CanvasGroup. When a group fades, its overlapping children no longer show through each other, and its material applies to the whole group: here a shader draws one outline and shadow around it.",,"composite_enabled draws a control and its children as one image, like a CanvasGroup. When a group fades, its overlapping children no longer show through each other, and its material applies to the whole group: here a shader draws one outline and shadow around it.","composite_enabled рисует контрол и его детей как одно изображение, как CanvasGroup. Когда группа исчезает, перекрывающиеся дети больше не просвечивают друг через друга, а её материал применяется ко всей группе: здесь шейдер рисует вокруг неё одну обводку и тень.",
+"composite_enabled draws a control and its children as one image, like a CanvasGroup. When a group fades, its overlapping children no longer show through each other, and its material applies to the whole group: here a shader draws one outline and shadow around it.",,"composite_enabled draws a control and its children as one image, like a CanvasGroup. When a group fades, its overlapping children no longer show through each other, and its material applies to the whole group: here a shader draws one outline and shadow around it.","composite_enabled рисует контрол и его детей как одно изображение, как CanvasGroup. Когда группа затухает, перекрывающиеся дети больше не просвечивают друг через друга, а её материал применяется ко всей группе: здесь шейдер рисует вокруг неё одну обводку и тень.",
 "Control.interactable = false blocks input for a control and its children but keeps their look, unlike disabled. Lock the whole form with the switch, or press Save to lock the fields while it saves: Cancel stays outside of that locked part.",,"Control.interactable = false blocks input for a control and its children but keeps their look, unlike disabled. Lock the whole form with the switch, or press Save to lock the fields while it saves: Cancel stays outside of that locked part.","Control.interactable = false блокирует ввод для контрола и его детей, но сохраняет их вид, в отличие от disabled. Заблокируй всю форму переключателем или нажми «Сохранить», чтобы поля были заблокированы, пока она сохраняется: «Отмена» остаётся вне этой части.",
 "raycast_padding works on every Control node: it moves each edge of the area that takes mouse and touch input, without changing the size or the drawing of the control. A padding of -18 px makes the 33 px close button easy to hit with a finger, and a padding of 21 px keeps the soft edges of the tile from reacting.",,"raycast_padding works on every Control node: it moves each edge of the area that takes mouse and touch input, without changing the size or the drawing of the control. A padding of -18 px makes the 33 px close button easy to hit with a finger, and a padding of 21 px keeps the soft edges of the tile from reacting.","raycast_padding работает на любом узле Control: он сдвигает каждый край области, которая принимает ввод мыши и касаний, не меняя размер и отрисовку контрола. Отступ -18 px позволяет легко попасть пальцем по кнопке закрытия размером 33 px, а отступ 21 px не даёт мягким краям плитки реагировать.",
 "MarginContainer.safe_area keeps the content out of display cutouts and system bars, or extends a background under them. The phones show a header laid out with each mode: tap one to use its mode in this demo. orientation_changed fires on 180° rotations too, and safe_area_changed when a cutout moves to another side: turn the phone around.",,"MarginContainer.safe_area keeps the content out of display cutouts and system bars, or extends a background under them. The phones show a header laid out with each mode: tap one to use its mode in this demo. orientation_changed fires on 180° rotations too, and safe_area_changed when a cutout moves to another side: turn the phone around.","MarginContainer.safe_area убирает содержимое из-под вырезов экрана и системных панелей или продлевает под них фон. Телефоны показывают заголовок в каждом режиме: нажми на телефон, чтобы включить его режим в этом демо. orientation_changed срабатывает и при повороте на 180°, а safe_area_changed — когда вырез переходит на другую сторону: переверни телефон.",
@@ -146,3 +139,36 @@ Styles from a reference,,Styles from a reference,Стили по референ�
 "An AI agent can make such styles for every control. Give it a picture of the look you want, this prompt and the demo project.",,"An AI agent can make such styles for every control. Give it a picture of the look you want, this prompt and the demo project.","ИИ-агент может сделать такие стили для всех элементов. Дай ему картинку с нужным видом, этот промпт и проект демо.",
 Copy the prompt,,Copy the prompt,Скопировать промпт,
 Copied to the clipboard,,Copied to the clipboard,Скопировано в буфер обмена,
+Changelog,,Changelog,Список изменений,
+"Updates of the boxe engine, on top of the Godot version it is based on.",,"Updates of the boxe engine, on top of the Godot version it is based on.","Обновления движка boxe поверх версии Godot, на которой он основан.",
+"1.0 · October 24, 2026 · Godot 4.7.2",,"1.0 · October 24, 2026 · Godot 4.7.2",1.0 · 24 октября 2026 · Godot 4.7.2,
+changelog.1_0,The changes of version 1.0 in BBCode.,"[b]Added[/b]
+[ul]
+Style transitions: style boxes, font and icon colors blend between the states of controls.
+StyleBoxLayered with fill, outline and shadow layers, and checks, switches and grabbers drawn with style boxes.
+Theme sounds for buttons, sliders, text edits, lists, trees, tabs, menus, containers, popups and dialogs, one sound for each action.
+Control.interactable, raycast padding, composites and composite text effects.
+BBCode in labels, buttons, tabs, lists, trees, menus, tooltips, window titles and dialogs, and the [code][lb]spacer[rb][/code] tag.
+Localization: text_arguments with plurals, localized resources, a Localization dock for CSV and PO, and key picking in the inspector.
+Mobile: safe areas, 180° rotations, the Android version code and refresh rate.
+Animated and shadowed embedded windows, popup separation and a full default preview in the Theme editor.
+[/ul]
+[b]Fixed[/b]
+[ul]
+CanvasGroup modulation applied once, Tree titles that grew taller, inverted Swappy modes on Android and a dark line on embedded windows.
+[/ul]","[b]Добавлено[/b]
+[ul]
+Переходы стилей: стили, цвета текста и иконок плавно меняются между состояниями элементов.
+StyleBoxLayered со слоями заливки, обводки и тени; флажки, переключатели и ползунки рисуются стилями.
+Звуки темы для кнопок, ползунков, полей, списков, деревьев, вкладок, меню, контейнеров, попапов и диалогов, по одному звуку на действие.
+Control.interactable, raycast padding, композиты и композитные эффекты текста.
+BBCode в метках, кнопках, вкладках, списках, деревьях, меню, подсказках, заголовках окон и диалогах, и тег [code][lb]spacer[rb][/code].
+Локализация: text_arguments с формами множественного числа, локализованные ресурсы, док Localization для CSV и PO и выбор ключей в инспекторе.
+Мобильные: безопасные зоны, повороты на 180°, version code и частота обновления на Android.
+Анимация и тени встроенных окон, отступ попапов и полное превью в редакторе тем.
+[/ul]
+[b]Исправлено[/b]
+[ul]
+Модуляция CanvasGroup применяется один раз, заголовки Tree больше не растут, режимы Swappy на Android больше не перепутаны, у встроенных окон нет тёмной полосы.
+[/ul]",
+%d Hz,,%d Hz,%d Гц,

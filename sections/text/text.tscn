@@ -84,6 +84,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "loc.name_placeholder"
+max_length = 24
 
 [node name="CountRow" type="HBoxContainer" parent="Cards/Arguments/Box" unique_id=1433183914]
 layout_mode = 2
@@ -111,6 +112,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "loc.apples"
+autowrap_mode = 3
 text_arguments = {
 "count": 1,
 "name": ""

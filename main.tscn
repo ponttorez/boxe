@@ -5,10 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://vquto2cjcjok" path="res://assets/sound_icon.svg" id="icon_sound"]
 [ext_resource type="Script" uid="uid://d11o8nnvn52qj" path="res://common/section_link.gd" id="link"]
 [ext_resource type="Script" uid="uid://ckticxavoaajw" path="res://main.gd" id="main"]
-[ext_resource type="PackedScene" uid="uid://ipsbaqhkmspx" path="res://sections/composites/composites.tscn" id="s_composites"]
-[ext_resource type="PackedScene" uid="uid://ddisrfyxn0apg" path="res://sections/controls/controls.tscn" id="s_controls"]
-[ext_resource type="PackedScene" uid="uid://bpld8d7kuhycf" path="res://sections/credits/credits.tscn" id="s_credits"]
-[ext_resource type="PackedScene" uid="uid://cjrtge4q7jkma" path="res://sections/input/input.tscn" id="s_input"]
+[ext_resource type="PackedScene" path="res://sections/other/other.tscn" id="s_other"]
+[ext_resource type="PackedScene" uid="uid://ddisrfyxn0apg" path="res://sections/library/library.tscn" id="s_library"]
+[ext_resource type="PackedScene" uid="uid://bpld8d7kuhycf" path="res://sections/about/about.tscn" id="s_about"]
 [ext_resource type="PackedScene" uid="uid://bopgjxvvs4104" path="res://sections/mobile/mobile.tscn" id="s_mobile"]
 [ext_resource type="PackedScene" uid="uid://bsm34yybw4vyx" path="res://sections/text/text.tscn" id="s_text"]
 [ext_resource type="PackedScene" uid="uid://b77jks7e3stm" path="res://sections/theme/theme.tscn" id="s_theme"]
@@ -75,7 +74,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="Controls" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=376865761]
+[node name="Library" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=376865761]
 layout_mode = 2
 theme_type_variation = &"NavButton"
 toggle_mode = true
@@ -83,7 +82,7 @@ button_group = SubResource("nav_group")
 text = "Library"
 alignment = 0
 script = ExtResource("link")
-section = ExtResource("s_controls")
+section = ExtResource("s_library")
 
 [node name="Theme" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=1959685867]
 layout_mode = 2
@@ -105,26 +104,6 @@ alignment = 0
 script = ExtResource("link")
 section = ExtResource("s_text")
 
-[node name="Input" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=592695643]
-layout_mode = 2
-theme_type_variation = &"NavButton"
-toggle_mode = true
-button_group = SubResource("nav_group")
-text = "Input"
-alignment = 0
-script = ExtResource("link")
-section = ExtResource("s_input")
-
-[node name="Composites" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=1314905029]
-layout_mode = 2
-theme_type_variation = &"NavButton"
-toggle_mode = true
-button_group = SubResource("nav_group")
-text = "Composites"
-alignment = 0
-script = ExtResource("link")
-section = ExtResource("s_composites")
-
 [node name="Mobile" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=545635924]
 layout_mode = 2
 theme_type_variation = &"NavButton"
@@ -134,6 +113,16 @@ text = "Mobile"
 alignment = 0
 script = ExtResource("link")
 section = ExtResource("s_mobile")
+
+[node name="Other" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=1314905029]
+layout_mode = 2
+theme_type_variation = &"NavButton"
+toggle_mode = true
+button_group = SubResource("nav_group")
+text = "Other"
+alignment = 0
+script = ExtResource("link")
+section = ExtResource("s_other")
 
 [node name="Separator" type="VSeparator" parent="SafeArea/Layout/Navbar/Bar" unique_id=446268581]
 layout_mode = 2
@@ -198,11 +187,11 @@ icon = ExtResource("icon_language")
 flat = false
 icon_alignment = 1
 
-[node name="Credits" type="Button" parent="SafeArea/Layout/Navbar/Bar" unique_id=16545549]
+[node name="About" type="Button" parent="SafeArea/Layout/Navbar/Bar" unique_id=16545549]
 custom_minimum_size = Vector2(54.0, 54.0)
 layout_mode = 2
 size_flags_vertical = 4
-tooltip_text = "Credits"
+tooltip_text = "About"
 theme_type_variation = &"NavButton"
 theme_override_constants/icon_max_width = 30
 toggle_mode = true
@@ -210,7 +199,7 @@ button_group = SubResource("nav_group")
 icon = ExtResource("icon_info")
 icon_alignment = 1
 script = ExtResource("link")
-section = ExtResource("s_credits")
+section = ExtResource("s_about")
 
 [node name="Content" type="MarginContainer" parent="SafeArea/Layout" unique_id=644168249]
 unique_name_in_owner = true

@@ -1,0 +1,646 @@
+[gd_scene format=3 uid="uid://m0jk1vt51gcp"]
+
+[ext_resource type="Texture2D" uid="uid://ce8jbejixleug" path="res://assets/close_icon.svg" id="close_icon_svg"]
+[ext_resource type="Script" uid="uid://br5eqp8qcjm0" path="res://sections/other/hit_area_overlay.gd" id="hit_area_overlay_gd"]
+[ext_resource type="Script" uid="uid://dghvp0r5b24t0" path="res://sections/other/other.gd" id="other_gd"]
+[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="Shader" uid="uid://bbikpiaages6g" path="res://sections/other/sticker.gdshader" id="sticker_gdshader"]
+[ext_resource type="AudioStream" uid="uid://m61dd46178a4" path="res://audio/submitted.wav" id="submitted_wav"]
+[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="ui_bold_tres"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_160"]
+shader = ExtResource("sticker_gdshader")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 7.5
+shader_parameter/shadow_color = Color(0, 0, 0, 0.45)
+shader_parameter/shadow_offset = Vector2(4.5, 9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_169"]
+bg_color = Color(0.2784, 0.549, 0.749, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_170"]
+bg_color = Color(0.3686, 0.8353, 0.5451, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_171"]
+bg_color = Color(1, 0.8667, 0.3961, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_172"]
+bg_color = Color(0.9882, 0.498, 0.498, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_168"]
+bg_color = Color(1, 0.4706, 0.4196, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
+
+[sub_resource type="LabelSettings" id="LabelSettings_174"]
+font = ExtResource("ui_bold_tres")
+font_size = 66
+outline_size = 24
+outline_color = Color(0.4392, 0.7333, 1, 1)
+shadow_size = 24
+shadow_color = Color(0.1804, 0.3725, 0.5255, 1)
+shadow_offset = Vector2(0, 7.5)
+composite_effects = true
+
+[node name="Other" type="VBoxContainer" unique_id=363534390]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 24
+script = ExtResource("other_gd")
+
+[node name="Input" type="GridContainer" parent="." unique_id=372658502]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 2
+script = ExtResource("responsive_grid_gd")
+
+[node name="Lock" type="PanelContainer" parent="Input" unique_id=1323305505]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Input/Lock" unique_id=2140970096]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Input/Lock/Box" unique_id=426999144]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Input/Lock/Box/Header" unique_id=1933406007]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Lock a form"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Input/Lock/Box/Header" unique_id=11854596]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Control.interactable = false blocks input for a control and its children but keeps their look, unlike disabled. Lock the whole form with the switch, or press Save to lock the fields while it saves: Cancel stays outside of that locked part."
+autowrap_mode = 3
+
+[node name="Lock" type="CheckButton" parent="Input/Lock/Box" unique_id=477012907]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Lock the form"
+
+[node name="Stage" type="PanelContainer" parent="Input/Lock/Box" unique_id=791123607]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Content" type="VBoxContainer" parent="Input/Lock/Box/Stage" unique_id=1541235478]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Form" type="VBoxContainer" parent="Input/Lock/Box/Stage/Content" unique_id=1765715498]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Name" type="LineEdit" parent="Input/Lock/Box/Stage/Content/Form" unique_id=1544247086]
+layout_mode = 2
+text = "Ada Lovelace"
+
+[node name="News" type="CheckBox" parent="Input/Lock/Box/Stage/Content/Form" unique_id=462866660]
+layout_mode = 2
+button_pressed = true
+text = "Subscribe"
+
+[node name="Save" type="Button" parent="Input/Lock/Box/Stage/Content/Form" unique_id=2051871766]
+layout_mode = 2
+theme_type_variation = &"AccentButton"
+text = "Save"
+
+[node name="Cancel" type="Button" parent="Input/Lock/Box/Stage/Content" unique_id=1720862101]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Cancel"
+
+[node name="Progress" type="ProgressBar" parent="Input/Lock/Box/Stage/Content" unique_id=348308343]
+unique_name_in_owner = true
+layout_mode = 2
+show_percentage = false
+
+[node name="Status" type="Label" parent="Input/Lock/Box/Stage/Content" unique_id=955546432]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Press Save to lock the fields while the form saves."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HitAreas" type="PanelContainer" parent="Input" unique_id=1837315652]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Input/HitAreas" unique_id=405687329]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Input/HitAreas/Box" unique_id=809517651]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Input/HitAreas/Box/Header" unique_id=1383707064]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Larger and smaller areas"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Input/HitAreas/Box/Header" unique_id=336869618]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "raycast_padding works on every Control node: it moves each edge of the area that takes mouse and touch input, without changing the size or the drawing of the control. A padding of -18 px makes the 33 px close button easy to hit with a finger, and a padding of 21 px keeps the soft edges of the tile from reacting."
+autowrap_mode = 3
+
+[node name="Show" type="CheckButton" parent="Input/HitAreas/Box" unique_id=1814064817]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+text = "Show hit areas"
+
+[node name="Stage" type="PanelContainer" parent="Input/HitAreas/Box" unique_id=1263344983]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Content" type="VBoxContainer" parent="Input/HitAreas/Box/Stage" unique_id=1256421854]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Margin" type="MarginContainer" parent="Input/HitAreas/Box/Stage/Content" unique_id=1142969789]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="Row" type="HBoxContainer" parent="Input/HitAreas/Box/Stage/Content/Margin" unique_id=1561722780]
+layout_mode = 2
+theme_override_constants/separation = 42
+alignment = 1
+
+[node name="Close" type="Button" parent="Input/HitAreas/Box/Stage/Content/Margin/Row" unique_id=173667706 groups=["hit_area"]]
+custom_minimum_size = Vector2(33, 33)
+layout_mode = 2
+size_flags_vertical = 4
+raycast_padding_left = -18.0
+raycast_padding_top = -18.0
+raycast_padding_right = -18.0
+raycast_padding_bottom = -18.0
+theme_type_variation = &"IconButton"
+theme_override_constants/icon_max_width = 21
+icon = ExtResource("close_icon_svg")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Tile" type="Button" parent="Input/HitAreas/Box/Stage/Content/Margin/Row" unique_id=152844464 groups=["hit_area"]]
+custom_minimum_size = Vector2(225, 96)
+layout_mode = 2
+size_flags_vertical = 4
+raycast_padding_left = 21.0
+raycast_padding_top = 21.0
+raycast_padding_right = 21.0
+raycast_padding_bottom = 21.0
+text = "Tile"
+
+[node name="OpacityRow" type="HFlowContainer" parent="." unique_id=2116128960]
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+
+[node name="OpacityLabel" type="Label" parent="OpacityRow" unique_id=626765099]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Opacity"
+
+[node name="Opacity" type="HSlider" parent="OpacityRow" unique_id=1060125801]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 0.5
+
+[node name="OpacityValue" type="Label" parent="OpacityRow" unique_id=1549888732]
+unique_name_in_owner = true
+auto_translate_mode = 2
+custom_minimum_size = Vector2(78, 0)
+layout_mode = 2
+theme_type_variation = &"BadgeLabel"
+text = "50%"
+horizontal_alignment = 1
+
+[node name="Composite" type="CheckButton" parent="OpacityRow" unique_id=824995515]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+button_pressed = true
+text = "Composite"
+
+[node name="Composites" type="GridContainer" parent="." unique_id=518238753]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 2
+script = ExtResource("responsive_grid_gd")
+
+[node name="Group" type="PanelContainer" parent="Composites" unique_id=1829100642]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Composites/Group" unique_id=1507230722]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Composites/Group/Box" unique_id=980620566]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Composites/Group/Box/Header" unique_id=593740988]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Fade a group"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Composites/Group/Box/Header" unique_id=361135039]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "composite_enabled draws a control and its children as one image, like a CanvasGroup. When a group fades, its overlapping children no longer show through each other, and its material applies to the whole group: here a shader draws one outline and shadow around it."
+autowrap_mode = 3
+
+[node name="Stage" type="PanelContainer" parent="Composites/Group/Box" unique_id=296394529]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Content" type="VBoxContainer" parent="Composites/Group/Box/Stage" unique_id=2072286485]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Avatars" type="Control" parent="Composites/Group/Box/Stage/Content" unique_id=209978305]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_160")
+custom_minimum_size = Vector2(249, 69)
+layout_mode = 2
+size_flags_horizontal = 4
+composite_enabled = true
+composite_margin = 18.0
+
+[node name="A" type="Panel" parent="Composites/Group/Box/Stage/Content/Avatars" unique_id=2127042405]
+layout_mode = 0
+offset_right = 69.0
+offset_bottom = 69.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_169")
+
+[node name="Initial" type="Label" parent="Composites/Group/Box/Stage/Content/Avatars/A" unique_id=1651762706]
+auto_translate_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
+theme_override_fonts/font = ExtResource("ui_bold_tres")
+theme_override_font_sizes/font_size = 27
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="B" type="Panel" parent="Composites/Group/Box/Stage/Content/Avatars" unique_id=1166314431]
+layout_mode = 0
+offset_left = 48.0
+offset_right = 117.0
+offset_bottom = 69.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_170")
+
+[node name="Initial" type="Label" parent="Composites/Group/Box/Stage/Content/Avatars/B" unique_id=1503613892]
+auto_translate_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
+theme_override_fonts/font = ExtResource("ui_bold_tres")
+theme_override_font_sizes/font_size = 27
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="C" type="Panel" parent="Composites/Group/Box/Stage/Content/Avatars" unique_id=133654565]
+layout_mode = 0
+offset_left = 96.0
+offset_right = 165.0
+offset_bottom = 69.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_171")
+
+[node name="Initial" type="Label" parent="Composites/Group/Box/Stage/Content/Avatars/C" unique_id=1470293179]
+auto_translate_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
+theme_override_fonts/font = ExtResource("ui_bold_tres")
+theme_override_font_sizes/font_size = 27
+text = "C"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="D" type="Panel" parent="Composites/Group/Box/Stage/Content/Avatars" unique_id=569338604]
+layout_mode = 0
+offset_left = 144.0
+offset_right = 213.0
+offset_bottom = 69.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_172")
+
+[node name="Initial" type="Label" parent="Composites/Group/Box/Stage/Content/Avatars/D" unique_id=557968462]
+auto_translate_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
+theme_override_fonts/font = ExtResource("ui_bold_tres")
+theme_override_font_sizes/font_size = 27
+text = "+4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Badge" type="Label" parent="Composites/Group/Box/Stage/Content/Avatars" unique_id=624936993]
+layout_mode = 0
+offset_left = 183.0
+offset_top = -9.0
+offset_right = 249.0
+offset_bottom = 24.0
+theme_override_fonts/font = ExtResource("ui_bold_tres")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_168")
+text = "new"
+horizontal_alignment = 1
+
+[node name="Text" type="PanelContainer" parent="Composites" unique_id=1135764642]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Composites/Text" unique_id=1099849380]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Composites/Text/Box" unique_id=1762258449]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Composites/Text/Box/Header" unique_id=489241640]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Text effects as layers"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Composites/Text/Box/Header" unique_id=882203944]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "LabelSettings.composite_effects draws the outline and the shadow as layers of one image. When the label fades, glyph outlines don't add up where they overlap, and the shadow doesn't show through the outline."
+autowrap_mode = 3
+
+[node name="Stage" type="PanelContainer" parent="Composites/Text/Box" unique_id=573163572]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"Stage"
+
+[node name="Content" type="VBoxContainer" parent="Composites/Text/Box/Stage" unique_id=1311083235]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Sample" type="Label" parent="Composites/Text/Box/Stage/Content" unique_id=66682462]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Overlap"
+label_settings = SubResource("LabelSettings_174")
+horizontal_alignment = 1
+
+[node name="Behavior" type="GridContainer" parent="." unique_id=1895031449]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 2
+script = ExtResource("responsive_grid_gd")
+
+[node name="Easing" type="PanelContainer" parent="Behavior" unique_id=790919398]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Behavior/Easing" unique_id=375065444]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Behavior/Easing/Box" unique_id=1014562024]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Behavior/Easing/Box/Header" unique_id=1102694098]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Easing"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Behavior/Easing/Box/Header" unique_id=280667266]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Each switch blends with another transition_type over 0.7 s. Flip them all at once to compare them, and flip back midway: leaving a state midway takes only the time already played, so quick changes never lag behind."
+autowrap_mode = 3
+
+[node name="All" type="CheckButton" parent="Behavior/Easing/Box" unique_id=1555826188]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Flip all"
+
+[node name="Switches" type="GridContainer" parent="Behavior/Easing/Box" unique_id=2105293032]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 36
+theme_override_constants/v_separation = 12
+columns = 2
+script = ExtResource("responsive_grid_gd")
+min_column_width = 210.0
+
+[node name="Linear" type="CheckButton" parent="Behavior/Easing/Box/Switches" unique_id=1895399066]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Linear"
+metadata/transition_type = 0
+metadata/transition_ease = 2
+
+[node name="Sine" type="CheckButton" parent="Behavior/Easing/Box/Switches" unique_id=678775800]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sine"
+metadata/transition_type = 1
+metadata/transition_ease = 2
+
+[node name="Cubic" type="CheckButton" parent="Behavior/Easing/Box/Switches" unique_id=1704634225]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cubic"
+metadata/transition_type = 7
+metadata/transition_ease = 1
+
+[node name="Back" type="CheckButton" parent="Behavior/Easing/Box/Switches" unique_id=586355916]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back"
+metadata/transition_type = 10
+metadata/transition_ease = 1
+
+[node name="Elastic" type="CheckButton" parent="Behavior/Easing/Box/Switches" unique_id=1443448672]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Elastic"
+metadata/transition_type = 6
+metadata/transition_ease = 1
+
+[node name="Bounce" type="CheckButton" parent="Behavior/Easing/Box/Switches" unique_id=1879286174]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bounce"
+metadata/transition_type = 9
+metadata/transition_ease = 1
+
+[node name="Spring" type="CheckButton" parent="Behavior/Easing/Box/Switches" unique_id=152542861]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Spring"
+metadata/transition_type = 11
+metadata/transition_ease = 1
+
+[node name="Sounds" type="PanelContainer" parent="Behavior" unique_id=26192461]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Behavior/Sounds" unique_id=968010796]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Behavior/Sounds/Box" unique_id=109177777]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Behavior/Sounds/Box/Header" unique_id=1938610645]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Sound buses and overrides"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Behavior/Sounds/Box/Header" unique_id=207559162]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "sound_bus is inherited by children: these buttons play their theme sounds through the selected bus. A control can also override a theme sound, like a color or a font, as the second button does."
+autowrap_mode = 3
+
+[node name="BusRow" type="HBoxContainer" parent="Behavior/Sounds/Box" unique_id=1528575793]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="BusLabel" type="Label" parent="Behavior/Sounds/Box/BusRow" unique_id=437685928]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "Bus"
+
+[node name="Bus" type="OptionButton" parent="Behavior/Sounds/Box/BusRow" unique_id=1773336666]
+unique_name_in_owner = true
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 1
+item_count = 3
+popup/item_0/text = "UI"
+popup/item_0/id = 0
+popup/item_1/text = "Hall"
+popup/item_1/id = 1
+popup/item_2/text = "Radio"
+popup/item_2/id = 2
+
+[node name="Overrides" type="HFlowContainer" parent="Behavior/Sounds/Box" unique_id=713874159]
+unique_name_in_owner = true
+sound_bus = &"Hall"
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+
+[node name="Default" type="Button" parent="Behavior/Sounds/Box/Overrides" unique_id=1912349140]
+layout_mode = 2
+text = "Theme sound"
+
+[node name="Custom" type="Button" parent="Behavior/Sounds/Box/Overrides" unique_id=752285786]
+layout_mode = 2
+theme_type_variation = &"AccentButton"
+theme_override_sounds/pressed = ExtResource("submitted_wav")
+text = "Custom sound"
+
+[node name="Overlay" type="Control" parent="." unique_id=681800561]
+unique_name_in_owner = true
+top_level = true
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("hit_area_overlay_gd")

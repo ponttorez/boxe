@@ -16,7 +16,6 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED or what == NOTIFICATION_READY:
 		_update_columns()
 
-
 func _update_columns() -> void:
 	var separation := get_theme_constant(&"h_separation")
 	var fit := floori((size.x + separation) / (min_column_width + separation))

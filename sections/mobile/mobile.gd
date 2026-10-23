@@ -47,7 +47,7 @@ func _update_display() -> void:
 	_safe_rect.text = "%d, %d  %d × %d" % [safe.position.x, safe.position.y, safe.size.x, safe.size.y]
 	var screen := DisplayServer.screen_get_size()
 	_screen_size.text = "%d × %d" % [screen.x, screen.y]
-	_refresh_rate.text = "%d Hz" % roundi(DisplayServer.screen_get_refresh_rate())
+	_refresh_rate.text = tr("%d Hz") % roundi(DisplayServer.screen_get_refresh_rate())
 	_fps.text = "%d" % Engine.get_frames_per_second()
 
 

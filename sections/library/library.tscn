@@ -1,18 +1,18 @@
 [gd_scene format=3 uid="uid://ddisrfyxn0apg"]
 
-[ext_resource type="Script" uid="uid://dvp2mga8tmvna" path="res://sections/controls/controls.gd" id="controls_gd"]
+[ext_resource type="Script" uid="uid://dvp2mga8tmvna" path="res://sections/library/library.gd" id="library_gd"]
 [ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_radio"]
 
-[node name="Controls" type="VBoxContainer" unique_id=931108633]
+[node name="Library" type="VBoxContainer" unique_id=931108633]
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 36
-script = ExtResource("controls_gd")
+script = ExtResource("library_gd")
 
 [node name="Library" type="GridContainer" parent="." unique_id=1735763792]
 unique_name_in_owner = true

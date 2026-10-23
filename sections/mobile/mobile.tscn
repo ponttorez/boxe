@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bopgjxvvs4104"]
 
 [ext_resource type="Script" uid="uid://d28qixpfeedjx" path="res://sections/mobile/mobile.gd" id="mobile_gd"]
-[ext_resource type="Script" uid="uid://blbft3gtlmqy0" path="res://sections/mobile/phone_preview.gd" id="phone_preview_gd"]
+[ext_resource type="PackedScene" path="res://sections/mobile/phone.tscn" id="phone_tscn"]
 [ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_safe_area"]
@@ -55,6 +55,7 @@ theme_override_constants/separation = 18
 alignment = 1
 
 [node name="None" type="Button" parent="Cards/SafeArea/Box/Previews" unique_id=802040636]
+custom_minimum_size = Vector2(0, 402)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PreviewButton"
@@ -75,10 +76,8 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 9
 
-[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/None/Box" unique_id=204498991]
+[node name="Phone" parent="Cards/SafeArea/Box/Previews/None/Box" unique_id=204498991 instance=ExtResource("phone_tscn")]
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("phone_preview_gd")
 
 [node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/None/Box" unique_id=172465569]
 auto_translate_mode = 2
@@ -88,6 +87,7 @@ text = "None"
 horizontal_alignment = 1
 
 [node name="Inside" type="Button" parent="Cards/SafeArea/Box/Previews" unique_id=57573945]
+custom_minimum_size = Vector2(0, 402)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PreviewButton"
@@ -108,10 +108,8 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 9
 
-[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Inside/Box" unique_id=1773136236]
+[node name="Phone" parent="Cards/SafeArea/Box/Previews/Inside/Box" unique_id=1773136236 instance=ExtResource("phone_tscn")]
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("phone_preview_gd")
 mode = 1
 
 [node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Inside/Box" unique_id=205447741]
@@ -122,6 +120,7 @@ text = "Inside"
 horizontal_alignment = 1
 
 [node name="Outside" type="Button" parent="Cards/SafeArea/Box/Previews" unique_id=944132042]
+custom_minimum_size = Vector2(0, 402)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PreviewButton"
@@ -142,10 +141,8 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 9
 
-[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Outside/Box" unique_id=1588668432]
+[node name="Phone" parent="Cards/SafeArea/Box/Previews/Outside/Box" unique_id=1588668432 instance=ExtResource("phone_tscn")]
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("phone_preview_gd")
 mode = 2
 
 [node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Outside/Box" unique_id=2054506884]
@@ -161,10 +158,11 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="Title" type="Label" parent="Cards/SafeArea/Box/SafeRect" unique_id=1550495946]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
-text = "Safe area"
+text = "DisplayServer.get_display_safe_area()"
 
 [node name="Value" type="Label" parent="Cards/SafeArea/Box/SafeRect" unique_id=1870793685]
 auto_translate_mode = 2
@@ -179,10 +177,11 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="Title" type="Label" parent="Cards/SafeArea/Box/ScreenSize" unique_id=863440370]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
-text = "Screen"
+text = "DisplayServer.screen_get_size()"
 
 [node name="Value" type="Label" parent="Cards/SafeArea/Box/ScreenSize" unique_id=366084891]
 auto_translate_mode = 2
@@ -198,7 +197,7 @@ theme_type_variation = &"Stage"
 [node name="Log" type="Label" parent="Cards/SafeArea/Box/Events" unique_id=1774571347]
 unique_name_in_owner = true
 auto_translate_mode = 2
-custom_minimum_size = Vector2(0.0, 144.0)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 autowrap_mode = 3
@@ -242,10 +241,11 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="Title" type="Label" parent="Cards/Display/Box/RefreshRate" unique_id=1940167818]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
-text = "Refresh rate"
+text = "DisplayServer.screen_get_refresh_rate()"
 
 [node name="Value" type="Label" parent="Cards/Display/Box/RefreshRate" unique_id=1619070097]
 auto_translate_mode = 2
@@ -260,10 +260,11 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="Title" type="Label" parent="Cards/Display/Box/Fps" unique_id=1409754293]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
-text = "Frames per second"
+text = "Engine.get_frames_per_second()"
 
 [node name="Value" type="Label" parent="Cards/Display/Box/Fps" unique_id=1196406731]
 auto_translate_mode = 2
@@ -278,10 +279,11 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="Title" type="Label" parent="Cards/Display/Box/Version" unique_id=867297682]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
-text = "Version"
+text = "application/config/version"
 
 [node name="Value" type="Label" parent="Cards/Display/Box/Version" unique_id=248186634]
 auto_translate_mode = 2
@@ -296,10 +298,11 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="Title" type="Label" parent="Cards/Display/Box/VersionCode" unique_id=1815679066]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
-text = "Version code"
+text = "application/config/version_code"
 
 [node name="Value" type="Label" parent="Cards/Display/Box/VersionCode" unique_id=102016743]
 auto_translate_mode = 2

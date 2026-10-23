@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
 
-[node name="Credits" type="VBoxContainer" unique_id=848981408]
+[node name="About" type="VBoxContainer" unique_id=848981408]
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -125,3 +125,39 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Lucide (ISC)"
 uri = "https://github.com/lucide-icons/lucide"
+
+[node name="Changelog" type="PanelContainer" parent="." unique_id=1469432424]
+layout_mode = 2
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Changelog" unique_id=1422878404]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Changelog/Box" unique_id=937210228]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Changelog/Box/Header" unique_id=957167002]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Changelog"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Changelog/Box/Header" unique_id=1161346148]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "Updates of the boxe engine, on top of the Godot version it is based on."
+autowrap_mode = 3
+
+[node name="Version" type="Label" parent="Changelog/Box" unique_id=1207141581]
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "1.0 · October 24, 2026 · Godot 4.7.2"
+
+[node name="Changes" type="Label" parent="Changelog/Box" unique_id=337143958]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "changelog.1_0"
+bbcode_enabled = true
+autowrap_mode = 3

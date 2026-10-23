@@ -62,6 +62,12 @@ func find(path: NodePath) -> Node:
 	return app.get_section().get_node(path)
 
 
+## Scrolls the page so the control is visible.
+func reveal(control: Control) -> void:
+	app.get_node("%Scroll").ensure_control_visible(control)
+	await wait(0.3)
+
+
 ## Crops the GIF to the given controls, with a margin around them.
 func focus(controls: Array, margin := 20.0) -> void:
 	var rect := Rect2()
