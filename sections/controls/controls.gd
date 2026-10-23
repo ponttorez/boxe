@@ -11,6 +11,9 @@ func _ready() -> void:
 	_fill_menu(%Menu.get_popup())
 	_fill_tree(%Tree)
 	%OpenDialog.pressed.connect(%Dialog.popup_centered)
+	var picker: ColorPicker = %Color.get_picker()
+	picker.presets_visible = false
+	picker.edit_intensity = false
 
 
 func _fill_menu(popup: PopupMenu) -> void:

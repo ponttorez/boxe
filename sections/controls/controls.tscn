@@ -1,169 +1,153 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ddisrfyxn0apg"]
 
-[ext_resource type="Script" path="res://sections/controls/controls.gd" id="controls_gd"]
-[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="Script" uid="uid://dvp2mga8tmvna" path="res://sections/controls/controls.gd" id="controls_gd"]
+[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_radio"]
 
-[node name="Controls" type="VBoxContainer"]
+[node name="Controls" type="VBoxContainer" unique_id=931108633]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 36
 script = ExtResource("controls_gd")
-theme_override_constants/separation = 24
 
-[node name="Library" type="GridContainer" parent="."]
+[node name="Library" type="GridContainer" parent="." unique_id=1735763792]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 3
 script = ExtResource("responsive_grid_gd")
-min_column_width = 300.0
+min_column_width = 450.0
 max_columns = 3
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
 
-[node name="Button" type="PanelContainer" parent="Library"]
+[node name="Buttons" type="PanelContainer" parent="Library" unique_id=980402910]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/Button"]
+[node name="Box" type="VBoxContainer" parent="Library/Buttons" unique_id=621809936]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/Button/Box"]
+[node name="Class" type="Label" parent="Library/Buttons/Box" unique_id=615794355]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "Button"
+text = "Button / LinkButton"
+autowrap_mode = 3
 
-[node name="Row" type="HFlowContainer" parent="Library/Button/Box"]
+[node name="Row" type="HFlowContainer" parent="Library/Buttons/Box" unique_id=454774529]
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
 
-[node name="Save" type="Button" parent="Library/Button/Box/Row"]
+[node name="Save" type="Button" parent="Library/Buttons/Box/Row" unique_id=2085168296]
 unique_name_in_owner = true
 layout_mode = 2
 text = "[b]Save[/b]  [color=#a1a6ad]Ctrl+S[/color]"
 bbcode_enabled = true
 
-[node name="Play" type="Button" parent="Library/Button/Box/Row"]
+[node name="Play" type="Button" parent="Library/Buttons/Box/Row" unique_id=668136536]
 layout_mode = 2
-text = "[img=18]res://assets/sound_icon.svg[/img] Play [b]sound[/b]"
+text = "[img=27]res://assets/sound_icon.svg[/img] Play [b]sound[/b]"
 bbcode_enabled = true
 
-[node name="Follow" type="Button" parent="Library/Button/Box/Row"]
+[node name="Follow" type="Button" parent="Library/Buttons/Box/Row" unique_id=1957127900]
 layout_mode = 2
 toggle_mode = true
+button_pressed = true
 text = "Follow"
 
-[node name="Locked" type="Button" parent="Library/Button/Box/Row"]
+[node name="Locked" type="Button" parent="Library/Buttons/Box/Row" unique_id=381173146]
 layout_mode = 2
 disabled = true
 text = "Locked"
 
-[node name="CheckBox" type="PanelContainer" parent="Library"]
+[node name="Link" type="LinkButton" parent="Library/Buttons/Box" unique_id=1292613346]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Read the [i]docs[/i]"
+bbcode_enabled = true
+uri = "https://github.com/ponttorez/boxe"
+
+[node name="Checks" type="PanelContainer" parent="Library" unique_id=226924043]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/CheckBox"]
+[node name="Box" type="VBoxContainer" parent="Library/Checks" unique_id=1825785173]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/CheckBox/Box"]
+[node name="Class" type="Label" parent="Library/Checks/Box" unique_id=1353771815]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "CheckBox"
+text = "CheckBox / CheckButton"
+autowrap_mode = 3
 
-[node name="Row" type="HFlowContainer" parent="Library/CheckBox/Box"]
+[node name="Boxes" type="HFlowContainer" parent="Library/Checks/Box" unique_id=1419344008]
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
 
-[node name="Remember" type="CheckBox" parent="Library/CheckBox/Box/Row"]
+[node name="Remember" type="CheckBox" parent="Library/Checks/Box/Boxes" unique_id=441857127]
 layout_mode = 2
 text = "[b]Remember[/b] me"
 bbcode_enabled = true
 
-[node name="Day" type="CheckBox" parent="Library/CheckBox/Box/Row"]
+[node name="Day" type="CheckBox" parent="Library/Checks/Box/Boxes" unique_id=544975643]
 layout_mode = 2
 button_pressed = true
 button_group = SubResource("ButtonGroup_radio")
 text = "Day"
 
-[node name="Night" type="CheckBox" parent="Library/CheckBox/Box/Row"]
+[node name="Night" type="CheckBox" parent="Library/Checks/Box/Boxes" unique_id=1099159102]
 layout_mode = 2
 button_group = SubResource("ButtonGroup_radio")
 text = "Night"
 
-[node name="CheckButton" type="PanelContainer" parent="Library"]
+[node name="Switches" type="HFlowContainer" parent="Library/Checks/Box" unique_id=768149370]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
 
-[node name="Box" type="VBoxContainer" parent="Library/CheckButton"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/CheckButton/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "CheckButton"
-
-[node name="Row" type="HFlowContainer" parent="Library/CheckButton/Box"]
-layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
-
-[node name="Notifications" type="CheckButton" parent="Library/CheckButton/Box/Row"]
+[node name="Notifications" type="CheckButton" parent="Library/Checks/Box/Switches" unique_id=1733909343]
 layout_mode = 2
 button_pressed = true
 text = "Notifications"
 
-[node name="Disabled" type="CheckButton" parent="Library/CheckButton/Box/Row"]
+[node name="Disabled" type="CheckButton" parent="Library/Checks/Box/Switches" unique_id=1439981202]
 layout_mode = 2
 disabled = true
 text = "Locked"
 
-[node name="LinkButton" type="PanelContainer" parent="Library"]
+[node name="Menus" type="PanelContainer" parent="Library" unique_id=771774425]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/LinkButton"]
+[node name="Box" type="VBoxContainer" parent="Library/Menus" unique_id=908658913]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/LinkButton/Box"]
+[node name="Class" type="Label" parent="Library/Menus/Box" unique_id=1223157215]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "LinkButton"
+text = "OptionButton / MenuButton / MenuBar"
+autowrap_mode = 3
 
-[node name="Link" type="LinkButton" parent="Library/LinkButton/Box"]
+[node name="Row" type="HFlowContainer" parent="Library/Menus/Box" unique_id=257817781]
 layout_mode = 2
-size_flags_horizontal = 0
-text = "Read the [i]docs[/i]"
-uri = "https://github.com/ponttorez/boxe"
-bbcode_enabled = true
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
 
-[node name="OptionButton" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/OptionButton"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/OptionButton/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "OptionButton"
-
-[node name="Option" type="OptionButton" parent="Library/OptionButton/Box"]
+[node name="Option" type="OptionButton" parent="Library/Menus/Box/Row" unique_id=224829228]
 layout_mode = 2
 size_flags_horizontal = 0
 selected = 0
@@ -175,48 +159,18 @@ popup/item_1/id = 1
 popup/item_2/text = "Large"
 popup/item_2/id = 2
 
-[node name="MenuButton" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/MenuButton"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/MenuButton/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "MenuButton"
-
-[node name="Menu" type="MenuButton" parent="Library/MenuButton/Box"]
+[node name="Menu" type="MenuButton" parent="Library/Menus/Box/Row" unique_id=1954508920]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Open menu"
 flat = false
 
-[node name="MenuBar" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/MenuBar"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/MenuBar/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "MenuBar"
-
-[node name="MenuBar" type="MenuBar" parent="Library/MenuBar/Box"]
+[node name="MenuBar" type="MenuBar" parent="Library/Menus/Box" unique_id=1541658687]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="File" type="PopupMenu" parent="Library/MenuBar/Box/MenuBar"]
+[node name="File" type="PopupMenu" parent="Library/Menus/Box/MenuBar" unique_id=25688966]
 item_count = 3
 item_0/text = "New"
 item_0/id = 0
@@ -225,215 +179,200 @@ item_1/id = 1
 item_2/text = "Save"
 item_2/id = 2
 
-[node name="Edit" type="PopupMenu" parent="Library/MenuBar/Box/MenuBar"]
+[node name="Edit" type="PopupMenu" parent="Library/Menus/Box/MenuBar" unique_id=1746156531]
 item_count = 2
 item_0/text = "Undo"
 item_0/id = 0
 item_1/text = "Redo"
 item_1/id = 1
 
-[node name="ColorPickerButton" type="PanelContainer" parent="Library"]
+[node name="Fields" type="PanelContainer" parent="Library" unique_id=265533510]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/ColorPickerButton"]
+[node name="Box" type="VBoxContainer" parent="Library/Fields" unique_id=1853934832]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/ColorPickerButton/Box"]
+[node name="Class" type="Label" parent="Library/Fields/Box" unique_id=689567089]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "ColorPickerButton"
+text = "SpinBox / LineEdit / TextEdit"
+autowrap_mode = 3
 
-[node name="Color" type="ColorPickerButton" parent="Library/ColorPickerButton/Box"]
-custom_minimum_size = Vector2(72, 36)
+[node name="SpinBox" type="SpinBox" parent="Library/Fields/Box" unique_id=242500977]
 layout_mode = 2
-size_flags_horizontal = 0
-color = Color(0.4392157, 0.73333335, 1, 1)
+value = 3.0
 
-[node name="AcceptDialog" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/AcceptDialog"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/AcceptDialog/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "AcceptDialog"
-
-[node name="OpenDialog" type="Button" parent="Library/AcceptDialog/Box"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Open dialog"
-
-[node name="LineEdit" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/LineEdit"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/LineEdit/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "LineEdit"
-
-[node name="LineEdit" type="LineEdit" parent="Library/LineEdit/Box"]
+[node name="LineEdit" type="LineEdit" parent="Library/Fields/Box" unique_id=2055286944]
 layout_mode = 2
 placeholder_text = "Type, then press Enter"
 
-[node name="SpinBox" type="PanelContainer" parent="Library"]
+[node name="TextEdit" type="TextEdit" parent="Library/Fields/Box" unique_id=1894314499]
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+placeholder_text = "A few lines of text"
+wrap_mode = 1
+
+[node name="Ranges" type="PanelContainer" parent="Library" unique_id=1105456765]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/SpinBox"]
+[node name="Box" type="VBoxContainer" parent="Library/Ranges" unique_id=295074657]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/SpinBox/Box"]
+[node name="Class" type="Label" parent="Library/Ranges/Box" unique_id=1728853776]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "SpinBox"
+text = "HSlider / ProgressBar / VSlider / VirtualJoystick"
+autowrap_mode = 3
 
-[node name="SpinBox" type="SpinBox" parent="Library/SpinBox/Box"]
+[node name="Row" type="HBoxContainer" parent="Library/Ranges/Box" unique_id=1761556304]
 layout_mode = 2
-size_flags_horizontal = 0
-value = 3.0
+theme_override_constants/separation = 24
 
-[node name="HSlider" type="PanelContainer" parent="Library"]
+[node name="Bars" type="VBoxContainer" parent="Library/Ranges/Box/Row" unique_id=1457896069]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"Stage"
+size_flags_vertical = 4
+theme_override_constants/separation = 36
 
-[node name="Box" type="VBoxContainer" parent="Library/HSlider"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/HSlider/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "HSlider"
-
-[node name="HSlider" type="HSlider" parent="Library/HSlider/Box"]
+[node name="HSlider" type="HSlider" parent="Library/Ranges/Box/Row/Bars" unique_id=1670801885]
 layout_mode = 2
 max_value = 10.0
 value = 4.0
 tick_count = 11
 ticks_on_borders = true
 
-[node name="ProgressBar" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/ProgressBar"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/ProgressBar/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "ProgressBar"
-
-[node name="Progress" type="ProgressBar" parent="Library/ProgressBar/Box"]
+[node name="Progress" type="ProgressBar" parent="Library/Ranges/Box/Row/Bars" unique_id=1568649451]
 layout_mode = 2
 value = 60.0
 
-[node name="TabBar" type="PanelContainer" parent="Library"]
+[node name="VSlider" type="VSlider" parent="Library/Ranges/Box/Row" unique_id=914476369]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 10.0
+value = 6.0
+
+[node name="Joystick" type="VirtualJoystick" parent="Library/Ranges/Box/Row" unique_id=908054092]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Popups" type="PanelContainer" parent="Library" unique_id=1738692245]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/TabBar"]
+[node name="Box" type="VBoxContainer" parent="Library/Popups" unique_id=1995352121]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/TabBar/Box"]
+[node name="Class" type="Label" parent="Library/Popups/Box" unique_id=1282631588]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "TabBar"
+text = "ColorPickerButton / AcceptDialog"
+autowrap_mode = 3
 
-[node name="Tabs" type="TabBar" parent="Library/TabBar/Box"]
+[node name="Row" type="HFlowContainer" parent="Library/Popups/Box" unique_id=1838760974]
 layout_mode = 2
-bbcode_enabled = true
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+
+[node name="Color" type="ColorPickerButton" parent="Library/Popups/Box/Row" unique_id=180542250]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(108, 54)
+layout_mode = 2
+size_flags_horizontal = 0
+color = Color(0.4392157, 0.73333335, 1, 1)
+
+[node name="OpenDialog" type="Button" parent="Library/Popups/Box/Row" unique_id=172188199]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Open dialog"
+
+[node name="Tabs" type="PanelContainer" parent="Library" unique_id=1787621112]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Stage"
+
+[node name="Box" type="VBoxContainer" parent="Library/Tabs" unique_id=1772537055]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Class" type="Label" parent="Library/Tabs/Box" unique_id=796474376]
+auto_translate_mode = 2
+layout_mode = 2
+theme_type_variation = &"OverlineLabel"
+text = "TabBar / TabContainer"
+autowrap_mode = 3
+
+[node name="Tabs" type="TabBar" parent="Library/Tabs/Box" unique_id=1800226911]
+layout_mode = 2
 current_tab = 0
+bbcode_enabled = true
 tab_count = 3
 tab_0/title = "[b]All[/b]"
 tab_1/title = "Unread [color=#ff786b]3[/color]"
 tab_2/title = "[i]Drafts[/i]"
 
-[node name="HSeparator" type="PanelContainer" parent="Library"]
+[node name="TabContainer" type="TabContainer" parent="Library/Tabs/Box" unique_id=1799019993]
+custom_minimum_size = Vector2(0, 210)
+layout_mode = 2
+current_tab = 0
+
+[node name="General" type="MarginContainer" parent="Library/Tabs/Box/TabContainer" unique_id=1215321413]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+metadata/_tab_index = 0
+
+[node name="Text" type="Label" parent="Library/Tabs/Box/TabContainer/General" unique_id=847480563]
+layout_mode = 2
+text = "Tabs with their own pages."
+autowrap_mode = 3
+
+[node name="Audio" type="MarginContainer" parent="Library/Tabs/Box/TabContainer" unique_id=122688814]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+metadata/_tab_index = 1
+
+[node name="Text" type="Label" parent="Library/Tabs/Box/TabContainer/Audio" unique_id=1046255046]
+layout_mode = 2
+text = "Another page."
+autowrap_mode = 3
+
+[node name="Lists" type="PanelContainer" parent="Library" unique_id=1537654237]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/HSeparator"]
+[node name="Box" type="VBoxContainer" parent="Library/Lists" unique_id=305283170]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/HSeparator/Box"]
+[node name="Class" type="Label" parent="Library/Lists/Box" unique_id=1558353255]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "HSeparator"
+text = "ItemList / Tree"
+autowrap_mode = 3
 
-[node name="Separator" type="HSeparator" parent="Library/HSeparator/Box"]
-layout_mode = 2
-size_flags_vertical = 6
-
-[node name="TextEdit" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/TextEdit"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/TextEdit/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "TextEdit"
-
-[node name="TextEdit" type="TextEdit" parent="Library/TextEdit/Box"]
-custom_minimum_size = Vector2(0, 96)
-layout_mode = 2
-placeholder_text = "A few lines of text"
-wrap_mode = 1
-
-[node name="ItemList" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/ItemList"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/ItemList/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "ItemList"
-
-[node name="List" type="ItemList" parent="Library/ItemList/Box"]
+[node name="List" type="ItemList" parent="Library/Lists/Box" unique_id=791301922]
 layout_mode = 2
 bbcode_enabled = true
 auto_height = true
@@ -442,210 +381,82 @@ item_0/text = "[b]Mira[/b]  [color=#a1a6ad]online[/color]"
 item_1/text = "[b]Tom[/b]  [color=#a1a6ad]away[/color]"
 item_2/text = "[b]Ada[/b]  [color=#5ed58b]in game[/color]"
 
-[node name="HSplitContainer" type="PanelContainer" parent="Library"]
+[node name="Tree" type="Tree" parent="Library/Lists/Box" unique_id=605913430]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 360)
+layout_mode = 2
+bbcode_enabled = true
+hide_root = true
+
+[node name="Containers" type="PanelContainer" parent="Library" unique_id=1292206478]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Library/HSplitContainer"]
+[node name="Box" type="VBoxContainer" parent="Library/Containers" unique_id=1707938362]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Class" type="Label" parent="Library/HSplitContainer/Box"]
+[node name="Class" type="Label" parent="Library/Containers/Box" unique_id=1307742169]
 auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"OverlineLabel"
-text = "HSplitContainer"
+text = "FoldableContainer / HSeparator / HSplitContainer / ScrollContainer"
+autowrap_mode = 3
 
-[node name="Split" type="HSplitContainer" parent="Library/HSplitContainer/Box"]
-custom_minimum_size = Vector2(0, 72)
+[node name="Foldable" type="FoldableContainer" parent="Library/Containers/Box" unique_id=2029259681]
+layout_mode = 2
+folded = true
+title = "[b]Details[/b]  [color=#a1a6ad](3)[/color]"
+title_bbcode_enabled = true
+
+[node name="Text" type="Label" parent="Library/Containers/Box/Foldable" unique_id=765043673]
+visible = false
+layout_mode = 2
+text = "Folded content."
+
+[node name="Separator" type="HSeparator" parent="Library/Containers/Box" unique_id=266384544]
 layout_mode = 2
 
-[node name="Left" type="PanelContainer" parent="Library/HSplitContainer/Box/Split"]
+[node name="Split" type="HSplitContainer" parent="Library/Containers/Box" unique_id=589469732]
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+
+[node name="Left" type="PanelContainer" parent="Library/Containers/Box/Split" unique_id=1822949864]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Text" type="Label" parent="Library/HSplitContainer/Box/Split/Left"]
+[node name="Text" type="Label" parent="Library/Containers/Box/Split/Left" unique_id=876145259]
 layout_mode = 2
 text = "Drag the split"
-horizontal_alignment = 1
+horizontal_alignment = 2
 vertical_alignment = 1
-autowrap_mode = 3
+clip_text = true
 
-[node name="Right" type="PanelContainer" parent="Library/HSplitContainer/Box/Split"]
+[node name="Right" type="PanelContainer" parent="Library/Containers/Box/Split" unique_id=25586736]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Text" type="Label" parent="Library/HSplitContainer/Box/Split/Right"]
+[node name="Text" type="Label" parent="Library/Containers/Box/Split/Right" unique_id=1247710154]
 layout_mode = 2
 text = "between panels"
-horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
+clip_text = true
 
-[node name="VSlider" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/VSlider"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/VSlider/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "VSlider"
-
-[node name="VSlider" type="VSlider" parent="Library/VSlider/Box"]
-custom_minimum_size = Vector2(0, 140)
-layout_mode = 2
-size_flags_horizontal = 4
-max_value = 10.0
-value = 6.0
-
-[node name="ScrollContainer" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/ScrollContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/ScrollContainer/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "ScrollContainer"
-
-[node name="Scroll" type="ScrollContainer" parent="Library/ScrollContainer/Box"]
-custom_minimum_size = Vector2(0, 100)
+[node name="Scroll" type="ScrollContainer" parent="Library/Containers/Box" unique_id=683326877]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Text" type="Label" parent="Library/ScrollContainer/Box/Scroll"]
+[node name="Text" type="Label" parent="Library/Containers/Box/Scroll" unique_id=1176587862]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "A scroll container shows its scroll bars when the content doesn't fit. This text is long enough to scroll: it goes on for a few more lines, so the vertical scroll bar has something to move. Drag it, or use the mouse wheel over the text."
 autowrap_mode = 3
 
-[node name="VirtualJoystick" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/VirtualJoystick"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/VirtualJoystick/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "VirtualJoystick"
-
-[node name="Joystick" type="VirtualJoystick" parent="Library/VirtualJoystick/Box"]
-custom_minimum_size = Vector2(140, 140)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="TabContainer" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/TabContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/TabContainer/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "TabContainer"
-
-[node name="TabContainer" type="TabContainer" parent="Library/TabContainer/Box"]
-custom_minimum_size = Vector2(0, 140)
-layout_mode = 2
-current_tab = 0
-
-[node name="General" type="MarginContainer" parent="Library/TabContainer/Box/TabContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-metadata/_tab_index = 0
-
-[node name="Text" type="Label" parent="Library/TabContainer/Box/TabContainer/General"]
-layout_mode = 2
-text = "Tabs with their own pages."
-autowrap_mode = 3
-
-[node name="Audio" type="MarginContainer" parent="Library/TabContainer/Box/TabContainer"]
-visible = false
-layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-metadata/_tab_index = 1
-
-[node name="Text" type="Label" parent="Library/TabContainer/Box/TabContainer/Audio"]
-layout_mode = 2
-text = "Another page."
-autowrap_mode = 3
-
-[node name="Tree" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/Tree"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/Tree/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "Tree"
-
-[node name="Tree" type="Tree" parent="Library/Tree/Box"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 240)
-layout_mode = 2
-bbcode_enabled = true
-hide_root = true
-
-[node name="FoldableContainer" type="PanelContainer" parent="Library"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"Stage"
-
-[node name="Box" type="VBoxContainer" parent="Library/FoldableContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Class" type="Label" parent="Library/FoldableContainer/Box"]
-auto_translate_mode = 2
-layout_mode = 2
-theme_type_variation = &"OverlineLabel"
-text = "FoldableContainer"
-
-[node name="Foldable" type="FoldableContainer" parent="Library/FoldableContainer/Box"]
-layout_mode = 2
-title = "[b]Details[/b]  [color=#a1a6ad](3)[/color]"
-title_bbcode_enabled = true
-folded = true
-
-[node name="Text" type="Label" parent="Library/FoldableContainer/Box/Foldable"]
-layout_mode = 2
-text = "Folded content."
-
-[node name="Dialog" type="AcceptDialog" parent="."]
+[node name="Dialog" type="AcceptDialog" parent="." unique_id=1167261085]
 unique_name_in_owner = true
 title = "Dialog"
 dialog_text = "Windows and dialogs use the theme too."

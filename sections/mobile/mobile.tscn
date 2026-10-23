@@ -1,260 +1,309 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bopgjxvvs4104"]
 
 [ext_resource type="Script" uid="uid://d28qixpfeedjx" path="res://sections/mobile/mobile.gd" id="mobile_gd"]
-[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
-[ext_resource type="FontVariation" uid="uid://lcsvmu33k2ce" path="res://fonts/regular_font.tres" id="ui_mono_tres"]
 [ext_resource type="Script" uid="uid://blbft3gtlmqy0" path="res://sections/mobile/phone_preview.gd" id="phone_preview_gd"]
+[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
 
-[node name="Mobile" type="VBoxContainer"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_safe_area"]
+
+[node name="Mobile" type="VBoxContainer" unique_id=120509350]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 36
 script = ExtResource("mobile_gd")
-theme_override_constants/separation = 24
 
-[node name="Cards" type="GridContainer" parent="."]
+[node name="Cards" type="GridContainer" parent="." unique_id=495243692]
 layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 2
 script = ExtResource("responsive_grid_gd")
-min_column_width = 380.0
-max_columns = 2
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
 
-[node name="SafeArea" type="PanelContainer" parent="Cards"]
+[node name="SafeArea" type="PanelContainer" parent="Cards" unique_id=1114473373]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Card"
 
-[node name="Box" type="VBoxContainer" parent="Cards/SafeArea"]
+[node name="Box" type="VBoxContainer" parent="Cards/SafeArea" unique_id=72533481]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
-[node name="Header" type="VBoxContainer" parent="Cards/SafeArea/Box"]
+[node name="Header" type="VBoxContainer" parent="Cards/SafeArea/Box" unique_id=1202080541]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 3
 
-[node name="Title" type="Label" parent="Cards/SafeArea/Box/Header"]
+[node name="Title" type="Label" parent="Cards/SafeArea/Box/Header" unique_id=252508993]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Safe area"
+autowrap_mode = 3
 
-[node name="Caption" type="Label" parent="Cards/SafeArea/Box/Header"]
+[node name="Caption" type="Label" parent="Cards/SafeArea/Box/Header" unique_id=16117696]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "MarginContainer.safe_area keeps the content out of display cutouts and system bars, or extends a background under them. The phones show a header laid out with each mode: tap one to use its mode in this demo. orientation_changed fires on 180° rotations too, and safe_area_changed when a cutout moves to another side: turn the phone around."
 autowrap_mode = 3
 
-[node name="Previews" type="HBoxContainer" parent="Cards/SafeArea/Box"]
+[node name="Previews" type="HBoxContainer" parent="Cards/SafeArea/Box" unique_id=2115589814]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 18
 alignment = 1
-theme_override_constants/separation = 16
 
-[node name="None" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews"]
+[node name="None" type="Button" parent="Cards/SafeArea/Box/Previews" unique_id=802040636]
 layout_mode = 2
-theme_override_constants/separation = 6
-mouse_filter = 0
-mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PreviewButton"
+toggle_mode = true
+button_group = SubResource("ButtonGroup_safe_area")
 
-[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/None"]
-layout_mode = 2
-script = ExtResource("phone_preview_gd")
-mode = 0
+[node name="Box" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews/None" unique_id=1032938331]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/separation = 9
 
-[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/None"]
+[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/None/Box" unique_id=204498991]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("phone_preview_gd")
+
+[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/None/Box" unique_id=172465569]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "None"
 horizontal_alignment = 1
-auto_translate_mode = 2
 
-[node name="Inside" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews"]
+[node name="Inside" type="Button" parent="Cards/SafeArea/Box/Previews" unique_id=57573945]
 layout_mode = 2
-theme_override_constants/separation = 6
-mouse_filter = 0
-mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PreviewButton"
+toggle_mode = true
+button_group = SubResource("ButtonGroup_safe_area")
 
-[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Inside"]
+[node name="Box" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews/Inside" unique_id=372759688]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 9
+
+[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Inside/Box" unique_id=1773136236]
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("phone_preview_gd")
 mode = 1
-mouse_filter = 2
 
-[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Inside"]
+[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Inside/Box" unique_id=205447741]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "Inside"
 horizontal_alignment = 1
-auto_translate_mode = 2
 
-[node name="Outside" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews"]
+[node name="Outside" type="Button" parent="Cards/SafeArea/Box/Previews" unique_id=944132042]
 layout_mode = 2
-theme_override_constants/separation = 6
-mouse_filter = 0
-mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PreviewButton"
+toggle_mode = true
+button_group = SubResource("ButtonGroup_safe_area")
 
-[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Outside"]
+[node name="Box" type="VBoxContainer" parent="Cards/SafeArea/Box/Previews/Outside" unique_id=472440138]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 9
+
+[node name="Phone" type="Control" parent="Cards/SafeArea/Box/Previews/Outside/Box" unique_id=1588668432]
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("phone_preview_gd")
 mode = 2
-mouse_filter = 2
 
-[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Outside"]
+[node name="Label" type="Label" parent="Cards/SafeArea/Box/Previews/Outside/Box" unique_id=2054506884]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "Outside"
 horizontal_alignment = 1
-auto_translate_mode = 2
 
-[node name="SafeRect" type="HBoxContainer" parent="Cards/SafeArea/Box"]
+[node name="SafeRect" type="HBoxContainer" parent="Cards/SafeArea/Box" unique_id=731956997]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Cards/SafeArea/Box/SafeRect"]
+[node name="Title" type="Label" parent="Cards/SafeArea/Box/SafeRect" unique_id=1550495946]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
 text = "Safe area"
 
-[node name="Value" type="Label" parent="Cards/SafeArea/Box/SafeRect"]
+[node name="Value" type="Label" parent="Cards/SafeArea/Box/SafeRect" unique_id=1870793685]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "—"
-auto_translate_mode = 2
 text_direction = 1
 
-[node name="ScreenSize" type="HBoxContainer" parent="Cards/SafeArea/Box"]
+[node name="ScreenSize" type="HBoxContainer" parent="Cards/SafeArea/Box" unique_id=1118362640]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Cards/SafeArea/Box/ScreenSize"]
+[node name="Title" type="Label" parent="Cards/SafeArea/Box/ScreenSize" unique_id=863440370]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
 text = "Screen"
 
-[node name="Value" type="Label" parent="Cards/SafeArea/Box/ScreenSize"]
+[node name="Value" type="Label" parent="Cards/SafeArea/Box/ScreenSize" unique_id=366084891]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "—"
-auto_translate_mode = 2
 text_direction = 1
 
-[node name="Events" type="PanelContainer" parent="Cards/SafeArea/Box"]
+[node name="Events" type="PanelContainer" parent="Cards/SafeArea/Box" unique_id=1208513135]
 layout_mode = 2
 theme_type_variation = &"Stage"
 
-[node name="Log" type="Label" parent="Cards/SafeArea/Box/Events"]
+[node name="Log" type="Label" parent="Cards/SafeArea/Box/Events" unique_id=1774571347]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0.0, 96.0)
+auto_translate_mode = 2
+custom_minimum_size = Vector2(0.0, 144.0)
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = ""
 autowrap_mode = 3
-theme_override_fonts/font = ExtResource("ui_mono_tres")
-auto_translate_mode = 2
 
-[node name="Note" type="Label" parent="Cards/SafeArea/Box"]
+[node name="Note" type="Label" parent="Cards/SafeArea/Box" unique_id=686050816]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "The safe area is used on Android and iOS."
 autowrap_mode = 3
 
-[node name="Display" type="PanelContainer" parent="Cards"]
+[node name="Display" type="PanelContainer" parent="Cards" unique_id=1407382584]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"Card"
 size_flags_vertical = 0
+theme_type_variation = &"Card"
 
-[node name="Box" type="VBoxContainer" parent="Cards/Display"]
+[node name="Box" type="VBoxContainer" parent="Cards/Display" unique_id=519913627]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
-[node name="Header" type="VBoxContainer" parent="Cards/Display/Box"]
+[node name="Header" type="VBoxContainer" parent="Cards/Display/Box" unique_id=1034702253]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 3
 
-[node name="Title" type="Label" parent="Cards/Display/Box/Header"]
+[node name="Title" type="Label" parent="Cards/Display/Box/Header" unique_id=607532339]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Display"
+autowrap_mode = 3
 
-[node name="Caption" type="Label" parent="Cards/Display/Box/Header"]
+[node name="Caption" type="Label" parent="Cards/Display/Box/Header" unique_id=407198733]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "display/window/android/refresh_rate = Maximum asks Android for the highest refresh rate, as many phones keep apps at 60 Hz. application/config/version_code sets the version code of Android exports, next to the version of the project."
 autowrap_mode = 3
 
-[node name="RefreshRate" type="HBoxContainer" parent="Cards/Display/Box"]
+[node name="RefreshRate" type="HBoxContainer" parent="Cards/Display/Box" unique_id=125642043]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Cards/Display/Box/RefreshRate"]
+[node name="Title" type="Label" parent="Cards/Display/Box/RefreshRate" unique_id=1940167818]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
 text = "Refresh rate"
 
-[node name="Value" type="Label" parent="Cards/Display/Box/RefreshRate"]
+[node name="Value" type="Label" parent="Cards/Display/Box/RefreshRate" unique_id=1619070097]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "—"
-auto_translate_mode = 2
 text_direction = 1
 
-[node name="Fps" type="HBoxContainer" parent="Cards/Display/Box"]
+[node name="Fps" type="HBoxContainer" parent="Cards/Display/Box" unique_id=301239396]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Cards/Display/Box/Fps"]
+[node name="Title" type="Label" parent="Cards/Display/Box/Fps" unique_id=1409754293]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
 text = "Frames per second"
 
-[node name="Value" type="Label" parent="Cards/Display/Box/Fps"]
+[node name="Value" type="Label" parent="Cards/Display/Box/Fps" unique_id=1196406731]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "—"
-auto_translate_mode = 2
 text_direction = 1
 
-[node name="Version" type="HBoxContainer" parent="Cards/Display/Box"]
+[node name="Version" type="HBoxContainer" parent="Cards/Display/Box" unique_id=1038426260]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Cards/Display/Box/Version"]
+[node name="Title" type="Label" parent="Cards/Display/Box/Version" unique_id=867297682]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
 text = "Version"
 
-[node name="Value" type="Label" parent="Cards/Display/Box/Version"]
+[node name="Value" type="Label" parent="Cards/Display/Box/Version" unique_id=248186634]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "—"
-auto_translate_mode = 2
 text_direction = 1
 
-[node name="VersionCode" type="HBoxContainer" parent="Cards/Display/Box"]
+[node name="VersionCode" type="HBoxContainer" parent="Cards/Display/Box" unique_id=1749613012]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Cards/Display/Box/VersionCode"]
+[node name="Title" type="Label" parent="Cards/Display/Box/VersionCode" unique_id=1815679066]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CaptionLabel"
 text = "Version code"
 
-[node name="Value" type="Label" parent="Cards/Display/Box/VersionCode"]
+[node name="Value" type="Label" parent="Cards/Display/Box/VersionCode" unique_id=102016743]
+auto_translate_mode = 2
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "—"
-auto_translate_mode = 2
 text_direction = 1

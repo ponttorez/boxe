@@ -53,4 +53,4 @@ func _draw() -> void:
 		draw_circle(Vector2.ZERO, 15.0, Color(1, 1, 1, 0.22), true, -1.0, true)
 		draw_circle(Vector2.ZERO, 15.0, Color(1, 1, 1, 0.75), false, 2.0, true)
 	else:
-		draw_texture(ARROW, Vector2(-4, -2))
+		draw_texture(ARROW, Vector2(-5, -5))

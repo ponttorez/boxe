@@ -1,177 +1,192 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cjrtge4q7jkma"]
 
-[ext_resource type="Script" path="res://sections/input/input.gd" id="input_gd"]
-[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
-[ext_resource type="Script" path="res://sections/input/hit_area_overlay.gd" id="hit_area_overlay_gd"]
+[ext_resource type="Texture2D" uid="uid://ce8jbejixleug" path="res://assets/close_icon.svg" id="close_icon_svg"]
+[ext_resource type="Script" uid="uid://br5eqp8qcjm0" path="res://sections/input/hit_area_overlay.gd" id="hit_area_overlay_gd"]
+[ext_resource type="Script" uid="uid://civntlymjvo14" path="res://sections/input/input.gd" id="input_gd"]
+[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
 
-[node name="Input" type="VBoxContainer"]
+[node name="Input" type="VBoxContainer" unique_id=1872017459]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 36
 script = ExtResource("input_gd")
-theme_override_constants/separation = 24
 
-[node name="Cards" type="GridContainer" parent="."]
+[node name="Cards" type="GridContainer" parent="." unique_id=372658502]
 layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 2
 script = ExtResource("responsive_grid_gd")
-min_column_width = 380.0
-max_columns = 2
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
 
-[node name="Lock" type="PanelContainer" parent="Cards"]
+[node name="Lock" type="PanelContainer" parent="Cards" unique_id=1323305505]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Card"
 
-[node name="Box" type="VBoxContainer" parent="Cards/Lock"]
+[node name="Box" type="VBoxContainer" parent="Cards/Lock" unique_id=2140970096]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
-[node name="Header" type="VBoxContainer" parent="Cards/Lock/Box"]
+[node name="Header" type="VBoxContainer" parent="Cards/Lock/Box" unique_id=426999144]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 3
 
-[node name="Title" type="Label" parent="Cards/Lock/Box/Header"]
+[node name="Title" type="Label" parent="Cards/Lock/Box/Header" unique_id=1933406007]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Lock a form"
+autowrap_mode = 3
 
-[node name="Caption" type="Label" parent="Cards/Lock/Box/Header"]
+[node name="Caption" type="Label" parent="Cards/Lock/Box/Header" unique_id=11854596]
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
 text = "Control.interactable = false blocks input for a control and its children but keeps their look, unlike disabled. Lock the whole form with the switch, or press Save to lock the fields while it saves: Cancel stays outside of that locked part."
 autowrap_mode = 3
 
-[node name="Lock" type="CheckButton" parent="Cards/Lock/Box"]
+[node name="Lock" type="CheckButton" parent="Cards/Lock/Box" unique_id=477012907]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Lock the form"
 
-[node name="Stage" type="PanelContainer" parent="Cards/Lock/Box"]
+[node name="Stage" type="PanelContainer" parent="Cards/Lock/Box" unique_id=791123607]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
-[node name="Content" type="VBoxContainer" parent="Cards/Lock/Box/Stage"]
+[node name="Content" type="VBoxContainer" parent="Cards/Lock/Box/Stage" unique_id=1541235478]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 18
 alignment = 1
-theme_override_constants/separation = 12
-unique_name_in_owner = true
 
-[node name="Form" type="VBoxContainer" parent="Cards/Lock/Box/Stage/Content"]
+[node name="Form" type="VBoxContainer" parent="Cards/Lock/Box/Stage/Content" unique_id=1765715498]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="Name" type="LineEdit" parent="Cards/Lock/Box/Stage/Content/Form"]
+[node name="Name" type="LineEdit" parent="Cards/Lock/Box/Stage/Content/Form" unique_id=1544247086]
 layout_mode = 2
 text = "Ada Lovelace"
 
-[node name="News" type="CheckBox" parent="Cards/Lock/Box/Stage/Content/Form"]
+[node name="News" type="CheckBox" parent="Cards/Lock/Box/Stage/Content/Form" unique_id=462866660]
 layout_mode = 2
-text = "Subscribe"
 button_pressed = true
+text = "Subscribe"
 
-[node name="Save" type="Button" parent="Cards/Lock/Box/Stage/Content/Form"]
+[node name="Save" type="Button" parent="Cards/Lock/Box/Stage/Content/Form" unique_id=2051871766]
 layout_mode = 2
 theme_type_variation = &"AccentButton"
 text = "Save"
 
-[node name="Cancel" type="Button" parent="Cards/Lock/Box/Stage/Content"]
+[node name="Cancel" type="Button" parent="Cards/Lock/Box/Stage/Content" unique_id=1720862101]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Cancel"
 disabled = true
+text = "Cancel"
 
-[node name="Status" type="Label" parent="Cards/Lock/Box/Stage/Content"]
+[node name="Progress" type="ProgressBar" parent="Cards/Lock/Box/Stage/Content" unique_id=348308343]
+unique_name_in_owner = true
+layout_mode = 2
+show_percentage = false
+
+[node name="Status" type="Label" parent="Cards/Lock/Box/Stage/Content" unique_id=955546432]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"CaptionLabel"
-text = ""
-autowrap_mode = 3
+text = "Press Save to lock the fields while the form saves."
 horizontal_alignment = 1
+autowrap_mode = 3
 
-[node name="HitAreas" type="PanelContainer" parent="Cards"]
+[node name="HitAreas" type="PanelContainer" parent="Cards" unique_id=1837315652]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Card"
 
-[node name="Box" type="VBoxContainer" parent="Cards/HitAreas"]
+[node name="Box" type="VBoxContainer" parent="Cards/HitAreas" unique_id=405687329]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
-[node name="Header" type="VBoxContainer" parent="Cards/HitAreas/Box"]
+[node name="Header" type="VBoxContainer" parent="Cards/HitAreas/Box" unique_id=809517651]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 3
 
-[node name="Title" type="Label" parent="Cards/HitAreas/Box/Header"]
+[node name="Title" type="Label" parent="Cards/HitAreas/Box/Header" unique_id=1383707064]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Larger and smaller areas"
-
-[node name="Caption" type="Label" parent="Cards/HitAreas/Box/Header"]
-layout_mode = 2
-theme_type_variation = &"CaptionLabel"
-text = "raycast_padding moves each edge of the area that takes mouse and touch input, without changing the size or the drawing of the control. A padding of -12 px makes the 22 px close button easy to hit with a finger, and a padding of 14 px keeps the soft edges of the tile from reacting."
 autowrap_mode = 3
 
-[node name="Show" type="CheckButton" parent="Cards/HitAreas/Box"]
+[node name="Caption" type="Label" parent="Cards/HitAreas/Box/Header" unique_id=336869618]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "raycast_padding works on every Control node: it moves each edge of the area that takes mouse and touch input, without changing the size or the drawing of the control. A padding of -18 px makes the 33 px close button easy to hit with a finger, and a padding of 21 px keeps the soft edges of the tile from reacting."
+autowrap_mode = 3
+
+[node name="Show" type="CheckButton" parent="Cards/HitAreas/Box" unique_id=1814064817]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Show hit areas"
 button_pressed = true
+text = "Show hit areas"
 
-[node name="Stage" type="PanelContainer" parent="Cards/HitAreas/Box"]
+[node name="Stage" type="PanelContainer" parent="Cards/HitAreas/Box" unique_id=1263344983]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
-[node name="Content" type="VBoxContainer" parent="Cards/HitAreas/Box/Stage"]
+[node name="Content" type="VBoxContainer" parent="Cards/HitAreas/Box/Stage" unique_id=1256421854]
 layout_mode = 2
 size_flags_vertical = 3
-alignment = 1
-theme_override_constants/separation = 12
-
-[node name="Margin" type="MarginContainer" parent="Cards/HitAreas/Box/Stage/Content"]
-layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="Row" type="HBoxContainer" parent="Cards/HitAreas/Box/Stage/Content/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 28
+theme_override_constants/separation = 18
 alignment = 1
 
-[node name="Close" type="Button" parent="Cards/HitAreas/Box/Stage/Content/Margin/Row" groups=["hit_area"]]
-custom_minimum_size = Vector2(22.0, 22.0)
+[node name="Margin" type="MarginContainer" parent="Cards/HitAreas/Box/Stage/Content" unique_id=1142969789]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="Row" type="HBoxContainer" parent="Cards/HitAreas/Box/Stage/Content/Margin" unique_id=1561722780]
+layout_mode = 2
+theme_override_constants/separation = 42
+alignment = 1
+
+[node name="Close" type="Button" parent="Cards/HitAreas/Box/Stage/Content/Margin/Row" unique_id=173667706 groups=["hit_area"]]
+custom_minimum_size = Vector2(33.0, 33.0)
 layout_mode = 2
 size_flags_vertical = 4
+raycast_padding_left = -18.0
+raycast_padding_top = -18.0
+raycast_padding_right = -18.0
+raycast_padding_bottom = -18.0
 theme_type_variation = &"IconButton"
-text = "×"
-raycast_padding_left = -12.0
-raycast_padding_top = -12.0
-raycast_padding_right = -12.0
-raycast_padding_bottom = -12.0
+theme_override_constants/icon_max_width = 21
+icon = ExtResource("close_icon_svg")
+icon_alignment = 1
+expand_icon = true
 
-[node name="Tile" type="Button" parent="Cards/HitAreas/Box/Stage/Content/Margin/Row" groups=["hit_area"]]
-custom_minimum_size = Vector2(150.0, 64.0)
+[node name="Tile" type="Button" parent="Cards/HitAreas/Box/Stage/Content/Margin/Row" unique_id=152844464 groups=["hit_area"]]
+custom_minimum_size = Vector2(225.0, 96.0)
 layout_mode = 2
 size_flags_vertical = 4
+raycast_padding_left = 21.0
+raycast_padding_top = 21.0
+raycast_padding_right = 21.0
+raycast_padding_bottom = 21.0
 text = "Tile"
-raycast_padding_left = 14.0
-raycast_padding_top = 14.0
-raycast_padding_right = 14.0
-raycast_padding_bottom = 14.0
 
-[node name="Overlay" type="Control" parent="."]
+[node name="Overlay" type="Control" parent="." unique_id=681800561]
 unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("hit_area_overlay_gd")
-mouse_filter = 2
 top_level = true
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("hit_area_overlay_gd")

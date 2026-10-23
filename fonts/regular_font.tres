@@ -1,6 +1,6 @@
 [gd_resource type="FontVariation" format=3 uid="uid://lcsvmu33k2ce"]
 
-[ext_resource type="FontFile" uid="uid://d3o6vbcc061qo" path="res://fonts/rubik/Rubik.ttf" id="1_rubik"]
+[ext_resource type="FontFile" uid="uid://d3o6vbcc061qo" path="res://fonts/Rubik.ttf" id="1_rubik"]
 
 [resource]
 base_font = ExtResource("1_rubik")

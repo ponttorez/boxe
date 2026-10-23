@@ -48,7 +48,7 @@ SCENARIOS = {
     "bbcode": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
     "localization": {"size": (1280, 720), "crop": CONTENT, "gif_width": 860},
     "mobile": {"size": (1280, 720), "gif": False},
-    "phone": {"size": (405, 880), "gif": False, "locale": "ar"},
+    "phone": {"size": (405, 880), "gif": False},
 }
 
 

@@ -5,13 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://vquto2cjcjok" path="res://assets/sound_icon.svg" id="icon_sound"]
 [ext_resource type="Script" uid="uid://d11o8nnvn52qj" path="res://common/section_link.gd" id="link"]
 [ext_resource type="Script" uid="uid://ckticxavoaajw" path="res://main.gd" id="main"]
-[ext_resource type="PackedScene" path="res://sections/composites/composites.tscn" id="s_composites"]
-[ext_resource type="PackedScene" path="res://sections/controls/controls.tscn" id="s_controls"]
-[ext_resource type="PackedScene" path="res://sections/credits/credits.tscn" id="s_credits"]
-[ext_resource type="PackedScene" path="res://sections/input/input.tscn" id="s_input"]
-[ext_resource type="PackedScene" path="res://sections/mobile/mobile.tscn" id="s_mobile"]
-[ext_resource type="PackedScene" path="res://sections/text/text.tscn" id="s_text"]
-[ext_resource type="PackedScene" path="res://sections/theme/theme.tscn" id="s_theme"]
+[ext_resource type="PackedScene" uid="uid://ipsbaqhkmspx" path="res://sections/composites/composites.tscn" id="s_composites"]
+[ext_resource type="PackedScene" uid="uid://ddisrfyxn0apg" path="res://sections/controls/controls.tscn" id="s_controls"]
+[ext_resource type="PackedScene" uid="uid://bpld8d7kuhycf" path="res://sections/credits/credits.tscn" id="s_credits"]
+[ext_resource type="PackedScene" uid="uid://cjrtge4q7jkma" path="res://sections/input/input.tscn" id="s_input"]
+[ext_resource type="PackedScene" uid="uid://bopgjxvvs4104" path="res://sections/mobile/mobile.tscn" id="s_mobile"]
+[ext_resource type="PackedScene" uid="uid://bsm34yybw4vyx" path="res://sections/text/text.tscn" id="s_text"]
+[ext_resource type="PackedScene" uid="uid://b77jks7e3stm" path="res://sections/theme/theme.tscn" id="s_theme"]
 
 [sub_resource type="ButtonGroup" id="nav_group"]
 
@@ -46,12 +46,12 @@ theme_type_variation = &"Topbar"
 
 [node name="Bar" type="HBoxContainer" parent="SafeArea/Layout/Navbar" unique_id=1127609096]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
 [node name="Name" type="Label" parent="SafeArea/Layout/Navbar/Bar" unique_id=1141724218]
 auto_translate_mode = 2
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 text = "[b]boxe[/b]"
 bbcode_enabled = true
 
@@ -59,27 +59,28 @@ bbcode_enabled = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 
-[node name="NavMargin" type="MarginContainer" parent="SafeArea/Layout/Navbar/Bar/NavScroll"]
+[node name="NavMargin" type="MarginContainer" parent="SafeArea/Layout/Navbar/Bar/NavScroll" unique_id=1261707891]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
 
 [node name="Nav" type="HBoxContainer" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin" unique_id=1364859269]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 6
 
 [node name="Controls" type="Button" parent="SafeArea/Layout/Navbar/Bar/NavScroll/NavMargin/Nav" unique_id=376865761]
 layout_mode = 2
 theme_type_variation = &"NavButton"
 toggle_mode = true
 button_group = SubResource("nav_group")
-text = "Controls"
+text = "Library"
 alignment = 0
 script = ExtResource("link")
 section = ExtResource("s_controls")
@@ -139,12 +140,12 @@ layout_mode = 2
 
 [node name="Sound" type="Button" parent="SafeArea/Layout/Navbar/Bar" unique_id=1204743339]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(54.0, 54.0)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Sound"
 theme_type_variation = &"FlatIconButton"
-theme_override_constants/icon_max_width = 20
+theme_override_constants/icon_max_width = 30
 toggle_mode = true
 action_mode = 0
 icon = ExtResource("icon_sound")
@@ -154,15 +155,18 @@ icon_alignment = 1
 unique_name_in_owner = true
 
 [node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Navbar/Bar/Sound/SoundPopup" unique_id=2010961421]
-offset_left = 6.0
-offset_top = 6.0
-offset_right = 94.0
-offset_bottom = 192.0
-theme_override_constants/separation = 10
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 141.0
+offset_bottom = 141.0
+theme_override_constants/separation = 15
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Navbar/Bar/Sound/SoundPopup/Box" unique_id=1714897335]
+layout_mode = 2
 
 [node name="Volume" type="VSlider" parent="SafeArea/Layout/Navbar/Bar/Sound/SoundPopup/Box" unique_id=297923656]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0.0, 210.0)
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Volume"
@@ -172,35 +176,35 @@ value = 1.0
 
 [node name="Mute" type="Button" parent="SafeArea/Layout/Navbar/Bar/Sound/SoundPopup/Box" unique_id=1451722126]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(54.0, 54.0)
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Mute UI sounds"
 theme_type_variation = &"FlatIconButton"
-theme_override_constants/icon_max_width = 20
+theme_override_constants/icon_max_width = 30
 toggle_mode = true
 icon = ExtResource("icon_sound")
 icon_alignment = 1
 
 [node name="Language" type="MenuButton" parent="SafeArea/Layout/Navbar/Bar" unique_id=637253568]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(54.0, 54.0)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Language"
 theme_type_variation = &"FlatIconButton"
-theme_override_constants/icon_max_width = 20
+theme_override_constants/icon_max_width = 30
 icon = ExtResource("icon_language")
 flat = false
 icon_alignment = 1
 
 [node name="Credits" type="Button" parent="SafeArea/Layout/Navbar/Bar" unique_id=16545549]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(54.0, 54.0)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Credits"
 theme_type_variation = &"NavButton"
-theme_override_constants/icon_max_width = 20
+theme_override_constants/icon_max_width = 30
 toggle_mode = true
 button_group = SubResource("nav_group")
 icon = ExtResource("icon_info")
@@ -223,7 +227,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 36
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 36
-theme_override_constants/margin_bottom = 40
+theme_override_constants/margin_left = 54
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 54
+theme_override_constants/margin_bottom = 60

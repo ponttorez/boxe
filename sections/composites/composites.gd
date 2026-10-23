@@ -1,6 +1,7 @@
 extends VBoxContainer
 
-const OUTLINE_WIDTH := 5
+const OUTLINE_WIDTH := 7.5
+const SHADOW_OFFSET := Vector2(4.5, 9)
 
 @onready var _opacity: HSlider = %Opacity
 @onready var _opacity_value: Label = %OpacityValue
@@ -17,6 +18,16 @@ func _ready() -> void:
 	_opacity.value_changed.connect(_on_opacity_changed)
 	_on_opacity_changed(_opacity.value)
 	%Composite.toggled.connect(_on_composite_toggled)
+	get_viewport().size_changed.connect(_update_sticker)
+	_update_sticker()
+	resized.connect(_fit_sample)
+	_fit_sample()
+
+
+func _update_sticker() -> void:
+	var scale := get_viewport().get_final_transform().get_scale().x * _avatars.get_global_transform_with_canvas().get_scale().x
+	_sticker.set_shader_parameter(&"outline_width", OUTLINE_WIDTH * scale)
+	_sticker.set_shader_parameter(&"shadow_offset", SHADOW_OFFSET * scale)
 
 
 func _on_composite_toggled(on: bool) -> void:
@@ -36,7 +47,7 @@ func _outlined(style: StyleBoxFlat) -> StyleBoxLayered:
 		outlined.set_content_margin(side, style.get_content_margin(side))
 	outlined.corner_detail = 16
 	var layers: Array[StyleBoxLayer] = [
-		_layer(Color(0, 0, 0, 0.45), -OUTLINE_WIDTH, Vector2(3, 6)),
+		_layer(Color(0, 0, 0, 0.45), -OUTLINE_WIDTH, SHADOW_OFFSET),
 		_layer(Color.WHITE, -OUTLINE_WIDTH),
 		_layer(style.bg_color, 0),
 	]
@@ -58,3 +69,7 @@ func _on_opacity_changed(value: float) -> void:
 	_opacity_value.text = "%d%%" % roundi(value * 100.0)
 	for item: CanvasItem in [_avatars, _sample]:
 		item.modulate.a = value
+
+
+func _fit_sample() -> void:
+	_sample.label_settings.font_size = 66 if size.x > 720.0 else 45

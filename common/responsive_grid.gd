@@ -2,7 +2,7 @@
 class_name ResponsiveGrid
 extends GridContainer
 
-@export_range(100, 1000, 10, "suffix:px") var min_column_width := 380.0:
+@export_range(150, 1500, 10, "suffix:px") var min_column_width := 570.0:
 	set(value):
 		min_column_width = value
 		_update_columns()

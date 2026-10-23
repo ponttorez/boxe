@@ -1,13 +1,15 @@
 extends Control
 
-const NARROW_WIDTH := 860.0
+const NARROW_WIDTH := 1290.0
+const MIN_CONTENT_SIDE := 540.0
+const MAX_CONTENT_SIDE := 1080.0
+const UNITS_PER_DP := 1.5
 const UI_BUS := &"UI"
 const SOUND_ICON := preload("res://assets/sound_icon.svg")
 const SOUND_MUTED_ICON := preload("res://assets/sound_muted_icon.svg")
 const LANGUAGE_NAMES := {
 	"en": "English",
 	"ru": "Русский",
-	"ar": "العربية",
 }
 
 var _section: Control
@@ -36,6 +38,8 @@ func _ready() -> void:
 		TranslationServer.set_locale(args["locale"])
 	_setup_languages()
 	_setup_volume()
+	get_window().size_changed.connect(_update_content_scale)
+	_update_content_scale()
 	resized.connect(_update_layout)
 	_update_layout()
 	open_section(args.get("section", _nav.get_child(0).name))
@@ -123,7 +127,11 @@ func _update_sound_icons() -> void:
 
 func _setup_languages() -> void:
 	var popup := _language.get_popup()
-	for locale in TranslationServer.get_loaded_locales():
+	var locales: Array = LANGUAGE_NAMES.keys().filter(func(locale: String) -> bool: return TranslationServer.get_loaded_locales().has(locale))
+	for locale: String in TranslationServer.get_loaded_locales():
+		if not locales.has(locale):
+			locales.append(locale)
+	for locale: String in locales:
 		popup.add_radio_check_item(LANGUAGE_NAMES.get(locale, TranslationServer.get_locale_name(locale)))
 		popup.set_item_metadata(popup.item_count - 1, locale)
 	popup.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
@@ -155,7 +163,17 @@ func set_safe_area(mode: int) -> void:
 
 func _update_layout() -> void:
 	var narrow := size.x < NARROW_WIDTH
-	var margin := 16 if narrow else 36
+	var margin := 24 if narrow else 54
 	for side in ["left", "right"]:
 		_page.add_theme_constant_override("margin_" + side, margin)
-	_page.add_theme_constant_override("margin_top", 16 if narrow else 32)
+	_page.add_theme_constant_override("margin_top", 24 if narrow else 48)
+
+
+func _update_content_scale() -> void:
+	var window := get_window()
+	var pixels := Vector2(window.size)
+	var density := 1.0
+	if OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
+		density = maxf(DisplayServer.screen_get_dpi(window.current_screen) / 160.0, 1.0)
+	var side := clampf(minf(pixels.x, pixels.y) / density * UNITS_PER_DP, MIN_CONTENT_SIDE, MAX_CONTENT_SIDE)
+	window.content_scale_size = Vector2i(roundi(side), roundi(side))

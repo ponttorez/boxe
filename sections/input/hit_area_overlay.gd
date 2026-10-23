@@ -1,7 +1,7 @@
 extends Control
 
-const FILL := Color(1.0, 0.8, 0.25, 0.14)
-const OUTLINE := Color(1.0, 0.8, 0.25, 0.9)
+const FILL := Color(1.0, 0.87, 0.4, 0.14)
+const OUTLINE := Color(1.0, 0.87, 0.4, 0.9)
 
 
 func _process(_delta: float) -> void:
@@ -20,4 +20,4 @@ func _draw() -> void:
 				-control.get_raycast_padding(SIDE_RIGHT), -control.get_raycast_padding(SIDE_BOTTOM))
 		var rect := to_local * control.get_global_transform() * area
 		draw_rect(rect, FILL)
-		draw_rect(rect, OUTLINE, false, 1.0)
+		draw_rect(rect, OUTLINE, false, 1.5)

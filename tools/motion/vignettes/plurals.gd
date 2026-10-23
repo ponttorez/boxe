@@ -1,10 +1,10 @@
 extends Vignette
 ## A label shows "1 apples" unless code picks the forms. boxe labels pick the plural form of each language.
 
-const LOCALES := ["en", "ru", "ar"]
-const LINES := ["English", "Russian", "Arabic"]
+const LOCALES := ["en", "ru"]
+const LINES := ["English", "Russian"]
 # What a label shows when the number is put into one text.
-const NAIVE := ["You have %d apples.", "У тебя %d яблок.", "لديك %d تفاحات."]
+const NAIVE := ["You have %d apples.", "У тебя %d яблок."]
 
 
 func prepare() -> void:

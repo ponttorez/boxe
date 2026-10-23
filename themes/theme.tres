@@ -16,22 +16,23 @@
 [ext_resource type="AudioStream" uid="uid://m61dd46178a4" path="res://audio/submitted.wav" id="14_xmws8"]
 [ext_resource type="AudioStream" uid="uid://db3uot6bfxvck" path="res://audio/typed.wav" id="15_phn4g"]
 [ext_resource type="AudioStream" uid="uid://bnsu6orengjkl" path="res://audio/value_changed.wav" id="16_qhfi3"]
+[ext_resource type="Texture2D" uid="uid://ce8jbejixleug" path="res://assets/close_icon.svg" id="close_icon_svg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_em8py"]
-content_margin_left = 9.0
-content_margin_top = 3.0
-content_margin_right = 9.0
-content_margin_bottom = 4.0
+content_margin_left = 13.5
+content_margin_top = 4.5
+content_margin_right = 13.5
+content_margin_bottom = 6.0
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 0.2)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_53s2w"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
+blur = 9.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_wccwh"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.3)
@@ -41,24 +42,24 @@ mode = 1
 color = Color(1, 1, 1, 0.05)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_4pk65"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_53s2w"), SubResource("StyleBoxLayer_wccwh"), SubResource("StyleBoxLayer_lc0c0")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_v06gg"]
 mode = 2
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.4)
-blur = 9.0
-offset = Vector2(0, 3)
+blur = 13.5
+offset = Vector2(0, 4.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_2rnjf"]
 color = Color(0.3529412, 0.62352943, 0.83137256, 1)
@@ -68,24 +69,24 @@ mode = 1
 color = Color(1, 1, 1, 0.3)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_lf1rv"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.18
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_v06gg"), SubResource("StyleBoxLayer_2rnjf"), SubResource("StyleBoxLayer_vivaq")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_t3m6m"]
 mode = 2
 color = Color(0.21176471, 0.4392157, 0.6156863, 0.3)
-blur = 3.0
-offset = Vector2(0, 1)
+blur = 4.5
+offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_nbutc"]
 color = Color(0.21176471, 0.4392157, 0.6156863, 1)
@@ -95,25 +96,25 @@ mode = 1
 color = Color(1, 1, 1, 0.12)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_x1k7g"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.08
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_t3m6m"), SubResource("StyleBoxLayer_nbutc"), SubResource("StyleBoxLayer_jbe2m")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
-content_offset = Vector2(0, 1)
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
+content_offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_3s4jt"]
 mode = 2
 color = Color(0.21176471, 0.4392157, 0.6156863, 0.35)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_6hs01"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 1)
@@ -123,36 +124,36 @@ mode = 1
 color = Color(1, 1, 1, 0.18)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_7v728"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_3s4jt"), SubResource("StyleBoxLayer_6hs01"), SubResource("StyleBoxLayer_k35om")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_dialog"]
-content_margin_left = 8.0
-content_margin_top = 8.0
-content_margin_right = 8.0
-content_margin_bottom = 8.0
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
 bg_color = Color(0.16470589, 0.1882353, 0.22352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rkch"]
-content_margin_left = 9.0
-content_margin_top = 3.0
-content_margin_right = 9.0
-content_margin_bottom = 4.0
+content_margin_left = 13.5
+content_margin_top = 4.5
+content_margin_right = 13.5
+content_margin_bottom = 6.0
 bg_color = Color(1, 1, 1, 0.06)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_740g6"]
 random_pitch = 1.08
@@ -167,7 +168,7 @@ stream_0/stream = ExtResource("4_imp4c")
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_hu2t7"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
+blur = 9.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_tself"]
 color = Color(0.13333334, 0.15294118, 0.18039216, 1)
@@ -177,40 +178,40 @@ mode = 1
 color = Color(1, 1, 1, 0.03)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_c1od2"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_hu2t7"), SubResource("StyleBoxLayer_tself"), SubResource("StyleBoxLayer_0bbqp")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wc7sq"]
 draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-expand_margin_left = 3.0
-expand_margin_top = 3.0
-expand_margin_right = 3.0
-expand_margin_bottom = 3.0
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+expand_margin_left = 4.5
+expand_margin_top = 4.5
+expand_margin_right = 4.5
+expand_margin_bottom = 4.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_f01gg"]
 mode = 2
 color = Color(0, 0, 0, 0.35)
-blur = 7.0
-offset = Vector2(0, 3)
+blur = 10.5
+offset = Vector2(0, 4.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ww57f"]
 color = Color(0.25490198, 0.28627452, 0.34509805, 1)
@@ -220,24 +221,24 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.45)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_gjyn5"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.18
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_f01gg"), SubResource("StyleBoxLayer_ww57f"), SubResource("StyleBoxLayer_1224q")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ktm4k"]
 mode = 2
 color = Color(0, 0, 0, 0.25)
-blur = 2.0
-offset = Vector2(0, 1)
+blur = 3.0
+offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_5h1o6"]
 color = Color(0.1764706, 0.2, 0.23921569, 1)
@@ -247,25 +248,25 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.8)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_fyv8m"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.08
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_ktm4k"), SubResource("StyleBoxLayer_5h1o6"), SubResource("StyleBoxLayer_jlvhp")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
-content_offset = Vector2(0, 1)
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
+content_offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_k7l0u"]
 mode = 2
 color = Color(0, 0, 0, 0.28)
-blur = 4.0
-offset = Vector2(0, 1)
+blur = 6.0
+offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_cbvw5"]
 color = Color(0.21176471, 0.23921569, 0.2901961, 1)
@@ -275,24 +276,24 @@ mode = 1
 color = Color(1, 1, 1, 0.06)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_fkre0"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_k7l0u"), SubResource("StyleBoxLayer_cbvw5"), SubResource("StyleBoxLayer_btp60")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_y0try"]
 mode = 2
 color = Color(0, 0, 0, 0.18)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ssfuu"]
 color = Color(0.14901961, 0.16862746, 0.2, 1)
@@ -302,1190 +303,1305 @@ mode = 1
 color = Color(0.21176471, 0.23921569, 0.2901961, 1)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_g6lbo"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
+content_margin_bottom = 30.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_y0try"), SubResource("StyleBoxLayer_ssfuu"), SubResource("StyleBoxLayer_qsrh8")])
-corner_radius_top_left = 14.0
-corner_radius_top_right = 14.0
-corner_radius_bottom_right = 14.0
-corner_radius_bottom_left = 14.0
+corner_radius_top_left = 21.0
+corner_radius_top_right = 21.0
+corner_radius_bottom_right = 21.0
+corner_radius_bottom_left = 21.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark1"]
 color = Color(0.2784, 0.549, 0.749, 1)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark2"]
 color = Color(1, 1, 1, 0)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark3"]
 color = Color(0.2784, 0.549, 0.749, 1)
-corner_radius_adjust = -2.5
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+corner_radius_adjust = -3.75
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark4"]
-corner_radius_adjust = -3.0
-margin_left = 6.0
-margin_top = 6.0
-margin_right = 6.0
-margin_bottom = 6.0
+corner_radius_adjust = -4.5
+margin_left = 9.0
+margin_top = 9.0
+margin_right = 9.0
+margin_bottom = 9.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_checked"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark1"), SubResource("StyleBoxLayer_mark2"), SubResource("StyleBoxLayer_mark3"), SubResource("StyleBoxLayer_mark4")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark5"]
 color = Color(0.2784, 0.549, 0.749, 0.45)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark6"]
 color = Color(1, 1, 1, 0)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark7"]
 color = Color(0.2784, 0.549, 0.749, 0.45)
-corner_radius_adjust = -2.5
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+corner_radius_adjust = -3.75
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark8"]
 color = Color(1, 1, 1, 0.45)
-corner_radius_adjust = -3.0
-margin_left = 6.0
-margin_top = 6.0
-margin_right = 6.0
-margin_bottom = 6.0
+corner_radius_adjust = -4.5
+margin_left = 9.0
+margin_top = 9.0
+margin_right = 9.0
+margin_bottom = 9.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_checked_disabled"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark5"), SubResource("StyleBoxLayer_mark6"), SubResource("StyleBoxLayer_mark7"), SubResource("StyleBoxLayer_mark8")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_lsi6d"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_o16x0"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_lsi6d")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_0dpf0"]
 color = Color(1, 1, 1, 0.05)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_dk73u"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_0dpf0")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_1akgf"]
 color = Color(1, 1, 1, 0.05)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_t8ej0"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_1akgf")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_cvlvu"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_u5ioe"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_cvlvu")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_hk0pt"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_xhoi8"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_hk0pt")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark9"]
 color = Color(0.2784, 0.549, 0.749, 1)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark10"]
 color = Color(1, 1, 1, 0)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark11"]
 color = Color(0.2784, 0.549, 0.749, 1)
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark12"]
-margin_left = 6.5
-margin_top = 6.5
-margin_right = 6.5
-margin_bottom = 6.5
+margin_left = 9.75
+margin_top = 9.75
+margin_right = 9.75
+margin_bottom = 9.75
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_radio_checked"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark9"), SubResource("StyleBoxLayer_mark10"), SubResource("StyleBoxLayer_mark11"), SubResource("StyleBoxLayer_mark12")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark13"]
 color = Color(0.2784, 0.549, 0.749, 0.45)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark14"]
 color = Color(1, 1, 1, 0)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark15"]
 color = Color(0.2784, 0.549, 0.749, 0.45)
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark16"]
 color = Color(1, 1, 1, 0.45)
-margin_left = 6.5
-margin_top = 6.5
-margin_right = 6.5
-margin_bottom = 6.5
+margin_left = 9.75
+margin_top = 9.75
+margin_right = 9.75
+margin_bottom = 9.75
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_radio_checked_disabled"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark13"), SubResource("StyleBoxLayer_mark14"), SubResource("StyleBoxLayer_mark15"), SubResource("StyleBoxLayer_mark16")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark17"]
 color = Color(0.102, 0.118, 0.141, 1)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark18"]
 color = Color(1, 1, 1, 0.28)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark19"]
 color = Color(0.102, 0.118, 0.141, 1)
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark20"]
 color = Color(1, 1, 1, 0)
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = 10.0
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 15.0
+margin_bottom = 15.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_radio_unchecked"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark17"), SubResource("StyleBoxLayer_mark18"), SubResource("StyleBoxLayer_mark19"), SubResource("StyleBoxLayer_mark20")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark21"]
 color = Color(0.102, 0.118, 0.141, 0.45)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark22"]
 color = Color(1, 1, 1, 0.126)
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark23"]
 color = Color(0.102, 0.118, 0.141, 0.45)
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark24"]
 color = Color(1, 1, 1, 0)
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = 10.0
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 15.0
+margin_bottom = 15.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_radio_unchecked_disabled"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark21"), SubResource("StyleBoxLayer_mark22"), SubResource("StyleBoxLayer_mark23"), SubResource("StyleBoxLayer_mark24")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark25"]
 color = Color(0.102, 0.118, 0.141, 1)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark26"]
 color = Color(1, 1, 1, 0.28)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark27"]
 color = Color(0.102, 0.118, 0.141, 1)
-corner_radius_adjust = -2.5
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+corner_radius_adjust = -3.75
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark28"]
 color = Color(1, 1, 1, 0)
-corner_radius_adjust = -3.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = 10.0
+corner_radius_adjust = -4.5
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 15.0
+margin_bottom = 15.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_unchecked"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark25"), SubResource("StyleBoxLayer_mark26"), SubResource("StyleBoxLayer_mark27"), SubResource("StyleBoxLayer_mark28")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark29"]
 color = Color(0.102, 0.118, 0.141, 0.45)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark30"]
 color = Color(1, 1, 1, 0.126)
-corner_radius_adjust = -1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -1.5
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark31"]
 color = Color(0.102, 0.118, 0.141, 0.45)
-corner_radius_adjust = -2.5
-margin_left = 3.5
-margin_top = 3.5
-margin_right = 3.5
-margin_bottom = 3.5
+corner_radius_adjust = -3.75
+margin_left = 5.25
+margin_top = 5.25
+margin_right = 5.25
+margin_bottom = 5.25
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mark32"]
 color = Color(1, 1, 1, 0)
-corner_radius_adjust = -3.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = 10.0
+corner_radius_adjust = -4.5
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 15.0
+margin_bottom = 15.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_unchecked_disabled"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark29"), SubResource("StyleBoxLayer_mark30"), SubResource("StyleBoxLayer_mark31"), SubResource("StyleBoxLayer_mark32")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check25"]
 color = Color(0.2784, 0.549, 0.749, 1)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check26"]
-corner_radius_adjust = -4.0
-margin_left = 20.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 30.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_checked"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check25"), SubResource("StyleBoxLayer_check26")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check29"]
 color = Color(0.2784, 0.549, 0.749, 0.45)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check30"]
 color = Color(1, 1, 1, 0.45)
-corner_radius_adjust = -4.0
-margin_left = 20.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 30.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_checked_disabled"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check29"), SubResource("StyleBoxLayer_check30")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check31"]
 color = Color(0.2784, 0.549, 0.749, 0.45)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check32"]
 color = Color(1, 1, 1, 0.45)
-corner_radius_adjust = -4.0
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 20.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 30.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_checked_disabled_mirrored"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check31"), SubResource("StyleBoxLayer_check32")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check27"]
 color = Color(0.2784, 0.549, 0.749, 1)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check28"]
-corner_radius_adjust = -4.0
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 20.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 30.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_checked_mirrored"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check27"), SubResource("StyleBoxLayer_check28")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_typat"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_qevok"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_typat")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_0ikwm"]
 color = Color(1, 1, 1, 0.05)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_vjtm1"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_0ikwm")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_pdjbq"]
 color = Color(1, 1, 1, 0.05)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_bqlps"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_pdjbq")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ejhvb"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_ll1lg"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_ejhvb")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_788aw"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_8pg18"]
-content_margin_left = 6.0
-content_margin_top = 4.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_788aw")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check33"]
 color = Color(1, 1, 1, 0.1)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check34"]
 color = Color(0.7843, 0.8, 0.8196, 1)
-corner_radius_adjust = -4.0
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 20.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 30.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_unchecked"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check33"), SubResource("StyleBoxLayer_check34")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check37"]
 color = Color(1, 1, 1, 0.045)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check38"]
 color = Color(0.7843, 0.8, 0.8196, 0.45)
-corner_radius_adjust = -4.0
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 20.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 30.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_unchecked_disabled"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check37"), SubResource("StyleBoxLayer_check38")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check39"]
 color = Color(1, 1, 1, 0.045)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check40"]
 color = Color(0.7843, 0.8, 0.8196, 0.45)
-corner_radius_adjust = -4.0
-margin_left = 20.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 30.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_unchecked_disabled_mirrored"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check39"), SubResource("StyleBoxLayer_check40")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check35"]
 color = Color(1, 1, 1, 0.1)
-corner_radius_adjust = -1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
+corner_radius_adjust = -1.5
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_check36"]
 color = Color(0.7843, 0.8, 0.8196, 1)
-corner_radius_adjust = -4.0
-margin_left = 20.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
+corner_radius_adjust = -6.0
+margin_left = 30.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_toggle_unchecked_mirrored"]
-content_margin_left = 19.0
-content_margin_top = 11.0
-content_margin_right = 19.0
-content_margin_bottom = 11.0
+content_margin_left = 28.5
+content_margin_top = 16.5
+content_margin_right = 28.5
+content_margin_bottom = 16.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_check35"), SubResource("StyleBoxLayer_check36")])
-corner_radius_top_left = 11.0
-corner_radius_top_right = 11.0
-corner_radius_bottom_right = 11.0
-corner_radius_bottom_left = 11.0
+corner_radius_top_left = 16.5
+corner_radius_top_right = 16.5
+corner_radius_bottom_right = 16.5
+corner_radius_bottom_left = 16.5
 corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_1nieg"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_8dcby"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_1nieg")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_5mau7"]
 color = Color(1, 1, 1, 0.07)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_vtter"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_5mau7")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ccxk5"]
 color = Color(1, 1, 1, 0.07)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_5qx8i"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_ccxk5")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_fmaf2"]
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_fc41o"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_fmaf2")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_vp60g"]
 color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_r7go5"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.08
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_vp60g")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wi2ey"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
+content_margin_left = 18.0
+content_margin_top = 18.0
+content_margin_right = 18.0
+content_margin_bottom = 18.0
 bg_color = Color(1, 1, 1, 0.02)
-corner_radius_bottom_right = 9
-corner_radius_bottom_left = 9
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-expand_margin_top = 17.0
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+expand_margin_top = 25.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_dt54l"]
 color = Color(1, 1, 1, 0.08)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_q4l0c"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_dt54l")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_gg85j"]
 color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_2v372"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_gg85j")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_n4pcy"]
 color = Color(1, 1, 1, 0.08)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_2d3b6"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_n4pcy")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_w7m43"]
 color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_j7mqh"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_w7m43")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_90"]
+mode = 2
+color = Color(0.1176, 0.2275, 0.3725, 0.349)
+blur = 18.0
+offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_91"]
+color = Color(1, 1, 1, 0.1098)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_92"]
+mode = 1
+color = Color(1, 1, 1, 0.251)
+width = 9.0
+blend = true
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_93"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_94"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.2
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_90"), SubResource("theme_page_StyleBoxLayer_91"), SubResource("theme_page_StyleBoxLayer_92"), SubResource("theme_page_StyleBoxLayer_93")])
+corner_radius_top_left = 24.0
+corner_radius_top_right = 24.0
+corner_radius_bottom_right = 24.0
+corner_radius_bottom_left = 24.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_95"]
+mode = 2
+color = Color(0.1176, 0.2275, 0.3725, 0.2)
+blur = 18.0
+offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_96"]
+color = Color(1, 1, 1, 0.07059)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_97"]
+mode = 1
+color = Color(1, 1, 1, 0.1804)
+width = 9.0
+blend = true
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_98"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_99"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.06
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_95"), SubResource("theme_page_StyleBoxLayer_96"), SubResource("theme_page_StyleBoxLayer_97"), SubResource("theme_page_StyleBoxLayer_98")])
+corner_radius_top_left = 24.0
+corner_radius_top_right = 24.0
+corner_radius_bottom_right = 24.0
+corner_radius_bottom_left = 24.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_85"]
+mode = 2
+color = Color(0, 0, 0, 0.251)
+blur = 18.0
+offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_86"]
+color = Color(1, 1, 1, 0.05098)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_87"]
+mode = 1
+color = Color(1, 1, 1, 0.102)
+width = 9.0
+blend = true
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_88"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_89"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.3
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_85"), SubResource("theme_page_StyleBoxLayer_86"), SubResource("theme_page_StyleBoxLayer_87"), SubResource("theme_page_StyleBoxLayer_88")])
+corner_radius_top_left = 24.0
+corner_radius_top_right = 24.0
+corner_radius_bottom_right = 24.0
+corner_radius_bottom_left = 24.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xc8t"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 bg_color = Color(1, 1, 1, 0.14)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_top = -3.0
-expand_margin_bottom = -3.0
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_top = -4.5
+expand_margin_bottom = -4.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4hhs"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 0.7)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_top = -1.5
-expand_margin_bottom = -1.5
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_top = -2.25
+expand_margin_bottom = -2.25
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01tod"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.08
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_top = -1.5
-expand_margin_bottom = -1.5
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_top = -2.25
+expand_margin_bottom = -2.25
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lfvqu"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_kprvm"]
 color = Color(1, 1, 1, 0.06)
 grow_begin = 0.0
 grow_end = 0.0
-thickness = 2
+thickness = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber"]
-content_margin_left = 9.0
-content_margin_top = 9.0
-content_margin_right = 9.0
-content_margin_bottom = 9.0
+content_margin_left = 13.5
+content_margin_top = 13.5
+content_margin_right = 13.5
+content_margin_bottom = 13.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
 border_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_radius_bottom_right = 9
-corner_radius_bottom_left = 9
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 corner_detail = 12
 shadow_color = Color(0, 0, 0, 0.25)
-shadow_size = 3
-shadow_offset = Vector2(0, 1)
+shadow_size = 5
+shadow_offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5n52"]
-content_margin_top = 3.0
-content_margin_bottom = 3.0
+content_margin_top = 4.5
+content_margin_bottom = 4.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grljb"]
-content_margin_top = 3.0
-content_margin_bottom = 3.0
+content_margin_top = 4.5
+content_margin_bottom = 4.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.3529412, 0.62352943, 0.83137256, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber_disabled"]
-content_margin_left = 9.0
-content_margin_top = 9.0
-content_margin_right = 9.0
-content_margin_bottom = 9.0
+content_margin_left = 13.5
+content_margin_top = 13.5
+content_margin_right = 13.5
+content_margin_bottom = 13.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
 border_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_radius_bottom_right = 9
-corner_radius_bottom_left = 9
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 corner_detail = 12
 shadow_color = Color(0, 0, 0, 0.25)
-shadow_size = 3
-shadow_offset = Vector2(0, 1)
+shadow_size = 5
+shadow_offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber_highlight"]
-content_margin_left = 9.0
-content_margin_top = 9.0
-content_margin_right = 9.0
-content_margin_bottom = 9.0
+content_margin_left = 13.5
+content_margin_top = 13.5
+content_margin_right = 13.5
+content_margin_bottom = 13.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
 border_color = Color(0.4392157, 0.73333335, 1, 1)
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_radius_bottom_right = 9
-corner_radius_bottom_left = 9
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 corner_detail = 12
 shadow_color = Color(0, 0, 0, 0.25)
-shadow_size = 3
-shadow_offset = Vector2(0, 1)
+shadow_size = 5
+shadow_offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmcoc"]
-content_margin_top = 3.0
-content_margin_bottom = 3.0
+content_margin_top = 4.5
+content_margin_bottom = 4.5
 bg_color = Color(1, 1, 1, 0.12)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_qnqys"]
-color = Color(0, 0, 0, 0)
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_disabled_fill"]
+color = Color(1, 0.47058824, 0.41960785, 0.06)
 
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_x8pi5"]
-content_margin_left = 2.0
-content_margin_top = 0.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_disabled_rim"]
+mode = 1
+color = Color(1, 0.47058824, 0.41960785, 0.12)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_danger_disabled"]
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_qnqys")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_danger_disabled_fill"), SubResource("StyleBoxLayer_danger_disabled_rim")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_d3rbp"]
-color = Color(1, 0.47058824, 0.41960785, 1)
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_hover_fill"]
+color = Color(1, 0.47058824, 0.41960785, 0.3)
 
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_gd3ra"]
-content_margin_left = 2.0
-content_margin_top = 0.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_hover_rim"]
+mode = 1
+color = Color(1, 0.47058824, 0.41960785, 0.55)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_danger_hover"]
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_d3rbp")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_danger_hover_fill"), SubResource("StyleBoxLayer_danger_hover_rim")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mkcgc"]
-color = Color(0.8784314, 0.3529412, 0.29803923, 1)
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_pressed_fill"]
+color = Color(1, 0.47058824, 0.41960785, 0.5)
 
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_hnah0"]
-content_margin_left = 2.0
-content_margin_top = 0.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
-transition_duration = 0.06
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_pressed_rim"]
+mode = 1
+color = Color(1, 0.47058824, 0.41960785, 0.8)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_danger_pressed"]
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
+transition_duration = 0.08
 transition_type = 7
 transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mkcgc")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_danger_pressed_fill"), SubResource("StyleBoxLayer_danger_pressed_rim")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_b2247"]
-color = Color(1, 1, 1, 0.04)
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_normal_fill"]
+color = Color(1, 0.47058824, 0.41960785, 0.14)
 
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_4sw5x"]
-content_margin_left = 2.0
-content_margin_top = 0.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_danger_normal_rim"]
+mode = 1
+color = Color(1, 0.47058824, 0.41960785, 0.3)
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_danger_normal"]
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_b2247")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_danger_normal_fill"), SubResource("StyleBoxLayer_danger_normal_rim")])
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_k7doe"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_tva68"]
 color = Color(0.101960786, 0.11764706, 0.14117648, 1)
@@ -1495,15 +1611,15 @@ mode = 1
 color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_862wu"]
-content_margin_left = 14.0
-content_margin_top = 14.0
-content_margin_right = 14.0
-content_margin_bottom = 14.0
+content_margin_left = 21.0
+content_margin_top = 21.0
+content_margin_right = 21.0
+content_margin_bottom = 21.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_k7doe"), SubResource("StyleBoxLayer_tva68"), SubResource("StyleBoxLayer_8rkd7")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_l2yjw"]
 random_pitch = 1.08
@@ -1524,18 +1640,18 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_jlfig"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_a4ai0"), SubResource("StyleBoxLayer_ahjx5")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_abyb8"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.3)
@@ -1545,18 +1661,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.6)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_1cdjl"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_abyb8"), SubResource("StyleBoxLayer_s6c3h")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_f15it"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.35)
@@ -1566,24 +1682,24 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.8)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_u6eq0"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_f15it"), SubResource("StyleBoxLayer_iybrx")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_1jr2i"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_7ywva"]
 color = Color(0.101960786, 0.11764706, 0.14117648, 1)
@@ -1593,15 +1709,15 @@ mode = 1
 color = Color(1, 1, 1, 0.06)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_i6sw3"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 9.0
+content_margin_bottom = 9.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_1jr2i"), SubResource("StyleBoxLayer_7ywva"), SubResource("StyleBoxLayer_6lyk6")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_wv0g0"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.25)
@@ -1611,18 +1727,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.45)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_rvbjb"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_wv0g0"), SubResource("StyleBoxLayer_kiach")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_kcv36"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.3)
@@ -1632,18 +1748,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.7)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_uqa4b"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_kcv36"), SubResource("StyleBoxLayer_o3rmq")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_nf425"]
 random_pitch = 1.25
@@ -1653,7 +1769,7 @@ stream_0/stream = ExtResource("15_phn4g")
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_85sbh"]
 mode = 2
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.35)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_m3c84"]
 color = Color(0.12156863, 0.14509805, 0.1882353, 1)
@@ -1663,23 +1779,23 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_em2eo"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_85sbh"), SubResource("StyleBoxLayer_m3c84"), SubResource("StyleBoxLayer_4u758")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_vqo24"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_nlx5v"]
 color = Color(0.101960786, 0.11764706, 0.14117648, 1)
@@ -1689,23 +1805,23 @@ mode = 1
 color = Color(1, 1, 1, 0.08)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_orya8"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_vqo24"), SubResource("StyleBoxLayer_nlx5v"), SubResource("StyleBoxLayer_se3kc")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_nk0vn"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_4dnyv"]
 color = Color(0.11372549, 0.12941177, 0.15294118, 1)
@@ -1715,18 +1831,23 @@ mode = 1
 color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_470oh"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_nk0vn"), SubResource("StyleBoxLayer_4dnyv"), SubResource("StyleBoxLayer_rxi5o")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_link"]
+transition_duration = 0.15
+transition_type = 7
+transition_ease = 1
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ljopa"]
 color = Color(0, 0, 0, 0)
@@ -1736,18 +1857,18 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_iuyow"]
-content_margin_left = 14.0
-content_margin_top = 9.0
-content_margin_right = 14.0
-content_margin_bottom = 9.0
+content_margin_left = 21.0
+content_margin_top = 13.5
+content_margin_right = 21.0
+content_margin_bottom = 13.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_ljopa"), SubResource("StyleBoxLayer_p2jcj")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_0sotl"]
 color = Color(1, 1, 1, 0.05)
@@ -1757,18 +1878,18 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_3qitw"]
-content_margin_left = 14.0
-content_margin_top = 9.0
-content_margin_right = 14.0
-content_margin_bottom = 9.0
+content_margin_left = 21.0
+content_margin_top = 13.5
+content_margin_right = 21.0
+content_margin_bottom = 13.5
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_0sotl"), SubResource("StyleBoxLayer_0mmh0")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_i17au"]
 color = Color(0, 0, 0, 0)
@@ -1778,18 +1899,18 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_dft0a"]
-content_margin_left = 14.0
-content_margin_top = 9.0
-content_margin_right = 14.0
-content_margin_bottom = 9.0
+content_margin_left = 21.0
+content_margin_top = 13.5
+content_margin_right = 21.0
+content_margin_bottom = 13.5
 transition_duration = 0.3
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_i17au"), SubResource("StyleBoxLayer_cwe1d")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_sjt2v"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.18)
@@ -1799,18 +1920,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.5)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_3qued"]
-content_margin_left = 14.0
-content_margin_top = 9.0
-content_margin_right = 14.0
-content_margin_bottom = 9.0
+content_margin_left = 21.0
+content_margin_top = 13.5
+content_margin_right = 21.0
+content_margin_bottom = 13.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_sjt2v"), SubResource("StyleBoxLayer_5pw5d")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_kn53k"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.24)
@@ -1820,18 +1941,97 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.6)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_e1x13"]
-content_margin_left = 14.0
-content_margin_top = 9.0
-content_margin_right = 14.0
-content_margin_bottom = 9.0
+content_margin_left = 21.0
+content_margin_top = 13.5
+content_margin_right = 21.0
+content_margin_bottom = 13.5
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_kn53k"), SubResource("StyleBoxLayer_cwebh")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_104"]
+mode = 2
+color = Color(0.4392, 0.7333, 1, 0.549)
+blur = 21.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_105"]
+color = Color(0.07451, 0.1569, 0.2353, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_106"]
+mode = 1
+color = Color(0.7804, 0.898, 1, 1)
+width = 3.0
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_107"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.2
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_104"), SubResource("theme_page_StyleBoxLayer_105"), SubResource("theme_page_StyleBoxLayer_106")])
+corner_radius_top_left = 18.0
+corner_radius_top_right = 18.0
+corner_radius_bottom_right = 18.0
+corner_radius_bottom_left = 18.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_108"]
+mode = 2
+color = Color(0.4392, 0.7333, 1, 0.8)
+blur = 30.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_109"]
+color = Color(0.102, 0.2078, 0.3137, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_110"]
+mode = 1
+width = 3.0
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_111"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.05
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_108"), SubResource("theme_page_StyleBoxLayer_109"), SubResource("theme_page_StyleBoxLayer_110")])
+corner_radius_top_left = 18.0
+corner_radius_top_right = 18.0
+corner_radius_bottom_right = 18.0
+corner_radius_bottom_left = 18.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_100"]
+mode = 2
+color = Color(0.4392, 0.7333, 1, 0.251)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_101"]
+color = Color(0.05882, 0.1137, 0.1686, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_102"]
+mode = 1
+color = Color(0.5608, 0.7961, 1, 0.702)
+width = 3.0
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_103"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.4
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_100"), SubResource("theme_page_StyleBoxLayer_101"), SubResource("theme_page_StyleBoxLayer_102")])
+corner_radius_top_left = 18.0
+corner_radius_top_right = 18.0
+corner_radius_bottom_right = 18.0
+corner_radius_bottom_left = 18.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2rtm"]
 bg_color = Color(0.10980392, 0.1254902, 0.15294118, 1)
@@ -1839,8 +2039,8 @@ bg_color = Color(0.10980392, 0.1254902, 0.15294118, 1)
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_jfjtt"]
 mode = 2
 color = Color(0, 0, 0, 0.18)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_vtddo"]
 color = Color(0.14901961, 0.16862746, 0.2, 1)
@@ -1850,15 +2050,127 @@ mode = 1
 color = Color(0.21176471, 0.23921569, 0.2901961, 1)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_n2tx4"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
+content_margin_bottom = 30.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_jfjtt"), SubResource("StyleBoxLayer_vtddo"), SubResource("StyleBoxLayer_jt5ps")])
-corner_radius_top_left = 14.0
-corner_radius_top_right = 14.0
-corner_radius_bottom_right = 14.0
-corner_radius_bottom_left = 14.0
+corner_radius_top_left = 21.0
+corner_radius_top_right = 21.0
+corner_radius_bottom_right = 21.0
+corner_radius_bottom_left = 21.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_117"]
+color = Color(0.05882, 0.2392, 0.1412, 1)
+offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_118"]
+color = Color(0.4941, 0.902, 0.651, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_119"]
+mode = 1
+color = Color(0.05882, 0.2392, 0.1412, 1)
+width = 6.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_120"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 6.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_121"]
+content_margin_left = 33.0
+content_margin_top = 12.0
+content_margin_right = 33.0
+content_margin_bottom = 12.0
+transition_duration = 0.1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_117"), SubResource("theme_page_StyleBoxLayer_118"), SubResource("theme_page_StyleBoxLayer_119"), SubResource("theme_page_StyleBoxLayer_120")])
+corner_style = 1
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+pixel_size = 6.0
+pixel_snap = false
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_122"]
+color = Color(0.05882, 0.2392, 0.1412, 1)
+offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_123"]
+color = Color(0.3686, 0.8353, 0.5451, 1)
+offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_124"]
+mode = 1
+color = Color(0.05882, 0.2392, 0.1412, 1)
+width = 6.0
+offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_125"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 6.0
+offset = Vector2(6, 6)
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_126"]
+content_margin_left = 33.0
+content_margin_top = 12.0
+content_margin_right = 33.0
+content_margin_bottom = 12.0
+transition_duration = 0.05
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_122"), SubResource("theme_page_StyleBoxLayer_123"), SubResource("theme_page_StyleBoxLayer_124"), SubResource("theme_page_StyleBoxLayer_125")])
+corner_style = 1
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+pixel_size = 6.0
+pixel_snap = false
+content_offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_112"]
+color = Color(0.05882, 0.2392, 0.1412, 1)
+offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_113"]
+color = Color(0.3686, 0.8353, 0.5451, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_114"]
+mode = 1
+color = Color(0.05882, 0.2392, 0.1412, 1)
+width = 6.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_115"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 6.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_116"]
+content_margin_left = 33.0
+content_margin_top = 12.0
+content_margin_right = 33.0
+content_margin_bottom = 12.0
+transition_duration = 0.1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_112"), SubResource("theme_page_StyleBoxLayer_113"), SubResource("theme_page_StyleBoxLayer_114"), SubResource("theme_page_StyleBoxLayer_115")])
+corner_style = 1
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
+pixel_size = 6.0
+pixel_snap = false
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3rsaa"]
 random_pitch = 1.08
@@ -1869,24 +2181,24 @@ stream_0/stream = ExtResource("3_oi4s6")
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.25)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_44fka"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.1
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_egoq3")])
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_i2x14"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_tnxps"]
 color = Color(0.16470589, 0.1882353, 0.22352941, 1)
@@ -1896,24 +2208,384 @@ mode = 1
 color = Color(1, 1, 1, 0.1)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_utxad"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 9.0
+content_margin_bottom = 9.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_i2x14"), SubResource("StyleBoxLayer_tnxps"), SubResource("StyleBoxLayer_52seg")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_preview"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+transition_duration = 0.18
+transition_type = 7
+transition_ease = 1
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0)
+corner_radius_top_left = 21
+corner_radius_top_right = 21
+corner_radius_bottom_right = 21
+corner_radius_bottom_left = 21
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_preview_hover"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+transition_duration = 0.18
+transition_type = 7
+transition_ease = 1
+bg_color = Color(1, 1, 1, 0.04)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.1)
+corner_radius_top_left = 21
+corner_radius_top_right = 21
+corner_radius_bottom_right = 21
+corner_radius_bottom_left = 21
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_preview_hover_pressed"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+transition_duration = 0.18
+transition_type = 7
+transition_ease = 1
+bg_color = Color(0.2784314, 0.54901963, 0.7490196, 0.18)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.4392157, 0.73333335, 1, 1)
+corner_radius_top_left = 21
+corner_radius_top_right = 21
+corner_radius_bottom_right = 21
+corner_radius_bottom_left = 21
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_preview_pressed"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+transition_duration = 0.18
+transition_type = 7
+transition_ease = 1
+bg_color = Color(0.2784314, 0.54901963, 0.7490196, 0.12)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
+corner_radius_top_left = 21
+corner_radius_top_right = 21
+corner_radius_bottom_right = 21
+corner_radius_bottom_left = 21
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u8yt5"]
-content_margin_top = 4.0
-content_margin_bottom = 4.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
 bg_color = Color(1, 1, 1, 0.08)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_75"]
+mode = 2
+color = Color(0, 0, 0, 0.4)
+offset = Vector2(0, 12)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_76"]
+color = Color(0.2118, 0.4392, 0.6157, 1)
+offset = Vector2(0, 9)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_77"]
+color = Color(0.3529, 0.6235, 0.8314, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_78"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+width = 2.25
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_79"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.15
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_75"), SubResource("theme_page_StyleBoxLayer_76"), SubResource("theme_page_StyleBoxLayer_77"), SubResource("theme_page_StyleBoxLayer_78")])
+corner_radius_top_left = 18.0
+corner_radius_top_right = 18.0
+corner_radius_bottom_right = 18.0
+corner_radius_bottom_left = 18.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_80"]
+mode = 2
+color = Color(0, 0, 0, 0.302)
+blur = 6.0
+offset = Vector2(0, 10.5)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_81"]
+color = Color(0.1804, 0.3725, 0.5255, 1)
+offset = Vector2(0, 9)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_82"]
+color = Color(0.2471, 0.4863, 0.6784, 1)
+offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_83"]
+mode = 1
+color = Color(1, 1, 1, 0.149)
+width = 2.25
+offset = Vector2(0, 6)
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_84"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.06
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_80"), SubResource("theme_page_StyleBoxLayer_81"), SubResource("theme_page_StyleBoxLayer_82"), SubResource("theme_page_StyleBoxLayer_83")])
+corner_radius_top_left = 18.0
+corner_radius_top_right = 18.0
+corner_radius_bottom_right = 18.0
+corner_radius_bottom_left = 18.0
+content_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_70"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 9.0
+offset = Vector2(0, 10.5)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_71"]
+color = Color(0.1804, 0.3725, 0.5255, 1)
+offset = Vector2(0, 9)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_72"]
+color = Color(0.2784, 0.549, 0.749, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_73"]
+mode = 1
+color = Color(1, 1, 1, 0.2)
+width = 2.25
+margin_left = 1.5
+margin_top = 1.5
+margin_right = 1.5
+margin_bottom = 1.5
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_74"]
+content_margin_left = 33.0
+content_margin_top = 16.5
+content_margin_right = 33.0
+content_margin_bottom = 16.5
+transition_duration = 0.25
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_70"), SubResource("theme_page_StyleBoxLayer_71"), SubResource("theme_page_StyleBoxLayer_72"), SubResource("theme_page_StyleBoxLayer_73")])
+corner_radius_top_left = 18.0
+corner_radius_top_right = 18.0
+corner_radius_bottom_right = 18.0
+corner_radius_bottom_left = 18.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_143"]
+mode = 1
+color = Color(0.2784, 0.549, 0.749, 0.702)
+width = 3.0
+margin_left = -7.5
+margin_top = -7.5
+margin_right = -7.5
+margin_bottom = -7.5
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_144"]
+color = Color(0.2549, 0.2863, 0.3451, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_145"]
+mode = 1
+color = Color(1, 1, 1, 0.07843)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_146"]
+content_margin_left = 36.0
+content_margin_top = 16.5
+content_margin_right = 36.0
+content_margin_bottom = 16.5
+transition_duration = 0.3
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_143"), SubResource("theme_page_StyleBoxLayer_144"), SubResource("theme_page_StyleBoxLayer_145")])
+corner_radius_top_left = 36.0
+corner_radius_top_right = 36.0
+corner_radius_bottom_right = 36.0
+corner_radius_bottom_left = 36.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_147"]
+mode = 1
+color = Color(0.4392, 0.7333, 1, 1)
+width = 3.0
+margin_left = -4.5
+margin_top = -4.5
+margin_right = -4.5
+margin_bottom = -4.5
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_148"]
+color = Color(0.1647, 0.2902, 0.4, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_149"]
+mode = 1
+color = Color(1, 1, 1, 0.07843)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_150"]
+content_margin_left = 36.0
+content_margin_top = 16.5
+content_margin_right = 36.0
+content_margin_bottom = 16.5
+transition_duration = 0.08
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_147"), SubResource("theme_page_StyleBoxLayer_148"), SubResource("theme_page_StyleBoxLayer_149")])
+corner_radius_top_left = 36.0
+corner_radius_top_right = 36.0
+corner_radius_bottom_right = 36.0
+corner_radius_bottom_left = 36.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_139"]
+mode = 1
+color = Color(0.2784, 0.549, 0.749, 0)
+width = 3.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_140"]
+color = Color(0.2118, 0.2392, 0.2902, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_141"]
+mode = 1
+color = Color(1, 1, 1, 0.07843)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_142"]
+content_margin_left = 36.0
+content_margin_top = 16.5
+content_margin_right = 36.0
+content_margin_bottom = 16.5
+transition_duration = 0.35
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_139"), SubResource("theme_page_StyleBoxLayer_140"), SubResource("theme_page_StyleBoxLayer_141")])
+corner_radius_top_left = 36.0
+corner_radius_top_right = 36.0
+corner_radius_bottom_right = 36.0
+corner_radius_bottom_left = 36.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_131"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 9.0
+offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_132"]
+color = Color(1, 0.8941, 0.5412, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_133"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_134"]
+content_margin_left = 39.0
+content_margin_top = 16.5
+content_margin_right = 39.0
+content_margin_bottom = 16.5
+transition_duration = 0.25
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_131"), SubResource("theme_page_StyleBoxLayer_132"), SubResource("theme_page_StyleBoxLayer_133")])
+skew = Vector2(0.12, 0)
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_135"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 9.0
+offset = Vector2(0, 1.5)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_136"]
+color = Color(0.9412, 0.7843, 0.2706, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_137"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_138"]
+content_margin_left = 39.0
+content_margin_top = 16.5
+content_margin_right = 39.0
+content_margin_bottom = 16.5
+transition_duration = 0.06
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_135"), SubResource("theme_page_StyleBoxLayer_136"), SubResource("theme_page_StyleBoxLayer_137")])
+skew = Vector2(0.35, 0)
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_127"]
+mode = 2
+color = Color(0, 0, 0, 0.349)
+blur = 9.0
+offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_128"]
+color = Color(1, 0.8667, 0.3961, 1)
+
+[sub_resource type="StyleBoxLayer" id="theme_page_StyleBoxLayer_129"]
+mode = 1
+color = Color(1, 1, 1, 0.349)
+
+[sub_resource type="StyleBoxLayered" id="theme_page_StyleBoxLayered_130"]
+content_margin_left = 39.0
+content_margin_top = 16.5
+content_margin_right = 39.0
+content_margin_bottom = 16.5
+transition_duration = 0.35
+transition_type = 10
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("theme_page_StyleBoxLayer_127"), SubResource("theme_page_StyleBoxLayer_128"), SubResource("theme_page_StyleBoxLayer_129")])
+skew = Vector2(0.35, 0)
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7j1dp"]
 random_pitch = 1.04
@@ -1926,31 +2598,31 @@ streams_count = 1
 stream_0/stream = ExtResource("16_qhfi3")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_hover"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
 bg_color = Color(1, 1, 1, 0.06)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_pressed"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
 bg_color = Color(1, 1, 1, 0.12)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ppwld"]
 mode = 2
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.35)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_2uqvg"]
 color = Color(0.12156863, 0.14509805, 0.1882353, 1)
@@ -1960,23 +2632,23 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_f5t1i"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_ppwld"), SubResource("StyleBoxLayer_2uqvg"), SubResource("StyleBoxLayer_eg15k")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_at67x"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_yv3w8"]
 color = Color(0.101960786, 0.11764706, 0.14117648, 1)
@@ -1986,23 +2658,23 @@ mode = 1
 color = Color(1, 1, 1, 0.08)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_j6b3v"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_at67x"), SubResource("StyleBoxLayer_yv3w8"), SubResource("StyleBoxLayer_n1tud")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_gr3m5"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ddj7a"]
 color = Color(0.11372549, 0.12941177, 0.15294118, 1)
@@ -2012,34 +2684,34 @@ mode = 1
 color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_nh6ji"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_gr3m5"), SubResource("StyleBoxLayer_ddj7a"), SubResource("StyleBoxLayer_44v37")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8fk77"]
-content_margin_left = 16.0
-content_margin_top = 16.0
-content_margin_right = 16.0
-content_margin_bottom = 16.0
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
 bg_color = Color(0.12156863, 0.13725491, 0.16470589, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_312q6"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
+blur = 9.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_bv4a6"]
 color = Color(0.13333334, 0.15294118, 0.18039216, 1)
@@ -2049,23 +2721,23 @@ mode = 1
 color = Color(1, 1, 1, 0.03)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_yajsf"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_312q6"), SubResource("StyleBoxLayer_bv4a6"), SubResource("StyleBoxLayer_syelt")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_egw0u"]
 mode = 2
 color = Color(0, 0, 0, 0.35)
-blur = 7.0
-offset = Vector2(0, 3)
+blur = 10.5
+offset = Vector2(0, 4.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_vinb5"]
 color = Color(0.25490198, 0.28627452, 0.34509805, 1)
@@ -2075,23 +2747,23 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.45)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_mdp5m"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_egw0u"), SubResource("StyleBoxLayer_vinb5"), SubResource("StyleBoxLayer_lxqei")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_6dpy3"]
 mode = 2
 color = Color(0, 0, 0, 0.25)
-blur = 2.0
-offset = Vector2(0, 1)
+blur = 3.0
+offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_3g3ra"]
 color = Color(0.1764706, 0.2, 0.23921569, 1)
@@ -2101,24 +2773,24 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.8)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_giw1e"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_6dpy3"), SubResource("StyleBoxLayer_3g3ra"), SubResource("StyleBoxLayer_4fwd2")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
-content_offset = Vector2(0, 1)
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
+content_offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_owuj6"]
 mode = 2
 color = Color(0, 0, 0, 0.28)
-blur = 4.0
-offset = Vector2(0, 1)
+blur = 6.0
+offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_pb3uo"]
 color = Color(0.21176471, 0.23921569, 0.2901961, 1)
@@ -2128,23 +2800,23 @@ mode = 1
 color = Color(1, 1, 1, 0.06)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_0orma"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_owuj6"), SubResource("StyleBoxLayer_pb3uo"), SubResource("StyleBoxLayer_40l0u")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_xi2q6"]
 mode = 2
 color = Color(0, 0, 0, 0.25)
-blur = 2.0
-offset = Vector2(0, 1)
+blur = 3.0
+offset = Vector2(0, 1.5)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_2yxox"]
 color = Color(0.1764706, 0.2, 0.23921569, 1)
@@ -2154,18 +2826,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.8)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_wxx8p"]
-content_margin_left = 16.0
-content_margin_top = 9.0
-content_margin_right = 16.0
-content_margin_bottom = 9.0
+content_margin_left = 24.0
+content_margin_top = 13.5
+content_margin_right = 24.0
+content_margin_bottom = 13.5
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_xi2q6"), SubResource("StyleBoxLayer_2yxox"), SubResource("StyleBoxLayer_xr58q")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
-content_offset = Vector2(0, 1)
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
+content_offset = Vector2(0, 1.5)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_omo58"]
 random_pitch = 1.08
@@ -2180,31 +2852,31 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_7weut"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_yt4ax"), SubResource("StyleBoxLayer_5hk0d")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apgv1"]
 draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 3.0
-expand_margin_top = 3.0
-expand_margin_right = 3.0
-expand_margin_bottom = 3.0
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 4.5
+expand_margin_top = 4.5
+expand_margin_right = 4.5
+expand_margin_bottom = 4.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_blvl7"]
 color = Color(1, 1, 1, 0.05)
@@ -2214,18 +2886,18 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_ny0yi"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_blvl7"), SubResource("StyleBoxLayer_stijv")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_4m6m7"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.2)
@@ -2235,18 +2907,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.6)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_j3evm"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_4m6m7"), SubResource("StyleBoxLayer_oeiw3")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_h58km"]
 color = Color(0, 0, 0, 0)
@@ -2256,24 +2928,24 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_b47rl"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_h58km"), SubResource("StyleBoxLayer_ay5bd")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_yur2h"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_5xu1c"]
 color = Color(0.14901961, 0.16862746, 0.2, 1)
@@ -2283,15 +2955,15 @@ mode = 1
 color = Color(0.21176471, 0.23921569, 0.2901961, 1)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_qbrp3"]
-content_margin_left = 14.0
-content_margin_top = 14.0
-content_margin_right = 14.0
-content_margin_bottom = 14.0
+content_margin_left = 21.0
+content_margin_top = 21.0
+content_margin_right = 21.0
+content_margin_bottom = 21.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_yur2h"), SubResource("StyleBoxLayer_5xu1c"), SubResource("StyleBoxLayer_l1te5")])
-corner_radius_top_left = 12.0
-corner_radius_top_right = 12.0
-corner_radius_bottom_right = 12.0
-corner_radius_bottom_left = 12.0
+corner_radius_top_left = 18.0
+corner_radius_top_right = 18.0
+corner_radius_bottom_right = 18.0
+corner_radius_bottom_left = 18.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_18mk2"]
 color = Color(0, 0, 0, 0)
@@ -2301,31 +2973,31 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_ue2yq"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_18mk2"), SubResource("StyleBoxLayer_g1sa3")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_taqpp"]
 draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 3.0
-expand_margin_top = 3.0
-expand_margin_right = 3.0
-expand_margin_bottom = 3.0
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 4.5
+expand_margin_top = 4.5
+expand_margin_right = 4.5
+expand_margin_bottom = 4.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_fk414"]
 color = Color(1, 1, 1, 0.05)
@@ -2335,18 +3007,18 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_3jpmy"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_fk414"), SubResource("StyleBoxLayer_p038d")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_wl0s5"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.2)
@@ -2356,18 +3028,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.6)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_set60"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_wl0s5"), SubResource("StyleBoxLayer_5sytb")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_kpe8m"]
 color = Color(0, 0, 0, 0)
@@ -2377,21 +3049,21 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_wbl8w"]
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 7.0
+content_margin_left = 21.0
+content_margin_top = 10.5
+content_margin_right = 21.0
+content_margin_bottom = 10.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_kpe8m"), SubResource("StyleBoxLayer_crpx5")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j2oyd"]
-content_margin_bottom = 8.0
+content_margin_bottom = 12.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_xn5on"]
 random_pitch = 1.25
@@ -2401,7 +3073,7 @@ stream_0/stream = ExtResource("15_phn4g")
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_gx6st"]
 mode = 2
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.35)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_hv3jn"]
 color = Color(0.12156863, 0.14509805, 0.1882353, 1)
@@ -2411,23 +3083,23 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_vkxtv"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_gx6st"), SubResource("StyleBoxLayer_hv3jn"), SubResource("StyleBoxLayer_ptf5x")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_wb4ee"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_oxlax"]
 color = Color(0.101960786, 0.11764706, 0.14117648, 1)
@@ -2437,23 +3109,23 @@ mode = 1
 color = Color(1, 1, 1, 0.08)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_5q7rx"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_wb4ee"), SubResource("StyleBoxLayer_oxlax"), SubResource("StyleBoxLayer_n7f0h")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_csw05"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 5.0
+blur = 7.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_gu0uy"]
 color = Color(0.11372549, 0.12941177, 0.15294118, 1)
@@ -2463,24 +3135,24 @@ mode = 1
 color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_pcsrr"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_csw05"), SubResource("StyleBoxLayer_gu0uy"), SubResource("StyleBoxLayer_lpdus")])
-corner_radius_top_left = 9.0
-corner_radius_top_right = 9.0
-corner_radius_bottom_right = 9.0
-corner_radius_bottom_left = 9.0
+corner_radius_top_left = 13.5
+corner_radius_top_right = 13.5
+corner_radius_bottom_right = 13.5
+corner_radius_bottom_left = 13.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_nckht"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_cupch"]
 color = Color(0.1764706, 0.2, 0.23921569, 1)
@@ -2490,23 +3162,23 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.45)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_mkcqj"]
-content_margin_left = 10.0
-content_margin_top = 6.0
-content_margin_right = 10.0
-content_margin_bottom = 6.0
+content_margin_left = 15.0
+content_margin_top = 9.0
+content_margin_right = 15.0
+content_margin_bottom = 9.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_nckht"), SubResource("StyleBoxLayer_cupch"), SubResource("StyleBoxLayer_u0xnx")])
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
+corner_radius_top_left = 12.0
+corner_radius_top_right = 12.0
+corner_radius_bottom_right = 12.0
+corner_radius_bottom_left = 12.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pikql"]
-content_margin_left = 14.0
-content_margin_top = 16.0
-content_margin_right = 14.0
-content_margin_bottom = 12.0
+content_margin_left = 21.0
+content_margin_top = 24.0
+content_margin_right = 21.0
+content_margin_bottom = 18.0
 bg_color = Color(0.12941177, 0.14901961, 0.18039216, 1)
-border_width_right = 1
+border_width_right = 2
 border_color = Color(1, 1, 1, 0.04)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ve5fq"]
@@ -2530,18 +3202,18 @@ mode = 1
 color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_erfe1"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_5yt77"), SubResource("StyleBoxLayer_qcmbs")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_mh4gw"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.3)
@@ -2551,18 +3223,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.6)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_kxd4j"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mh4gw"), SubResource("StyleBoxLayer_r3y8j")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_7in6u"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.35)
@@ -2572,24 +3244,69 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.8)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_jorr1"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_7in6u"), SubResource("StyleBoxLayer_sn3o4")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_indeterminate_bar"]
+corner_radius_adjust = -7.5
+margin_left = 7.5
+margin_top = 13.5
+margin_right = 7.5
+margin_bottom = 13.5
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_indeterminate"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+transition_duration = 0.2
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark1"), SubResource("StyleBoxLayer_mark2"), SubResource("StyleBoxLayer_mark3"), SubResource("StyleBoxLayer_indeterminate_bar")])
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
+corner_detail = 16
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_indeterminate_disabled_bar"]
+color = Color(1, 1, 1, 0.45)
+corner_radius_adjust = -7.5
+margin_left = 7.5
+margin_top = 13.5
+margin_right = 7.5
+margin_bottom = 13.5
+
+[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_check_indeterminate_disabled"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+transition_duration = 0.2
+transition_type = 7
+transition_ease = 1
+layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_mark5"), SubResource("StyleBoxLayer_mark6"), SubResource("StyleBoxLayer_mark7"), SubResource("StyleBoxLayer_indeterminate_disabled_bar")])
+corner_radius_top_left = 9.0
+corner_radius_top_right = 9.0
+corner_radius_bottom_right = 9.0
+corner_radius_bottom_left = 9.0
+corner_detail = 16
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_f0xc3"]
 mode = 2
 color = Color(0, 0, 0, 0)
-blur = 6.0
-offset = Vector2(0, 2)
+blur = 9.0
+offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_aubyw"]
 color = Color(0.101960786, 0.11764706, 0.14117648, 1)
@@ -2599,15 +3316,15 @@ mode = 1
 color = Color(1, 1, 1, 0.06)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_07hya"]
-content_margin_left = 10.0
-content_margin_top = 8.0
-content_margin_right = 10.0
-content_margin_bottom = 8.0
+content_margin_left = 15.0
+content_margin_top = 12.0
+content_margin_right = 15.0
+content_margin_bottom = 12.0
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_f0xc3"), SubResource("StyleBoxLayer_aubyw"), SubResource("StyleBoxLayer_cm6t4")])
-corner_radius_top_left = 10.0
-corner_radius_top_right = 10.0
-corner_radius_bottom_right = 10.0
-corner_radius_bottom_left = 10.0
+corner_radius_top_left = 15.0
+corner_radius_top_right = 15.0
+corner_radius_bottom_right = 15.0
+corner_radius_bottom_left = 15.0
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_ofq47"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.25)
@@ -2617,18 +3334,18 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.45)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_ouhe2"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_ofq47"), SubResource("StyleBoxLayer_ay05g")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_4tngy"]
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.3)
@@ -2638,214 +3355,217 @@ mode = 1
 color = Color(0.2784314, 0.54901963, 0.7490196, 0.7)
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_vtdmp"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
 transition_duration = 0.2
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_4tngy"), SubResource("StyleBoxLayer_84d3v")])
-corner_radius_top_left = 7.0
-corner_radius_top_right = 7.0
-corner_radius_bottom_right = 7.0
-corner_radius_bottom_left = 7.0
+corner_radius_top_left = 10.5
+corner_radius_top_right = 10.5
+corner_radius_bottom_right = 10.5
+corner_radius_bottom_left = 10.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_title_hover"]
-content_margin_left = 8.0
-content_margin_top = 6.0
-content_margin_right = 8.0
-content_margin_bottom = 6.0
+content_margin_left = 12.0
+content_margin_top = 9.0
+content_margin_right = 12.0
+content_margin_bottom = 9.0
 bg_color = Color(1, 1, 1, 0.07)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_title"]
-content_margin_left = 8.0
-content_margin_top = 6.0
-content_margin_right = 8.0
-content_margin_bottom = 6.0
+content_margin_left = 12.0
+content_margin_top = 9.0
+content_margin_right = 12.0
+content_margin_bottom = 9.0
 bg_color = Color(1, 1, 1, 0.03)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_title_pressed"]
-content_margin_left = 8.0
-content_margin_top = 6.0
-content_margin_right = 8.0
-content_margin_bottom = 6.0
+content_margin_left = 12.0
+content_margin_top = 9.0
+content_margin_right = 12.0
+content_margin_bottom = 9.0
 bg_color = Color(1, 1, 1, 0.11)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4708"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.25
 transition_type = 7
 transition_ease = 1
 bg_color = Color(1, 1, 1, 0.14)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_left = -3.0
-expand_margin_right = -3.0
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_left = -4.5
+expand_margin_right = -4.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jymir"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.15
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 0.7)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_left = -1.5
-expand_margin_right = -1.5
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_left = -2.25
+expand_margin_right = -2.25
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kuqxe"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 transition_duration = 0.08
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_left = -1.5
-expand_margin_right = -1.5
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_left = -2.25
+expand_margin_right = -2.25
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_yqv8c"]
 color = Color(1, 1, 1, 0.06)
 grow_begin = 0.0
 grow_end = 0.0
-thickness = 2
+thickness = 3
 vertical = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vslider_grabber_area"]
-content_margin_left = 3.0
-content_margin_right = 3.0
+content_margin_left = 4.5
+content_margin_right = 4.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vslider_grabber_area_highlight"]
-content_margin_left = 3.0
-content_margin_right = 3.0
+content_margin_left = 4.5
+content_margin_right = 4.5
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 bg_color = Color(0.3529412, 0.62352943, 0.83137256, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vslider_slider"]
-content_margin_left = 3.0
-content_margin_right = 3.0
+content_margin_left = 4.5
+content_margin_right = 4.5
 bg_color = Color(1, 1, 1, 0.12)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_tip"]
-bg_color = Color(0.8784314, 0.8784314, 0.8784314, 0.85)
-corner_radius_top_left = 999
-corner_radius_top_right = 999
-corner_radius_bottom_right = 999
-corner_radius_bottom_left = 999
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_tip_pressed"]
-bg_color = Color(0.4392157, 0.73333335, 1, 1)
-corner_radius_top_left = 999
-corner_radius_top_right = 999
-corner_radius_bottom_right = 999
-corner_radius_bottom_left = 999
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_window"]
-bg_color = Color(0.16470589, 0.1882353, 0.22352941, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 8.0
-expand_margin_top = 36.0
-expand_margin_right = 8.0
-expand_margin_bottom = 8.0
-shadow_color = Color(0, 0, 0, 0.35)
-shadow_size = 12
-shadow_offset = Vector2(0, 4)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_ring"]
 color = Color(1, 1, 1, 0.14)
 
 [sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_fill"]
 color = Color(0.16549, 0.18036, 0.20653, 1)
-corner_radius_adjust = -2.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_ring_pressed"]
-color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_fill_pressed"]
-color = Color(0.19185, 0.20603, 0.23154, 1)
-corner_radius_adjust = -2.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
+corner_radius_adjust = -3.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_joystick"]
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_joy_ring"), SubResource("StyleBoxLayer_joy_fill")])
-corner_radius_top_left = 999.0
-corner_radius_top_right = 999.0
-corner_radius_bottom_right = 999.0
-corner_radius_bottom_left = 999.0
-corner_detail = 24
+corner_radius_top_left = 1498.5
+corner_radius_top_right = 1498.5
+corner_radius_bottom_right = 1498.5
+corner_radius_bottom_left = 1498.5
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_tip"]
+bg_color = Color(0.8784314, 0.8784314, 0.8784314, 0.85)
+corner_radius_top_left = 1499
+corner_radius_top_right = 1499
+corner_radius_bottom_right = 1499
+corner_radius_bottom_left = 1499
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_ring_pressed"]
+color = Color(0.2784314, 0.54901963, 0.7490196, 0.9)
+
+[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_joy_fill_pressed"]
+color = Color(0.19185, 0.20603, 0.23154, 1)
+corner_radius_adjust = -3.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 3.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxLayered" id="StyleBoxLayered_joystick_pressed"]
 transition_duration = 0.12
 transition_type = 7
 transition_ease = 1
 layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_joy_ring_pressed"), SubResource("StyleBoxLayer_joy_fill_pressed")])
-corner_radius_top_left = 999.0
-corner_radius_top_right = 999.0
-corner_radius_bottom_right = 999.0
-corner_radius_bottom_left = 999.0
-corner_detail = 24
+corner_radius_top_left = 1498.5
+corner_radius_top_right = 1498.5
+corner_radius_bottom_right = 1498.5
+corner_radius_bottom_left = 1498.5
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_tip_pressed"]
+bg_color = Color(0.4392157, 0.73333335, 1, 1)
+corner_radius_top_left = 1499
+corner_radius_top_right = 1499
+corner_radius_bottom_right = 1499
+corner_radius_bottom_left = 1499
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lib_window"]
+draw_center = false
+border_width_left = 15
+border_width_top = 57
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(0.16470589, 0.1882353, 0.22352941, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 12.0
+expand_margin_top = 54.0
+expand_margin_right = 12.0
+expand_margin_bottom = 12.0
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup_shadow"]
 draw_center = false
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_radius_bottom_right = 9
-corner_radius_bottom_left = 9
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 shadow_color = Color(0, 0, 0, 0.35)
-shadow_size = 12
-shadow_offset = Vector2(0, 4)
+shadow_size = 18
 
 [resource]
 resource_name = "boxe Demo"
 default_font = ExtResource("9_53ewu")
-default_font_size = 16
+default_font_size = 24
 AccentBadgeLabel/base_type = &"BadgeLabel"
 AccentBadgeLabel/colors/font_color = Color(0.65882355, 0.8352941, 1, 1)
 AccentBadgeLabel/styles/normal = SubResource("StyleBoxFlat_em8py")
@@ -2864,7 +3584,7 @@ AccentButton/styles/pressed = SubResource("StyleBoxLayered_x1k7g")
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_lib_dialog")
 BadgeLabel/base_type = &"Label"
 BadgeLabel/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
-BadgeLabel/font_sizes/font_size = 12
+BadgeLabel/font_sizes/font_size = 18
 BadgeLabel/fonts/font = ExtResource("1_id4dl")
 BadgeLabel/styles/normal = SubResource("StyleBoxFlat_1rkch")
 BaseButton/sounds/denied = ExtResource("2_w3cml")
@@ -2874,7 +3594,7 @@ BaseButton/sounds/toggled_off = ExtResource("5_g773b")
 BaseButton/sounds/toggled_on = ExtResource("6_d81ev")
 BodyLabel/base_type = &"Label"
 BodyLabel/colors/font_color = Color(0.78431374, 0.8, 0.81960785, 1)
-BodyLabel/font_sizes/font_size = 15
+BodyLabel/font_sizes/font_size = 23
 Button/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 Button/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 Button/colors/font_focus_color = Color(1, 1, 1, 1)
@@ -2887,7 +3607,7 @@ Button/colors/icon_hover_color = Color(1, 1, 1, 1)
 Button/colors/icon_hover_pressed_color = Color(0.7490196, 0.8784314, 1, 1)
 Button/colors/icon_normal_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 Button/colors/icon_pressed_color = Color(0.7490196, 0.8784314, 1, 1)
-Button/constants/h_separation = 8
+Button/constants/h_separation = 12
 Button/fonts/bold_font = ExtResource("1_id4dl")
 Button/fonts/bold_italics_font = ExtResource("7_72bos")
 Button/fonts/italics_font = ExtResource("8_xeclr")
@@ -2900,12 +3620,12 @@ Button/styles/normal = SubResource("StyleBoxLayered_fkre0")
 Button/styles/pressed = SubResource("StyleBoxLayered_fyv8m")
 CaptionLabel/base_type = &"Label"
 CaptionLabel/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
-CaptionLabel/font_sizes/font_size = 13
+CaptionLabel/font_sizes/font_size = 20
 Card/base_type = &"PanelContainer"
 Card/styles/panel = SubResource("StyleBoxLayered_g6lbo")
 CheckBox/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 CheckBox/colors/font_pressed_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
-CheckBox/constants/h_separation = 8
+CheckBox/constants/h_separation = 12
 CheckBox/fonts/bold_font = ExtResource("1_id4dl")
 CheckBox/fonts/bold_italics_font = ExtResource("7_72bos")
 CheckBox/fonts/italics_font = ExtResource("8_xeclr")
@@ -2925,7 +3645,7 @@ CheckBox/styles/unchecked = SubResource("StyleBoxLayered_check_unchecked")
 CheckBox/styles/unchecked_disabled = SubResource("StyleBoxLayered_check_unchecked_disabled")
 CheckButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 CheckButton/colors/font_pressed_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
-CheckButton/constants/h_separation = 8
+CheckButton/constants/h_separation = 12
 CheckButton/fonts/bold_font = ExtResource("1_id4dl")
 CheckButton/fonts/bold_italics_font = ExtResource("7_72bos")
 CheckButton/fonts/italics_font = ExtResource("8_xeclr")
@@ -2943,9 +3663,11 @@ CheckButton/styles/unchecked = SubResource("StyleBoxLayered_toggle_unchecked")
 CheckButton/styles/unchecked_disabled = SubResource("StyleBoxLayered_toggle_unchecked_disabled")
 CheckButton/styles/unchecked_disabled_mirrored = SubResource("StyleBoxLayered_toggle_unchecked_disabled_mirrored")
 CheckButton/styles/unchecked_mirrored = SubResource("StyleBoxLayered_toggle_unchecked_mirrored")
+ColorPicker/constants/sv_height = 240
+ColorPicker/constants/sv_width = 300
 ColorPicker/styles/sample_focus = SubResource("StyleBoxFlat_wc7sq")
-ColorPickerButton/constants/color_corner_radius = 5
-ColorPickerButton/constants/popup_separation = 6
+ColorPickerButton/constants/color_corner_radius = 8
+ColorPickerButton/constants/popup_separation = 9
 Control/fonts/bold_font = ExtResource("1_id4dl")
 Control/fonts/bold_italics_font = ExtResource("7_72bos")
 Control/fonts/italics_font = ExtResource("8_xeclr")
@@ -2964,6 +3686,7 @@ FoldableContainer/fonts/bold_font = ExtResource("1_id4dl")
 FoldableContainer/fonts/bold_italics_font = ExtResource("7_72bos")
 FoldableContainer/fonts/italics_font = ExtResource("8_xeclr")
 FoldableContainer/fonts/mono_font = ExtResource("9_53ewu")
+FoldableContainer/sounds/hover = SubResource("AudioStreamRandomizer_740g6")
 FoldableContainer/sounds/toggled_off = ExtResource("10_uv8us")
 FoldableContainer/sounds/toggled_on = ExtResource("11_7xeo8")
 FoldableContainer/styles/focus = SubResource("StyleBoxFlat_wc7sq")
@@ -2972,17 +3695,22 @@ FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxLaye
 FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxLayered_2v372")
 FoldableContainer/styles/title_hover_panel = SubResource("StyleBoxLayered_2d3b6")
 FoldableContainer/styles/title_panel = SubResource("StyleBoxLayered_j7mqh")
-GridContainer/constants/h_separation = 12
-GridContainer/constants/v_separation = 12
-HBoxContainer/constants/separation = 10
-HFlowContainer/constants/h_separation = 10
-HFlowContainer/constants/v_separation = 10
+GlassButton/base_type = &"Button"
+GlassButton/styles/hover = SubResource("theme_page_StyleBoxLayered_94")
+GlassButton/styles/hover_pressed = SubResource("theme_page_StyleBoxLayered_99")
+GlassButton/styles/normal = SubResource("theme_page_StyleBoxLayered_89")
+GlassButton/styles/pressed = SubResource("theme_page_StyleBoxLayered_99")
+GridContainer/constants/h_separation = 18
+GridContainer/constants/v_separation = 18
+HBoxContainer/constants/separation = 15
+HFlowContainer/constants/h_separation = 15
+HFlowContainer/constants/v_separation = 15
 HScrollBar/styles/grabber = SubResource("StyleBoxFlat_5xc8t")
 HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_v4hhs")
 HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_01tod")
 HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_lfvqu")
 HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_lfvqu")
-HSeparator/constants/separation = 12
+HSeparator/constants/separation = 18
 HSeparator/styles/separator = SubResource("StyleBoxLine_kprvm")
 HSlider/styles/grabber = SubResource("StyleBoxFlat_grabber")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_o5n52")
@@ -2992,25 +3720,29 @@ HSlider/styles/grabber_highlight = SubResource("StyleBoxFlat_grabber_highlight")
 HSlider/styles/slider = SubResource("StyleBoxFlat_pmcoc")
 HeaderLabel/base_type = &"Label"
 HeaderLabel/colors/font_color = Color(1, 1, 1, 1)
-HeaderLabel/font_sizes/font_size = 18
+HeaderLabel/font_sizes/font_size = 27
 HeaderLabel/fonts/font = ExtResource("1_id4dl")
 IconButton/base_type = &"Button"
-IconButton/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
+IconButton/colors/font_color = Color(1, 0.47058824, 0.41960785, 1)
 IconButton/colors/font_hover_color = Color(1, 1, 1, 1)
 IconButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-IconButton/font_sizes/font_size = 13
-IconButton/styles/disabled = SubResource("StyleBoxLayered_x8pi5")
-IconButton/styles/hover = SubResource("StyleBoxLayered_gd3ra")
-IconButton/styles/hover_pressed = SubResource("StyleBoxLayered_hnah0")
-IconButton/styles/normal = SubResource("StyleBoxLayered_4sw5x")
-IconButton/styles/pressed = SubResource("StyleBoxLayered_hnah0")
+IconButton/colors/icon_focus_color = Color(1, 0.47058824, 0.41960785, 1)
+IconButton/colors/icon_hover_color = Color(1, 1, 1, 1)
+IconButton/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+IconButton/colors/icon_normal_color = Color(1, 0.47058824, 0.41960785, 1)
+IconButton/colors/icon_pressed_color = Color(1, 1, 1, 1)
+IconButton/styles/disabled = SubResource("StyleBoxLayered_danger_disabled")
+IconButton/styles/hover = SubResource("StyleBoxLayered_danger_hover")
+IconButton/styles/hover_pressed = SubResource("StyleBoxLayered_danger_pressed")
+IconButton/styles/normal = SubResource("StyleBoxLayered_danger_normal")
+IconButton/styles/pressed = SubResource("StyleBoxLayered_danger_pressed")
 Inset/base_type = &"PanelContainer"
 Inset/styles/panel = SubResource("StyleBoxLayered_862wu")
 ItemList/colors/font_color = Color(0.78431374, 0.8, 0.81960785, 1)
 ItemList/colors/font_hovered_color = Color(1, 1, 1, 1)
 ItemList/colors/font_selected_color = Color(1, 1, 1, 1)
 ItemList/colors/guide_color = Color(0, 0, 0, 0)
-ItemList/constants/v_separation = 4
+ItemList/constants/v_separation = 6
 ItemList/fonts/bold_font = ExtResource("1_id4dl")
 ItemList/fonts/bold_italics_font = ExtResource("7_72bos")
 ItemList/fonts/italics_font = ExtResource("8_xeclr")
@@ -3043,29 +3775,38 @@ LineEdit/styles/focus = SubResource("StyleBoxLayered_em2eo")
 LineEdit/styles/normal = SubResource("StyleBoxLayered_orya8")
 LineEdit/styles/read_only = SubResource("StyleBoxLayered_470oh")
 LinkButton/colors/font_color = Color(0.4392157, 0.73333335, 1, 1)
+LinkButton/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
+LinkButton/colors/font_focus_color = Color(0.65882355, 0.8352941, 1, 1)
 LinkButton/colors/font_hover_color = Color(0.65882355, 0.8352941, 1, 1)
+LinkButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 LinkButton/colors/font_pressed_color = Color(1, 1, 1, 1)
 LinkButton/fonts/bold_font = ExtResource("1_id4dl")
 LinkButton/fonts/bold_italics_font = ExtResource("7_72bos")
 LinkButton/fonts/italics_font = ExtResource("8_xeclr")
 LinkButton/fonts/mono_font = ExtResource("9_53ewu")
+LinkButton/styles/disabled = SubResource("StyleBoxEmpty_link")
 LinkButton/styles/focus = SubResource("StyleBoxFlat_wc7sq")
+LinkButton/styles/hover = SubResource("StyleBoxEmpty_link")
+LinkButton/styles/normal = SubResource("StyleBoxEmpty_link")
+LinkButton/styles/pressed = SubResource("StyleBoxEmpty_link")
 MenuBar/colors/font_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 MenuBar/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 MenuBar/colors/font_focus_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 MenuBar/colors/font_hover_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 MenuBar/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 MenuBar/colors/font_pressed_color = Color(1, 1, 1, 1)
-MenuBar/constants/popup_separation = 6
+MenuBar/constants/popup_separation = 9
 MenuBar/fonts/bold_font = ExtResource("1_id4dl")
 MenuBar/fonts/bold_italics_font = ExtResource("7_72bos")
 MenuBar/fonts/italics_font = ExtResource("8_xeclr")
 MenuBar/fonts/mono_font = ExtResource("9_53ewu")
+MenuBar/sounds/hover = SubResource("AudioStreamRandomizer_740g6")
+MenuBar/sounds/pressed = SubResource("AudioStreamRandomizer_ej8kn")
 MenuBar/styles/disabled = SubResource("StyleBoxLayered_iuyow")
 MenuBar/styles/hover = SubResource("StyleBoxLayered_3qitw")
 MenuBar/styles/normal = SubResource("StyleBoxLayered_dft0a")
 MenuBar/styles/pressed = SubResource("StyleBoxLayered_3qued")
-MenuButton/constants/popup_separation = 6
+MenuButton/constants/popup_separation = 9
 MenuButton/fonts/bold_font = ExtResource("1_id4dl")
 MenuButton/fonts/bold_italics_font = ExtResource("7_72bos")
 MenuButton/fonts/italics_font = ExtResource("8_xeclr")
@@ -3082,8 +3823,17 @@ NavButton/styles/hover = SubResource("StyleBoxLayered_3qitw")
 NavButton/styles/hover_pressed = SubResource("StyleBoxLayered_e1x13")
 NavButton/styles/normal = SubResource("StyleBoxLayered_dft0a")
 NavButton/styles/pressed = SubResource("StyleBoxLayered_3qued")
-OptionButton/constants/arrow_margin = 14
-OptionButton/constants/popup_separation = 6
+NeonButton/base_type = &"Button"
+NeonButton/colors/font_color = Color(0.5608, 0.7961, 1, 1)
+NeonButton/colors/font_hover_color = Color(0.8471, 0.9333, 1, 1)
+NeonButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+NeonButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+NeonButton/styles/hover = SubResource("theme_page_StyleBoxLayered_107")
+NeonButton/styles/hover_pressed = SubResource("theme_page_StyleBoxLayered_111")
+NeonButton/styles/normal = SubResource("theme_page_StyleBoxLayered_103")
+NeonButton/styles/pressed = SubResource("theme_page_StyleBoxLayered_111")
+OptionButton/constants/arrow_margin = 21
+OptionButton/constants/popup_separation = 9
 OptionButton/fonts/bold_font = ExtResource("1_id4dl")
 OptionButton/fonts/bold_italics_font = ExtResource("7_72bos")
 OptionButton/fonts/italics_font = ExtResource("8_xeclr")
@@ -3094,25 +3844,33 @@ OptionButton/styles/normal_mirrored = SubResource("StyleBoxLayered_fkre0")
 OptionButton/styles/pressed_mirrored = SubResource("StyleBoxLayered_fyv8m")
 OverlineLabel/base_type = &"Label"
 OverlineLabel/colors/font_color = Color(0.4392157, 0.73333335, 1, 1)
-OverlineLabel/font_sizes/font_size = 12
+OverlineLabel/font_sizes/font_size = 18
 OverlineLabel/fonts/font = ExtResource("1_id4dl")
 Panel/styles/panel = SubResource("StyleBoxFlat_s2rtm")
 PanelContainer/styles/panel = SubResource("StyleBoxLayered_n2tx4")
+PixelButton/base_type = &"Button"
+PixelButton/colors/icon_focus_color = Color(0.05882, 0.2392, 0.1412, 1)
+PixelButton/colors/icon_hover_color = Color(0.05882, 0.2392, 0.1412, 1)
+PixelButton/colors/icon_hover_pressed_color = Color(0.05882, 0.2392, 0.1412, 1)
+PixelButton/colors/icon_normal_color = Color(0.05882, 0.2392, 0.1412, 1)
+PixelButton/colors/icon_pressed_color = Color(0.05882, 0.2392, 0.1412, 1)
+PixelButton/styles/hover = SubResource("theme_page_StyleBoxLayered_121")
+PixelButton/styles/hover_pressed = SubResource("theme_page_StyleBoxLayered_126")
+PixelButton/styles/normal = SubResource("theme_page_StyleBoxLayered_116")
+PixelButton/styles/pressed = SubResource("theme_page_StyleBoxLayered_126")
 PopupMenu/colors/font_accelerator_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 PopupMenu/colors/font_color = Color(0.78431374, 0.8, 0.81960785, 1)
 PopupMenu/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 PopupMenu/colors/font_hover_color = Color(1, 1, 1, 1)
 PopupMenu/colors/font_separator_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
-PopupMenu/constants/item_end_padding = 10
-PopupMenu/constants/item_start_padding = 10
-PopupMenu/constants/v_separation = 8
+PopupMenu/constants/item_end_padding = 15
+PopupMenu/constants/item_start_padding = 15
+PopupMenu/constants/v_separation = 12
 PopupMenu/fonts/bold_font = ExtResource("1_id4dl")
 PopupMenu/fonts/bold_italics_font = ExtResource("7_72bos")
 PopupMenu/fonts/italics_font = ExtResource("8_xeclr")
 PopupMenu/fonts/mono_font = ExtResource("9_53ewu")
-PopupMenu/sounds/closed = ExtResource("10_uv8us")
 PopupMenu/sounds/hover = SubResource("AudioStreamRandomizer_3rsaa")
-PopupMenu/sounds/opened = ExtResource("11_7xeo8")
 PopupMenu/sounds/selected = ExtResource("13_b82be")
 PopupMenu/styles/checked = SubResource("StyleBoxLayered_check_checked")
 PopupMenu/styles/checked_disabled = SubResource("StyleBoxLayered_check_checked_disabled")
@@ -3128,22 +3886,53 @@ PopupMenu/styles/separator = SubResource("StyleBoxLine_kprvm")
 PopupMenu/styles/unchecked = SubResource("StyleBoxLayered_check_unchecked")
 PopupMenu/styles/unchecked_disabled = SubResource("StyleBoxLayered_check_unchecked_disabled")
 PopupPanel/styles/panel = SubResource("StyleBoxLayered_utxad")
+PreviewButton/base_type = &"Button"
+PreviewButton/styles/disabled = SubResource("StyleBoxFlat_preview")
+PreviewButton/styles/hover = SubResource("StyleBoxFlat_preview_hover")
+PreviewButton/styles/hover_pressed = SubResource("StyleBoxFlat_preview_hover_pressed")
+PreviewButton/styles/normal = SubResource("StyleBoxFlat_preview")
+PreviewButton/styles/pressed = SubResource("StyleBoxFlat_preview_pressed")
 ProgressBar/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 ProgressBar/styles/background = SubResource("StyleBoxFlat_u8yt5")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_o5n52")
+RaisedButton/base_type = &"Button"
+RaisedButton/colors/font_color = Color(1, 1, 1, 1)
+RaisedButton/colors/font_hover_color = Color(1, 1, 1, 1)
+RaisedButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+RaisedButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+RaisedButton/styles/hover = SubResource("theme_page_StyleBoxLayered_79")
+RaisedButton/styles/hover_pressed = SubResource("theme_page_StyleBoxLayered_84")
+RaisedButton/styles/normal = SubResource("theme_page_StyleBoxLayered_74")
+RaisedButton/styles/pressed = SubResource("theme_page_StyleBoxLayered_84")
 RichTextLabel/colors/default_color = Color(0.78431374, 0.8, 0.81960785, 1)
-RichTextLabel/constants/line_separation = 3
+RichTextLabel/constants/line_separation = 5
 RichTextLabel/fonts/bold_font = ExtResource("1_id4dl")
 RichTextLabel/fonts/bold_italics_font = ExtResource("7_72bos")
 RichTextLabel/fonts/italics_font = ExtResource("8_xeclr")
 RichTextLabel/fonts/mono_font = ExtResource("9_53ewu")
 RichTextLabel/fonts/normal_font = ExtResource("9_53ewu")
+RingButton/base_type = &"Button"
+RingButton/styles/hover = SubResource("theme_page_StyleBoxLayered_146")
+RingButton/styles/hover_pressed = SubResource("theme_page_StyleBoxLayered_150")
+RingButton/styles/normal = SubResource("theme_page_StyleBoxLayered_142")
+RingButton/styles/pressed = SubResource("theme_page_StyleBoxLayered_150")
+SkewedButton/base_type = &"Button"
+SkewedButton/colors/font_color = Color(0.2275, 0.1804, 0, 1)
+SkewedButton/colors/font_hover_color = Color(0.2275, 0.1804, 0, 1)
+SkewedButton/colors/font_hover_pressed_color = Color(0.2275, 0.1804, 0, 1)
+SkewedButton/colors/font_pressed_color = Color(0.2275, 0.1804, 0, 1)
+SkewedButton/fonts/font = ExtResource("1_id4dl")
+SkewedButton/styles/hover = SubResource("theme_page_StyleBoxLayered_134")
+SkewedButton/styles/hover_pressed = SubResource("theme_page_StyleBoxLayered_138")
+SkewedButton/styles/normal = SubResource("theme_page_StyleBoxLayered_130")
+SkewedButton/styles/pressed = SubResource("theme_page_StyleBoxLayered_138")
 Slider/sounds/value_changed = SubResource("AudioStreamRandomizer_7j1dp")
 SpinBox/colors/caret_color = Color(0.4392157, 0.73333335, 1, 1)
 SpinBox/colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 SpinBox/colors/font_placeholder_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 SpinBox/colors/font_uneditable_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 SpinBox/colors/selection_color = Color(0.2784314, 0.54901963, 0.7490196, 0.4)
+SpinBox/sounds/button_hover = SubResource("AudioStreamRandomizer_740g6")
 SpinBox/sounds/value_changed = SubResource("AudioStreamRandomizer_8ujhf")
 SpinBox/styles/down_background_hovered = SubResource("StyleBoxFlat_lib_hover")
 SpinBox/styles/down_background_pressed = SubResource("StyleBoxFlat_lib_pressed")
@@ -3152,6 +3941,9 @@ SpinBox/styles/normal = SubResource("StyleBoxLayered_j6b3v")
 SpinBox/styles/read_only = SubResource("StyleBoxLayered_nh6ji")
 SpinBox/styles/up_background_hovered = SubResource("StyleBoxFlat_lib_hover")
 SpinBox/styles/up_background_pressed = SubResource("StyleBoxFlat_lib_pressed")
+SplitContainer/sounds/drag_ended = ExtResource("5_g773b")
+SplitContainer/sounds/drag_started = ExtResource("6_d81ev")
+SplitContainer/sounds/grabber_hover = SubResource("AudioStreamRandomizer_740g6")
 Stage/base_type = &"PanelContainer"
 Stage/styles/panel = SubResource("StyleBoxFlat_8fk77")
 StockButton/base_type = &"Button"
@@ -3164,7 +3956,7 @@ TabBar/colors/font_disabled_color = Color(0.39215687, 0.41568628, 0.4509804, 1)
 TabBar/colors/font_hovered_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
 TabBar/colors/font_selected_color = Color(1, 1, 1, 1)
 TabBar/colors/font_unselected_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
-TabBar/constants/tab_separation = 4
+TabBar/constants/tab_separation = 6
 TabBar/fonts/bold_font = ExtResource("1_id4dl")
 TabBar/fonts/bold_italics_font = ExtResource("7_72bos")
 TabBar/fonts/italics_font = ExtResource("8_xeclr")
@@ -3183,7 +3975,7 @@ TabContainer/colors/font_hovered_color = Color(0.8784314, 0.8784314, 0.8784314, 
 TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
 TabContainer/colors/font_unselected_color = Color(0.6313726, 0.6509804, 0.6784314, 1)
 TabContainer/constants/side_margin = 0
-TabContainer/constants/tab_separation = 4
+TabContainer/constants/tab_separation = 6
 TabContainer/styles/panel = SubResource("StyleBoxLayered_qbrp3")
 TabContainer/styles/tab_disabled = SubResource("StyleBoxLayered_ue2yq")
 TabContainer/styles/tab_focus = SubResource("StyleBoxFlat_taqpp")
@@ -3211,8 +4003,8 @@ Tree/colors/font_selected_color = Color(1, 1, 1, 1)
 Tree/colors/guide_color = Color(0, 0, 0, 0)
 Tree/colors/relationship_line_color = Color(1, 1, 1, 0.1)
 Tree/colors/title_button_color = Color(0.8784314, 0.8784314, 0.8784314, 1)
-Tree/constants/item_margin = 16
-Tree/constants/v_separation = 4
+Tree/constants/item_margin = 24
+Tree/constants/v_separation = 6
 Tree/fonts/bold_font = ExtResource("1_id4dl")
 Tree/fonts/bold_italics_font = ExtResource("7_72bos")
 Tree/fonts/italics_font = ExtResource("8_xeclr")
@@ -3220,6 +4012,7 @@ Tree/fonts/mono_font = ExtResource("9_53ewu")
 Tree/fonts/title_font = ExtResource("1_id4dl")
 Tree/sounds/activated = ExtResource("12_m8t8o")
 Tree/sounds/hover = SubResource("AudioStreamRandomizer_ve5fq")
+Tree/sounds/pressed = SubResource("AudioStreamRandomizer_ej8kn")
 Tree/sounds/selected = ExtResource("13_b82be")
 Tree/sounds/toggled_off = ExtResource("5_g773b")
 Tree/sounds/toggled_on = ExtResource("6_d81ev")
@@ -3232,11 +4025,14 @@ Tree/styles/cursor_unfocused = SubResource("StyleBoxEmpty_hfq7w")
 Tree/styles/custom_button = SubResource("StyleBoxLayered_fkre0")
 Tree/styles/custom_button_hover = SubResource("StyleBoxLayered_gjyn5")
 Tree/styles/custom_button_pressed = SubResource("StyleBoxLayered_fyv8m")
+Tree/styles/editor_panel = SubResource("StyleBoxLayered_utxad")
 Tree/styles/focus = SubResource("StyleBoxEmpty_7lrfm")
 Tree/styles/hovered = SubResource("StyleBoxLayered_erfe1")
 Tree/styles/hovered_dimmed = SubResource("StyleBoxLayered_erfe1")
 Tree/styles/hovered_selected = SubResource("StyleBoxLayered_kxd4j")
 Tree/styles/hovered_selected_focus = SubResource("StyleBoxLayered_jorr1")
+Tree/styles/indeterminate = SubResource("StyleBoxLayered_check_indeterminate")
+Tree/styles/indeterminate_disabled = SubResource("StyleBoxLayered_check_indeterminate_disabled")
 Tree/styles/panel = SubResource("StyleBoxLayered_07hya")
 Tree/styles/selected = SubResource("StyleBoxLayered_ouhe2")
 Tree/styles/selected_focus = SubResource("StyleBoxLayered_vtdmp")
@@ -3245,13 +4041,13 @@ Tree/styles/title_button_normal = SubResource("StyleBoxFlat_lib_title")
 Tree/styles/title_button_pressed = SubResource("StyleBoxFlat_lib_title_pressed")
 Tree/styles/unchecked = SubResource("StyleBoxLayered_check_unchecked")
 Tree/styles/unchecked_disabled = SubResource("StyleBoxLayered_check_unchecked_disabled")
-VBoxContainer/constants/separation = 10
+VBoxContainer/constants/separation = 15
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_s4708")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_jymir")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_kuqxe")
 VScrollBar/styles/scroll = SubResource("StyleBoxEmpty_lfvqu")
 VScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_lfvqu")
-VSeparator/constants/separation = 2
+VSeparator/constants/separation = 3
 VSeparator/styles/separator = SubResource("StyleBoxLine_yqv8c")
 VSlider/styles/grabber = SubResource("StyleBoxFlat_grabber")
 VSlider/styles/grabber_area = SubResource("StyleBoxFlat_vslider_grabber_area")
@@ -3259,14 +4055,31 @@ VSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_vslider_grabbe
 VSlider/styles/grabber_disabled = SubResource("StyleBoxFlat_grabber_disabled")
 VSlider/styles/grabber_highlight = SubResource("StyleBoxFlat_grabber_highlight")
 VSlider/styles/slider = SubResource("StyleBoxFlat_vslider_slider")
+VirtualJoystick/sounds/pressed = ExtResource("6_d81ev")
+VirtualJoystick/sounds/released = ExtResource("5_g773b")
 VirtualJoystick/styles/normal_joystick = SubResource("StyleBoxLayered_joystick")
 VirtualJoystick/styles/normal_tip = SubResource("StyleBoxFlat_lib_tip")
 VirtualJoystick/styles/pressed_joystick = SubResource("StyleBoxLayered_joystick_pressed")
 VirtualJoystick/styles/pressed_tip = SubResource("StyleBoxFlat_lib_tip_pressed")
+Window/colors/close_color = Color(1, 0.47058824, 0.41960785, 1)
+Window/colors/close_hover_color = Color(1, 1, 1, 1)
+Window/colors/close_pressed_color = Color(1, 1, 1, 1)
 Window/colors/title_color = Color(1, 1, 1, 1)
 Window/constants/appear_duration = 160
-Window/constants/appear_offset = 6
-Window/constants/resize_margin = 10
+Window/constants/appear_offset = 9
+Window/constants/close_h_offset = 28
+Window/constants/close_v_offset = 40
+Window/constants/resize_margin = 15
+Window/constants/title_height = 54
+Window/icons/close = ExtResource("close_icon_svg")
+Window/icons/close_pressed = ExtResource("close_icon_svg")
+Window/sounds/close_hover = SubResource("AudioStreamRandomizer_740g6")
+Window/sounds/close_pressed = SubResource("AudioStreamRandomizer_ej8kn")
+Window/sounds/closed = ExtResource("10_uv8us")
+Window/sounds/opened = ExtResource("11_7xeo8")
+Window/styles/close_hover = SubResource("StyleBoxLayered_danger_hover")
+Window/styles/close_normal = SubResource("StyleBoxLayered_danger_normal")
+Window/styles/close_pressed = SubResource("StyleBoxLayered_danger_pressed")
 Window/styles/embedded_border = SubResource("StyleBoxFlat_lib_window")
 Window/styles/embedded_unfocused_border = SubResource("StyleBoxFlat_lib_window")
 Window/styles/popup_shadow = SubResource("StyleBoxFlat_popup_shadow")

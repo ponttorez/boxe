@@ -24,7 +24,7 @@ func _ready() -> void:
 	_arrow = Sprite2D.new()
 	_arrow.texture = ARROW
 	_arrow.centered = false
-	_arrow.offset = Vector2(-4, -2)
+	_arrow.offset = Vector2(-5, -5)
 	_arrow.position = cursor_position
 	add_child(_arrow)
 

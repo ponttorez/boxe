@@ -24,8 +24,8 @@ buses/default_bus_layout="uid://dxgfole6bixk2"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/size/mode=2
 window/android/refresh_rate=1
 window/stretch/mode="canvas_items"
@@ -34,6 +34,7 @@ window/handheld/orientation=6
 
 [gui]
 
+theme/default_theme_scale=1.5
 theme/sound_bus=&"UI"
 theme/custom="res://themes/theme.tres"
 theme/custom_font="res://fonts/regular_font.tres"
@@ -44,7 +45,7 @@ pointing/emulate_touch_from_mouse=true
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://localization/translations.ar.translation", "res://localization/translations.en.translation", "res://localization/translations.ru.translation")
+locale/translations=PackedStringArray("res://localization/translations.en.translation", "res://localization/translations.ru.translation")
 locale/remember_selected_locale=true
 
 [rendering]

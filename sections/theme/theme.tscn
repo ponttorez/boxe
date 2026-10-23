@@ -4,117 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://due6ddo4u5d0c" path="res://assets/retro_texture.png" id="retro_texture_png"]
 [ext_resource type="AudioStream" uid="uid://m61dd46178a4" path="res://audio/submitted.wav" id="submitted_wav"]
 [ext_resource type="Script" uid="uid://dlognpeps1foc" path="res://sections/theme/theme.gd" id="theme_gd"]
-[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="ui_bold_tres"]
 
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_70"]
-mode = 2
-color = Color(0, 0, 0, 0.349)
-blur = 6.0
-offset = Vector2(0, 7)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_71"]
-color = Color(0.1804, 0.3725, 0.5255, 1)
-offset = Vector2(0, 6)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_72"]
-color = Color(0.2784, 0.549, 0.749, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_73"]
-mode = 1
-color = Color(1, 1, 1, 0.2)
-width = 1.5
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_74"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.25
-transition_type = 10
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_70"), SubResource("StyleBoxLayer_71"), SubResource("StyleBoxLayer_72"), SubResource("StyleBoxLayer_73")])
-corner_radius_top_left = 12.0
-corner_radius_top_right = 12.0
-corner_radius_bottom_right = 12.0
-corner_radius_bottom_left = 12.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_80"]
-mode = 2
-color = Color(0, 0, 0, 0.302)
-blur = 4.0
-offset = Vector2(0, 7)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_81"]
-color = Color(0.1804, 0.3725, 0.5255, 1)
-offset = Vector2(0, 6)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_82"]
-color = Color(0.2471, 0.4863, 0.6784, 1)
-offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_83"]
-mode = 1
-color = Color(1, 1, 1, 0.149)
-width = 1.5
-offset = Vector2(0, 4)
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_84"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.06
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_80"), SubResource("StyleBoxLayer_81"), SubResource("StyleBoxLayer_82"), SubResource("StyleBoxLayer_83")])
-corner_radius_top_left = 12.0
-corner_radius_top_right = 12.0
-corner_radius_bottom_right = 12.0
-corner_radius_bottom_left = 12.0
-content_offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_75"]
-mode = 2
-color = Color(0, 0, 0, 0.4)
-offset = Vector2(0, 8)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_76"]
-color = Color(0.2118, 0.4392, 0.6157, 1)
-offset = Vector2(0, 6)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_77"]
-color = Color(0.3529, 0.6235, 0.8314, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_78"]
-mode = 1
-color = Color(1, 1, 1, 0.349)
-width = 1.5
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 1.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_79"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.15
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_75"), SubResource("StyleBoxLayer_76"), SubResource("StyleBoxLayer_77"), SubResource("StyleBoxLayer_78")])
-corner_radius_top_left = 12.0
-corner_radius_top_right = 12.0
-corner_radius_bottom_right = 12.0
-corner_radius_bottom_left = 12.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass_mask"]
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="Gradient" id="Gradient_157"]
 offsets = PackedFloat32Array(0, 0.5, 1)
@@ -126,485 +21,21 @@ width = 256
 height = 128
 fill_to = Vector2(1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass_mask"]
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_85"]
-mode = 2
-color = Color(0, 0, 0, 0.251)
-blur = 12.0
-offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_86"]
-color = Color(1, 1, 1, 0.05098)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_87"]
-mode = 1
-color = Color(1, 1, 1, 0.102)
-width = 6.0
-blend = true
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_88"]
-mode = 1
-color = Color(1, 1, 1, 0.2)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_89"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.3
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_85"), SubResource("StyleBoxLayer_86"), SubResource("StyleBoxLayer_87"), SubResource("StyleBoxLayer_88")])
-corner_radius_top_left = 16.0
-corner_radius_top_right = 16.0
-corner_radius_bottom_right = 16.0
-corner_radius_bottom_left = 16.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_95"]
-mode = 2
-color = Color(0.1176, 0.2275, 0.3725, 0.2)
-blur = 12.0
-offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_96"]
-color = Color(1, 1, 1, 0.07059)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_97"]
-mode = 1
-color = Color(1, 1, 1, 0.1804)
-width = 6.0
-blend = true
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_98"]
-mode = 1
-color = Color(1, 1, 1, 0.2)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_99"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.06
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_95"), SubResource("StyleBoxLayer_96"), SubResource("StyleBoxLayer_97"), SubResource("StyleBoxLayer_98")])
-corner_radius_top_left = 16.0
-corner_radius_top_right = 16.0
-corner_radius_bottom_right = 16.0
-corner_radius_bottom_left = 16.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_90"]
-mode = 2
-color = Color(0.1176, 0.2275, 0.3725, 0.349)
-blur = 12.0
-offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_91"]
-color = Color(1, 1, 1, 0.1098)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_92"]
-mode = 1
-color = Color(1, 1, 1, 0.251)
-width = 6.0
-blend = true
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_93"]
-mode = 1
-color = Color(1, 1, 1, 0.2)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_94"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.2
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_90"), SubResource("StyleBoxLayer_91"), SubResource("StyleBoxLayer_92"), SubResource("StyleBoxLayer_93")])
-corner_radius_top_left = 16.0
-corner_radius_top_right = 16.0
-corner_radius_bottom_right = 16.0
-corner_radius_bottom_left = 16.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_100"]
-mode = 2
-color = Color(0.4392, 0.7333, 1, 0.251)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_101"]
-color = Color(0.05882, 0.1137, 0.1686, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_102"]
-mode = 1
-color = Color(0.5608, 0.7961, 1, 0.702)
-width = 2.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_103"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.4
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_100"), SubResource("StyleBoxLayer_101"), SubResource("StyleBoxLayer_102")])
-corner_radius_top_left = 12.0
-corner_radius_top_right = 12.0
-corner_radius_bottom_right = 12.0
-corner_radius_bottom_left = 12.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_108"]
-mode = 2
-color = Color(0.4392, 0.7333, 1, 0.8)
-blur = 20.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_109"]
-color = Color(0.102, 0.2078, 0.3137, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_110"]
-mode = 1
-width = 2.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_111"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.05
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_108"), SubResource("StyleBoxLayer_109"), SubResource("StyleBoxLayer_110")])
-corner_radius_top_left = 12.0
-corner_radius_top_right = 12.0
-corner_radius_bottom_right = 12.0
-corner_radius_bottom_left = 12.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_104"]
-mode = 2
-color = Color(0.4392, 0.7333, 1, 0.549)
-blur = 14.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_105"]
-color = Color(0.07451, 0.1569, 0.2353, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_106"]
-mode = 1
-color = Color(0.7804, 0.898, 1, 1)
-width = 2.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_107"]
-content_margin_left = 22.0
-content_margin_top = 11.0
-content_margin_right = 22.0
-content_margin_bottom = 11.0
-transition_duration = 0.2
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_104"), SubResource("StyleBoxLayer_105"), SubResource("StyleBoxLayer_106")])
-corner_radius_top_left = 12.0
-corner_radius_top_right = 12.0
-corner_radius_bottom_right = 12.0
-corner_radius_bottom_left = 12.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_112"]
-color = Color(0.05882, 0.2392, 0.1412, 1)
-offset = Vector2(4, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_113"]
-color = Color(0.3686, 0.8353, 0.5451, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_114"]
-mode = 1
-color = Color(0.05882, 0.2392, 0.1412, 1)
-width = 4.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_115"]
-mode = 1
-color = Color(1, 1, 1, 0.349)
-width = 4.0
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_116"]
-content_margin_left = 22.0
-content_margin_top = 8.0
-content_margin_right = 22.0
-content_margin_bottom = 8.0
-transition_duration = 0.1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_112"), SubResource("StyleBoxLayer_113"), SubResource("StyleBoxLayer_114"), SubResource("StyleBoxLayer_115")])
-corner_style = 1
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
-pixel_size = 4.0
-pixel_snap = false
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_122"]
-color = Color(0.05882, 0.2392, 0.1412, 1)
-offset = Vector2(4, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_123"]
-color = Color(0.3686, 0.8353, 0.5451, 1)
-offset = Vector2(4, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_124"]
-mode = 1
-color = Color(0.05882, 0.2392, 0.1412, 1)
-width = 4.0
-offset = Vector2(4, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_125"]
-mode = 1
-color = Color(1, 1, 1, 0.349)
-width = 4.0
-offset = Vector2(4, 4)
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_126"]
-content_margin_left = 22.0
-content_margin_top = 8.0
-content_margin_right = 22.0
-content_margin_bottom = 8.0
-transition_duration = 0.05
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_122"), SubResource("StyleBoxLayer_123"), SubResource("StyleBoxLayer_124"), SubResource("StyleBoxLayer_125")])
-corner_style = 1
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
-pixel_size = 4.0
-pixel_snap = false
-content_offset = Vector2(4, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_117"]
-color = Color(0.05882, 0.2392, 0.1412, 1)
-offset = Vector2(4, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_118"]
-color = Color(0.4941, 0.902, 0.651, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_119"]
-mode = 1
-color = Color(0.05882, 0.2392, 0.1412, 1)
-width = 4.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_120"]
-mode = 1
-color = Color(1, 1, 1, 0.349)
-width = 4.0
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_121"]
-content_margin_left = 22.0
-content_margin_top = 8.0
-content_margin_right = 22.0
-content_margin_bottom = 8.0
-transition_duration = 0.1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_117"), SubResource("StyleBoxLayer_118"), SubResource("StyleBoxLayer_119"), SubResource("StyleBoxLayer_120")])
-corner_style = 1
-corner_radius_top_left = 8.0
-corner_radius_top_right = 8.0
-corner_radius_bottom_right = 8.0
-corner_radius_bottom_left = 8.0
-pixel_size = 4.0
-pixel_snap = false
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_127"]
-mode = 2
-color = Color(0, 0, 0, 0.349)
-blur = 6.0
-offset = Vector2(0, 2)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_128"]
-color = Color(1, 0.8667, 0.3961, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_129"]
-mode = 1
-color = Color(1, 1, 1, 0.349)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_130"]
-content_margin_left = 26.0
-content_margin_top = 11.0
-content_margin_right = 26.0
-content_margin_bottom = 11.0
-transition_duration = 0.35
-transition_type = 10
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_127"), SubResource("StyleBoxLayer_128"), SubResource("StyleBoxLayer_129")])
-skew = Vector2(0.35, 0)
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_135"]
-mode = 2
-color = Color(0, 0, 0, 0.349)
-blur = 6.0
-offset = Vector2(0, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_136"]
-color = Color(0.9412, 0.7843, 0.2706, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_137"]
-mode = 1
-color = Color(1, 1, 1, 0.349)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_138"]
-content_margin_left = 26.0
-content_margin_top = 11.0
-content_margin_right = 26.0
-content_margin_bottom = 11.0
-transition_duration = 0.06
-transition_type = 7
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_135"), SubResource("StyleBoxLayer_136"), SubResource("StyleBoxLayer_137")])
-skew = Vector2(0.35, 0)
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_131"]
-mode = 2
-color = Color(0, 0, 0, 0.349)
-blur = 6.0
-offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_132"]
-color = Color(1, 0.8941, 0.5412, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_133"]
-mode = 1
-color = Color(1, 1, 1, 0.349)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_134"]
-content_margin_left = 26.0
-content_margin_top = 11.0
-content_margin_right = 26.0
-content_margin_bottom = 11.0
-transition_duration = 0.25
-transition_type = 10
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_131"), SubResource("StyleBoxLayer_132"), SubResource("StyleBoxLayer_133")])
-skew = Vector2(0.12, 0)
-corner_radius_top_left = 6.0
-corner_radius_top_right = 6.0
-corner_radius_bottom_right = 6.0
-corner_radius_bottom_left = 6.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_139"]
-mode = 1
-color = Color(0.2784, 0.549, 0.749, 0)
-width = 2.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
-margin_bottom = 2.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_140"]
-color = Color(0.2118, 0.2392, 0.2902, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_141"]
-mode = 1
-color = Color(1, 1, 1, 0.07843)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_142"]
-content_margin_left = 24.0
-content_margin_top = 11.0
-content_margin_right = 24.0
-content_margin_bottom = 11.0
-transition_duration = 0.35
-transition_type = 10
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_139"), SubResource("StyleBoxLayer_140"), SubResource("StyleBoxLayer_141")])
-corner_radius_top_left = 24.0
-corner_radius_top_right = 24.0
-corner_radius_bottom_right = 24.0
-corner_radius_bottom_left = 24.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_147"]
-mode = 1
-color = Color(0.4392, 0.7333, 1, 1)
-width = 2.0
-margin_left = -3.0
-margin_top = -3.0
-margin_right = -3.0
-margin_bottom = -3.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_148"]
-color = Color(0.1647, 0.2902, 0.4, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_149"]
-mode = 1
-color = Color(1, 1, 1, 0.07843)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_150"]
-content_margin_left = 24.0
-content_margin_top = 11.0
-content_margin_right = 24.0
-content_margin_bottom = 11.0
-transition_duration = 0.08
-transition_type = 10
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_147"), SubResource("StyleBoxLayer_148"), SubResource("StyleBoxLayer_149")])
-corner_radius_top_left = 24.0
-corner_radius_top_right = 24.0
-corner_radius_bottom_right = 24.0
-corner_radius_bottom_left = 24.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_143"]
-mode = 1
-color = Color(0.2784, 0.549, 0.749, 0.702)
-width = 2.0
-margin_left = -5.0
-margin_top = -5.0
-margin_right = -5.0
-margin_bottom = -5.0
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_144"]
-color = Color(0.2549, 0.2863, 0.3451, 1)
-
-[sub_resource type="StyleBoxLayer" id="StyleBoxLayer_145"]
-mode = 1
-color = Color(1, 1, 1, 0.07843)
-
-[sub_resource type="StyleBoxLayered" id="StyleBoxLayered_146"]
-content_margin_left = 24.0
-content_margin_top = 11.0
-content_margin_right = 24.0
-content_margin_bottom = 11.0
-transition_duration = 0.3
-transition_type = 10
-transition_ease = 1
-layers = Array[StyleBoxLayer]([SubResource("StyleBoxLayer_143"), SubResource("StyleBoxLayer_144"), SubResource("StyleBoxLayer_145")])
-corner_radius_top_left = 24.0
-corner_radius_top_right = 24.0
-corner_radius_bottom_right = 24.0
-corner_radius_bottom_left = 24.0
-
 [node name="Theme" type="VBoxContainer" unique_id=1761047137]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 24
+theme_override_constants/separation = 36
 script = ExtResource("theme_gd")
 
 [node name="Cards" type="GridContainer" parent="." unique_id=1049544657]
 layout_mode = 2
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 2
 script = ExtResource("responsive_grid_gd")
 
 [node name="Layered" type="PanelContainer" parent="Cards" unique_id=806737199]
@@ -614,16 +45,17 @@ theme_type_variation = &"Card"
 
 [node name="Box" type="VBoxContainer" parent="Cards/Layered" unique_id=1286363557]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
 [node name="Header" type="VBoxContainer" parent="Cards/Layered/Box" unique_id=890563321]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 3
 
 [node name="Title" type="Label" parent="Cards/Layered/Box/Header" unique_id=1467801404]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Layered styles"
+autowrap_mode = 3
 
 [node name="Caption" type="Label" parent="Cards/Layered/Box/Header" unique_id=2023270804]
 layout_mode = 2
@@ -633,159 +65,124 @@ autowrap_mode = 3
 
 [node name="Styles" type="GridContainer" parent="Cards/Layered/Box" unique_id=1731223597]
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
 size_flags_vertical = 3
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 3
 script = ExtResource("responsive_grid_gd")
-min_column_width = 170.0
+min_column_width = 255.0
 max_columns = 3
 
 [node name="Raised" type="PanelContainer" parent="Cards/Layered/Box/Styles" unique_id=288009352]
-size_flags_vertical = 3
-custom_minimum_size = Vector2(150, 96)
+custom_minimum_size = Vector2(225.0, 144.0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
 [node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Raised" unique_id=690000388]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(225.0, 0.0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "Shadow, depth, face and rim. The face moves down when pressed."
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxLayered_74")
-theme_override_styles/pressed = SubResource("StyleBoxLayered_84")
-theme_override_styles/hover = SubResource("StyleBoxLayered_79")
-theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_84")
+theme_type_variation = &"RaisedButton"
 text = "Raised"
 
 [node name="Ring" type="PanelContainer" parent="Cards/Layered/Box/Styles" unique_id=1171853742]
-size_flags_vertical = 3
-custom_minimum_size = Vector2(150, 96)
+custom_minimum_size = Vector2(225.0, 144.0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
 [node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Ring" unique_id=1328637449]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(225.0, 0.0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "An outline with negative margins draws outside of the control."
-theme_override_styles/normal = SubResource("StyleBoxLayered_142")
-theme_override_styles/pressed = SubResource("StyleBoxLayered_150")
-theme_override_styles/hover = SubResource("StyleBoxLayered_146")
-theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_150")
+theme_type_variation = &"RingButton"
 text = "Ring"
 
 [node name="Neon" type="PanelContainer" parent="Cards/Layered/Box/Styles" unique_id=556519772]
-size_flags_vertical = 3
-custom_minimum_size = Vector2(150, 96)
+custom_minimum_size = Vector2(225.0, 144.0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
 [node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Neon" unique_id=510866132]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(225.0, 0.0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "A colored shadow without offset glows."
-theme_override_colors/font_color = Color(0.5608, 0.7961, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(0.8471, 0.9333, 1, 1)
-theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxLayered_103")
-theme_override_styles/pressed = SubResource("StyleBoxLayered_111")
-theme_override_styles/hover = SubResource("StyleBoxLayered_107")
-theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_111")
+theme_type_variation = &"NeonButton"
 text = "Neon"
 
 [node name="Pixel" type="PanelContainer" parent="Cards/Layered/Box/Styles" unique_id=1823415341]
-size_flags_vertical = 3
-custom_minimum_size = Vector2(150, 96)
+custom_minimum_size = Vector2(225.0, 144.0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
 [node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Pixel" unique_id=1423465159]
 texture_filter = 1
-custom_minimum_size = Vector2(150, 48)
+custom_minimum_size = Vector2(225.0, 72.0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "Pixel corners, a hard shadow and a bevel, on a 4 px grid."
-theme_override_colors/icon_normal_color = Color(0.05882, 0.2392, 0.1412, 1)
-theme_override_colors/icon_focus_color = Color(0.05882, 0.2392, 0.1412, 1)
-theme_override_colors/icon_pressed_color = Color(0.05882, 0.2392, 0.1412, 1)
-theme_override_colors/icon_hover_color = Color(0.05882, 0.2392, 0.1412, 1)
-theme_override_colors/icon_hover_pressed_color = Color(0.05882, 0.2392, 0.1412, 1)
-theme_override_styles/normal = SubResource("StyleBoxLayered_116")
-theme_override_styles/pressed = SubResource("StyleBoxLayered_126")
-theme_override_styles/hover = SubResource("StyleBoxLayered_121")
-theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_126")
+tooltip_text = "Pixel corners, a hard shadow and a bevel, on a 6 px grid."
+theme_type_variation = &"PixelButton"
 icon = ExtResource("retro_texture_png")
 icon_alignment = 1
 expand_icon = true
 
 [node name="Skewed" type="PanelContainer" parent="Cards/Layered/Box/Styles" unique_id=1648380059]
-size_flags_vertical = 3
-custom_minimum_size = Vector2(150, 96)
+custom_minimum_size = Vector2(225.0, 144.0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
 [node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Skewed" unique_id=99367983]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(225.0, 0.0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "Skew blends like any other property."
-theme_override_colors/font_color = Color(0.2275, 0.1804, 0, 1)
-theme_override_colors/font_pressed_color = Color(0.2275, 0.1804, 0, 1)
-theme_override_colors/font_hover_color = Color(0.2275, 0.1804, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.2275, 0.1804, 0, 1)
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-theme_override_styles/normal = SubResource("StyleBoxLayered_130")
-theme_override_styles/pressed = SubResource("StyleBoxLayered_138")
-theme_override_styles/hover = SubResource("StyleBoxLayered_134")
-theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_138")
+theme_type_variation = &"SkewedButton"
 text = "Skewed"
 
 [node name="Glass" type="PanelContainer" parent="Cards/Layered/Box/Styles" unique_id=1729803948]
-size_flags_vertical = 3
-custom_minimum_size = Vector2(150, 96)
+clip_children = 1
+custom_minimum_size = Vector2(225.0, 144.0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = &"Stage"
 theme_override_styles/panel = SubResource("StyleBoxFlat_glass_mask")
-clip_children = 1
 
-[node name="Gradient" type="TextureRect" parent="Cards/Layered/Box/Styles/Glass"]
+[node name="Gradient" type="TextureRect" parent="Cards/Layered/Box/Styles/Glass" unique_id=1388983986]
 layout_mode = 2
 texture = SubResource("GradientTexture2D_158")
 expand_mode = 1
 
 [node name="Button" type="Button" parent="Cards/Layered/Box/Styles/Glass" unique_id=99912129]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(225.0, 0.0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "A translucent fill with a blended rim."
-theme_override_styles/normal = SubResource("StyleBoxLayered_89")
-theme_override_styles/pressed = SubResource("StyleBoxLayered_99")
-theme_override_styles/hover = SubResource("StyleBoxLayered_94")
-theme_override_styles/hover_pressed = SubResource("StyleBoxLayered_99")
+theme_type_variation = &"GlassButton"
 text = "Glass"
 
-[node name="Side" type="VBoxContainer" parent="Cards"]
+[node name="Side" type="VBoxContainer" parent="Cards" unique_id=1204327375]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 24
 
 [node name="Easing" type="PanelContainer" parent="Cards/Side" unique_id=790919398]
 layout_mode = 2
@@ -794,16 +191,17 @@ theme_type_variation = &"Card"
 
 [node name="Box" type="VBoxContainer" parent="Cards/Side/Easing" unique_id=375065444]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
 [node name="Header" type="VBoxContainer" parent="Cards/Side/Easing/Box" unique_id=1014562024]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 3
 
 [node name="Title" type="Label" parent="Cards/Side/Easing/Box/Header" unique_id=1102694098]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Easing"
+autowrap_mode = 3
 
 [node name="Caption" type="Label" parent="Cards/Side/Easing/Box/Header" unique_id=280667266]
 layout_mode = 2
@@ -811,71 +209,73 @@ theme_type_variation = &"CaptionLabel"
 text = "Each switch blends with another transition_type over 0.7 s. Flip them all at once to compare them, and flip back midway: leaving a state midway takes only the time already played, so quick changes never lag behind."
 autowrap_mode = 3
 
-[node name="All" type="CheckButton" parent="Cards/Side/Easing/Box"]
+[node name="All" type="CheckButton" parent="Cards/Side/Easing/Box" unique_id=1555826188]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Flip all"
 
-[node name="Switches" type="GridContainer" parent="Cards/Side/Easing/Box"]
+[node name="Switches" type="GridContainer" parent="Cards/Side/Easing/Box" unique_id=2105293032]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = 24
-theme_override_constants/v_separation = 8
+theme_override_constants/h_separation = 36
+theme_override_constants/v_separation = 12
 columns = 2
+script = ExtResource("responsive_grid_gd")
+min_column_width = 210.0
 
-[node name="Linear" type="CheckButton" parent="Cards/Side/Easing/Box/Switches"]
+[node name="Linear" type="CheckButton" parent="Cards/Side/Easing/Box/Switches" unique_id=1895399066]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
-auto_translate_mode = 2
 text = "Linear"
 metadata/transition_type = 0
 metadata/transition_ease = 2
 
-[node name="Sine" type="CheckButton" parent="Cards/Side/Easing/Box/Switches"]
+[node name="Sine" type="CheckButton" parent="Cards/Side/Easing/Box/Switches" unique_id=678775800]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
-auto_translate_mode = 2
 text = "Sine"
 metadata/transition_type = 1
 metadata/transition_ease = 2
 
-[node name="Cubic" type="CheckButton" parent="Cards/Side/Easing/Box/Switches"]
+[node name="Cubic" type="CheckButton" parent="Cards/Side/Easing/Box/Switches" unique_id=1704634225]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
-auto_translate_mode = 2
 text = "Cubic"
 metadata/transition_type = 7
 metadata/transition_ease = 1
 
-[node name="Back" type="CheckButton" parent="Cards/Side/Easing/Box/Switches"]
+[node name="Back" type="CheckButton" parent="Cards/Side/Easing/Box/Switches" unique_id=586355916]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
-auto_translate_mode = 2
 text = "Back"
 metadata/transition_type = 10
 metadata/transition_ease = 1
 
-[node name="Elastic" type="CheckButton" parent="Cards/Side/Easing/Box/Switches"]
+[node name="Elastic" type="CheckButton" parent="Cards/Side/Easing/Box/Switches" unique_id=1443448672]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
-auto_translate_mode = 2
 text = "Elastic"
 metadata/transition_type = 6
 metadata/transition_ease = 1
 
-[node name="Bounce" type="CheckButton" parent="Cards/Side/Easing/Box/Switches"]
+[node name="Bounce" type="CheckButton" parent="Cards/Side/Easing/Box/Switches" unique_id=1879286174]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
-auto_translate_mode = 2
 text = "Bounce"
 metadata/transition_type = 9
 metadata/transition_ease = 1
 
-[node name="Spring" type="CheckButton" parent="Cards/Side/Easing/Box/Switches"]
+[node name="Spring" type="CheckButton" parent="Cards/Side/Easing/Box/Switches" unique_id=152542861]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
-auto_translate_mode = 2
 text = "Spring"
 metadata/transition_type = 11
 metadata/transition_ease = 1
@@ -887,16 +287,17 @@ theme_type_variation = &"Card"
 
 [node name="Box" type="VBoxContainer" parent="Cards/Side/Sounds" unique_id=968010796]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
 [node name="Header" type="VBoxContainer" parent="Cards/Side/Sounds/Box" unique_id=109177777]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 3
 
 [node name="Title" type="Label" parent="Cards/Side/Sounds/Box/Header" unique_id=1938610645]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Sound buses and overrides"
+autowrap_mode = 3
 
 [node name="Caption" type="Label" parent="Cards/Side/Sounds/Box/Header" unique_id=207559162]
 layout_mode = 2
@@ -906,7 +307,7 @@ autowrap_mode = 3
 
 [node name="BusRow" type="HBoxContainer" parent="Cards/Side/Sounds/Box" unique_id=1528575793]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
 [node name="BusLabel" type="Label" parent="Cards/Side/Sounds/Box/BusRow" unique_id=437685928]
 layout_mode = 2
@@ -928,11 +329,11 @@ popup/item_2/text = "Radio"
 popup/item_2/id = 2
 
 [node name="Overrides" type="HFlowContainer" parent="Cards/Side/Sounds/Box" unique_id=713874159]
-layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
 unique_name_in_owner = true
 sound_bus = &"Hall"
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
 
 [node name="Default" type="Button" parent="Cards/Side/Sounds/Box/Overrides" unique_id=1912349140]
 layout_mode = 2
@@ -943,3 +344,58 @@ layout_mode = 2
 theme_type_variation = &"AccentButton"
 theme_override_sounds/pressed = ExtResource("submitted_wav")
 text = "Custom sound"
+
+[node name="Prompt" type="PanelContainer" parent="Cards" unique_id=1645757710]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Card"
+
+[node name="Box" type="VBoxContainer" parent="Cards/Prompt" unique_id=1110325465]
+layout_mode = 2
+theme_override_constants/separation = 21
+
+[node name="Header" type="VBoxContainer" parent="Cards/Prompt/Box" unique_id=907741547]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Cards/Prompt/Box/Header" unique_id=1782317420]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Styles from a reference"
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Cards/Prompt/Box/Header" unique_id=2103625437]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+text = "An AI agent can make such styles for every control. Give it a picture of the look you want, this prompt and the demo project."
+autowrap_mode = 3
+
+[node name="Text" type="TextEdit" parent="Cards/Prompt/Box" unique_id=1157528334]
+unique_name_in_owner = true
+auto_translate_mode = 2
+custom_minimum_size = Vector2(0.0, 330.0)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Make a theme for this Godot project in res://themes/theme.tres that looks like the attached reference. The project uses boxe, a fork of Godot Engine:
+
+- Style every control on the Library page (the Controls section): buttons, check boxes, switches, option and menu buttons, menu bars, popups, line and text edits, spin boxes, sliders, progress bars, tabs, item lists, trees, foldable containers, scroll bars, split containers, dialogs, tooltips and virtual joysticks.
+- Give every state its own style box: normal, hover, pressed, hover_pressed, disabled and focus, and the checked, unchecked and radio states.
+- Use StyleBoxLayered, with fill, outline and shadow layers for depth, rims and glows, and the same layers in every state of a control, so they blend layer by layer.
+- Set transition_duration, transition_type and transition_ease on every style box, so the states blend.
+- Draw the checks, switches, slider grabbers and tree checks with the checked, unchecked, grabber and grabber_highlight style boxes instead of icons, and give popups popup_separation and the popup_shadow and appear constants of Window.
+- Match the colors, corner radii, depths, spacing and fonts of the reference, keep text readable on its backgrounds, keep the type variations already in the theme, and check every page of the demo."
+editable = false
+wrap_mode = 1
+
+[node name="Copy" type="Button" parent="Cards/Prompt/Box" unique_id=1129992314]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Copy the prompt"
+
+[node name="Copied" type="PopupPanel" parent="Cards/Prompt/Box/Copy" unique_id=150386143]
+unique_name_in_owner = true
+
+[node name="Label" type="Label" parent="Cards/Prompt/Box/Copy/Copied" unique_id=1492218705]
+text = "Copied to the clipboard"
+horizontal_alignment = 1

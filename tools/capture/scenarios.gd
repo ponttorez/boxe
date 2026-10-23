@@ -146,17 +146,15 @@ func localization() -> void:
 	await c.begin()
 	await cursor.move_to(Vector2(700, 400), 0.0)
 	var count: HSlider = c.find("%Count")
-	for locale in ["en", "ru", "ar"]:
+	for locale in ["en", "ru"]:
 		TranslationServer.set_locale(locale)
 		await c.wait(0.4)
 		var rect := count.get_global_rect()
 		var grab := rect.position + Vector2(rect.size.x * count.value / count.max_value, rect.size.y * 0.5)
-		if count.is_layout_rtl():
-			grab.x = rect.end.x - rect.size.x * count.value / count.max_value
 		await cursor.move_to(grab, 0.5)
-		var target: int = {"en": 1, "ru": 5, "ar": 21}[locale]
+		var target: int = {"en": 1, "ru": 5}[locale]
 		var x: float = rect.size.x * target / count.max_value
-		await cursor.drag_to(Vector2(rect.end.x - x if count.is_layout_rtl() else rect.position.x + x, grab.y), 0.8)
+		await cursor.drag_to(Vector2(rect.position.x + x, grab.y), 0.8)
 		await c.wait(0.6)
 	await c.still("localization")
 	TranslationServer.set_locale("en")

@@ -1,6 +1,8 @@
 extends VBoxContainer
 
 const MAX_EVENTS := 6
+const PHONE_SIZE := Vector2(118, 220)
+const PREVIEW_PADDING := Vector2(30, 72)
 const ORIENTATIONS := ["undefined", "portrait", "landscape"]
 
 var _events: PackedStringArray
@@ -18,9 +20,12 @@ var _events: PackedStringArray
 
 func _ready() -> void:
 	var app := get_tree().get_first_node_in_group(&"app")
-	for preview: Control in _previews.get_children():
-		preview.gui_input.connect(_on_preview_input.bind(app, preview.get_index()))
-	_highlight_preview(app.get_safe_area())
+	for preview: Button in _previews.get_children():
+		preview.button_pressed = preview.get_index() == app.get_safe_area()
+		preview.pressed.connect(app.set_safe_area.bind(preview.get_index()))
+	for preview: Button in _previews.get_children():
+		preview.resized.connect(_fit_previews)
+	_fit_previews.call_deferred()
 	_note.visible = not OS.has_feature("mobile")
 
 	DisplayServer.safe_area_changed.connect(_on_safe_area_changed)
@@ -35,18 +40,6 @@ func _ready() -> void:
 	timer.autostart = true
 	timer.timeout.connect(_update_display)
 	add_child(timer)
-
-
-func _on_preview_input(event: InputEvent, app: Node, mode: int) -> void:
-	var mb := event as InputEventMouseButton
-	if mb and mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
-		app.set_safe_area(mode)
-		_highlight_preview(mode)
-
-
-func _highlight_preview(mode: int) -> void:
-	for preview in _previews.get_children():
-		preview.get_node(^"Phone").highlighted = preview.get_index() == mode
 
 
 func _update_display() -> void:
@@ -72,3 +65,10 @@ func _log(event: String) -> void:
 	if _events.size() > MAX_EVENTS:
 		_events.remove_at(0)
 	_event_log.text = "\n".join(_events)
+
+
+func _fit_previews() -> void:
+	for preview: Button in _previews.get_children():
+		var phone: Control = preview.get_node(^"Box/Phone")
+		phone.zoom = clampf((preview.size.x - PREVIEW_PADDING.x) / PHONE_SIZE.x, 0.75, 1.5)
+		preview.custom_minimum_size = Vector2(0, PHONE_SIZE.y * phone.zoom + PREVIEW_PADDING.y)
