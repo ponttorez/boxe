@@ -41,19 +41,29 @@
 #include "scene/gui/check_button.h"
 #include "scene/gui/color_picker.h"
 #include "scene/gui/color_rect.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/foldable_container.h"
+#include "scene/gui/item_list.h"
 #include "scene/gui/label.h"
+#include "scene/gui/link_button.h"
 #include "scene/gui/margin_container.h"
+#include "scene/gui/menu_bar.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/panel.h"
+#include "scene/gui/panel_container.h"
 #include "scene/gui/progress_bar.h"
+#include "scene/gui/rich_text_label.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
+#include "scene/gui/split_container.h"
+#include "scene/gui/tab_bar.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/text_edit.h"
 #include "scene/gui/tree.h"
+#include "scene/gui/virtual_joystick.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/theme/theme_db.h"
 
@@ -317,8 +327,14 @@ DefaultThemeEditorPreview::DefaultThemeEditorPreview() {
 	first_vb->add_theme_constant_override("separation", 10);
 
 	first_vb->add_child(memnew(Label("Label")));
+	Label *bbcode_label = memnew(Label);
+	bbcode_label->set_bbcode_enabled(true);
+	bbcode_label->set_text("[b]BBCode[/b] [i]Label[/i]");
+	first_vb->add_child(bbcode_label);
 
-	first_vb->add_child(memnew(Button("Button")));
+	Button *button = memnew(Button("Button"));
+	button->set_tooltip_text(TTR("Tooltip"));
+	first_vb->add_child(button);
 	Button *bt = memnew(Button);
 	bt->set_text(TTR("Toggle Button"));
 	bt->set_toggle_mode(true);
@@ -336,9 +352,30 @@ DefaultThemeEditorPreview::DefaultThemeEditorPreview() {
 	CheckButton *cb = memnew(CheckButton);
 	cb->set_text("CheckButton");
 	first_vb->add_child(cb);
+	cb = memnew(CheckButton);
+	cb->set_text(TTR("Disabled CheckButton"));
+	cb->set_disabled(true);
+	first_vb->add_child(cb);
 	CheckBox *cbx = memnew(CheckBox);
 	cbx->set_text("CheckBox");
 	first_vb->add_child(cbx);
+	cbx = memnew(CheckBox);
+	cbx->set_text(TTR("Disabled CheckBox"));
+	cbx->set_disabled(true);
+	first_vb->add_child(cbx);
+	Ref<ButtonGroup> radio_group;
+	radio_group.instantiate();
+	for (int i = 0; i < 2; i++) {
+		cbx = memnew(CheckBox);
+		cbx->set_text(i == 0 ? TTR("Radio") : TTR("Checked Radio"));
+		cbx->set_button_group(radio_group);
+		cbx->set_pressed(i == 1);
+		first_vb->add_child(cbx);
+	}
+	LinkButton *link = memnew(LinkButton);
+	link->set_text("LinkButton");
+	link->set_h_size_flags(SIZE_SHRINK_BEGIN);
+	first_vb->add_child(link);
 
 	MenuButton *test_menu_button = memnew(MenuButton);
 	test_menu_button->set_text("MenuButton");
@@ -458,6 +495,81 @@ DefaultThemeEditorPreview::DefaultThemeEditorPreview() {
 	item->set_editable(0, true);
 	item->set_text(0, TTR("Has,Many,Options"));
 	item->set_range(0, 2);
+
+	VBoxContainer *fourth_vb = memnew(VBoxContainer);
+	fourth_vb->set_h_size_flags(SIZE_EXPAND_FILL);
+	fourth_vb->add_theme_constant_override("separation", 10);
+	main_hb->add_child(fourth_vb);
+
+	MenuBar *menu_bar = memnew(MenuBar);
+	menu_bar->set_prefer_global_menu(false);
+	PopupMenu *menu = memnew(PopupMenu);
+	menu->set_name(TTR("Menu"));
+	menu->add_item(TTR("Item"));
+	menu->add_check_item(TTR("Checked Item"));
+	menu->set_item_checked(1, true);
+	menu_bar->add_child(menu);
+	menu = memnew(PopupMenu);
+	menu->set_name(TTR("Disabled Menu"));
+	menu_bar->add_child(menu);
+	menu_bar->set_menu_disabled(1, true);
+	fourth_vb->add_child(menu_bar);
+
+	TabBar *tab_bar = memnew(TabBar);
+	tab_bar->add_tab(TTR("Tab 1"));
+	tab_bar->add_tab(TTR("Tab 2"));
+	tab_bar->add_tab(TTR("Tab 3"));
+	tab_bar->set_tab_disabled(2, true);
+	fourth_vb->add_child(tab_bar);
+
+	ItemList *item_list = memnew(ItemList);
+	item_list->set_auto_height(true);
+	item_list->add_item(TTR("Item"));
+	item_list->add_item(TTR("Selected Item"));
+	item_list->add_item(TTR("Disabled Item"));
+	item_list->select(1);
+	item_list->set_item_disabled(2, true);
+	fourth_vb->add_child(item_list);
+
+	FoldableContainer *foldable = memnew(FoldableContainer);
+	foldable->set_title("FoldableContainer");
+	foldable->add_child(memnew(Label(TTR("Folded content"))));
+	fourth_vb->add_child(foldable);
+
+	HSplitContainer *split = memnew(HSplitContainer);
+	split->set_custom_minimum_size(Size2(0, 50));
+	for (int i = 0; i < 2; i++) {
+		PanelContainer *split_panel = memnew(PanelContainer);
+		split_panel->set_h_size_flags(SIZE_EXPAND_FILL);
+		split_panel->add_child(memnew(Label(i == 0 ? "HSplit" : "Container")));
+		split->add_child(split_panel);
+	}
+	fourth_vb->add_child(split);
+
+	ScrollContainer *scroll = memnew(ScrollContainer);
+	scroll->set_custom_minimum_size(Size2(0, 60));
+	scroll->set_horizontal_scroll_mode(ScrollContainer::SCROLL_MODE_DISABLED);
+	RichTextLabel *rich_text = memnew(RichTextLabel);
+	rich_text->set_h_size_flags(SIZE_EXPAND_FILL);
+	rich_text->set_fit_content(true);
+	rich_text->set_use_bbcode(true);
+	rich_text->set_text(TTR("A [b]RichTextLabel[/b] in a ScrollContainer, long enough to [i]scroll[/i] over a few lines of text."));
+	scroll->add_child(rich_text);
+	fourth_vb->add_child(scroll);
+
+	HBoxContainer *last_hb = memnew(HBoxContainer);
+	fourth_vb->add_child(last_hb);
+	VirtualJoystick *joystick = memnew(VirtualJoystick);
+	joystick->set_custom_minimum_size(Size2(80, 80));
+	last_hb->add_child(joystick);
+	AcceptDialog *dialog = memnew(AcceptDialog);
+	dialog->set_title("AcceptDialog");
+	dialog->set_text(TTR("Dialog text"));
+	last_hb->add_child(dialog);
+	Button *dialog_button = memnew(Button(TTR("Open Dialog")));
+	dialog_button->set_v_size_flags(SIZE_SHRINK_CENTER);
+	dialog_button->connect(SceneStringName(pressed), callable_mp((Window *)dialog, &Window::popup_centered).bind(Size2i()));
+	last_hb->add_child(dialog_button);
 }
 
 void SceneThemeEditorPreview::_reload_scene() {
