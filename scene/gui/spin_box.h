@@ -136,6 +136,9 @@ class SpinBox : public Range {
 		Ref<StyleBox> field_and_buttons_separator;
 		Ref<StyleBox> up_down_buttons_separator;
 
+		Ref<AudioStream> sound_button_hover;
+		Ref<AudioStream> sound_button_pressed;
+
 		int buttons_vertical_separation = 0;
 		int field_and_buttons_separation = 0;
 		int buttons_width = 0;
