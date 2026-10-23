@@ -452,7 +452,11 @@ void Viewport::_sub_window_update(Window *p_window) {
 	if (vr != r) {
 		RS::get_singleton()->canvas_item_add_rect(sw.canvas_item, r, Color());
 	}
-	RS::get_singleton()->canvas_item_add_texture_rect(sw.canvas_item, vr, sw.window->get_texture()->get_rid());
+	// The texture is rounded up to whole pixels, so only its part covered by the content is drawn,
+	// without the transparent edge at fractional scales.
+	const float scale = MIN(stretch_transform.get_scale().width, stretch_transform.get_scale().height);
+	const Rect2 source = Rect2(Point2(), Size2(static_cast<Viewport *>(sw.window)->_get_size()) * scale);
+	RS::get_singleton()->canvas_item_add_texture_rect_region(sw.canvas_item, vr, sw.window->get_texture()->get_rid(), source);
 }
 
 void Viewport::_sub_window_grab_focus(Window *p_window) {
