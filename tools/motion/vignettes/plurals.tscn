@@ -1,10 +1,10 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://tools/motion/vignettes/plurals.gd" id="plurals_gd"]
-[ext_resource type="FontVariation" path="res://fonts/ui_bold.tres" id="ui_bold_tres"]
-[ext_resource type="FontVariation" path="res://fonts/ui_regular.tres" id="ui_mono_tres"]
-[ext_resource type="Texture2D" path="res://tools/motion/icons/cross.svg" id="cross_svg"]
-[ext_resource type="Texture2D" path="res://tools/motion/icons/check.svg" id="check_svg"]
+[ext_resource type="Script" uid="uid://bkubovkqy1dbp" path="res://tools/motion/vignettes/plurals.gd" id="plurals_gd"]
+[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="ui_bold_tres"]
+[ext_resource type="FontVariation" uid="uid://lcsvmu33k2ce" path="res://fonts/regular_font.tres" id="ui_mono_tres"]
+[ext_resource type="Texture2D" uid="uid://by8g34x5cgtiq" path="res://tools/motion/icons/cross.svg" id="cross_svg"]
+[ext_resource type="Texture2D" uid="uid://d33egfolraftj" path="res://tools/motion/icons/check.svg" id="check_svg"]
 
 [node name="Plurals" type="Control"]
 layout_mode = 1

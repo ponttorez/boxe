@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vycyhst0qby2"
-path="res://.godot/imported/flag_ar_texture.svg-802bd7dad1855a907c746032eb7b8d47.ctex"
+uid="uid://dtg52xfog22rf"
+path="res://.godot/imported/language.svg-68e677d3fac402c1d909f6457464939e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://localization/flag/flag_ar_texture.svg"
-dest_files=["res://.godot/imported/flag_ar_texture.svg-802bd7dad1855a907c746032eb7b8d47.ctex"]
+source_file="res://assets/icons/language.svg"
+dest_files=["res://.godot/imported/language.svg-68e677d3fac402c1d909f6457464939e.ctex"]
 
 [params]
 
@@ -38,6 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
+svg/scale=4.0
 editor/scale_with_editor_scale=false
 editor/convert_colors_with_editor_theme=false

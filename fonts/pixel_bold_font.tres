@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" format=3]
+
+[ext_resource type="FontVariation" path="res://fonts/pixel_font.tres" id="1_pixel"]
+
+[resource]
+base_font = ExtResource("1_pixel")

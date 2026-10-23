@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" format=3]
+
+[ext_resource type="FontFile" uid="uid://b63q0f61fw4pd" path="res://fonts/bold_pixels/BoldPixels.ttf" id="1_pixels"]
+[ext_resource type="FontVariation" uid="uid://lcsvmu33k2ce" path="res://fonts/regular_font.tres" id="2_regular"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_regular")])
+base_font = ExtResource("1_pixels")

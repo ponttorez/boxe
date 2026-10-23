@@ -36,10 +36,11 @@ window/handheld/orientation=6
 
 theme/sound_bus=&"UI"
 theme/custom="res://themes/boxe_theme.tres"
+theme/custom_font="res://fonts/regular_font.tres"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://localization/translations/translations.ar.translation", "res://localization/translations/translations.en.translation", "res://localization/translations/translations.ru.translation")
+locale/translations=PackedStringArray("res://localization/translations.ar.translation", "res://localization/translations.en.translation", "res://localization/translations.ru.translation")
 locale/remember_selected_locale=true
 
 [rendering]

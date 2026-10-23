@@ -1,45 +1,9 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://sections/composites/composites.gd" id="composites_gd"]
-[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
-[ext_resource type="Script" path="res://common/responsive_row.gd" id="responsive_row_gd"]
-[ext_resource type="FontVariation" path="res://fonts/ui_bold.tres" id="ui_bold_tres"]
-[ext_resource type="Shader" path="res://sections/composites/sticker.gdshader" id="sticker_gdshader"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_164"]
-bg_color = Color(0.2784, 0.549, 0.749, 1)
-corner_radius_top_left = 23
-corner_radius_top_right = 23
-corner_radius_bottom_right = 23
-corner_radius_bottom_left = 23
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_165"]
-bg_color = Color(0.3686, 0.8353, 0.5451, 1)
-corner_radius_top_left = 23
-corner_radius_top_right = 23
-corner_radius_bottom_right = 23
-corner_radius_bottom_left = 23
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_166"]
-bg_color = Color(1, 0.8667, 0.3961, 1)
-corner_radius_top_left = 23
-corner_radius_top_right = 23
-corner_radius_bottom_right = 23
-corner_radius_bottom_left = 23
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_167"]
-bg_color = Color(0.9882, 0.498, 0.498, 1)
-corner_radius_top_left = 23
-corner_radius_top_right = 23
-corner_radius_bottom_right = 23
-corner_radius_bottom_left = 23
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_163"]
-bg_color = Color(1, 0.4706, 0.4196, 1)
-corner_radius_top_left = 11
-corner_radius_top_right = 11
-corner_radius_bottom_right = 11
-corner_radius_bottom_left = 11
+[ext_resource type="Script" uid="uid://c54cd0ancx6k1" path="res://sections/composites/composites.gd" id="composites_gd"]
+[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="FontVariation" uid="uid://dqohcjgwsdc73" path="res://fonts/bold_font.tres" id="ui_bold_tres"]
+[ext_resource type="Shader" uid="uid://bbikpiaages6g" path="res://sections/composites/sticker.gdshader" id="sticker_gdshader"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_169"]
 bg_color = Color(0.2784, 0.549, 0.749, 1)
@@ -75,16 +39,6 @@ corner_radius_top_left = 11
 corner_radius_top_right = 11
 corner_radius_bottom_right = 11
 corner_radius_bottom_left = 11
-
-[sub_resource type="LabelSettings" id="LabelSettings_173"]
-font = ExtResource("ui_bold_tres")
-font_size = 44
-font_color = Color(1, 1, 1, 1)
-outline_size = 16
-outline_color = Color(0.4392, 0.7333, 1, 1)
-shadow_size = 16
-shadow_color = Color(0.1804, 0.3725, 0.5255, 1)
-shadow_offset = Vector2(0.0, 5.0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_174"]
 font = ExtResource("ui_bold_tres")
@@ -186,167 +140,26 @@ theme_type_variation = &"CaptionLabel"
 text = "Overlapping children show through each other when their parent fades. A composite fades as one image, and its material applies to the whole group: here a shader draws one outline and shadow around it."
 autowrap_mode = 3
 
-[node name="Stages" type="Container" parent="Cards/Group/Box"]
-layout_mode = 2
-size_flags_vertical = 3
-script = ExtResource("responsive_row_gd")
-
-[node name="Godot" type="PanelContainer" parent="Cards/Group/Box/Stages"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_type_variation = &"Stage"
-sound_bus = &"Silent"
-
-[node name="Box" type="VBoxContainer" parent="Cards/Group/Box/Stages/Godot"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Badge" type="Label" parent="Cards/Group/Box/Stages/Godot/Box"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"BadgeLabel"
-text = "Godot"
-
-[node name="Content" type="VBoxContainer" parent="Cards/Group/Box/Stages/Godot/Box"]
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-theme_override_constants/separation = 12
-
-[node name="StockAvatars" type="Control" parent="Cards/Group/Box/Stages/Godot/Box/Content"]
+[node name="GroupComposite" type="CheckButton" parent="Cards/Group/Box"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(166.0, 46.0)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
+text = "Composite"
+button_pressed = true
 
-[node name="A" type="Panel" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars"]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 46.0
-offset_bottom = 46.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_164")
-
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars/A"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "A"
-horizontal_alignment = 1
-vertical_alignment = 1
-auto_translate_mode = 2
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-theme_override_font_sizes/font_size = 18
-theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
-
-[node name="B" type="Panel" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars"]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 0.0
-offset_right = 78.0
-offset_bottom = 46.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_165")
-
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars/B"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "B"
-horizontal_alignment = 1
-vertical_alignment = 1
-auto_translate_mode = 2
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-theme_override_font_sizes/font_size = 18
-theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
-
-[node name="C" type="Panel" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 0.0
-offset_right = 110.0
-offset_bottom = 46.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_166")
-
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars/C"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "C"
-horizontal_alignment = 1
-vertical_alignment = 1
-auto_translate_mode = 2
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-theme_override_font_sizes/font_size = 18
-theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
-
-[node name="D" type="Panel" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars"]
-layout_mode = 0
-offset_left = 96.0
-offset_top = 0.0
-offset_right = 142.0
-offset_bottom = 46.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_167")
-
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars/D"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "+4"
-horizontal_alignment = 1
-vertical_alignment = 1
-auto_translate_mode = 2
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-theme_override_font_sizes/font_size = 18
-theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
-
-[node name="Badge" type="Label" parent="Cards/Group/Box/Stages/Godot/Box/Content/StockAvatars"]
-layout_mode = 0
-offset_left = 122.0
-offset_top = -6.0
-offset_right = 166.0
-offset_bottom = 16.0
-text = "new"
-horizontal_alignment = 1
-theme_override_styles/normal = SubResource("StyleBoxFlat_163")
-theme_override_font_sizes/font_size = 12
-theme_override_fonts/font = ExtResource("ui_bold_tres")
-
-[node name="Boxe" type="PanelContainer" parent="Cards/Group/Box/Stages"]
+[node name="Stage" type="PanelContainer" parent="Cards/Group/Box"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Cards/Group/Box/Stages/Boxe"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Badge" type="Label" parent="Cards/Group/Box/Stages/Boxe/Box"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"AccentBadgeLabel"
-text = "composite_enabled"
-
-[node name="Content" type="VBoxContainer" parent="Cards/Group/Box/Stages/Boxe/Box"]
+[node name="Content" type="VBoxContainer" parent="Cards/Group/Box/Stage"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 theme_override_constants/separation = 12
 
-[node name="BoxeAvatars" type="Control" parent="Cards/Group/Box/Stages/Boxe/Box/Content"]
+[node name="Avatars" type="Control" parent="Cards/Group/Box/Stage/Content"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(166.0, 46.0)
 layout_mode = 2
@@ -355,7 +168,7 @@ composite_enabled = true
 composite_margin = 12.0
 material = SubResource("ShaderMaterial_160")
 
-[node name="A" type="Panel" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars"]
+[node name="A" type="Panel" parent="Cards/Group/Box/Stage/Content/Avatars"]
 layout_mode = 0
 offset_left = 0.0
 offset_top = 0.0
@@ -363,7 +176,7 @@ offset_right = 46.0
 offset_bottom = 46.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_169")
 
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars/A"]
+[node name="Initial" type="Label" parent="Cards/Group/Box/Stage/Content/Avatars/A"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -378,7 +191,7 @@ theme_override_fonts/font = ExtResource("ui_bold_tres")
 theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
 
-[node name="B" type="Panel" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars"]
+[node name="B" type="Panel" parent="Cards/Group/Box/Stage/Content/Avatars"]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 0.0
@@ -386,7 +199,7 @@ offset_right = 78.0
 offset_bottom = 46.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_170")
 
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars/B"]
+[node name="Initial" type="Label" parent="Cards/Group/Box/Stage/Content/Avatars/B"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -401,7 +214,7 @@ theme_override_fonts/font = ExtResource("ui_bold_tres")
 theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
 
-[node name="C" type="Panel" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars"]
+[node name="C" type="Panel" parent="Cards/Group/Box/Stage/Content/Avatars"]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 0.0
@@ -409,7 +222,7 @@ offset_right = 110.0
 offset_bottom = 46.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_171")
 
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars/C"]
+[node name="Initial" type="Label" parent="Cards/Group/Box/Stage/Content/Avatars/C"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -424,7 +237,7 @@ theme_override_fonts/font = ExtResource("ui_bold_tres")
 theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
 
-[node name="D" type="Panel" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars"]
+[node name="D" type="Panel" parent="Cards/Group/Box/Stage/Content/Avatars"]
 layout_mode = 0
 offset_left = 96.0
 offset_top = 0.0
@@ -432,7 +245,7 @@ offset_right = 142.0
 offset_bottom = 46.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_172")
 
-[node name="Initial" type="Label" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars/D"]
+[node name="Initial" type="Label" parent="Cards/Group/Box/Stage/Content/Avatars/D"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -447,7 +260,7 @@ theme_override_fonts/font = ExtResource("ui_bold_tres")
 theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0.1098, 0.1255, 0.1529, 1)
 
-[node name="Badge" type="Label" parent="Cards/Group/Box/Stages/Boxe/Box/Content/BoxeAvatars"]
+[node name="Badge" type="Label" parent="Cards/Group/Box/Stage/Content/Avatars"]
 layout_mode = 0
 offset_left = 122.0
 offset_top = -6.0
@@ -483,64 +296,26 @@ theme_type_variation = &"CaptionLabel"
 text = "LabelSettings.composite_effects draws the outline and the shadow as layers of one image. When the label fades, glyph outlines don't add up where they overlap, and the shadow doesn't show through the outline."
 autowrap_mode = 3
 
-[node name="Stages" type="Container" parent="Cards/Text/Box"]
-layout_mode = 2
-size_flags_vertical = 3
-script = ExtResource("responsive_row_gd")
-
-[node name="Godot" type="PanelContainer" parent="Cards/Text/Box/Stages"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_type_variation = &"Stage"
-sound_bus = &"Silent"
-
-[node name="Box" type="VBoxContainer" parent="Cards/Text/Box/Stages/Godot"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Badge" type="Label" parent="Cards/Text/Box/Stages/Godot/Box"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"BadgeLabel"
-text = "Godot"
-
-[node name="Content" type="VBoxContainer" parent="Cards/Text/Box/Stages/Godot/Box"]
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-theme_override_constants/separation = 12
-
-[node name="StockText" type="Label" parent="Cards/Text/Box/Stages/Godot/Box/Content"]
+[node name="TextComposite" type="CheckButton" parent="Cards/Text/Box"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Overlap"
-label_settings = SubResource("LabelSettings_173")
-horizontal_alignment = 1
+size_flags_horizontal = 0
+text = "Composite effects"
+button_pressed = true
 
-[node name="Boxe" type="PanelContainer" parent="Cards/Text/Box/Stages"]
+[node name="Stage" type="PanelContainer" parent="Cards/Text/Box"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"Stage"
 
-[node name="Box" type="VBoxContainer" parent="Cards/Text/Box/Stages/Boxe"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Badge" type="Label" parent="Cards/Text/Box/Stages/Boxe/Box"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"AccentBadgeLabel"
-text = "composite_effects"
-
-[node name="Content" type="VBoxContainer" parent="Cards/Text/Box/Stages/Boxe/Box"]
+[node name="Content" type="VBoxContainer" parent="Cards/Text/Box/Stage"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 theme_override_constants/separation = 12
 
-[node name="BoxeText" type="Label" parent="Cards/Text/Box/Stages/Boxe/Box/Content"]
+[node name="Sample" type="Label" parent="Cards/Text/Box/Stage/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Overlap"

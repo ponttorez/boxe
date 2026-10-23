@@ -1,9 +1,9 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://sections/mobile/mobile.gd" id="mobile_gd"]
-[ext_resource type="Script" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
-[ext_resource type="FontVariation" path="res://fonts/ui_regular.tres" id="ui_mono_tres"]
-[ext_resource type="Script" path="res://sections/mobile/phone_preview.gd" id="phone_preview_gd"]
+[ext_resource type="Script" uid="uid://d28qixpfeedjx" path="res://sections/mobile/mobile.gd" id="mobile_gd"]
+[ext_resource type="Script" uid="uid://bjq166eh1qmjt" path="res://common/responsive_grid.gd" id="responsive_grid_gd"]
+[ext_resource type="FontVariation" uid="uid://lcsvmu33k2ce" path="res://fonts/regular_font.tres" id="ui_mono_tres"]
+[ext_resource type="Script" uid="uid://blbft3gtlmqy0" path="res://sections/mobile/phone_preview.gd" id="phone_preview_gd"]
 
 [node name="Mobile" type="VBoxContainer"]
 size_flags_horizontal = 3

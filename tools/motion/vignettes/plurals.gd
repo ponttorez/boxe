@@ -25,6 +25,6 @@ func _show(count: int) -> void:
 		side.find_child("Count", true, false).text = "count = %d" % count
 	for i in LOCALES.size():
 		in_godot(LINES[i]).text = NAIVE[i] % count
-		var translation: Translation = load("res://localization/demo.%s.translation" % LOCALES[i])
+		var translation: Translation = load("res://localization/%s.translation" % LOCALES[i])
 		var text := String(translation.get_message("loc.apples"))
 		in_boxe(LINES[i]).text = TranslationServer.format_arguments(text, { "count": count }, LOCALES[i])
