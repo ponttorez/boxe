@@ -468,6 +468,11 @@ void Viewport::_sub_window_update(Window *p_window) {
 	RS::get_singleton()->canvas_item_clear(sw.canvas_item);
 	const Rect2i r = Rect2i(p_window->get_position(), p_window->get_size());
 
+	// Borderless windows, such as popups, menus and tooltips, have no border to cast a shadow, so the theme can give them one.
+	if (p_window->get_flag(Window::FLAG_BORDERLESS) && p_window->theme_cache.popup_shadow.is_valid()) {
+		p_window->theme_cache.popup_shadow->draw(sw.canvas_item, r);
+	}
+
 	if (!p_window->get_flag(Window::FLAG_BORDERLESS)) {
 		TextServer::set_current_drawn_item_oversampling(get_oversampling());
 

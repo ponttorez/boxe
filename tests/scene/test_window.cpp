@@ -37,6 +37,7 @@ TEST_FORCE_LINK(test_window)
 #include "scene/gui/style_transitions.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
+#include "scene/resources/style_box_flat.h"
 #include "tests/display_server_mock.h"
 
 namespace TestWindow {
@@ -92,6 +93,32 @@ TEST_CASE("[SceneTree][Window]") {
 		memdelete(c);
 		memdelete(w);
 	}
+}
+
+TEST_CASE("[SceneTree][Window] The shadow of popups takes no input") {
+	Window *root = SceneTree::get_singleton()->get_root();
+	Window *window = memnew(Window);
+	window->set_visible(false);
+	window->set_flag(Window::FLAG_BORDERLESS, true);
+	NotificationControlWindow *control = memnew(NotificationControlWindow);
+	control->set_size(Size2(100, 100));
+	window->add_child(control);
+	root->add_child(window);
+	Ref<StyleBoxFlat> shadow;
+	shadow.instantiate();
+	shadow->set_shadow_size(20);
+	shadow->set_expand_margin_all(40);
+	window->add_theme_style_override("popup_shadow", shadow);
+	window->set_position(Point2i(100, 200));
+	window->set_size(Size2i(100, 100));
+	window->show();
+
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(80, 250), MouseButtonMask::NONE, Key::NONE);
+	CHECK_FALSE(control->mouse_over);
+	SEND_GUI_MOUSE_MOTION_EVENT(Point2(150, 250), MouseButtonMask::NONE, Key::NONE);
+	CHECK(control->mouse_over);
+
+	memdelete(window);
 }
 
 TEST_CASE("[SceneTree][Window] Appearing windows rise from below when they're above the mouse") {
