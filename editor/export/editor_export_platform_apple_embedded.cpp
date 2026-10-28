@@ -252,6 +252,19 @@ bool EditorExportPlatformAppleEmbedded::get_export_option_visibility(const Edito
 	return true;
 }
 
+HashMap<String, Variant> EditorExportPlatformAppleEmbedded::get_custom_project_settings(const Ref<EditorExportPreset> &p_preset) const {
+	// Expose the versions written to Info.plist, so the exported project can read them at runtime.
+	HashMap<String, Variant> settings;
+	if (!String(p_preset->get("application/short_version")).is_empty()) {
+		settings["application/config/version"] = p_preset->get_version("application/short_version");
+	}
+	const String build_version = p_preset->get_build_version("application/version");
+	if (build_version.is_valid_int()) {
+		settings["application/config/version_code"] = build_version.to_int();
+	}
+	return settings;
+}
+
 void EditorExportPlatformAppleEmbedded::get_export_options(List<ExportOption> *r_options) const {
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/debug", PROPERTY_HINT_GLOBAL_FILE, "*.zip"), ""));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/release", PROPERTY_HINT_GLOBAL_FILE, "*.zip"), ""));
@@ -423,7 +436,7 @@ String EditorExportPlatformAppleEmbedded::_process_config_file_line(const Ref<Ed
 	} else if (p_line.contains("$short_version")) {
 		strnew += p_line.replace("$short_version", p_preset->get_version("application/short_version")) + "\n";
 	} else if (p_line.contains("$version")) {
-		strnew += p_line.replace("$version", p_preset->get_version("application/version")) + "\n";
+		strnew += p_line.replace("$version", p_preset->get_build_version("application/version")) + "\n";
 	} else if (p_line.contains("$signature")) {
 		strnew += p_line.replace("$signature", p_preset->get("application/signature")) + "\n";
 	} else if (p_line.contains("$team_id")) {

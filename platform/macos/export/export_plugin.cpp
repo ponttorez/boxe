@@ -468,6 +468,19 @@ static const DataCollectionInfo data_collect_purpose_info[] = {
 	{ "Other", "NSPrivacyCollectedDataTypePurposeOther" },
 };
 
+HashMap<String, Variant> EditorExportPlatformMacOS::get_custom_project_settings(const Ref<EditorExportPreset> &p_preset) const {
+	// Expose the versions written to Info.plist, so the exported project can read them at runtime.
+	HashMap<String, Variant> settings;
+	if (!String(p_preset->get("application/short_version")).is_empty()) {
+		settings["application/config/version"] = p_preset->get_version("application/short_version");
+	}
+	const String build_version = p_preset->get_build_version("application/version");
+	if (build_version.is_valid_int()) {
+		settings["application/config/version_code"] = build_version.to_int();
+	}
+	return settings;
+}
+
 void EditorExportPlatformMacOS::get_export_options(List<ExportOption> *r_options) const {
 #ifdef MACOS_ENABLED
 	r_options->push_back(ExportOption(PropertyInfo(Variant::INT, "export/distribution_type", PROPERTY_HINT_ENUM, "Testing,Distribution,App Store"), 1, true));
@@ -856,7 +869,7 @@ void EditorExportPlatformMacOS::_fix_plist(const Ref<EditorExportPreset> &p_pres
 		} else if (lines[i].contains("$short_version")) {
 			strnew += lines[i].replace("$short_version", p_preset->get_version("application/short_version")) + "\n";
 		} else if (lines[i].contains("$version")) {
-			strnew += lines[i].replace("$version", p_preset->get_version("application/version")) + "\n";
+			strnew += lines[i].replace("$version", p_preset->get_build_version("application/version")) + "\n";
 		} else if (lines[i].contains("$signature")) {
 			strnew += lines[i].replace("$signature", p_preset->get("application/signature")) + "\n";
 		} else if (lines[i].contains("$app_category")) {

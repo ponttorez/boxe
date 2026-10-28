@@ -221,6 +221,19 @@ public:
 	// 4-component format).
 	String get_version(const StringName &p_name, bool p_windows_version = false) const;
 
+	// Return the preset's version code, or fall back to the
+	// `application/config/version_code` project setting if set to 0 or less.
+	// Returns 0 if neither sets a version code.
+	int64_t get_version_code(const StringName &p_name);
+
+	// Return the preset's build number, like `get_version()`, but fall back to
+	// the `application/config/version_code` project setting when it's set and
+	// the preset leaves the build number empty. If `p_windows_version` is
+	// `true`, the version code is the fourth component of the project version,
+	// when the project version has less than four components and the version
+	// code fits in 16 bits.
+	String get_build_version(const StringName &p_name, bool p_windows_version = false);
+
 	const HashMap<StringName, PropertyInfo> &get_properties() const { return properties; }
 	const HashMap<StringName, Variant> &get_values() const { return values; }
 };

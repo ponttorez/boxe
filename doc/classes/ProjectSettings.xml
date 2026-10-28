@@ -369,6 +369,13 @@
 		<member name="application/config/version" type="String" setter="" getter="" default="&quot;&quot;">
 			The project's human-readable version identifier. This is used by exporters if the version identifier isn't overridden there. If [member application/config/version] is an empty string and the version identifier isn't overridden in an exporter, the exporter will use [code]1.0.0[/code] as a version identifier.
 		</member>
+		<member name="application/config/version_code" type="int" setter="" getter="" default="0">
+			The project's build number, a whole number that grows with every release. [code]0[/code] means the project doesn't set one. Exporters use it when their own build number is left empty or at [code]0[/code]:
+			- On Android, as the version code. Without one, the version code is [code]1[/code].
+			- On iOS, visionOS and macOS, as the bundle version ([i]Identity &gt; Build[/i] in Xcode).
+			- On Windows, as the fourth number of the file and product versions, when [member application/config/version] has fewer than four numbers and the build number is at most [code]65535[/code].
+			In an exported project, this setting and [member application/config/version] hold the values that the exporter wrote to the application, so they can be read at runtime. On Android, they are always written; on iOS, visionOS and macOS, when they are numbers; on Windows, only the product version is.
+		</member>
 		<member name="application/config/windows_native_icon" type="String" setter="" getter="" default="&quot;&quot;">
 			Icon set in [code].ico[/code] format used on Windows to set the game's icon. This is done automatically on start by calling [method DisplayServer.set_native_icon].
 		</member>

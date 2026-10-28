@@ -91,7 +91,7 @@ bool EditorExportPlatformIOS::has_valid_export_configuration(const Ref<EditorExp
 }
 
 HashMap<String, Variant> EditorExportPlatformIOS::get_custom_project_settings(const Ref<EditorExportPreset> &p_preset) const {
-	HashMap<String, Variant> settings;
+	HashMap<String, Variant> settings = EditorExportPlatformAppleEmbedded::get_custom_project_settings(p_preset);
 
 	int image_scale_mode = p_preset->get("storyboard/image_scale_mode");
 	String value;

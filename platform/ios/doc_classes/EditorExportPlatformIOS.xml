@@ -74,7 +74,7 @@
 			Supported device family.
 		</member>
 		<member name="application/version" type="String" setter="" getter="">
-			Machine-readable application version in the [code]major.minor.patch[/code] format. Can only contain numeric characters ([code]0-9[/code]) and periods ([code].[/code]). This must be incremented with every new release pushed to the App Store. Falls back to [member ProjectSettings.application/config/version] if left empty.
+			Machine-readable application version in the [code]major.minor.patch[/code] format. Can only contain numeric characters ([code]0-9[/code]) and periods ([code].[/code]). This must be incremented with every new release pushed to the App Store. Falls back to [member ProjectSettings.application/config/version_code] if left empty and the project sets one, or to [member ProjectSettings.application/config/version] otherwise.
 			[b]Note:[/b] This value is used for the [i]Identity &gt; Build[/i] value in the generated Xcode project.
 		</member>
 		<member name="architectures/arm64" type="bool" setter="" getter="">

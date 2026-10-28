@@ -398,6 +398,8 @@ String EditorExportPlatformWindows::get_export_option_warning(const EditorExport
 						!version_array[3].is_valid_int() || file_version.contains_char('-')) {
 					return TTR("Invalid file version.");
 				}
+			} else {
+				return _get_version_code_warning(p_preset);
 			}
 		} else if (p_name == "application/product_version") {
 			String product_version = p_preset->get("application/product_version");
@@ -408,6 +410,8 @@ String EditorExportPlatformWindows::get_export_option_warning(const EditorExport
 						!version_array[3].is_valid_int() || product_version.contains_char('-')) {
 					return TTR("Invalid product version.");
 				}
+			} else {
+				return _get_version_code_warning(p_preset);
 			}
 		}
 	}
@@ -454,6 +458,26 @@ bool EditorExportPlatformWindows::get_export_option_visibility(const EditorExpor
 		return advanced_options_enabled;
 	}
 	return true;
+}
+
+String EditorExportPlatformWindows::_get_version_code_warning(const EditorExportPreset *p_preset) const {
+	// The version code is the fourth component of the version, which is a 16-bit number.
+	const int64_t version_code = get_project_setting(Ref<EditorExportPreset>(p_preset), "application/config/version_code");
+	const PackedStringArray project_version = String(get_project_setting(Ref<EditorExportPreset>(p_preset), "application/config/version")).split(".", false);
+	if (version_code > UINT16_MAX && project_version.size() < 4) {
+		return vformat(TTR("The version code set in the Project Settings (Application > Config > Version Code), %d, doesn't fit in a Windows version, which takes numbers up to %d, so it isn't used."), version_code, UINT16_MAX);
+	}
+	return String();
+}
+
+HashMap<String, Variant> EditorExportPlatformWindows::get_custom_project_settings(const Ref<EditorExportPreset> &p_preset) const {
+	// Expose the product version written to the executable, so the exported project can read it at runtime.
+	HashMap<String, Variant> settings;
+	const String product_version = p_preset->get("application/product_version");
+	if (!product_version.is_empty()) {
+		settings["application/config/version"] = product_version;
+	}
+	return settings;
 }
 
 void EditorExportPlatformWindows::get_export_options(List<ExportOption> *r_options) const {

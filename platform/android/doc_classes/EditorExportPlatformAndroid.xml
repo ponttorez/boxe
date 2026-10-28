@@ -642,7 +642,7 @@
 			If [code]true[/code], allows the application to participate in the backup and restore infrastructure.
 		</member>
 		<member name="version/code" type="int" setter="" getter="">
-			Machine-readable application version. This must be incremented for every new release pushed to the Play Store.
+			Machine-readable application version. This must be incremented for every new release pushed to the Play Store, which accepts values up to [code]2100000000[/code]. If set to [code]0[/code], uses [member ProjectSettings.application/config/version_code], or [code]1[/code] if the project doesn't set one either.
 		</member>
 		<member name="version/name" type="String" setter="" getter="">
 			Application version visible to the user. Falls back to [member ProjectSettings.application/config/version] if left empty.

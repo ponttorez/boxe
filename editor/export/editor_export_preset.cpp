@@ -592,6 +592,33 @@ _FORCE_INLINE_ bool _check_digits(const String &p_str) {
 	return true;
 }
 
+int64_t EditorExportPreset::get_version_code(const StringName &p_name) {
+	// 64-bit, so the platforms check large values against their own limits before narrowing them.
+	int64_t version_code = get(p_name);
+	if (version_code <= 0) {
+		version_code = get_project_setting("application/config/version_code");
+	}
+	return MAX(0, version_code);
+}
+
+String EditorExportPreset::get_build_version(const StringName &p_name, bool p_windows_version) {
+	const int64_t version_code = get_project_setting("application/config/version_code");
+	if (!String(get(p_name)).is_empty() || version_code <= 0) {
+		return get_version(p_name, p_windows_version);
+	}
+	if (!p_windows_version) {
+		return itos(version_code);
+	}
+
+	// Each component of a Windows version is a 16-bit number.
+	const String version = get_version(p_name, true);
+	const PackedStringArray project_version = String(GLOBAL_GET("application/config/version")).split(".", false);
+	if (version_code > UINT16_MAX || project_version.size() >= 4) {
+		return version;
+	}
+	return version.get_slice(".", 0) + "." + version.get_slice(".", 1) + "." + version.get_slice(".", 2) + "." + itos(version_code);
+}
+
 String EditorExportPreset::get_version(const StringName &p_preset_string, bool p_windows_version) const {
 	String result = get(p_preset_string);
 	if (result.is_empty()) {
