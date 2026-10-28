@@ -292,8 +292,11 @@ private:
 
 	HashSet<AudioStreamPlaybackRandomizer *> playbacks;
 	Vector<PoolEntry> audio_stream_pool;
-	float random_pitch_scale = 1.0f;
-	float random_volume_offset_db = 0.0f;
+	// The random pitch and volume of each playback are picked between these.
+	float random_pitch_semitones_min = 0.0f;
+	float random_pitch_semitones_max = 0.0f;
+	float random_volume_offset_db_min = 0.0f;
+	float random_volume_offset_db_max = 0.0f;
 
 	Ref<AudioStreamPlayback> instance_playback_random();
 	Ref<AudioStreamPlayback> instance_playback_no_repeats();
@@ -324,6 +327,18 @@ public:
 	void set_streams_count(int p_count);
 	int get_streams_count() const;
 
+	void set_random_pitch_semitones_min(float p_semitones);
+	float get_random_pitch_semitones_min() const;
+	void set_random_pitch_semitones_max(float p_semitones);
+	float get_random_pitch_semitones_max() const;
+
+	void set_random_volume_offset_db_min(float p_volume_offset_db);
+	float get_random_volume_offset_db_min() const;
+	void set_random_volume_offset_db_max(float p_volume_offset_db);
+	float get_random_volume_offset_db_max() const;
+
+#ifndef DISABLE_DEPRECATED
+	// A range from -value to +value.
 	void set_random_pitch_semitones(float p_pitch_semitones);
 	float get_random_pitch_semitones() const;
 
@@ -332,6 +347,7 @@ public:
 
 	void set_random_volume_offset_db(float p_volume_offset_db);
 	float get_random_volume_offset_db() const;
+#endif // DISABLE_DEPRECATED
 
 	void set_playback_mode(PlaybackMode p_playback_mode);
 	PlaybackMode get_playback_mode() const;

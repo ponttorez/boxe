@@ -553,35 +553,65 @@ int AudioStreamRandomizer::get_streams_count() const {
 	return audio_stream_pool.size();
 }
 
+void AudioStreamRandomizer::set_random_pitch_semitones_min(float p_semitones) {
+	random_pitch_semitones_min = p_semitones;
+}
+
+float AudioStreamRandomizer::get_random_pitch_semitones_min() const {
+	return random_pitch_semitones_min;
+}
+
+void AudioStreamRandomizer::set_random_pitch_semitones_max(float p_semitones) {
+	random_pitch_semitones_max = p_semitones;
+}
+
+float AudioStreamRandomizer::get_random_pitch_semitones_max() const {
+	return random_pitch_semitones_max;
+}
+
+void AudioStreamRandomizer::set_random_volume_offset_db_min(float p_volume_offset_db) {
+	random_volume_offset_db_min = p_volume_offset_db;
+}
+
+float AudioStreamRandomizer::get_random_volume_offset_db_min() const {
+	return random_volume_offset_db_min;
+}
+
+void AudioStreamRandomizer::set_random_volume_offset_db_max(float p_volume_offset_db) {
+	random_volume_offset_db_max = p_volume_offset_db;
+}
+
+float AudioStreamRandomizer::get_random_volume_offset_db_max() const {
+	return random_volume_offset_db_max;
+}
+
+#ifndef DISABLE_DEPRECATED
 void AudioStreamRandomizer::set_random_pitch(float p_pitch) {
-	if (p_pitch < 1) {
-		p_pitch = 1;
-	}
-	random_pitch_scale = p_pitch;
+	set_random_pitch_semitones(12.0f * log2f(MAX(1.0f, p_pitch)));
 }
 
 float AudioStreamRandomizer::get_random_pitch() const {
-	return random_pitch_scale;
+	return powf(2, get_random_pitch_semitones() / 12.0f);
 }
 
 void AudioStreamRandomizer::set_random_pitch_semitones(float p_semitones) {
-	random_pitch_scale = powf(2, p_semitones * 0.08333333f);
+	random_pitch_semitones_max = MAX(0.0f, p_semitones);
+	random_pitch_semitones_min = -random_pitch_semitones_max;
 }
 
 float AudioStreamRandomizer::get_random_pitch_semitones() const {
-	return 12.0f * log2f(MAX(1.0f, random_pitch_scale));
+	return MAX(0.0f, MAX(-random_pitch_semitones_min, random_pitch_semitones_max));
 }
 
 void AudioStreamRandomizer::set_random_volume_offset_db(float p_volume_offset_db) {
-	if (p_volume_offset_db < 0) {
-		p_volume_offset_db = 0;
-	}
-	random_volume_offset_db = p_volume_offset_db;
+	random_volume_offset_db_max = MAX(0.0f, p_volume_offset_db);
+	random_volume_offset_db_min = -random_volume_offset_db_max;
 }
 
 float AudioStreamRandomizer::get_random_volume_offset_db() const {
-	return random_volume_offset_db;
+	return MAX(0.0f, MAX(-random_volume_offset_db_min, random_volume_offset_db_max));
 }
+#endif // DISABLE_DEPRECATED
 
 void AudioStreamRandomizer::set_playback_mode(PlaybackMode p_playback_mode) {
 	playback_mode = p_playback_mode;
@@ -753,6 +783,17 @@ void AudioStreamRandomizer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_streams_count", "count"), &AudioStreamRandomizer::set_streams_count);
 	ClassDB::bind_method(D_METHOD("get_streams_count"), &AudioStreamRandomizer::get_streams_count);
 
+	ClassDB::bind_method(D_METHOD("set_random_pitch_semitones_min", "semitones"), &AudioStreamRandomizer::set_random_pitch_semitones_min);
+	ClassDB::bind_method(D_METHOD("get_random_pitch_semitones_min"), &AudioStreamRandomizer::get_random_pitch_semitones_min);
+	ClassDB::bind_method(D_METHOD("set_random_pitch_semitones_max", "semitones"), &AudioStreamRandomizer::set_random_pitch_semitones_max);
+	ClassDB::bind_method(D_METHOD("get_random_pitch_semitones_max"), &AudioStreamRandomizer::get_random_pitch_semitones_max);
+
+	ClassDB::bind_method(D_METHOD("set_random_volume_offset_db_min", "db_offset"), &AudioStreamRandomizer::set_random_volume_offset_db_min);
+	ClassDB::bind_method(D_METHOD("get_random_volume_offset_db_min"), &AudioStreamRandomizer::get_random_volume_offset_db_min);
+	ClassDB::bind_method(D_METHOD("set_random_volume_offset_db_max", "db_offset"), &AudioStreamRandomizer::set_random_volume_offset_db_max);
+	ClassDB::bind_method(D_METHOD("get_random_volume_offset_db_max"), &AudioStreamRandomizer::get_random_volume_offset_db_max);
+
+#ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("set_random_pitch", "scale"), &AudioStreamRandomizer::set_random_pitch);
 	ClassDB::bind_method(D_METHOD("get_random_pitch"), &AudioStreamRandomizer::get_random_pitch);
 
@@ -761,14 +802,22 @@ void AudioStreamRandomizer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_random_volume_offset_db", "db_offset"), &AudioStreamRandomizer::set_random_volume_offset_db);
 	ClassDB::bind_method(D_METHOD("get_random_volume_offset_db"), &AudioStreamRandomizer::get_random_volume_offset_db);
+#endif // DISABLE_DEPRECATED
 
 	ClassDB::bind_method(D_METHOD("set_playback_mode", "mode"), &AudioStreamRandomizer::set_playback_mode);
 	ClassDB::bind_method(D_METHOD("get_playback_mode"), &AudioStreamRandomizer::get_playback_mode);
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "playback_mode", PROPERTY_HINT_ENUM, "Random (Avoid Repeats),Random,Sequential"), "set_playback_mode", "get_playback_mode");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_pitch", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR), "set_random_pitch", "get_random_pitch");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_pitch_semitones", PROPERTY_HINT_RANGE, "0,24,0.001,or_greater,suffix:Semitones", PROPERTY_USAGE_EDITOR), "set_random_pitch_semitones", "get_random_pitch_semitones");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_volume_offset_db", PROPERTY_HINT_RANGE, "0,40,0.01,suffix:dB"), "set_random_volume_offset_db", "get_random_volume_offset_db");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_pitch_semitones_min", PROPERTY_HINT_RANGE, "-24,24,0.001,or_less,or_greater,suffix:Semitones"), "set_random_pitch_semitones_min", "get_random_pitch_semitones_min");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_pitch_semitones_max", PROPERTY_HINT_RANGE, "-24,24,0.001,or_less,or_greater,suffix:Semitones"), "set_random_pitch_semitones_max", "get_random_pitch_semitones_max");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_volume_offset_db_min", PROPERTY_HINT_RANGE, "-40,40,0.01,suffix:dB"), "set_random_volume_offset_db_min", "get_random_volume_offset_db_min");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_volume_offset_db_max", PROPERTY_HINT_RANGE, "-40,40,0.01,suffix:dB"), "set_random_volume_offset_db_max", "get_random_volume_offset_db_max");
+#ifndef DISABLE_DEPRECATED
+	// Older resources set the range from -value to +value.
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_pitch", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "set_random_pitch", "get_random_pitch");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_pitch_semitones", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "set_random_pitch_semitones", "get_random_pitch_semitones");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "random_volume_offset_db", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "set_random_volume_offset_db", "get_random_volume_offset_db");
+#endif // DISABLE_DEPRECATED
 	ADD_ARRAY("streams", "stream_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "streams_count", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR), "set_streams_count", "get_streams_count");
 
@@ -792,17 +841,17 @@ AudioStreamRandomizer::AudioStreamRandomizer() {
 void AudioStreamPlaybackRandomizer::start(double p_from_pos) {
 	playing = playback;
 	{
-		// GH-10238 : Pitch_scale is multiplicative, so picking a random number for it without log
-		// conversion will bias it towards higher pitches (0.5 is down one octave, 2.0 is up one octave).
+		// GH-10238 : Pitch_scale is multiplicative, so it's picked in semitones, else it would be biased
+		// towards higher pitches (0.5 is down one octave, 2.0 is up one octave).
 		// See: https://pressbooks.pub/sound/chapter/pitch-and-frequency-in-music/
-		float range_from = Math::log(1.0f / randomizer->random_pitch_scale);
-		float range_to = Math::log(randomizer->random_pitch_scale);
+		float range_from = randomizer->random_pitch_semitones_min;
+		float range_to = randomizer->random_pitch_semitones_max;
 
-		pitch_scale = Math::exp(range_from + Math::randf() * (range_to - range_from));
+		pitch_scale = Math::pow(2.0f, (range_from + Math::randf() * (range_to - range_from)) / 12.0f);
 	}
 	{
-		float range_from = -randomizer->random_volume_offset_db;
-		float range_to = randomizer->random_volume_offset_db;
+		float range_from = randomizer->random_volume_offset_db_min;
+		float range_to = randomizer->random_volume_offset_db_max;
 
 		float volume_offset_db = range_from + Math::randf() * (range_to - range_from);
 		volume_scale = Math::db_to_linear(volume_offset_db);
