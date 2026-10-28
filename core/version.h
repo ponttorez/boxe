@@ -74,6 +74,10 @@
 // Example: "3.1.4.stable.mono.double.official"
 #define GODOT_VERSION_FULL_BUILD GODOT_VERSION_FULL_CONFIG "." GODOT_VERSION_BUILD
 
+// The version of the export templates, which names their folder. The templates of a build only fit the engine of that
+// build, so it includes the build name, e.g. "4.7.2.stable.boxe", and builds don't use the templates of other builds.
+#define GODOT_VERSION_TEMPLATES GODOT_VERSION_FULL_BUILD
+
 // Same as above, but prepended with Godot's name and a cosmetic "v" for "version".
 // Example: "Godot v3.1.4.stable.official.mono.double"
 #define GODOT_VERSION_FULL_NAME GODOT_VERSION_NAME " v" GODOT_VERSION_FULL_BUILD
