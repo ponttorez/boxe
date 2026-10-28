@@ -9,6 +9,16 @@
 	</description>
 	<tutorials>
 	</tutorials>
+	<methods>
+		<method name="set_text_argument">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="value" type="Variant" />
+			<description>
+				Sets the [param value] of the argument [param name] in [member text_arguments] and updates the text.
+			</description>
+		</method>
+	</methods>
 	<members>
 		<member name="bbcode_enabled" type="bool" setter="set_bbcode_enabled" getter="is_bbcode_enabled" default="false">
 			If [code]true[/code], [member text] is parsed as BBCode, as in [member Label.bbcode_enabled]. [code][url][/code] tags are only drawn, [code][hint][/code] tags show tooltips.
@@ -29,6 +39,18 @@
 		</member>
 		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
 			The button's text that will be displayed inside the button's area.
+		</member>
+		<member name="text_arguments" type="Dictionary" setter="set_text_arguments" getter="get_text_arguments" default="{}">
+			Arguments formatted in the translated [member text]. [code]{name}[/code] is replaced with the value of the [code]name[/code] argument, and [code]{name|form|form...}[/code] with the plural form for the number in the argument, chosen by the plural rules of the locale of the translated text. Untranslated texts use the rules of the [member ProjectSettings.internationalization/locale/fallback] locale. Write [code]{{[/code] and [code]}}[/code] for literal braces. Arguments that aren't set are left in the text. See [method TranslationServer.format_arguments].
+			With BBCode enabled, brackets in the values are shown as they are and don't make tags, as values can come from players, e.g. their names. Only [Label], [RichTextLabel], [Button] and [LinkButton] have arguments, format other texts, such as tooltips, with [method TranslationServer.format_arguments].
+			A resource saved to a file, such as a [Texture2D], is replaced with its path, so an icon can be shown with [code skip-lint][img]{icon}[/img][/code] in the text. A resource built into a scene has no path of its own and is shown as text.
+			The text isn't formatted when there are no arguments, so braces are shown as is.
+			[codeblock]
+			# With "You have {count} {count|apple|apples}." as the English text and "У тебя {count} {count|яблоко|яблока|яблок}." as the Russian text of the key.
+			$LinkButton.text = "apples"
+			$LinkButton.text_arguments = { "count": 3 }
+			[/codeblock]
+			[b]Note:[/b] Changing the returned dictionary doesn't update the text, use [method set_text_argument] or set the whole dictionary.
 		</member>
 		<member name="text_direction" type="int" setter="set_text_direction" getter="get_text_direction" enum="Control.TextDirection" default="0">
 			Base text writing direction.

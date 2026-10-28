@@ -34,6 +34,7 @@ TEST_FORCE_LINK(test_translation_server)
 
 #include "core/io/dir_access.h"
 #include "core/io/file_access.h"
+#include "core/io/resource.h"
 #include "core/os/os.h"
 #include "core/string/translation_server.h"
 
@@ -256,6 +257,48 @@ TEST_CASE("[TranslationServer] Forgetting the selected locale") {
 	// Nothing to forget.
 	TranslationServer::get_singleton()->forget_selected_locale();
 	CHECK_FALSE(FileAccess::exists(path));
+}
+
+TEST_CASE("[TranslationServer] Format arguments") {
+	TranslationServer *ts = TranslationServer::get_singleton();
+	Dictionary arguments;
+	arguments["name"] = "Godot";
+	arguments["count"] = 1;
+	const String text = "{name} has {count} {count|apple|apples}.";
+	CHECK(ts->format_arguments(text, arguments, "en") == "Godot has 1 apple.");
+	arguments["count"] = 5;
+	CHECK(ts->format_arguments(text, arguments, "en") == "Godot has 5 apples.");
+
+	// The plural forms of the locale.
+	const String ru = String::utf8("{count} {count|яблоко|яблока|яблок}");
+	for (const KeyValue<int, String> &E : HashMap<int, String>{ { 1, String::utf8("1 яблоко") }, { 3, String::utf8("3 яблока") }, { 5, String::utf8("5 яблок") }, { 21, String::utf8("21 яблоко") } }) {
+		arguments["count"] = E.key;
+		CHECK(ts->format_arguments(ru, arguments, "ru") == E.value);
+	}
+	// Missing forms use the last one.
+	arguments["count"] = 5;
+	CHECK(ts->format_arguments("{count|apple|apples}", arguments, "ru") == "apples");
+	// Numbers in strings.
+	arguments["count"] = "1";
+	CHECK(ts->format_arguments("{count|apple|apples}", arguments, "en") == "apple");
+
+	// Missing arguments, escaped and unmatched braces are kept.
+	CHECK(ts->format_arguments("{missing} {name}", arguments, "en") == "{missing} Godot");
+	CHECK(ts->format_arguments("{{name}} {name}", arguments, "en") == "{name} Godot");
+	CHECK(ts->format_arguments("{name} {", arguments, "en") == "Godot {");
+	CHECK(ts->format_arguments("{name}", Dictionary(), "en") == "{name}");
+
+	// Resources saved to a file give their path, e.g. for images in BBCode.
+	Ref<Resource> icon;
+	icon.instantiate();
+	icon->set_path_cache("res://icons/jump.png");
+	arguments["icon"] = icon;
+	CHECK(ts->format_arguments("[img]{icon}[/img]", arguments, "en") == "[img]res://icons/jump.png[/img]");
+	Ref<Resource> built_in;
+	built_in.instantiate();
+	built_in->set_path_cache("res://main.tscn::Texture_1");
+	arguments["icon"] = built_in;
+	CHECK(ts->format_arguments("{icon}", arguments, "en") == Variant(built_in).stringify());
 }
 
 } // namespace TestTranslationServer

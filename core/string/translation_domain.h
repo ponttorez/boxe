@@ -62,6 +62,7 @@ class TranslationDomain : public RefCounted {
 	String _add_padding(const String &p_message, int p_length) const;
 	const char32_t *_get_accented_version(char32_t p_character) const;
 	bool _is_placeholder(const String &p_message, int p_index) const;
+	String _find_message_locale(const String &p_locale, const StringName &p_message, const StringName &p_context) const;
 
 protected:
 	static void _bind_methods();
@@ -91,6 +92,8 @@ public:
 	bool has_translation_for_locale(const String &p_locale, bool p_exact) const;
 
 	StringName translate(const StringName &p_message, const StringName &p_context) const;
+	// The locale of the translation used by translate(), or the fallback locale for untranslated messages.
+	String get_message_locale(const StringName &p_message, const StringName &p_context) const;
 	StringName translate_plural(const StringName &p_message, const StringName &p_message_plural, int p_n, const StringName &p_context) const;
 
 	String get_locale_override() const;

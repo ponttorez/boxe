@@ -926,7 +926,7 @@ void Label::_notification(int p_what) {
 		} break;
 
 		case NOTIFICATION_TRANSLATION_CHANGED: {
-			const String new_text = atr(text);
+			const String new_text = format_text_arguments(atr(text), text_arguments, text, bbcode_enabled);
 			if (new_text != xl_text) {
 				xl_text = new_text;
 				if (visible_ratio < 1) {
@@ -1348,7 +1348,11 @@ void Label::set_text(const String &p_string) {
 		return;
 	}
 	text = p_string;
-	xl_text = atr(p_string);
+	_update_translated_text();
+}
+
+void Label::_update_translated_text() {
+	xl_text = format_text_arguments(atr(text), text_arguments, text, bbcode_enabled);
 	text_dirty = true;
 	if (visible_ratio < 1) {
 		visible_chars = get_total_character_count() * visible_ratio;
@@ -1547,11 +1551,27 @@ String Label::get_text() const {
 	return text;
 }
 
+void Label::set_text_arguments(const Dictionary &p_arguments) {
+	text_arguments = p_arguments;
+	_update_translated_text();
+}
+
+Dictionary Label::get_text_arguments() const {
+	return text_arguments;
+}
+
+void Label::set_text_argument(const String &p_name, const Variant &p_value) {
+	text_arguments[p_name] = p_value;
+	_update_translated_text();
+}
+
 void Label::set_bbcode_enabled(bool p_enabled) {
 	if (bbcode_enabled == p_enabled) {
 		return;
 	}
 	bbcode_enabled = p_enabled;
+	// The arguments are escaped with BBCode.
+	xl_text = format_text_arguments(atr(text), text_arguments, text, bbcode_enabled);
 	if (bbcode_enabled) {
 		// The paragraphs are rebuilt when BBCode is disabled again.
 		for (Paragraph &para : paragraphs) {
@@ -1694,6 +1714,9 @@ void Label::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_vertical_alignment"), &Label::get_vertical_alignment);
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &Label::set_text);
 	ClassDB::bind_method(D_METHOD("get_text"), &Label::get_text);
+	ClassDB::bind_method(D_METHOD("set_text_arguments", "arguments"), &Label::set_text_arguments);
+	ClassDB::bind_method(D_METHOD("get_text_arguments"), &Label::get_text_arguments);
+	ClassDB::bind_method(D_METHOD("set_text_argument", "name", "value"), &Label::set_text_argument);
 	ClassDB::bind_method(D_METHOD("set_bbcode_enabled", "enabled"), &Label::set_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("is_bbcode_enabled"), &Label::is_bbcode_enabled);
 	ClassDB::bind_method(D_METHOD("get_parsed_text"), &Label::get_parsed_text);
@@ -1743,6 +1766,7 @@ void Label::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_character_bounds", "pos"), &Label::get_character_bounds);
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text", PROPERTY_HINT_MULTILINE_TEXT), "set_text", "get_text");
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "text_arguments", PROPERTY_HINT_DICTIONARY_TYPE, "String;"), "set_text_arguments", "get_text_arguments");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "bbcode_enabled"), "set_bbcode_enabled", "is_bbcode_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "label_settings", PROPERTY_HINT_RESOURCE_TYPE, LabelSettings::get_class_static()), "set_label_settings", "get_label_settings");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "horizontal_alignment", PROPERTY_HINT_ENUM, "Left,Center,Right,Fill"), "set_horizontal_alignment", "get_horizontal_alignment");

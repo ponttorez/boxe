@@ -760,6 +760,7 @@ private:
 #endif
 	bool use_bbcode = false;
 	String text;
+	Dictionary text_arguments;
 	void _apply_translation();
 
 	bool internal_stack_editing = false;
@@ -986,6 +987,10 @@ public:
 
 	void set_text(const String &p_bbcode);
 	String get_text() const;
+
+	void set_text_arguments(const Dictionary &p_arguments);
+	Dictionary get_text_arguments() const;
+	void set_text_argument(const String &p_name, const Variant &p_value);
 
 	void set_horizontal_alignment(HorizontalAlignment p_alignment);
 	HorizontalAlignment get_horizontal_alignment() const;

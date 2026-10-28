@@ -36,11 +36,83 @@ TEST_FORCE_LINK(test_label)
 
 #if defined(MODULE_TEXT_SERVER_FB_ENABLED) || defined(MODULE_TEXT_SERVER_ADV_ENABLED)
 
+#include "core/string/translation_server.h"
 #include "scene/gui/label.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
 
 namespace TestLabel {
+
+TEST_CASE("[SceneTree][Label] Text arguments") {
+	Label *test_label = memnew(Label);
+	SceneTree::get_singleton()->get_root()->add_child(test_label);
+
+	test_label->set_text("{count} {count|item|items} for {name}");
+	CHECK(test_label->get_parsed_text() == "{count} {count|item|items} for {name}");
+
+	test_label->set_text_argument("count", 1);
+	test_label->set_text_argument("name", "Godot");
+	CHECK(test_label->get_parsed_text() == "1 item for Godot");
+
+	Dictionary arguments;
+	arguments["count"] = 3;
+	arguments["name"] = "Godot";
+	test_label->set_text_arguments(arguments);
+	CHECK(test_label->get_parsed_text() == "3 items for Godot");
+
+	// No arguments, no formatting.
+	test_label->set_text_arguments(Dictionary());
+	CHECK(test_label->get_parsed_text() == "{count} {count|item|items} for {name}");
+
+	memdelete(test_label);
+}
+
+TEST_CASE("[SceneTree][Label] Text arguments of a fallback translation") {
+	TranslationServer *ts = TranslationServer::get_singleton();
+	const String old_locale = ts->get_locale();
+	const String old_fallback = ts->get_fallback_locale();
+	Ref<Translation> english;
+	english.instantiate();
+	english->set_locale("en");
+	english->add_message("apples", "{count} {count|apple|apples}");
+	ts->add_translation(english);
+	ts->set_fallback_locale("en");
+	ts->set_locale("ru");
+
+	Label *test_label = memnew(Label);
+	SceneTree::get_singleton()->get_root()->add_child(test_label);
+	test_label->set_text("apples");
+	test_label->set_text_argument("count", 21);
+	// The English plural rules, as the text is English.
+	CHECK(test_label->get_parsed_text() == "21 apples");
+
+	memdelete(test_label);
+	ts->remove_translation(english);
+	ts->set_fallback_locale(old_fallback);
+	ts->set_locale(old_locale);
+}
+
+TEST_CASE("[SceneTree][Label] Text arguments of a regional translation") {
+	TranslationServer *ts = TranslationServer::get_singleton();
+	const String old_locale = ts->get_locale();
+	Ref<Translation> brazilian;
+	brazilian.instantiate();
+	brazilian->set_locale("pt_BR");
+	brazilian->add_message("apples", String::utf8("{count} {count|maçã|maçãs}"));
+	ts->add_translation(brazilian);
+	ts->set_locale("pt_PT");
+
+	Label *test_label = memnew(Label);
+	SceneTree::get_singleton()->get_root()->add_child(test_label);
+	test_label->set_text("apples");
+	test_label->set_text_argument("count", 0);
+	// The rules of Brazilian Portuguese, which use the singular for 0, as the text is from the pt_BR translation.
+	CHECK(test_label->get_parsed_text() == String::utf8("0 maçã"));
+
+	memdelete(test_label);
+	ts->remove_translation(brazilian);
+	ts->set_locale(old_locale);
+}
 
 TEST_CASE("[SceneTree][Label] Custom minimum size") {
 	// This is an anti-regression test case introduced in GH-116640. When the old minimum size behavior is removed, this test case should be removed too.
@@ -256,6 +328,29 @@ TEST_CASE("[SceneTree][Label] Sizing") {
 			"Label width will increase beyond the custom minimum width with OVERRUN_TRIM_WORD_ELLIPSIS_FORCE.");
 
 	memdelete(test_label);
+}
+
+TEST_CASE("[SceneTree][Label] Text arguments don't make BBCode tags") {
+	Label *label = memnew(Label);
+	SceneTree::get_singleton()->get_root()->add_child(label);
+	label->set_text("Hi {name}");
+	label->set_text_argument("name", "[b]Player[/b]");
+	CHECK(label->get_parsed_text() == "Hi [b]Player[/b]");
+
+	label->set_bbcode_enabled(true);
+	CHECK_MESSAGE(label->get_parsed_text() == "Hi [b]Player[/b]", "The brackets of the argument are shown as they are.");
+	label->set_text("[i]Hi[/i] {name}");
+	CHECK_MESSAGE(label->get_parsed_text() == "Hi [b]Player[/b]", "The tags of the text still apply.");
+
+	// A resource gives its path, e.g. for [img]{icon}[/img].
+	Ref<Resource> icon;
+	icon.instantiate();
+	icon->set_path_cache("res://icons/jump.png");
+	label->set_text("Press {icon}");
+	label->set_text_argument("icon", icon);
+	CHECK(label->get_parsed_text() == "Press res://icons/jump.png");
+
+	memdelete(label);
 }
 
 } // namespace TestLabel

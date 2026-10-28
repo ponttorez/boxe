@@ -833,6 +833,10 @@ public:
 	// Redraws when the self modulation changes, for drawing that applies it itself (see TextEffectLayers).
 	void set_redraw_on_self_modulate(bool p_enabled);
 
+	// Formats the text_arguments of text controls in their translated text, with the plural rules of the locale the text is in.
+	// With p_escape_bbcode, brackets in the arguments don't make BBCode tags, as arguments can come from users, e.g. their names.
+	String format_text_arguments(const String &p_translated, const Dictionary &p_arguments, const String &p_message, bool p_escape_bbcode = false) const;
+
 	void set_composite_enabled(bool p_enabled);
 	bool is_composite_enabled() const;
 
