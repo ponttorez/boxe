@@ -31,6 +31,7 @@
 #pragma once
 
 #include "core/templates/hash_map.h"
+#include "scene/animation/transition_timing.h"
 #include "scene/resources/style_box.h"
 
 class CanvasItem;
@@ -92,13 +93,10 @@ private:
 		Ref<StyleBox> from;
 		// What the transition goes to: the target, or a transparent copy of the previous style when there is no target.
 		Ref<StyleBox> to;
-		// The style box whose transition settings are used.
-		Ref<StyleBox> timing;
 		Ref<StyleBox> live;
 		double start_time = 0.0;
-		double duration = 0.0;
-		// Where the transition starts on its curve, after an interrupted transition in the other direction.
-		real_t start_curve_time = 0.0;
+		// Timed by the transition settings of a style box, see get_style().
+		TransitionTiming timing;
 		bool active = false;
 		uint64_t last_used_frame = 0;
 	};
@@ -109,10 +107,8 @@ private:
 		Ref<StyleBox> target_timing;
 		Color origin;
 		Color from;
-		Ref<StyleBox> timing;
 		double start_time = 0.0;
-		double duration = 0.0;
-		real_t start_curve_time = 0.0;
+		TransitionTiming timing;
 		bool active = false;
 		uint64_t last_used_frame = 0;
 	};
@@ -128,10 +124,9 @@ private:
 	bool _is_enabled() const;
 	// Seconds advanced by the unscaled process step of each frame, so transitions keep their speed when the time scale changes and in Movie Maker mode.
 	static double _get_time();
-	static real_t _get_curve_time(double p_start_time, double p_duration, real_t p_start_curve_time);
-	// The weight between the state where the transition started and its target.
-	static real_t _get_weight(const Ref<StyleBox> &p_timing, real_t p_curve_time, real_t p_start_curve_time);
-	static real_t _find_curve_time(const Ref<StyleBox> &p_timing, real_t p_weight);
+	// Starts the timing of a transition with the settings of a style box, from the point of its curve that has covered
+	// p_covered of the way.
+	static void _start_timing(TransitionTiming &r_timing, const Ref<StyleBox> &p_style_box, real_t p_covered);
 	void _queue_redraw();
 	static void _stop_style_track(StyleTrack &r_track);
 	void _prune(uint64_t p_frame);

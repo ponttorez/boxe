@@ -59,34 +59,8 @@ void StyleTransitions::skip_time(double p_seconds) {
 	time += p_seconds;
 }
 
-real_t StyleTransitions::_get_curve_time(double p_start_time, double p_duration, real_t p_start_curve_time) {
-	if (p_duration <= 0.0) {
-		return 1.0;
-	}
-	return MIN(1.0, p_start_curve_time + (_get_time() - p_start_time) / p_duration);
-}
-
-real_t StyleTransitions::_get_weight(const Ref<StyleBox> &p_timing, real_t p_curve_time, real_t p_start_curve_time) {
-	const real_t start = p_timing->ease_transition(p_start_curve_time);
-	if (1.0 - start < CMP_EPSILON) {
-		return 1.0;
-	}
-	return (p_timing->ease_transition(p_curve_time) - start) / (1.0 - start);
-}
-
-real_t StyleTransitions::_find_curve_time(const Ref<StyleBox> &p_timing, real_t p_weight) {
-	// Curves going past the target, like Elastic and Back, give one of the times reaching the weight.
-	real_t low = 0.0;
-	real_t high = 1.0;
-	for (int i = 0; i < 20; i++) {
-		const real_t middle = (low + high) * 0.5;
-		if (p_timing->ease_transition(middle) < p_weight) {
-			low = middle;
-		} else {
-			high = middle;
-		}
-	}
-	return (low + high) * 0.5;
+void StyleTransitions::_start_timing(TransitionTiming &r_timing, const Ref<StyleBox> &p_style_box, real_t p_covered) {
+	r_timing.start(p_style_box->get_transition_duration(), p_style_box->get_transition_type(), p_style_box->get_transition_ease(), p_covered);
 }
 
 void StyleTransitions::_queue_redraw() {
@@ -141,7 +115,6 @@ void StyleTransitions::_stop_style_track(StyleTrack &r_track) {
 	r_track.from.unref();
 	r_track.to.unref();
 	r_track.live.unref();
-	r_track.timing.unref();
 }
 
 Ref<StyleBox> StyleTransitions::get_style(const Key &p_key, const Ref<StyleBox> &p_target) {
@@ -163,7 +136,8 @@ Ref<StyleBox> StyleTransitions::get_style(const Key &p_key, const Ref<StyleBox> 
 		// How far the interrupted transition went from the state where its curve starts.
 		real_t previous_position = 1.0;
 		if (track->active) {
-			previous_position = track->timing->ease_transition(_get_curve_time(track->start_time, track->duration, track->start_curve_time));
+			track->timing.set_elapsed(_get_time() - track->start_time);
+			previous_position = track->timing.get_position();
 		}
 		const Ref<StyleBox> current = track->active ? track->live : previous;
 
@@ -212,13 +186,11 @@ Ref<StyleBox> StyleTransitions::get_style(const Key &p_key, const Ref<StyleBox> 
 		track->from = from;
 		track->to = to;
 		track->live = live;
-		track->timing = timing;
 		// Going back before the transition ends continues on the curve from the same point,
 		// so it takes as long as the part already travelled, without stopping or jumping.
-		track->start_curve_time = reversing ? _find_curve_time(timing, 1.0 - previous_position) : 0.0;
-		track->duration = timing->get_transition_duration();
+		_start_timing(track->timing, timing, reversing ? 1.0 - previous_position : 0.0);
 		track->start_time = _get_time();
-		track->active = track->duration > 0.0 && track->start_curve_time < 1.0;
+		track->active = track->timing.is_playing();
 		if (!track->active) {
 			_stop_style_track(*track);
 		}
@@ -228,13 +200,13 @@ Ref<StyleBox> StyleTransitions::get_style(const Key &p_key, const Ref<StyleBox> 
 		return p_target;
 	}
 
-	const real_t curve_time = _get_curve_time(track->start_time, track->duration, track->start_curve_time);
-	if (curve_time >= 1.0) {
+	track->timing.set_elapsed(_get_time() - track->start_time);
+	if (!track->timing.is_playing()) {
 		_stop_style_track(*track);
 		return p_target;
 	}
 
-	track->live->interpolate(track->from, track->to, _get_weight(track->timing, curve_time, track->start_curve_time));
+	track->live->interpolate(track->from, track->to, track->timing.get_weight());
 	_queue_redraw();
 	return track->live;
 }
@@ -257,19 +229,24 @@ Color StyleTransitions::get_color(const Key &p_key, const Color &p_target, const
 	if (p_target == track->target) {
 		track->target_timing = p_timing;
 	} else {
-		real_t previous_position = 1.0;
 		Color current = track->target;
 		if (track->active) {
-			const real_t curve_time = _get_curve_time(track->start_time, track->duration, track->start_curve_time);
-			previous_position = track->timing->ease_transition(curve_time);
-			current = track->from.lerp(track->target, CLAMP(_get_weight(track->timing, curve_time, track->start_curve_time), 0, 1));
+			track->timing.set_elapsed(_get_time() - track->start_time);
+			current = track->from.lerp(track->target, CLAMP(track->timing.get_weight(), 0, 1));
 		}
 
-		const bool reversing = track->active && p_target == track->origin;
+		// Continues on the curve from the point that has covered the part of the way from the previous target already
+		// travelled, e.g. back to the color of the previous state, or on to a closer one.
+		real_t covered = 0.0;
+		if (track->active) {
+			const real_t origin[4] = { track->target.r, track->target.g, track->target.b, track->target.a };
+			const real_t at[4] = { current.r, current.g, current.b, current.a };
+			const real_t to[4] = { p_target.r, p_target.g, p_target.b, p_target.a };
+			covered = TransitionTiming::get_covered(origin, at, to, 4);
+		}
 		track->origin = track->target;
 		track->target = p_target;
 		track->active = false;
-		track->timing.unref();
 
 		// Timed like the style box of the state, which fades out with the style box that disappears when it draws nothing.
 		const Ref<StyleBox> timing = draws_nothing(p_timing) ? track->target_timing : p_timing;
@@ -279,30 +256,24 @@ Color StyleTransitions::get_color(const Key &p_key, const Color &p_target, const
 		}
 
 		track->from = current;
-		track->timing = timing;
-		track->start_curve_time = reversing ? _find_curve_time(timing, 1.0 - previous_position) : 0.0;
-		track->duration = timing->get_transition_duration();
+		_start_timing(track->timing, timing, covered);
 		track->start_time = _get_time();
-		track->active = track->duration > 0.0 && track->start_curve_time < 1.0;
-		if (!track->active) {
-			track->timing.unref();
-		}
+		track->active = track->timing.is_playing();
 	}
 
 	if (!track->active) {
 		return p_target;
 	}
 
-	const real_t curve_time = _get_curve_time(track->start_time, track->duration, track->start_curve_time);
-	if (curve_time >= 1.0) {
+	track->timing.set_elapsed(_get_time() - track->start_time);
+	if (!track->timing.is_playing()) {
 		track->active = false;
-		track->timing.unref();
 		return p_target;
 	}
 
 	_queue_redraw();
 	// Curves like Elastic and Back overshoot the target, which would change the hue of colors.
-	return track->from.lerp(p_target, CLAMP(_get_weight(track->timing, curve_time, track->start_curve_time), 0, 1));
+	return track->from.lerp(p_target, CLAMP(track->timing.get_weight(), 0, 1));
 }
 
 void StyleTransitions::clear() {
