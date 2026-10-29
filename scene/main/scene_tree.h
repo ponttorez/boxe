@@ -36,6 +36,7 @@
 #include "core/os/thread_safe.h"
 #include "core/templates/paged_allocator.h"
 #include "core/templates/self_list.h"
+#include "scene/animation/property_animation.h"
 #include "scene/main/scene_tree_fti.h"
 
 #include <cstdlib>
@@ -217,6 +218,8 @@ private:
 
 	List<Ref<SceneTreeTimer>> timers;
 	List<Ref<Tween>> tweens;
+	// By the ID of the object and the property, see _get_property_animation_key().
+	HashMap<String, Ref<PropertyAnimation>> property_animations;
 
 	///network///
 
@@ -233,6 +236,10 @@ private:
 	void node_renamed(Node *p_node);
 	void process_timers(double p_delta, bool p_physics_frame);
 	void process_tweens(double p_delta, bool p_physics_frame);
+	void process_property_animations(double p_delta);
+	static String _get_property_animation_key(ObjectID p_object, const NodePath &p_property);
+	// The keys of the property animations of an object, or of one of its properties.
+	LocalVector<String> _get_property_animation_keys(const Object *p_object, const NodePath &p_property) const;
 
 	SceneTreeGroup *add_to_group(const StringName &p_group, Node *p_node);
 	void remove_from_group(const StringName &p_group, Node *p_node);
@@ -434,6 +441,11 @@ public:
 	RequiredResult<Tween> create_tween();
 	void remove_tween(const Ref<Tween> &p_tween);
 	TypedArray<Tween> get_processed_tweens();
+
+	Ref<PropertyAnimation> animate_property(Object *p_object, const NodePath &p_property, const Variant &p_value, double p_duration, Tween::TransitionType p_transition = Tween::TRANS_CUBIC, Tween::EaseType p_ease = Tween::EASE_OUT);
+	void stop_property_animation(Object *p_object, const NodePath &p_property = NodePath());
+	void finish_property_animation(Object *p_object, const NodePath &p_property = NodePath());
+	bool is_property_animating(Object *p_object, const NodePath &p_property = NodePath()) const;
 
 	//used by Main::start, don't use otherwise
 	void add_current_scene(Node *p_current);

@@ -728,6 +728,7 @@ bool SceneTree::process(double p_time) {
 
 	process_timers(p_time, false); //go through timers
 	process_tweens(p_time, false);
+	process_property_animations(p_time);
 
 	flush_transform_notifications(); // Additional transforms after timers update.
 
@@ -854,6 +855,8 @@ void SceneTree::process_tweens(double p_delta, bool p_physics) {
 
 void SceneTree::finalize() {
 	_flush_delete_queue();
+
+	property_animations.clear();
 
 	_flush_ugc();
 
@@ -1795,6 +1798,154 @@ void SceneTree::remove_tween(const Ref<Tween> &p_tween) {
 	}
 }
 
+String SceneTree::_get_property_animation_key(ObjectID p_object, const NodePath &p_property) {
+	return itos(p_object) + "/" + String(p_property);
+}
+
+LocalVector<String> SceneTree::_get_property_animation_keys(const Object *p_object, const NodePath &p_property) const {
+	LocalVector<String> keys;
+	if (!p_object) {
+		return keys;
+	}
+	if (!p_property.is_empty()) {
+		const String key = _get_property_animation_key(p_object->get_instance_id(), p_property.get_as_property_path());
+		if (property_animations.has(key)) {
+			keys.push_back(key);
+		}
+		return keys;
+	}
+	for (const KeyValue<String, Ref<PropertyAnimation>> &E : property_animations) {
+		if (E.value->object == p_object->get_instance_id()) {
+			keys.push_back(E.key);
+		}
+	}
+	return keys;
+}
+
+Ref<PropertyAnimation> SceneTree::animate_property(Object *p_object, const NodePath &p_property, const Variant &p_value, double p_duration, Tween::TransitionType p_transition, Tween::EaseType p_ease) {
+	_THREAD_SAFE_METHOD_
+	ERR_FAIL_NULL_V(p_object, Ref<PropertyAnimation>());
+	ERR_FAIL_COND_V_MSG(p_property.is_empty(), Ref<PropertyAnimation>(), "The property to animate can't be empty.");
+
+	const NodePath property = p_property.get_as_property_path();
+	const String key = _get_property_animation_key(p_object->get_instance_id(), property);
+	const Ref<PropertyAnimation> *found = property_animations.getptr(key);
+	const Ref<PropertyAnimation> previous = found ? *found : Ref<PropertyAnimation>();
+
+	Ref<PropertyAnimation> animation;
+	animation.instantiate();
+	animation->object = p_object->get_instance_id();
+	animation->property = property;
+	animation->subnames = property.get_subnames();
+	animation->type = p_value.get_type();
+
+	LocalVector<real_t> target;
+	// The value the animation starts from, and where the previous animation was going, to find the part of the way
+	// already covered.
+	LocalVector<real_t> current;
+	LocalVector<real_t> origin;
+	if (PropertyAnimation::_get_components(p_value, target) && p_duration > 0.0) {
+		if (previous.is_valid() && previous->type == animation->type) {
+			// The same animation going on, e.g. animating to the same value every frame.
+			if (previous->get_final_value() == p_value && previous->timing.duration == p_duration && previous->timing.transition == p_transition && previous->timing.ease == p_ease) {
+				return previous;
+			}
+			current = previous->current;
+			origin = previous->to;
+		} else {
+			bool valid = false;
+			const Variant value = p_object->get_indexed(animation->subnames, &valid);
+			if (valid && value.get_type() == animation->type && PropertyAnimation::_get_components(value, current)) {
+				origin = current;
+			}
+		}
+	}
+
+	if (previous.is_valid()) {
+		property_animations.erase(key);
+		previous->_end(true);
+	}
+
+	animation->to = target;
+	if (current.is_empty()) {
+		// Values that can't be animated, or without a duration, are set at once.
+		p_object->set_indexed(animation->subnames, p_value);
+		return animation;
+	}
+
+	animation->from = current;
+	animation->current = current;
+	animation->timing.start(p_duration, p_transition, p_ease, TransitionTiming::get_covered(origin.ptr(), current.ptr(), target.ptr(), target.size()));
+	if (!animation->timing.is_playing()) {
+		animation->current = target;
+		animation->_apply();
+		return animation;
+	}
+
+	animation->running = true;
+	property_animations.insert(key, animation);
+	return animation;
+}
+
+void SceneTree::stop_property_animation(Object *p_object, const NodePath &p_property) {
+	_THREAD_SAFE_METHOD_
+	for (const String &key : _get_property_animation_keys(p_object, p_property)) {
+		const Ref<PropertyAnimation> animation = property_animations[key];
+		property_animations.erase(key);
+		animation->_end(true);
+	}
+}
+
+void SceneTree::finish_property_animation(Object *p_object, const NodePath &p_property) {
+	_THREAD_SAFE_METHOD_
+	for (const String &key : _get_property_animation_keys(p_object, p_property)) {
+		const Ref<PropertyAnimation> animation = property_animations[key];
+		property_animations.erase(key);
+		animation->current = animation->to;
+		animation->_apply();
+		animation->_end(false);
+	}
+}
+
+bool SceneTree::is_property_animating(Object *p_object, const NodePath &p_property) const {
+	return !_get_property_animation_keys(p_object, p_property).is_empty();
+}
+
+void SceneTree::process_property_animations(double p_delta) {
+	_THREAD_SAFE_METHOD_
+	if (property_animations.is_empty()) {
+		return;
+	}
+	const double time_scale = Engine::get_singleton()->get_time_scale();
+	const double unscaled_delta = time_scale > 0.0 ? p_delta / time_scale : Engine::get_singleton()->get_process_step();
+
+	// The animations can be changed by the setters of the properties and by the callbacks of the finished signal.
+	LocalVector<String> keys;
+	for (const KeyValue<String, Ref<PropertyAnimation>> &E : property_animations) {
+		keys.push_back(E.key);
+	}
+	for (const String &key : keys) {
+		const Ref<PropertyAnimation> *found = property_animations.getptr(key);
+		if (!found) {
+			continue;
+		}
+		const Ref<PropertyAnimation> animation = *found;
+		if (!ObjectDB::get_instance(animation->object)) {
+			property_animations.erase(key);
+			animation->_end(true);
+			continue;
+		}
+		if (animation->_step(animation->ignore_time_scale ? unscaled_delta : p_delta)) {
+			continue;
+		}
+		const Ref<PropertyAnimation> *still = property_animations.getptr(key);
+		if (still && *still == animation) {
+			property_animations.erase(key);
+		}
+		animation->_end(false);
+	}
+}
+
 TypedArray<Tween> SceneTree::get_processed_tweens() {
 	_THREAD_SAFE_METHOD_
 	TypedArray<Tween> ret;
@@ -1915,6 +2066,11 @@ void SceneTree::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("create_timer", "time_sec", "process_always", "process_in_physics", "ignore_time_scale"), &SceneTree::create_timer, DEFVAL(true), DEFVAL(false), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("create_tween"), &SceneTree::create_tween);
 	ClassDB::bind_method(D_METHOD("get_processed_tweens"), &SceneTree::get_processed_tweens);
+
+	ClassDB::bind_method(D_METHOD("animate_property", "object", "property", "value", "duration", "transition", "ease"), &SceneTree::animate_property, DEFVAL(Tween::TRANS_CUBIC), DEFVAL(Tween::EASE_OUT));
+	ClassDB::bind_method(D_METHOD("stop_property_animation", "object", "property"), &SceneTree::stop_property_animation, DEFVAL(NodePath()));
+	ClassDB::bind_method(D_METHOD("finish_property_animation", "object", "property"), &SceneTree::finish_property_animation, DEFVAL(NodePath()));
+	ClassDB::bind_method(D_METHOD("is_property_animating", "object", "property"), &SceneTree::is_property_animating, DEFVAL(NodePath()));
 
 	ClassDB::bind_method(D_METHOD("get_node_count"), &SceneTree::get_node_count);
 	ClassDB::bind_method(D_METHOD("get_frame"), &SceneTree::get_frame);

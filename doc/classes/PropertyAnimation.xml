@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PropertyAnimation" inherits="RefCounted" api_type="core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+		A property animated to a value by [method SceneTree.animate_property].
+	</brief_description>
+	<description>
+		Returned by [method SceneTree.animate_property], it tells when the animation ends, e.g. to [code]await[/code] it:
+		[codeblocks]
+		[gdscript]
+		await get_tree().animate_property(self, "modulate:a", 0.0, 0.3).finished
+		queue_free()
+		[/gdscript]
+		[csharp]
+		await ToSignal(GetTree().AnimateProperty(this, "modulate:a", 0.0f, 0.3f), PropertyAnimation.SignalName.Finished);
+		QueueFree();
+		[/csharp]
+		[/codeblocks]
+		Animating the property again replaces the animation, which is then interrupted, and the new one continues from where the property is.
+		[b]Note:[/b] Property animations can't be created with [code]new()[/code].
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_final_value" qualifiers="const">
+			<return type="Variant" />
+			<description>
+				Returns the value the property is animated to.
+			</description>
+		</method>
+		<method name="get_object" qualifiers="const">
+			<return type="Object" />
+			<description>
+				Returns the animated object, or [code]null[/code] once it's freed.
+			</description>
+		</method>
+		<method name="get_property" qualifiers="const">
+			<return type="NodePath" />
+			<description>
+				Returns the animated property, as a property path such as [code]^":position:x"[/code].
+			</description>
+		</method>
+		<method name="is_ignoring_time_scale" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if the animation ignores [member Engine.time_scale], see [method set_ignore_time_scale].
+			</description>
+		</method>
+		<method name="is_interrupted" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if the animation ended before reaching its value: another animation of the property replaced it, it was stopped with [method SceneTree.stop_property_animation], or its object was freed.
+			</description>
+		</method>
+		<method name="is_running" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] until the animation ends.
+			</description>
+		</method>
+		<method name="set_ignore_time_scale">
+			<return type="PropertyAnimation" />
+			<param index="0" name="ignore" type="bool" default="true" />
+			<description>
+				If [param ignore] is [code]true[/code], the animation plays at the same speed whatever the [member Engine.time_scale], e.g. for the user interface of a slowed down or paused game. Returns this animation, so it can be chained:
+				[codeblock]
+				get_tree().animate_property(panel, "position", Vector2(0, 0), 0.2).set_ignore_time_scale()
+				[/codeblock]
+			</description>
+		</method>
+	</methods>
+	<signals>
+		<signal name="finished">
+			<description>
+				Emitted when the animation ends, after reaching its value or interrupted, see [method is_interrupted].
+			</description>
+		</signal>
+	</signals>
+</class>

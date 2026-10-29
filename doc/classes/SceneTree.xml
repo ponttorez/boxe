@@ -13,6 +13,41 @@
 		<link title="Multiple resolutions">$DOCS_URL/tutorials/rendering/multiple_resolutions.html</link>
 	</tutorials>
 	<methods>
+		<method name="animate_property">
+			<return type="PropertyAnimation" />
+			<param index="0" name="object" type="Object" />
+			<param index="1" name="property" type="NodePath" />
+			<param index="2" name="value" type="Variant" />
+			<param index="3" name="duration" type="float" />
+			<param index="4" name="transition" type="int" enum="Tween.TransitionType" default="7" />
+			<param index="5" name="ease" type="int" enum="Tween.EaseType" default="1" />
+			<description>
+				Animates the [param property] of the [param object] to the [param value] over [param duration] seconds, along the curve of the [param transition] and [param ease]. The property can be a property path, e.g. [code]"position:x"[/code]. Returns the [PropertyAnimation], e.g. to wait for its end.
+				Unlike a [Tween], animating a property that is already animated continues from where it is: the new animation starts at the point of its curve that has covered the part of the way already travelled, so it neither stops nor jumps, and going back takes as long as the part travelled. Animating to the value the property is already animated to, with the same settings, keeps the animation going, so it can be called every frame or on every state change, e.g. on hover:
+				[codeblocks]
+				[gdscript]
+				func _on_mouse_entered():
+				    get_tree().animate_property(self, "scale", Vector2(1.1, 1.1), 0.2)
+
+				func _on_mouse_exited():
+				    get_tree().animate_property(self, "scale", Vector2.ONE, 0.2)
+				[/gdscript]
+				[csharp]
+				private void OnMouseEntered()
+				{
+				    GetTree().AnimateProperty(this, "scale", new Vector2(1.1f, 1.1f), 0.2f);
+				}
+
+				private void OnMouseExited()
+				{
+				    GetTree().AnimateProperty(this, "scale", Vector2.One, 0.2f);
+				}
+				[/csharp]
+				[/codeblocks]
+				[float], [int], [Vector2], [Vector2i], [Vector3], [Vector3i], [Vector4], [Vector4i], [Color], [Quaternion], [Rect2] and [Rect2i] values are animated. Other values, a [param duration] of [code]0[/code] or less, and properties whose current value has another type are set at once.
+				The animation is moved forward every process frame, also when the scene tree is paused, by the delta scaled by [member Engine.time_scale], see [method PropertyAnimation.set_ignore_time_scale]. It ends when the [param object] is freed.
+			</description>
+		</method>
 		<method name="call_group" qualifiers="vararg">
 			<return type="void" />
 			<param index="0" name="group" type="StringName" />
@@ -109,6 +144,14 @@
 				[b]Note:[/b] A [Tween] created using this method is not bound to any [Node]. It may keep working until there is nothing left to animate. If you want the [Tween] to be automatically killed when the [Node] is freed, use [method Node.create_tween] or [method Tween.bind_node].
 			</description>
 		</method>
+		<method name="finish_property_animation">
+			<return type="void" />
+			<param index="0" name="object" type="Object" />
+			<param index="1" name="property" type="NodePath" default="NodePath(&quot;&quot;)" />
+			<description>
+				Ends the animations of the [param property] of the [param object] at once, setting the property to its final value. With an empty [param property], ends all the property animations of the [param object]. Their [signal PropertyAnimation.finished] signal is emitted.
+			</description>
+		</method>
 		<method name="get_first_node_in_group">
 			<return type="Node" />
 			<param index="0" name="group" type="StringName" />
@@ -172,6 +215,14 @@
 			<return type="bool" />
 			<description>
 				Returns [code]true[/code] if accessibility features are supported by the OS and enabled in project settings.
+			</description>
+		</method>
+		<method name="is_property_animating" qualifiers="const">
+			<return type="bool" />
+			<param index="0" name="object" type="Object" />
+			<param index="1" name="property" type="NodePath" default="NodePath(&quot;&quot;)" />
+			<description>
+				Returns [code]true[/code] if the [param property] of the [param object] is animated by [method animate_property]. With an empty [param property], returns [code]true[/code] if any property of the [param object] is.
 			</description>
 		</method>
 		<method name="notify_group">
@@ -245,6 +296,14 @@
 				Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling also the relative subpaths), or override the default one if [param root_path] is empty.
 				[b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
 				[b]Note:[/b] [method set_multiplayer] should be called [i]before[/i] the child nodes are ready at the given [param root_path]. If multiplayer nodes like [MultiplayerSpawner] or [MultiplayerSynchronizer] are added to the tree before the custom multiplayer API is set, they will not work.
+			</description>
+		</method>
+		<method name="stop_property_animation">
+			<return type="void" />
+			<param index="0" name="object" type="Object" />
+			<param index="1" name="property" type="NodePath" default="NodePath(&quot;&quot;)" />
+			<description>
+				Stops the animations of the [param property] of the [param object], leaving the property where it is. With an empty [param property], stops all the property animations of the [param object]. They're interrupted, see [method PropertyAnimation.is_interrupted].
 			</description>
 		</method>
 		<method name="unload_current_scene">
