@@ -303,6 +303,12 @@ def generate_sdk_package_versions():
         godotsharp_version_str += f"-{godotsharp_version_status}"
         godot_dotnet_version_str += f"-{godot_dotnet_version_status}"
 
+    # The packages of other builds than the official ones get a version of their own, e.g. "4.7.2-boxe", so NuGet doesn't
+    # mix them up with the official packages of the same version, which don't have the API of the build.
+    build_name = version_info["build"]
+    if build_name != "official":
+        godotsharp_version_str += ("." if "-" in godotsharp_version_str else "-") + build_name
+
     import version
 
     version_defines = (
