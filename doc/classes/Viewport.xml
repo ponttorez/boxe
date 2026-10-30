@@ -211,6 +211,12 @@
 				Sets the human-readable description of the drag data to [param description], used for assistive apps.
 			</description>
 		</method>
+		<method name="is_gui_interactable" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if the controls of this viewport that inherit it react to input, from [member gui_interaction_behavior] and, when it's inherited, from the nearest [Control] or viewport the node of this viewport is in.
+			</description>
+		</method>
 		<method name="is_input_handled" qualifiers="const">
 			<return type="bool" />
 			<description>
@@ -359,6 +365,14 @@
 		</member>
 		<member name="gui_embed_subwindows" type="bool" setter="set_embedding_subwindows" getter="is_embedding_subwindows" default="false">
 			If [code]true[/code], sub-windows (popups and dialogs) will be embedded inside application window as control-like nodes. If [code]false[/code], they will appear as separate windows handled by the operating system.
+		</member>
+		<member name="gui_interaction_behavior" type="int" setter="set_gui_interaction_behavior" getter="get_gui_interaction_behavior" enum="Viewport.GUIInteractionBehavior" default="0">
+			Controls whether the controls of this viewport react to input when their [member Control.interaction_behavior_recursive] is [constant Control.INTERACTION_BEHAVIOR_INHERITED] up to the viewport, e.g. to lock the whole user interface while a scene loads:
+			[codeblock]
+			get_tree().root.gui_interaction_behavior = Viewport.GUI_INTERACTION_BEHAVIOR_DISABLED
+			[/codeblock]
+			Controls set to [constant Control.INTERACTION_BEHAVIOR_ENABLED], and their descendants, still react to input, e.g. a cancel button. Unlike [member gui_disable_input], the presses on the controls that don't react are consumed, so they don't reach [method Node._unhandled_input], and those controls lose the focus and the hover state.
+			An embedded [Window] or a [SubViewport] that inherits it takes it from the nearest [Control] its node is in, e.g. the panel a dialog is in, or else from the viewport it's in, so changing the root window changes them too.
 		</member>
 		<member name="gui_snap_controls_to_pixels" type="bool" setter="set_snap_controls_to_pixels" getter="is_snap_controls_to_pixels_enabled" default="true">
 			If [code]true[/code], the GUI controls on the viewport will lay pixel perfectly.
@@ -769,6 +783,15 @@
 		<constant name="DEBUG_DRAW_AREA_LIGHT_ATLAS" value="28" enum="DebugDraw">
 			Draws the atlas used by [AreaLight3D] nodes in the upper left quadrant of the [Viewport].
 			[b]Note:[/b] Only supported when using the Forward+ or Mobile rendering method.
+		</constant>
+		<constant name="GUI_INTERACTION_BEHAVIOR_INHERITED" value="0" enum="GUIInteractionBehavior">
+			The viewport takes it from the nearest [Control] its node is in, or else from the viewport it's in. The root viewport, which isn't in another one, is interactable.
+		</constant>
+		<constant name="GUI_INTERACTION_BEHAVIOR_DISABLED" value="1" enum="GUIInteractionBehavior">
+			The controls that inherit it don't react to input.
+		</constant>
+		<constant name="GUI_INTERACTION_BEHAVIOR_ENABLED" value="2" enum="GUIInteractionBehavior">
+			The controls that inherit it react to input, even when the control or viewport this viewport is in doesn't.
 		</constant>
 		<constant name="DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST" value="0" enum="DefaultCanvasItemTextureFilter">
 			The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).

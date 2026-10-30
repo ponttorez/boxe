@@ -3882,6 +3882,64 @@ void Viewport::set_disable_input_override(bool p_disable) {
 	disable_input_override = p_disable;
 }
 
+void Viewport::set_gui_interaction_behavior(GUIInteractionBehavior p_behavior) {
+	ERR_MAIN_THREAD_GUARD;
+	ERR_FAIL_INDEX((int)p_behavior, 3);
+	if (gui_interaction_behavior == p_behavior) {
+		return;
+	}
+	gui_interaction_behavior = p_behavior;
+	_propagate_gui_interactable(this);
+	if (is_inside_tree()) {
+		// Drop the hover state and the cursor shape of controls that stopped receiving input.
+		update_mouse_cursor_state();
+	}
+}
+
+Viewport::GUIInteractionBehavior Viewport::get_gui_interaction_behavior() const {
+	ERR_READ_THREAD_GUARD_V(GUI_INTERACTION_BEHAVIOR_INHERITED);
+	return gui_interaction_behavior;
+}
+
+bool Viewport::is_gui_interactable() const {
+	ERR_READ_THREAD_GUARD_V(true);
+	switch (gui_interaction_behavior) {
+		case GUI_INTERACTION_BEHAVIOR_DISABLED:
+			return false;
+		case GUI_INTERACTION_BEHAVIOR_ENABLED:
+			return true;
+		case GUI_INTERACTION_BEHAVIOR_INHERITED:
+		default: {
+			// The nearest control the node of this viewport is in, e.g. the panel a dialog is in, or else the viewport it's in.
+			for (const Node *node = get_parent(); node; node = node->get_parent()) {
+				if (const Control *control = Object::cast_to<Control>(node)) {
+					return control->is_interactable_in_tree();
+				}
+				if (const Viewport *viewport = Object::cast_to<Viewport>(node)) {
+					return viewport->is_gui_interactable();
+				}
+			}
+			return true;
+		}
+	}
+}
+
+void Viewport::_propagate_gui_interactable(Node *p_node) {
+	for (int i = 0; i < p_node->get_child_count(); i++) {
+		Node *child = p_node->get_child(i);
+		if (Control *control = Object::cast_to<Control>(child)) {
+			// The control updates its descendants in this viewport.
+			control->_propagate_interactable(control->_is_parent_interactable());
+		} else if (Viewport *viewport = Object::cast_to<Viewport>(child)) {
+			if (viewport->gui_interaction_behavior == GUI_INTERACTION_BEHAVIOR_INHERITED) {
+				viewport->_propagate_gui_interactable(viewport);
+			}
+		} else {
+			_propagate_gui_interactable(child);
+		}
+	}
+}
+
 String Viewport::gui_get_drag_description() const {
 	ERR_READ_THREAD_GUARD_V(String());
 	if (get_section_root_viewport()->gui.drag_description.is_empty()) {
@@ -5389,6 +5447,10 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gui_get_focus_owner"), &Viewport::gui_get_focus_owner);
 	ClassDB::bind_method(D_METHOD("gui_get_hovered_control"), &Viewport::gui_get_hovered_control);
 
+	ClassDB::bind_method(D_METHOD("set_gui_interaction_behavior", "behavior"), &Viewport::set_gui_interaction_behavior);
+	ClassDB::bind_method(D_METHOD("get_gui_interaction_behavior"), &Viewport::get_gui_interaction_behavior);
+	ClassDB::bind_method(D_METHOD("is_gui_interactable"), &Viewport::is_gui_interactable);
+
 	ClassDB::bind_method(D_METHOD("set_disable_input", "disable"), &Viewport::set_disable_input);
 	ClassDB::bind_method(D_METHOD("is_input_disabled"), &Viewport::is_input_disabled);
 
@@ -5551,6 +5613,7 @@ void Viewport::_bind_methods() {
 #endif // !defined(PHYSICS_2D_DISABLED) || !defined(PHYSICS_3D_DISABLED)
 	ADD_GROUP("GUI", "gui_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "gui_disable_input"), "set_disable_input", "is_input_disabled");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "gui_interaction_behavior", PROPERTY_HINT_ENUM, "Inherited,Disabled,Enabled"), "set_gui_interaction_behavior", "get_gui_interaction_behavior");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "gui_snap_controls_to_pixels"), "set_snap_controls_to_pixels", "is_snap_controls_to_pixels_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "gui_embed_subwindows"), "set_embedding_subwindows", "is_embedding_subwindows");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "gui_drag_threshold"), "set_drag_threshold", "get_drag_threshold");
@@ -5650,6 +5713,10 @@ void Viewport::_bind_methods() {
 	BIND_ENUM_CONSTANT(DEBUG_DRAW_INTERNAL_BUFFER);
 	BIND_ENUM_CONSTANT(DEBUG_DRAW_CLUSTER_AREA_LIGHTS);
 	BIND_ENUM_CONSTANT(DEBUG_DRAW_AREA_LIGHT_ATLAS);
+
+	BIND_ENUM_CONSTANT(GUI_INTERACTION_BEHAVIOR_INHERITED);
+	BIND_ENUM_CONSTANT(GUI_INTERACTION_BEHAVIOR_DISABLED);
+	BIND_ENUM_CONSTANT(GUI_INTERACTION_BEHAVIOR_ENABLED);
 
 	BIND_ENUM_CONSTANT(DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST);
 	BIND_ENUM_CONSTANT(DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR);

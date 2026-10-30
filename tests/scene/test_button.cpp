@@ -35,6 +35,7 @@ TEST_FORCE_LINK(test_button)
 #include "scene/2d/node_2d.h"
 #include "scene/gui/button.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
 #include "scene/main/window.h"
 #include "tests/display_server_mock.h"
 #include "tests/signal_watcher.h"
@@ -172,6 +173,74 @@ TEST_CASE("[SceneTree][Button] Interactable inside a control that isn't") {
 	CHECK_FALSE(close->is_interactable_in_tree());
 	CHECK_FALSE(icon->is_interactable_in_tree());
 
+	memdelete(panel);
+}
+
+TEST_CASE("[SceneTree][Button] The viewport decides for the controls that inherit it") {
+	Window *root = SceneTree::get_singleton()->get_root();
+	Control *panel = memnew(Control);
+	panel->set_size(Size2(200, 100));
+	root->add_child(panel);
+	Button *button = memnew(Button);
+	button->set_size(Size2(50, 50));
+	panel->add_child(button);
+	Button *cancel = memnew(Button);
+	cancel->set_position(Point2(100, 0));
+	cancel->set_size(Size2(50, 50));
+	panel->add_child(cancel);
+
+	root->set_gui_interaction_behavior(Viewport::GUI_INTERACTION_BEHAVIOR_DISABLED);
+	CHECK_FALSE(root->is_gui_interactable());
+	CHECK_FALSE(panel->is_interactable_in_tree());
+	CHECK_FALSE(button->is_interactable_in_tree());
+
+	// Controls that are enabled still react, e.g. to cancel what locked the user interface.
+	cancel->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_ENABLED);
+	CHECK(cancel->is_interactable_in_tree());
+	SIGNAL_WATCH(cancel, SNAME("pressed"));
+	SEND_GUI_MOUSE_BUTTON_EVENT(Point2i(125, 25), MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
+	SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(Point2i(125, 25), MouseButton::LEFT, MouseButtonMask::NONE, Key::NONE);
+	SIGNAL_CHECK(SNAME("pressed"), { {} });
+	SIGNAL_UNWATCH(cancel, SNAME("pressed"));
+
+	// Controls added later, embedded windows and subviewports inherit it too.
+	Button *later = memnew(Button);
+	panel->add_child(later);
+	CHECK_FALSE(later->is_interactable_in_tree());
+	Window *window = memnew(Window);
+	root->add_child(window);
+	Button *window_button = memnew(Button);
+	window->add_child(window_button);
+	CHECK_FALSE(window_button->is_interactable_in_tree());
+	SubViewport *sub_viewport = memnew(SubViewport);
+	root->add_child(sub_viewport);
+	Button *sub_viewport_button = memnew(Button);
+	sub_viewport->add_child(sub_viewport_button);
+	CHECK_FALSE(sub_viewport_button->is_interactable_in_tree());
+
+	window->set_gui_interaction_behavior(Viewport::GUI_INTERACTION_BEHAVIOR_ENABLED);
+	CHECK_MESSAGE(window_button->is_interactable_in_tree(), "A window can be enabled in a viewport that isn't.");
+
+	root->set_gui_interaction_behavior(Viewport::GUI_INTERACTION_BEHAVIOR_INHERITED);
+	CHECK(root->is_gui_interactable());
+	CHECK(button->is_interactable_in_tree());
+	CHECK(later->is_interactable_in_tree());
+	CHECK(sub_viewport_button->is_interactable_in_tree());
+
+	// A window in a control that isn't interactable inherits it from that control.
+	window->set_gui_interaction_behavior(Viewport::GUI_INTERACTION_BEHAVIOR_INHERITED);
+	window->reparent(panel);
+	CHECK(window_button->is_interactable_in_tree());
+	panel->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_DISABLED);
+	CHECK_FALSE(window->is_gui_interactable());
+	CHECK_FALSE(window_button->is_interactable_in_tree());
+	window->set_gui_interaction_behavior(Viewport::GUI_INTERACTION_BEHAVIOR_ENABLED);
+	CHECK(window_button->is_interactable_in_tree());
+	window->set_gui_interaction_behavior(Viewport::GUI_INTERACTION_BEHAVIOR_INHERITED);
+	panel->set_interaction_behavior_recursive(Control::INTERACTION_BEHAVIOR_INHERITED);
+	CHECK(window_button->is_interactable_in_tree());
+
+	memdelete(sub_viewport);
 	memdelete(panel);
 }
 

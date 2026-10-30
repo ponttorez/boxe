@@ -189,6 +189,12 @@ public:
 		DEBUG_DRAW_AREA_LIGHT_ATLAS,
 	};
 
+	enum GUIInteractionBehavior {
+		GUI_INTERACTION_BEHAVIOR_INHERITED,
+		GUI_INTERACTION_BEHAVIOR_DISABLED,
+		GUI_INTERACTION_BEHAVIOR_ENABLED,
+	};
+
 	enum DefaultCanvasItemTextureFilter {
 		DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST,
 		DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR,
@@ -440,6 +446,10 @@ private:
 	bool disable_input = false;
 	bool disable_input_override = false;
 
+	GUIInteractionBehavior gui_interaction_behavior = GUI_INTERACTION_BEHAVIOR_INHERITED;
+	// Updates the controls of p_node and its descendants in this viewport, and the viewports below that inherit it.
+	void _propagate_gui_interactable(Node *p_node);
+
 	void _gui_call_input(Control *p_control, const Ref<InputEvent> &p_input);
 	void _gui_call_notification(Control *p_control, int p_what);
 
@@ -662,6 +672,10 @@ public:
 	bool is_input_disabled() const;
 
 	void set_disable_input_override(bool p_disable);
+
+	void set_gui_interaction_behavior(GUIInteractionBehavior p_behavior);
+	GUIInteractionBehavior get_gui_interaction_behavior() const;
+	bool is_gui_interactable() const;
 
 	Vector2 get_mouse_position() const;
 	void warp_mouse(const Vector2 &p_position);
@@ -985,6 +999,7 @@ VARIANT_ENUM_CAST(Viewport::Scaling3DMode);
 VARIANT_ENUM_CAST(SubViewport::UpdateMode);
 VARIANT_ENUM_CAST(Viewport::PositionalShadowAtlasQuadrantSubdiv);
 VARIANT_ENUM_CAST(Viewport::MSAA);
+VARIANT_ENUM_CAST(Viewport::GUIInteractionBehavior);
 VARIANT_ENUM_CAST(Viewport::AnisotropicFiltering);
 VARIANT_ENUM_CAST(Viewport::ScreenSpaceAA);
 VARIANT_ENUM_CAST(Viewport::DebugDraw);

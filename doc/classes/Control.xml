@@ -1500,7 +1500,7 @@
 			Allows the control to be focused, depending on the [member focus_mode]. This can be used to ignore the parent's [member focus_behavior_recursive]. [method get_focus_mode_with_override] will return the [member focus_mode].
 		</constant>
 		<constant name="INTERACTION_BEHAVIOR_INHERITED" value="0" enum="InteractionBehaviorRecursive">
-			The control reacts to input if its nearest [Control] ancestor in the same viewport does, or if it has none. This is the default, so all controls react to input until one is set to [constant INTERACTION_BEHAVIOR_DISABLED].
+			The control reacts to input if its nearest [Control] ancestor in the same viewport does, or, without one, if the viewport does, see [member Viewport.gui_interaction_behavior]. This is the default, so all controls react to input until one is set to [constant INTERACTION_BEHAVIOR_DISABLED].
 		</constant>
 		<constant name="INTERACTION_BEHAVIOR_DISABLED" value="1" enum="InteractionBehaviorRecursive">
 			The control and its descendants that inherit it don't react to input.

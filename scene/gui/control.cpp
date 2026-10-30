@@ -2645,11 +2645,13 @@ bool Control::is_interactable_in_tree() const {
 	}
 }
 
-// The nearest Control ancestor in the same viewport decides, even through other nodes like Node2D.
+// The nearest Control ancestor in the same viewport decides, even through other nodes like Node2D, or else the viewport.
 bool Control::_is_parent_interactable() const {
-	for (const Node *node = get_parent(); node && !Object::cast_to<Viewport>(node); node = node->get_parent()) {
-		const Control *control = Object::cast_to<Control>(node);
-		if (control) {
+	for (const Node *node = get_parent(); node; node = node->get_parent()) {
+		if (const Viewport *viewport = Object::cast_to<Viewport>(node)) {
+			return viewport->is_gui_interactable();
+		}
+		if (const Control *control = Object::cast_to<Control>(node)) {
 			return control->is_interactable_in_tree();
 		}
 	}
@@ -2691,9 +2693,15 @@ void Control::_propagate_interactable_to_children(Node *p_node, bool p_interacta
 	for (int i = 0; i < p_node->get_child_count(); i++) {
 		Node *child = p_node->get_child(i);
 		Control *control = Object::cast_to<Control>(child);
+		Viewport *viewport = Object::cast_to<Viewport>(child);
 		if (control) {
 			control->_propagate_interactable(p_interactable);
-		} else if (!Object::cast_to<Viewport>(child)) {
+		} else if (viewport) {
+			// Embedded windows and subviewports inheriting it take it from the nearest control they're in.
+			if (viewport->get_gui_interaction_behavior() == Viewport::GUI_INTERACTION_BEHAVIOR_INHERITED) {
+				viewport->_propagate_gui_interactable(viewport);
+			}
+		} else {
 			_propagate_interactable_to_children(child, p_interactable);
 		}
 	}
